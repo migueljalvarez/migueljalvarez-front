@@ -104,13 +104,13 @@ const leaveIcon = (item: SocialMediaType) => {
 
     <!-- Arrows -->
     <button
-      class="absolute flex items-center justify-center px-2 text-white transform -translate-y-1/2 rounded-full cursor-pointer left-4 size-12 top-1/2 bg-black/40 hover:bg-black/60 text-7xl"
+      class="absolute flex items-center justify-center px-2 text-white transform -translate-y-1/2 rounded-full cursor-pointer left-4 size-12 top-1/2 bg-white/10 backdrop-blur-md hover:bg-white/20 text-7xl"
       @click="prevSlide"
     >
       <Icon name="mdi:chevron-left" size="24" />
     </button>
     <button
-      class="absolute flex items-center justify-center text-2xl text-white transform -translate-y-1/2 rounded-full cursor-pointer right-4 size-12 top-1/2 bg-black/40 hover:bg-black/60"
+      class="absolute flex items-center justify-center text-2xl text-white transform -translate-y-1/2 rounded-full cursor-pointer right-4 size-12 top-1/2 bg-white/10 backdrop-blur-md hover:bg-white/20"
       @click="nextSlide"
     >
       <Icon name="mdi:chevron-right" size="24" />
