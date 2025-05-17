@@ -5,12 +5,14 @@ definePageMeta({
 
 const { logos } = useLogos();
 const { testimonial } = useTestimonial();
-const duplicatedLogos = [...logos, ...logos, ];
+const duplicatedLogos = [...logos, ...logos];
 </script>
 <template>
   <section class="">
     <Main />
-    <section class="flex items-center justify-center w-full bg-gray-200 lg:w-8xl">
+    <section
+      class="flex items-center justify-center w-full bg-gray-200 lg:w-8xl"
+    >
       <p class="p-10 text-4xl italic">
         Con mas de 9 años de Experiencia en el Sector
       </p>
@@ -27,10 +29,7 @@ const duplicatedLogos = [...logos, ...logos, ];
       </div>
     </section>
     <!--  -->
-    <section class="flex flex-col items-center w-full">
-    <InfiniteCarousel :items="duplicatedLogos" />
-    
-    </section>
+    <InfiniteCarousel :items="duplicatedLogos" class="w-full lg:w-8xl"/>
 
     <section
       class="flex flex-col items-center justify-center w-full p-10 bg-white lg:w-8xl h-96"
