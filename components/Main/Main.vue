@@ -23,7 +23,7 @@ onMounted(() => {
 <template>
   <div class="relative flex justify-between w-full overflow-hidden lg:w-8xl">
     <div
-      class="absolute w-full inset-0 z-10 bg-gradient-to-r from-black via-black/95.5 to-transparent h-[500px]"
+      class="absolute w-full inset-0 z-10 bg-gradient-to-r from-black via-black to-black/10 h-[500px]"
     ></div>
     <div
       class="relative z-20 flex flex-col w-full px-10 lg:px-24 text-white h-[500px] justify-center 2xl:ml-20"
@@ -38,23 +38,17 @@ onMounted(() => {
         {{ description }}
       </p>
       <div v-if="subtitle === fullSubtitle" class="flex flex-row gap-2 mt-4">
-        <span
-          class="p-2 font-bold text-center text-white uppercase bg-green-600 rounded cursor-pointer w-36 hover:bg-green-800"
+        <Button variant="uppercase" icon="mdi:whatsapp" theme="tertiary"
+          >Contactar</Button
         >
-          Contactar
-        </span>
-        <span
-          class="p-2 font-bold text-center text-white uppercase bg-blue-400 rounded cursor-pointer w-36 hover:bg-blue-500"
-        >
-          Descargar CV
-        </span>
+        <Button variant="uppercase" icon="mdi:download">Descargar CV</Button>
       </div>
     </div>
-    <div class="relative z-0 w-full overflow-hidden h-[500px]">
+    <div class="relative z-0 w-full overflow-hidden h-[500px] -ml-25">
       <img
         src="../../assets/images/bg.jpg"
         alt="Ponente"
-        class="object-cover w-full h-full overflow-hidden"
+        class="object-cover w-full h-full overflow-hidden mask-linear-at-left mask-l-from-black mask-l-to-transparent mask-l-from-50% mask-l-to-95%"
       />
     </div>
   </div>

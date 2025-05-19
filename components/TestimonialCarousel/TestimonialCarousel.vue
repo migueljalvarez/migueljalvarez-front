@@ -85,12 +85,15 @@ const leaveIcon = (item: SocialMediaType) => {
                       @mouseover="hoverIcon(social)"
                       @mouseleave="leaveIcon(social)"
                     />
-                  </a>
-                </span>
+                  </a> </span
+                ><Banner
+                class="text-sm"
+                  :theme="slide.type === 'Trabajo' ? 'warning' : 'success'"
+                  :value="slide.type"
+                />
               </h4>
-              <p class="text-sm text-gray-500">{{ slide.position }}</p>
 
-              <p class="px-2 mt-1 text-sm rounded-full" :class="slide.type === 'Trabajo' ? 'bg-yellow-200 text-yellow-900': 'bg-green-200 text-green-900'">{{ slide.type }}</p>
+              <p class="text-sm text-gray-500">{{ slide.position }}</p>
             </div>
           </div>
           <div>

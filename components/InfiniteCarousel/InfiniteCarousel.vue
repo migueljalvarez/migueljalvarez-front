@@ -36,7 +36,7 @@ const isPaused = ref(false);
           <img
             :src="item.src"
             :alt="item.alt"
-            class="transition size-10 hover:cursor-pointer"
+            class="transition size-10 hover:cursor-pointer "
             :title="item.alt"
           />
         </template>
