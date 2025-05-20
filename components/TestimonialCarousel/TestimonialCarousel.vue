@@ -38,6 +38,7 @@ const leaveIcon = (item: SocialMediaType) => {
 <template>
   <section class="relative w-5/6 h-auto overflow-hidden rounded-xl">
     <!-- Slides wrapper -->
+
     <div
       ref="track"
       class="flex transition-transform duration-500 ease-in-out"
@@ -55,7 +56,7 @@ const leaveIcon = (item: SocialMediaType) => {
         }"
       >
         <div
-          class="flex flex-col w-full text-black bg-gray-200 rounded-lg lg:w-5/6 h-72 backdrop-blur-sm"
+          class="flex flex-col w-full text-black bg-white border-2 border-gray-200 rounded-lg shadow-xl lg:w-5/6 h-72 backdrop-blur-sm"
         >
           <div class="flex gap-2 px-4">
             <img
@@ -87,7 +88,7 @@ const leaveIcon = (item: SocialMediaType) => {
                     />
                   </a> </span
                 ><Banner
-                class="text-sm"
+                  class="text-sm"
                   :theme="slide.type === 'Trabajo' ? 'warning' : 'success'"
                   :value="slide.type"
                 />
