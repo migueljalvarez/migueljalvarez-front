@@ -24,7 +24,7 @@ onMounted(() => {
   <div class="relative flex justify-between w-full overflow-hidden lg:w-8xl">
     <div
       class="absolute w-full inset-0 z-10 bg-gradient-to-r from-black via-black to-black/10 h-[500px]"
-    ></div>
+    />
     <div
       class="relative z-20 flex flex-col w-full px-10 lg:px-24 text-white h-[500px] justify-center 2xl:ml-20"
     >

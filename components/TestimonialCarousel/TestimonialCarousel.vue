@@ -41,7 +41,7 @@ const leaveIcon = (item: SocialMediaType) => {
 
     <div
       ref="track"
-      class="flex transition-transform duration-500 ease-in-out"
+      class="flex transition-transform duration-500 ease-in-out "
       :style="{ transform: `translateX(-${currentIndex * 100}%)` }"
     >
       <div
@@ -87,7 +87,7 @@ const leaveIcon = (item: SocialMediaType) => {
                       @mouseleave="leaveIcon(social)"
                     />
                   </a> </span
-                ><Banner
+                ><Badge
                   class="text-sm"
                   :theme="slide.type === 'Trabajo' ? 'warning' : 'success'"
                   :value="slide.type"

@@ -1,7 +1,5 @@
-import type { Testimonial } from "~/common/types";
-
-export const useTestimonial = () => {
-  const testimonial = ref<Testimonial[]>([
+export default defineEventHandler(async (_event) => {
+  return [
     {
       name: "Gustavo Sanchez",
       position: "Senior Software Engineer",
@@ -39,10 +37,11 @@ export const useTestimonial = () => {
     {
       name: "Daniel Puerto",
       position: "Senior Software Engineer",
-      description:
-        "Un gran trabajo, me ayudo a salir de la zona de confort y a mejorar mis habilidades",
+      description: `Migue es una gran desarrollador, lo conoci como back-end sin embargo se desempeño muy bien como front-end, logrando excelentes resultados, su colaboracion con el equipo fue fenomenal.
+
+Desempeño proyectos con arquitectura hexagonal y promovio buenas practicas de Logs para lograr asi un rendimiento excepcional en los proyectos que trabajo`,
       image:
-        "https://www.lanacion.com.ar/resizer/v2/kit-harington-en-una-escena-de-game-of-L6NWYM4FIZFAHJXX3UGLRYTAGQ.jpg?auth=42e2d30276939988a3eaf07d3c4f01ea1b0ffab2a9a022a6ba966c08673a951f&quality=70&smart=true",
+        "https://media.licdn.com/dms/image/v2/D4E03AQHvx85UPUnl3w/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1690135627970?e=1753315200&v=beta&t=ePJ7MGE9cbPfTcBoEN8ObKDiYcRh7MiXhnoCik2pPa8",
       type: "Trabajo",
       socialMedia: [
         {
@@ -70,6 +69,5 @@ export const useTestimonial = () => {
         },
       ],
     },
-  ]);
-  return { testimonial };
-};
+  ];
+});

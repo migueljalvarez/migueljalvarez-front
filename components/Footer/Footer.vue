@@ -13,8 +13,8 @@ const leaveIcon = (item: SocialMediaType) => {
 };
 </script>
 <template>
-  <footer class="w-full bg-black lg:w-8xl h-80">
-    <div class="grid grid-cols-4 gap-6 p-16">
+  <footer class="flex flex-col w-full gap-4 bg-black lg:w-8xl h-80">
+    <section class="grid grid-cols-4 gap-6 p-16">
       <div class="p-1 text-white">
         <h5 class="font-black uppercase">Menu</h5>
         <div
@@ -29,7 +29,6 @@ const leaveIcon = (item: SocialMediaType) => {
           </ul>
         </div>
       </div>
-
       <div class="p-1 text-white">
         <h5 class="font-black uppercase">Redes Sociales</h5>
         <div class="flex gap-2">
@@ -47,9 +46,13 @@ const leaveIcon = (item: SocialMediaType) => {
           />
         </div>
       </div>
-    </div>
-    <div class="p-2 text-center bg-blue-400">
-      Copyright &copy; <strong>{{ new Date().getFullYear() }}</strong> -
+    </section>
+    <div
+      class="relative flex items-center justify-center gap-2 p-2 bg-blue-400"
+    >
+      <p>
+        Copyright &copy; <strong>{{ new Date().getFullYear() }}</strong>
+      </p>
       <strong>Miguel Alvarez</strong>
     </div>
   </footer>

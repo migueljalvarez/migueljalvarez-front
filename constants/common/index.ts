@@ -30,3 +30,5 @@ export const MY_SOCIAL_MEDIA = [
     isHovered: false,
   },
 ];
+
+export const MAIN_HERO = "Con mas de 9 años de Experiencia en el Sector";

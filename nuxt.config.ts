@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { resolve } from "pathe";
 export default defineNuxtConfig({
   app: {
     head: {
@@ -31,5 +32,18 @@ export default defineNuxtConfig({
   ],
   imports: {
     autoImport: true,
+  },
+  nitro: {
+    prerender: {
+      routes: ["/"],
+    },
+  },
+  alias: {
+    "@components": resolve(__dirname, "components"),
+    "@composables": resolve(__dirname, "composables"),
+    "@utils": resolve(__dirname, "utils"),
+    "@types": resolve(__dirname, "types"),
+    "@assets": resolve(__dirname, "assets"),
+    "@public": resolve(__dirname, "public"),
   },
 });
