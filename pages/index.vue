@@ -10,8 +10,10 @@ const { logos } = useLogos();
 const duplicatedLogos = [...logos, ...logos];
 
 const { data: portafolioResult } = await useFetch(`/api/portafolio`);
+
 const portafolio = ref<PortafolioType[]>();
 portafolio.value = portafolioResult.value as PortafolioType[];
+
 </script>
 <template>
   <section class="">
