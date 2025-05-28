@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PortafolioType } from "~/common/types";
+import type { PortafolioType } from "~/types/common";
 import { MAIN_HERO } from "~/constants/common";
 definePageMeta({
   layout: "default",

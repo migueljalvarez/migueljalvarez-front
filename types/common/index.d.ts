@@ -10,22 +10,23 @@ export type Testimonial = {
   position: string;
   description: string;
   image: string;
-  type: string
+  type: string;
   socialMedia: Array<SocialMediaType>;
 };
 export type Image = {
-  url: string
-}
+  title: string;
+  url: string;
+};
 export type PortafolioType = {
   id: string;
   title: string;
+  technologies: string[];
   version: string;
   state: string;
   description: string;
-  technologies: string[];
   urlImage: string;
   url: string;
   initialProblem: string;
   solutionDetails: string;
-  images: Image[]
+  images: Image[];
 };

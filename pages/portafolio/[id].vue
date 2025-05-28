@@ -15,6 +15,15 @@ const { getTechnicalSheet } = useTechnicalSheet();
 const rows = getTechnicalSheet(
   data.value as PortafolioType
 ) as unknown as TableRowType[];
+const showPreviewImage = ref(false);
+const previewImage = ref("");
+const handleClickImage = (event: MouseEvent) => {
+  previewImage.value = (event.target as HTMLImageElement).src;
+  showPreviewImage.value = true;
+};
+const handleClose = () => {
+  showPreviewImage.value = false;
+};
 </script>
 <template>
   <section
@@ -38,9 +47,34 @@ const rows = getTechnicalSheet(
 
       <DynamicTable :headers="titlesTables" :rows="rows" :column-index="0" />
 
-      <div  class="flex flex-wrap justify-center gap-8 px-4 grow">
-        <img v-for="image, index of data?.images" :key="index" :src="image.url" alt="" srcset="" class="cursor-pointer size-58" />
-        
+      <div class="flex flex-col flex-wrap justify-center gap-6 px-4 mt-8 grow">
+        <h3>Capturas de pantalla</h3>
+        <div class="flex flex-row flex-wrap justify-between gap-4 grow ">
+          <img
+            v-for="(image, index) of data?.images"
+            :key="index"
+            :src="image.url"
+            :alt="image.title"
+            class="flex-row object-cover cursor-pointer h-45 w-50 rounded-xl"
+            @click="handleClickImage"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      v-if="showPreviewImage"
+      class="absolute top-0 z-20 w-full h-full bg-black/90"
+    >
+      <div
+        class="relative flex justify-center h-full cursor-pointer"
+        @click="handleClose"
+      >
+        <img
+          :src="previewImage"
+          alt=""
+          srcset=""
+          class="w-[800px] cursor-auto h-[600px] rounded-3xl"
+        />
       </div>
     </div>
   </section>
