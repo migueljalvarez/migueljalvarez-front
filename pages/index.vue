@@ -1,29 +1,43 @@
-t
 <script setup lang="ts">
 import type { PortafolioType, Testimonial } from "~/types/common";
 import { MAIN_HERO } from "~/constants/common";
 import Carousel from "../components/Carousel/Carousel.vue";
 
-import bgTestimonialSection from "../assets/images/escritorio-lleno-de-articulos-de-productividad-en-una-casa-vacia.jpg";
-definePageMeta({
-  layout: "default",
-});
+definePageMeta({ layout: "default" });
 
 const { logos } = useLogos();
-
 const duplicatedLogos = [...logos];
 const currentIndex = ref(0);
-
 const testimonial = ref<Testimonial[]>([]);
-const { data: testimonialResult } = await useFetch(`/api/testimonials`);
-testimonial.value = testimonialResult.value as Testimonial[];
-
-const { data: portafolioResult } = await useFetch(`/api/portafolio`);
+const portafolio = ref<PortafolioType[]>([]);
 const portafolioCurrentIndex = ref(0);
-const portafolio = ref<PortafolioType[]>();
-portafolio.value = portafolioResult.value as PortafolioType[];
-
 const touchStartX = ref(0);
+
+// 🛡️ Seguro para prerender (fallback y errores controlados)
+const { data: testimonialResult, error: testimonialError } = await useFetch<
+  Testimonial[]
+>("/api/testimonials", {
+  server: true,
+  default: () => [],
+});
+
+if (testimonialError.value) {
+  console.error("Error fetching testimonials:", testimonialError.value);
+}
+testimonial.value = testimonialResult.value || [];
+
+// 🛡️ Seguro para prerender (fallback y errores controlados)
+const { data: portafolioResult, error: portafolioError } = await useFetch<
+  PortafolioType[]
+>("/api/portafolio", {
+  server: true,
+  default: () => [],
+});
+
+if (portafolioError.value) {
+  console.error("Error fetching portafolio:", portafolioError.value);
+}
+portafolio.value = portafolioResult.value || [];
 </script>
 <template>
   <section>
@@ -33,7 +47,7 @@ const touchStartX = ref(0);
     <Carousel
       v-model:current-index="currentIndex"
       title="Ellos confían en mí"
-      :background="bgTestimonialSection"
+      background="/escritorio-lleno-de-articulos-de-productividad-en-una-casa-vacia.jpg"
       :items="testimonial"
     >
       <template #default="{ goPrev, goNext }">
@@ -67,6 +81,7 @@ const touchStartX = ref(0);
     >
       <template #default="{ goPrev, goNext }">
         <div
+          v-if="portafolio && portafolio.length > 0"
           :key="portafolioCurrentIndex"
           class="flex items-center justify-center w-full h-full select-none"
           @touchstart="(e) => (touchStartX = e.changedTouches[0].screenX)"
@@ -81,9 +96,8 @@ const touchStartX = ref(0);
           "
         >
           <Card
-            v-if="portafolio && portafolio.length"
             size="md"
-            class="w-full max-w-sm px-4 h-[600px] 2xl:h-[500px]  lg:min-w-2xl 2xl:min-w-4xl"
+            class="w-full max-w-sm px-4 h-[600px] 2xl:h-[500px] lg:min-w-2xl 2xl:min-w-4xl"
           >
             <div class="flex flex-col gap-4">
               <img
@@ -121,6 +135,9 @@ const touchStartX = ref(0);
         </div>
       </template>
     </Carousel>
+    <section class="flex flex-row w-full">
+      <Hero value="¿Que puedo hacer por ti?" color="blue" class="w-full" />
+    </section>
   </section>
 </template>
 <style scoped></style>

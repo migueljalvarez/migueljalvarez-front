@@ -2,7 +2,6 @@
 import type { SocialMediaType } from "~/types/common";
 import { MY_SOCIAL_MEDIA } from "~/constants/common";
 import { PUBLIC_ROUTES, OTHER_PUBLIC_ROUTES } from "~/constants/routes";
-import Hero from "../Hero/Hero.vue";
 
 const socials = ref<SocialMediaType[]>(MY_SOCIAL_MEDIA);
 
@@ -16,14 +15,9 @@ const leaveIcon = (item: SocialMediaType) => {
 
 <template>
   <footer class="flex flex-col w-full bg-black">
-    <section class="flex flex-row w-full">
-      <Hero value="¿Que puedo hacer por ti?" color="blue" class="w-full" />
-    </section>
-
     <section
       class="grid w-full grid-cols-1 gap-8 px-4 py-10 mx-auto max-w-7xl md:grid-cols-1 lg:grid-cols-4"
     >
-      
       <!-- Menu -->
       <div>
         <h5 class="mb-2 font-black text-white uppercase">Menu</h5>
@@ -72,8 +66,8 @@ const leaveIcon = (item: SocialMediaType) => {
       <div class="flex flex-col items-start gap-2 mt-8 lg:mt-0">
         <h5 class="mb-2 font-black text-white uppercase">Sobre Mi</h5>
         <div>
-          <img
-            src="../../assets/images/isotipo.svg"
+          <NuxtImg
+            src="isotipo.svg"
             alt="Miguel Alvarez"
             class="w-32 mb-4 sm:w-40"
           />

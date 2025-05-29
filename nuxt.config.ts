@@ -33,9 +33,20 @@ export default defineNuxtConfig({
   imports: {
     autoImport: true,
   },
+  image: {
+    dir: "public",
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      "2xl": 1536,
+    },
+  },
   nitro: {
     prerender: {
-      routes: ["/"],
+      routes: ["/", "/_ipx/_/isotipo.svg", "/_ipx/f_webp&q_80/bg.jpg"],
     },
   },
   alias: {
