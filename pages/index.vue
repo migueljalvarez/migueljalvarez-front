@@ -1,57 +1,126 @@
+t
 <script setup lang="ts">
-import type { PortafolioType } from "~/types/common";
+import type { PortafolioType, Testimonial } from "~/types/common";
 import { MAIN_HERO } from "~/constants/common";
+import Carousel from "../components/Carousel/Carousel.vue";
+
+import bgTestimonialSection from "../assets/images/escritorio-lleno-de-articulos-de-productividad-en-una-casa-vacia.jpg";
 definePageMeta({
   layout: "default",
 });
 
 const { logos } = useLogos();
 
-const duplicatedLogos = [...logos, ...logos];
+const duplicatedLogos = [...logos];
+const currentIndex = ref(0);
+
+const testimonial = ref<Testimonial[]>([]);
+const { data: testimonialResult } = await useFetch(`/api/testimonials`);
+testimonial.value = testimonialResult.value as Testimonial[];
 
 const { data: portafolioResult } = await useFetch(`/api/portafolio`);
-
+const portafolioCurrentIndex = ref(0);
 const portafolio = ref<PortafolioType[]>();
 portafolio.value = portafolioResult.value as PortafolioType[];
 
+const touchStartX = ref(0);
 </script>
 <template>
-  <section class="">
+  <section>
     <Main />
     <Hero :value="MAIN_HERO" color="gray" />
     <!--  -->
-    <Testimonial/>
-    <!--  -->
-    <InfiniteCarousel :items="duplicatedLogos" class="w-full lg:w-8xl" />
-
-    <section
-      class="flex flex-col items-center justify-center w-full p-4 bg-black/95 lg:w-8xl h-150"
+    <Carousel
+      v-model:current-index="currentIndex"
+      title="Ellos confían en mí"
+      :background="bgTestimonialSection"
+      :items="testimonial"
     >
-      <h3 class="self-center py-8 italic text-white">Portafolio</h3>
-      <Card v-for="(item, index) in portafolio" :key="index" size="md">
-        <div class="flex gap-4">
-          <img :src="item.urlImage" :alt="item.title" class="w-40 h-30" />
-          <div>
-            <h4 class="font-bold text-slate-800">{{ item.title }}</h4>
-
-            <div class="flex flex-row gap-2 pt-2 pr-2">
-              <span
-                v-for="(tech, i) in item.technologies"
-                :key="i"
-                class="flex flex-row"
-                ><Badge theme="info" :value="tech"
-              /></span>
+      <template #default="{ goPrev, goNext }">
+        <TestimonialCarousel
+          :key="currentIndex"
+          :item="testimonial[currentIndex]"
+          @touchstart="(e) => (touchStartX = e.changedTouches[0].screenX)"
+          @touchend="
+            (e) => {
+              const diff = e.changedTouches[0].screenX - touchStartX;
+              if (Math.abs(diff) > 50) {
+                if (diff < 0) goNext();
+                else goPrev();
+              }
+            }
+          "
+        />
+      </template>
+    </Carousel>
+    <!--  -->
+    <div class="box-border grid min-w-full">
+      <InfiniteCarousel :items="duplicatedLogos" />
+    </div>
+    <Carousel
+      v-model:portafolio-current-index="portafolioCurrentIndex"
+      class="min-h-[700px]"
+      title="Portafolio"
+      background-color="black"
+      :show-arrow="true"
+      :items="portafolio as unknown as PortafolioType[]"
+    >
+      <template #default="{ goPrev, goNext }">
+        <div
+          :key="portafolioCurrentIndex"
+          class="flex items-center justify-center w-full h-full select-none"
+          @touchstart="(e) => (touchStartX = e.changedTouches[0].screenX)"
+          @touchend="
+            (e) => {
+              const diff = e.changedTouches[0].screenX - touchStartX;
+              if (Math.abs(diff) > 50) {
+                if (diff < 0) goNext();
+                else goPrev();
+              }
+            }
+          "
+        >
+          <Card
+            v-if="portafolio && portafolio.length"
+            size="md"
+            class="w-full max-w-sm px-4 h-[600px] 2xl:h-[500px]  lg:min-w-2xl 2xl:min-w-4xl"
+          >
+            <div class="flex flex-col gap-4">
+              <img
+                :src="portafolio[portafolioCurrentIndex].urlImage"
+                :alt="portafolio[portafolioCurrentIndex].title"
+                class="self-center object-cover w-40 h-auto rounded md:w-40"
+              />
+              <div class="flex-1">
+                <h4 class="p-2 font-bold text-slate-800">
+                  {{ portafolio[portafolioCurrentIndex].title }}
+                </h4>
+                <div class="flex flex-wrap gap-2 px-2 pt-2">
+                  <span
+                    v-for="(tech, i) in portafolio[portafolioCurrentIndex]
+                      .technologies"
+                    :key="i"
+                    class="flex flex-row"
+                  >
+                    <Badge theme="info" :value="tech" />
+                  </span>
+                </div>
+                <p class="p-2 mt-2 text-sm text-gray-800 lg:text-lg">
+                  {{ portafolio[portafolioCurrentIndex].description }}
+                </p>
+              </div>
             </div>
-            <p class="h-40 mt-2 text-gray-800">{{ item.description }}</p>
-          </div>
+            <div class="flex justify-end gap-2 mt-4">
+              <NuxtLink
+                :to="`/portafolio/${portafolio[portafolioCurrentIndex].id}`"
+              >
+                <Button icon="mdi:file-search-outline">Detalles</Button>
+              </NuxtLink>
+            </div>
+          </Card>
         </div>
-        <div class="flex justify-end gap-2">
-          <NuxtLink :to="`/portafolio/${item.id}`">
-            <Button icon="mdi:file-search-outline">Detalles</Button>
-          </NuxtLink>
-        </div>
-      </Card>
-    </section>
+      </template>
+    </Carousel>
   </section>
 </template>
 <style scoped></style>

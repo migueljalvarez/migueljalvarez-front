@@ -9,10 +9,10 @@ const heroClass = computed(() => ({
 </script>
 <template>
   <section
-    class="flex items-center justify-center w-full lg:w-8xl"
+    class="flex flex-wrap justify-center p-2"
     :class="heroClass"
   >
-    <p class="p-10 text-4xl italic">
+    <p class="p-4 italic sm:w-auto xsm:text-2xl md:text-3xl lg:text-4xl lg:p-10">
       {{ value }}
     </p>
   </section>
