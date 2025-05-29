@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { SocialMediaType } from "~/common/types";
+import type { SocialMediaType } from "~/types/common";
 import { MY_SOCIAL_MEDIA } from "~/constants/common";
-import { PUBLIC_ROUTES } from "~/constants/routes";
+import { PUBLIC_ROUTES, OTHER_PUBLIC_ROUTES } from "~/constants/routes";
+import Hero from "../Hero/Hero.vue";
 
 const socials = ref<SocialMediaType[]>(MY_SOCIAL_MEDIA);
 
@@ -12,26 +13,46 @@ const leaveIcon = (item: SocialMediaType) => {
   item.isHovered = false;
 };
 </script>
+
 <template>
-  <footer class="flex flex-col w-full gap-4 bg-black lg:w-8xl h-80">
-    <section class="grid grid-cols-4 gap-6 p-16">
-      <div class="p-1 text-white">
-        <h5 class="font-black uppercase">Menu</h5>
-        <div
-          v-for="item in PUBLIC_ROUTES"
-          :key="item.name"
-          class="flex flex-col my-2"
-        >
-          <ul class="flex flex-col gap-2">
-            <li class="text-white cursor-pointer hover:text-blue-400">
-              <nuxt-link :to="item.link">{{ item.name }}</nuxt-link>
-            </li>
-          </ul>
-        </div>
+  <footer class="flex flex-col w-full bg-black">
+    <section class="flex flex-row w-full">
+      <Hero value="¿Que puedo hacer por ti?" color="blue" class="w-full" />
+    </section>
+
+    <section
+      class="grid w-full grid-cols-1 gap-8 px-4 py-10 mx-auto max-w-7xl md:grid-cols-1 lg:grid-cols-4"
+    >
+      
+      <!-- Menu -->
+      <div>
+        <h5 class="mb-2 font-black text-white uppercase">Menu</h5>
+        <ul class="flex flex-col gap-2">
+          <li
+            v-for="item in PUBLIC_ROUTES"
+            :key="item.name"
+            class="text-white cursor-pointer hover:text-blue-400"
+          >
+            <nuxt-link :to="item.link">{{ item.name }}</nuxt-link>
+          </li>
+        </ul>
       </div>
-      <div class="p-1 text-white">
-        <h5 class="font-black uppercase">Redes Sociales</h5>
-        <div class="flex gap-2">
+      <div>
+        <h5 class="mb-2 font-black text-white uppercase">Enlaces de Interes</h5>
+        <ul class="flex flex-col gap-2">
+          <li
+            v-for="item in OTHER_PUBLIC_ROUTES"
+            :key="item.name"
+            class="text-white cursor-pointer hover:text-blue-400"
+          >
+            <nuxt-link :to="item.link">{{ item.name }}</nuxt-link>
+          </li>
+        </ul>
+      </div>
+      <!-- Social Media -->
+      <div>
+        <h5 class="mb-2 font-black text-white uppercase">Contacto</h5>
+        <div class="flex flex-wrap gap-3">
           <SocialMedia
             v-for="item in socials"
             :key="item.name"
@@ -46,13 +67,31 @@ const leaveIcon = (item: SocialMediaType) => {
           />
         </div>
       </div>
+      <!-- Logo & Description -->
+
+      <div class="flex flex-col items-start gap-2 mt-8 lg:mt-0">
+        <h5 class="mb-2 font-black text-white uppercase">Sobre Mi</h5>
+        <div>
+          <img
+            src="../../assets/images/isotipo.svg"
+            alt="Miguel Alvarez"
+            class="w-32 mb-4 sm:w-40"
+          />
+          <p class="max-w-xl text-sm text-slate-400 sm:text-base">
+            Desarrollador de software enfocado en crear soluciones digitales
+            eficientes y escalables. Transformo ideas en productos tecnológicos
+            útiles y orientados a resultados.
+          </p>
+        </div>
+      </div>
     </section>
     <div
-      class="relative flex items-center justify-center gap-2 p-2 bg-blue-400"
+      class="flex flex-col items-center justify-center gap-2 p-3 text-sm bg-blue-400 text-slate-900 sm:flex-row sm:text-base"
     >
       <p>
         Copyright &copy; <strong>{{ new Date().getFullYear() }}</strong>
       </p>
+      <span class="hidden mx-2 sm:inline">|</span>
       <strong>Miguel Alvarez</strong>
     </div>
   </footer>
