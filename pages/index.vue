@@ -62,7 +62,7 @@ const touchStartX = ref(0);
       class="min-h-[700px]"
       title="Portafolio"
       background-color="black"
-      :show-arrow="true"
+      :show-arrow="false"
       :items="portafolio as unknown as PortafolioType[]"
     >
       <template #default="{ goPrev, goNext }">

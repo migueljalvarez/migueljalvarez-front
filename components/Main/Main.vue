@@ -23,11 +23,13 @@ onMounted(() => {
 <template>
   <section class="relative flex justify-between overflow-hidden">
     <div
-      class="sm:hidden absolute 2xl:w-full inset-0 z-10 2xl:flex 2xl:bg-gradient-to-r 2xl:from-black 2xl:via-black 2xl:to-black/10 h-[600px]"
+      class="sm:hidden absolute 2xl:w-full inset-0 z-10 lg:flex 2xl:flex 
+      lg:bg-gradient-to-r lg:from-black lg:via-black lg:to-black/10
+      2xl:bg-gradient-to-r 2xl:from-black 2xl:via-black 2xl:to-black/10 h-[600px]"
     />
 
     <div
-      class="relative z-20 flex flex-col w-4/6 px-8 2xl:px-24 text-white h-[600px] justify-center 2xl:ml-20 grow bg-black flex-wrap"
+      class="relative z-20 flex flex-col w-4/6 lg:w-full px-8 2xl:px-24 text-white h-[600px] justify-center 2xl:ml-20 grow bg-black flex-wrap lg:bg-transparent"
     >
       <h1 class="justify-start font-bold text-white">
         {{ title }}
@@ -49,7 +51,7 @@ onMounted(() => {
       </div>
     </div>
     <div
-      class="hidden relative z-0 2xl:w-full overflow-hidden h-[600px] ml-25 2xl:flex"
+      class="hidden relative z-0 2xl:w-full overflow-hidden h-[600px] ml-25 lg:flex 2xl:flex"
     >
       <img
         src="../../assets/images/bg.jpg"

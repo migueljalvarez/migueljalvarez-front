@@ -35,16 +35,20 @@ const leaveIcon = (item: SocialMediaType) => {
       }"
     >
       <div
-        class="flex flex-col w-full max-w-xs mx-auto my-4 border-2 border-gray-200 rounded-lg shadow-xl sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl bg-white/90 md:h-72 backdrop-blur-sm"
+        class="flex flex-col w-full max-w-xs mx-auto my-4 bg-white border-2 border-gray-200 rounded-lg shadow-xl sm:max-w-md md:max-w-lg lg:max-w-4xl md:h-100 lg:h-90 backdrop-blur-sm"
       >
-        <div class="flex flex-col gap-2 px-4 pt-4 md:flex-row">
+        <div class="flex flex-col gap-2 px-4 pt-4 md:flex-row ">
           <img
             :src="item.image"
             :alt="item.name"
-            class="self-center object-cover mb-2 border-4 border-blue-400 rounded-full cursor-pointer size-20 md:size-16 md:mb-0"
+            class="self-center object-cover mb-2 border-4 border-blue-400 rounded-full cursor-pointer size-20 md:mb-0 md:size-25 lg:size-30"
           />
-          <div class="flex flex-col items-center justify-center w-full md:items-start">
-            <h4 class="flex flex-row flex-wrap items-center justify-center text-base font-bold uppercase md:text-lg md:justify-start">
+          <div
+            class="flex flex-col items-center justify-center w-full lg:justify-baseline lg:items-start md:items-start"
+          >
+            <h4
+              class="flex flex-row flex-wrap items-center justify-center text-base font-bold uppercase md:text-lg md:justify-start"
+            >
               {{ item.name }}
               <span class="flex flex-row gap-2 px-2">
                 <a
@@ -57,7 +61,9 @@ const leaveIcon = (item: SocialMediaType) => {
                   <Icon
                     :name="social.icon"
                     :size="22"
-                    :style="social.isHovered ? iconStyles.hover : iconStyles.base"
+                    :style="
+                      social.isHovered ? iconStyles.hover : iconStyles.base
+                    "
                     @mouseover="hoverIcon(social)"
                     @mouseleave="leaveIcon(social)"
                   />
@@ -68,14 +74,16 @@ const leaveIcon = (item: SocialMediaType) => {
               {{ item.position }}
             </p>
             <Badge
-              class="py-2 ml-2 text-xs font-bold md:text-sm"
+              class="py-2 text-xs font-bold md:text-sm"
               :theme="item.type === 'Trabajo' ? 'warning' : 'success'"
               :value="item.type"
             />
           </div>
         </div>
         <div>
-          <p class="p-4 text-sm font-light text-center md:p-8 md:text-lg md:text-left">
+          <p
+            class="p-4 text-sm font-light text-center md:p-8 md:text-lg md:text-left"
+          >
             <q>{{ item.description }}</q>
           </p>
         </div>
