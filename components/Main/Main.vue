@@ -21,20 +21,26 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="relative flex justify-between w-full overflow-hidden lg:w-8xl">
+  <section class="relative flex justify-between overflow-hidden">
     <div
-      class="absolute w-full inset-0 z-10 bg-gradient-to-r from-black via-black to-black/10 h-[500px]"
+      class="sm:hidden absolute 2xl:w-full inset-0 z-10 lg:flex 2xl:flex 
+      lg:bg-gradient-to-r lg:from-black lg:via-black lg:to-black/10
+      2xl:bg-gradient-to-r 2xl:from-black 2xl:via-black 2xl:to-black/10 h-[600px]"
     />
+
     <div
-      class="relative z-20 flex flex-col w-full px-10 lg:px-24 text-white h-[500px] justify-center 2xl:ml-20"
+      class="relative z-20 flex flex-col w-4/6 lg:w-full px-8 2xl:px-24 text-white h-[600px] justify-center 2xl:ml-20 grow bg-black flex-wrap lg:bg-transparent"
     >
       <h1 class="justify-start font-bold text-white">
         {{ title }}
       </h1>
-      <h2 v-if="title === fullTitle" class="justify-start text-blue-400">
+      <h2 v-if="title === fullTitle" class="justify-start p-1 text-blue-400">
         {{ subtitle }}
       </h2>
-      <p v-if="subtitle === fullSubtitle" class="w-3/5 text-gray-400">
+      <p
+        v-if="subtitle === fullSubtitle"
+        class="p-1 pr-2 text-gray-400 lg:w-4/5 2xl:w-4/5"
+      >
         {{ description }}
       </p>
       <div v-if="subtitle === fullSubtitle" class="flex flex-row gap-2 mt-4">
@@ -44,14 +50,16 @@ onMounted(() => {
         <Button variant="uppercase" icon="mdi:download">Descargar CV</Button>
       </div>
     </div>
-    <div class="relative z-0 w-full overflow-hidden h-[500px] -ml-25">
+    <div
+      class="hidden relative z-0 2xl:w-full overflow-hidden h-[600px] ml-25 lg:flex 2xl:flex"
+    >
       <img
         src="../../assets/images/bg.jpg"
         alt="Ponente"
         class="object-cover w-full h-full overflow-hidden mask-linear-at-left mask-l-from-black mask-l-to-transparent mask-l-from-50% mask-l-to-95%"
       />
     </div>
-  </div>
+  </section>
 </template>
 
 <style></style>
