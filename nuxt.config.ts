@@ -46,7 +46,7 @@ export default defineNuxtConfig({
   },
   nitro: {
     prerender: {
-      routes: ["/", "/_ipx/_/isotipo.svg", "/_ipx/f_webp&q_80/bg.jpg"],
+      routes: ["/"],
     },
   },
   alias: {
