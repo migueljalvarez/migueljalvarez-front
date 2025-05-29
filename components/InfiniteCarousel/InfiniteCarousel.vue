@@ -12,7 +12,7 @@ const isPaused = ref(false);
 </script>
 
 <template>
-  <section class="flex items-center justify-center w-full p-4 overflow-hidden bg-gray-100">
+  <section class="flex items-center justify-center w-full py-4 overflow-hidden bg-gray-100 lg:p-4">
     <div class="relative w-full max-w-6xl overflow-hidden bg-gray-100 mx-s">
       <!-- Lado izquierdo difuminado -->
       <div class="absolute top-0 left-0 z-10 w-16 h-full pointer-events-none bg-gradient-to-r from-gray-100 to-transparent" />
