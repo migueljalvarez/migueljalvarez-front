@@ -23,9 +23,7 @@ onMounted(() => {
 <template>
   <section class="relative flex justify-between overflow-hidden">
     <div
-      class="sm:hidden absolute 2xl:w-full inset-0 z-10 lg:flex 2xl:flex 
-      lg:bg-gradient-to-r lg:from-black lg:via-black lg:to-black/10
-      2xl:bg-gradient-to-r 2xl:from-black 2xl:via-black 2xl:to-black/10 h-[600px]"
+      class="sm:hidden absolute 2xl:w-full inset-0 z-10 lg:flex 2xl:flex lg:bg-gradient-to-r lg:from-black lg:via-black lg:to-black/10 2xl:bg-gradient-to-r 2xl:from-black 2xl:via-black 2xl:to-black/10 h-[600px]"
     />
 
     <div
@@ -53,10 +51,12 @@ onMounted(() => {
     <div
       class="hidden relative z-0 2xl:w-full overflow-hidden h-[600px] ml-25 lg:flex 2xl:flex"
     >
-      <img
-        src="../../assets/images/bg.jpg"
+      <NuxtImg
+        src="bg.jpg"
         alt="Ponente"
         class="object-cover w-full h-full overflow-hidden mask-linear-at-left mask-l-from-black mask-l-to-transparent mask-l-from-50% mask-l-to-95%"
+        format="webp"
+        quality="80"
       />
     </div>
   </section>
