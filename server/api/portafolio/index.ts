@@ -19,7 +19,7 @@ export default defineEventHandler(async (_event): Promise<PortafolioType[]> => {
       description:
         'AR Stereo es una estación de radio digital que se distingue por su propuesta musical innovadora y fresca, respaldada con el sello oficial de Alfredo Rojas. Su programación de estilo Crossover ofrece una fusión de géneros cuidadosamente seleccionados, logrando una experiencia sonora única, balanceada y con calidad digital superior. Es una alternativa moderna a lo convencional, ideal para quienes buscan una radio en línea con personalidad, visión y autenticidad.',
       technologies: ['Nuxtjs', 'Vuejs', 'Tailwindcss', 'Docker'],
-      urlImage: 'https://www.arstereo.com/_nuxt/banner.BeTGo23t.png',
+      urlImage: '/ar.png',
       url: 'https://www.arstereo.com/',
       initialProblem: '',
       solutionDetails: '',
@@ -32,7 +32,7 @@ export default defineEventHandler(async (_event): Promise<PortafolioType[]> => {
       description:
         'AR Stereo es una estación de radio digital que se distingue por su propuesta musical innovadora y fresca, respaldada con el sello oficial de Alfredo Rojas. Su programación de estilo Crossover ofrece una fusión de géneros cuidadosamente seleccionados, logrando una experiencia sonora única, balanceada y con calidad digital superior. Es una alternativa moderna a lo convencional, ideal para quienes buscan una radio en línea con personalidad, visión y autenticidad.',
       technologies: ['Nuxtjs', 'Vuejs', 'Tailwindcss', 'Docker'],
-      urlImage: 'https://www.arstereo.com/_nuxt/banner.BeTGo23t.png',
+      urlImage: '/ar.png',
       url: 'https://www.arstereo.com/',
       initialProblem: '',
       solutionDetails: '',
