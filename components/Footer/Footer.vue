@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type { SocialMediaType } from "~/types/common";
-import { MY_SOCIAL_MEDIA } from "~/constants/common";
-import { PUBLIC_ROUTES, OTHER_PUBLIC_ROUTES } from "~/constants/routes";
+  import { MY_SOCIAL_MEDIA } from '~/constants/common'
+  import { PUBLIC_ROUTES, OTHER_PUBLIC_ROUTES } from '~/constants/routes'
+  import type { SocialMediaType } from '~/types/common'
 
-const socials = ref<SocialMediaType[]>(MY_SOCIAL_MEDIA);
+  const socials = ref<SocialMediaType[]>(MY_SOCIAL_MEDIA)
 
-const hoverIcon = (item: SocialMediaType) => {
-  item.isHovered = true;
-};
-const leaveIcon = (item: SocialMediaType) => {
-  item.isHovered = false;
-};
+  const hoverIcon = (item: SocialMediaType) => {
+    item.isHovered = true
+  }
+  const leaveIcon = (item: SocialMediaType) => {
+    item.isHovered = false
+  }
 </script>
 
 <template>
@@ -66,15 +66,10 @@ const leaveIcon = (item: SocialMediaType) => {
       <div class="flex flex-col items-start gap-2 mt-8 lg:mt-0">
         <h5 class="mb-2 font-black text-white uppercase">Sobre Mi</h5>
         <div>
-          <NuxtImg
-            src="isotipo.svg"
-            alt="Miguel Alvarez"
-            class="w-32 mb-4 sm:w-40"
-          />
+          <NuxtImg src="isotipo.svg" alt="Miguel Alvarez" class="w-32 mb-4 sm:w-40" />
           <p class="max-w-xl text-sm text-slate-400 sm:text-base">
-            Desarrollador de software enfocado en crear soluciones digitales
-            eficientes y escalables. Transformo ideas en productos tecnológicos
-            útiles y orientados a resultados.
+            Desarrollador de software enfocado en crear soluciones digitales eficientes y
+            escalables. Transformo ideas en productos tecnológicos útiles y orientados a resultados.
           </p>
         </div>
       </div>
@@ -83,7 +78,8 @@ const leaveIcon = (item: SocialMediaType) => {
       class="flex flex-col items-center justify-center gap-2 p-3 text-sm bg-blue-400 text-slate-900 sm:flex-row sm:text-base"
     >
       <p>
-        Copyright &copy; <strong>{{ new Date().getFullYear() }}</strong>
+        Copyright &copy;
+        <strong>{{ new Date().getFullYear() }}</strong>
       </p>
       <span class="hidden mx-2 sm:inline">|</span>
       <strong>Miguel Alvarez</strong>

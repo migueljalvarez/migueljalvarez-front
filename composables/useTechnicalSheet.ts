@@ -1,58 +1,58 @@
-import Badge from "@components/Badge/Badge.vue";
-import type { PortafolioType } from "~/types/common";
+import Badge from '@components/Badge/Badge.vue'
+import type { PortafolioType } from '~/types/common'
 
-const NOT_APPLY = "N/A";
+const NOT_APPLY = 'N/A'
 export const useTechnicalSheet = () => {
   const getTechnicalSheet = (data: PortafolioType) => {
     return [
-      ["Nombre del Proyecto", data.title || NOT_APPLY],
+      ['Nombre del Proyecto', data.title || NOT_APPLY],
       [
-        "Tecnologías",
+        'Tecnologías',
         data.technologies?.length
           ? {
-              component: "div", // Contenedor para múltiples Badges
+              component: 'div', // Contenedor para múltiples Badges
               props: {
-                class: "flex flex-row gap-2",
-                default: data.technologies.map((tech) => ({
+                class: 'flex flex-row gap-2',
+                default: data.technologies.map(tech => ({
                   component: Badge,
-                  props: { theme: "info", value: tech },
-                })),
-              },
+                  props: { theme: 'info', value: tech }
+                }))
+              }
             }
-          : NOT_APPLY,
+          : NOT_APPLY
       ],
-      ["Versión", data.version || NOT_APPLY],
+      ['Versión', data.version || NOT_APPLY],
       [
-        "Enlace",
+        'Enlace',
         data.url
           ? {
-              component: "a",
+              component: 'a',
               props: {
                 href: data.url,
-                class: "text-blue-600 hover:underline",
-                target: "_blank",
-                innerHTML: data.url,
-              },
+                class: 'text-blue-600 hover:underline',
+                target: '_blank',
+                innerHTML: data.url
+              }
             }
-          : NOT_APPLY,
+          : NOT_APPLY
       ],
 
-      ["Problema Inicial", data.initialProblem || NOT_APPLY],
-      ["Solución", data.solutionDetails || NOT_APPLY],
+      ['Problema Inicial', data.initialProblem || NOT_APPLY],
+      ['Solución', data.solutionDetails || NOT_APPLY],
       [
-        "Estado",
+        'Estado',
         data.state
           ? {
               component: Badge,
               props: {
-                class: "inline-block text-xs",
+                class: 'inline-block text-xs',
                 value: String(data.state),
-                theme: "success",
-              },
+                theme: 'success'
+              }
             }
-          : NOT_APPLY,
-      ],
-    ];
-  };
-  return { getTechnicalSheet };
-};
+          : NOT_APPLY
+      ]
+    ]
+  }
+  return { getTechnicalSheet }
+}

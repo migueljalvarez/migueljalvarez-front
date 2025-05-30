@@ -1,24 +1,24 @@
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
-import {
-  MAIN_DESCRIPTION_PRESENTATION,
-  MAIN_SUBTITLE_PRESENTATION,
-  MAIN_TITLE_PRESENTATION,
-} from "~/constants/common";
-const title = ref("");
-const subtitle = ref("");
-const description = ref("");
-const fullTitle = MAIN_TITLE_PRESENTATION;
-const fullSubtitle = MAIN_SUBTITLE_PRESENTATION;
+  import { ref, onMounted } from 'vue'
+  import {
+    MAIN_DESCRIPTION_PRESENTATION,
+    MAIN_SUBTITLE_PRESENTATION,
+    MAIN_TITLE_PRESENTATION
+  } from '~/constants/common'
+  const title = ref('')
+  const subtitle = ref('')
+  const description = ref('')
+  const fullTitle = MAIN_TITLE_PRESENTATION
+  const fullSubtitle = MAIN_SUBTITLE_PRESENTATION
 
-const { typeText } = useTypeText(100);
-onMounted(() => {
-  typeText(fullTitle, title, () => {
-    typeText(fullSubtitle, subtitle, () => {
-      description.value = MAIN_DESCRIPTION_PRESENTATION;
-    });
-  });
-});
+  const { typeText } = useTypeText(100)
+  onMounted(() => {
+    typeText(fullTitle, title, () => {
+      typeText(fullSubtitle, subtitle, () => {
+        description.value = MAIN_DESCRIPTION_PRESENTATION
+      })
+    })
+  })
 </script>
 <template>
   <section class="relative flex justify-between overflow-hidden">
@@ -35,22 +35,15 @@ onMounted(() => {
       <h2 v-if="title === fullTitle" class="justify-start p-1 text-blue-400">
         {{ subtitle }}
       </h2>
-      <p
-        v-if="subtitle === fullSubtitle"
-        class="p-1 pr-2 text-gray-400 lg:w-4/5 2xl:w-4/5"
-      >
+      <p v-if="subtitle === fullSubtitle" class="p-1 pr-2 text-gray-400 lg:w-4/5 2xl:w-4/5">
         {{ description }}
       </p>
       <div v-if="subtitle === fullSubtitle" class="flex flex-row gap-2 mt-4">
-        <Button variant="uppercase" icon="mdi:whatsapp" theme="tertiary"
-          >Contactar</Button
-        >
+        <Button variant="uppercase" icon="mdi:whatsapp" theme="tertiary">Contactar</Button>
         <Button variant="uppercase" icon="mdi:download">Descargar CV</Button>
       </div>
     </div>
-    <div
-      class="hidden relative z-0 2xl:w-full overflow-hidden h-[600px] ml-25 lg:flex 2xl:flex"
-    >
+    <div class="hidden relative z-0 2xl:w-full overflow-hidden h-[600px] ml-25 lg:flex 2xl:flex">
       <NuxtImg
         src="bg.jpg"
         alt="Ponente"
