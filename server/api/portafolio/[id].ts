@@ -11,7 +11,7 @@ export default defineEventHandler(async event => {
       version: 'V1',
       description:
         'AR Stereo es una estación de radio digital que se distingue por su propuesta musical innovadora y fresca, respaldada con el sello oficial de Alfredo Rojas. Su programación de estilo Crossover ofrece una fusión de géneros cuidadosamente seleccionados, logrando una experiencia sonora única, balanceada y con calidad digital superior. Es una alternativa moderna a lo convencional, ideal para quienes buscan una radio en línea con personalidad, visión y autenticidad.',
-      urlImage: 'https://www.arstereo.com/_nuxt/banner.BeTGo23t.png',
+      urlImage: '/ar.png',
       url: 'https://www.arstereo.com/',
       initialProblem:
         'Alfredo estaba próximo a lanzar su proyecto radial, pero enfrentaba una limitación importante: contaba con pocos recursos económicos y necesitaba una solución funcional y sostenible. En ese momento, la emisora solo disponía de un reproductor para la transmisión en vivo y, como único canal de retroalimentación, un blog donde se publicaban noticias. No existía una plataforma que integrara la información de la emisora, las noticias y el contenido radial de forma accesible y centralizada para los oyentes. Esta situación evidenció la necesidad de desarrollar una página web que ofreciera una experiencia más completa, organizada y alineada con los objetivos de crecimiento del proyecto.',
