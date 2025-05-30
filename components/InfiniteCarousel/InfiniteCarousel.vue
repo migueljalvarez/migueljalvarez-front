@@ -29,7 +29,7 @@
         @mouseleave="isPaused = false"
       >
         <template v-for="(item, index) in duplicatedItems" :key="index">
-          <img
+          <NuxtImg
             :src="item.src"
             :alt="item.alt"
             class="transition cursor-pointer size-10 sm:size-12 md:size-14 hover:scale-110"
