@@ -12,9 +12,9 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --write ."
+    "lint": "eslint --ext .js,.ts,.vue .",
+    "lint:fix": "eslint --ext .js,.ts,.vue . --fix",
+    "format": "prettier --write \"**/*.{js,ts,vue,json,css,scss,md}\""
   },
   "dependencies": {
     "@nuxt/fonts": "0.11.2",

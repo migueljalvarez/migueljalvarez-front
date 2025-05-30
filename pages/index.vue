@@ -49,7 +49,7 @@
     <Carousel
       v-model:current-index="currentIndex"
       title="Ellos confían en mí"
-      background="/escritorio-lleno-de-articulos-de-productividad-en-una-casa-vacia.jpg"
+      background="/testimonial-bg.webp"
       :items="testimonial"
     >
       <template #default="{ goPrev, goNext }">
