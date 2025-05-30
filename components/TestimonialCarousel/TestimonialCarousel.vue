@@ -35,9 +35,10 @@
         class="flex flex-col w-full max-w-xs mx-auto my-4 bg-white border-2 border-gray-200 rounded-lg shadow-xl sm:max-w-md md:max-w-lg lg:max-w-4xl md:h-100 lg:h-90 backdrop-blur-sm"
       >
         <div class="flex flex-col gap-2 px-4 pt-4 md:flex-row">
-          <img
+          <NuxtImg
             :src="item.image"
             :alt="item.name"
+            format="webp"
             class="self-center object-cover mb-2 border-4 border-blue-400 rounded-full cursor-pointer size-20 md:mb-0 md:size-25 lg:size-30"
           />
           <div
