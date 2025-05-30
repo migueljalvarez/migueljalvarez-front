@@ -102,10 +102,11 @@
             class="w-full max-w-sm px-4 h-[600px] 2xl:h-[500px] lg:min-w-2xl 2xl:min-w-4xl"
           >
             <div class="flex flex-col gap-4">
-              <img
+              <NuxtImg
                 :src="portafolio[portafolioCurrentIndex].urlImage"
                 :alt="portafolio[portafolioCurrentIndex].title"
                 class="self-center object-cover w-40 h-auto rounded md:w-40"
+                format="webp"
               />
               <div class="flex-1">
                 <h4 class="p-2 font-bold text-slate-800">
