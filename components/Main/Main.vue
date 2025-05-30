@@ -45,7 +45,7 @@
     </div>
     <div class="hidden relative z-0 2xl:w-full overflow-hidden h-[600px] ml-25 lg:flex 2xl:flex">
       <NuxtImg
-        src="bg.jpg"
+        src="bg.webp"
         alt="Ponente"
         class="object-cover w-full h-full overflow-hidden mask-linear-at-left mask-l-from-black mask-l-to-transparent mask-l-from-50% mask-l-to-95%"
         format="webp"
