@@ -35,7 +35,7 @@
       <h2 v-if="title === fullTitle" class="justify-start p-1 text-blue-400">
         {{ subtitle }}
       </h2>
-      <p v-if="subtitle === fullSubtitle" class="p-1 pr-2 text-gray-400 lg:w-4/5 2xl:w-4/5">
+      <p v-if="subtitle === fullSubtitle" class="text-gray-400 max-w-[90%] sm:max-w-[80%]">
         {{ description }}
       </p>
       <div v-if="subtitle === fullSubtitle" class="flex flex-row gap-2 mt-4">
