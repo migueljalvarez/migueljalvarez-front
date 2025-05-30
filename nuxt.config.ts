@@ -9,13 +9,7 @@ export default defineNuxtConfig({
         { name: 'description', content: 'My Nuxt 3 application' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
       ],
-      link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' },
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'
-        }
-      ]
+      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' }]
     }
   },
 
@@ -28,8 +22,20 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/image',
     '@nuxt/scripts',
-    '@nuxt/ui'
+    '@nuxt/ui',
+    '@nuxtjs/google-fonts'
   ],
+  googleFonts: {
+    families: {
+      Roboto: [400, 700]
+    },
+    display: 'swap',
+    download: true,
+    inject: true,
+    subsets: ['latin'],
+    preconnect: true,
+    prefetch: true
+  },
   imports: {
     autoImport: true
   },
