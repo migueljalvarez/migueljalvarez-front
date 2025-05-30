@@ -50,6 +50,7 @@
         class="object-cover w-full h-full overflow-hidden mask-linear-at-left mask-l-from-black mask-l-to-transparent mask-l-from-50% mask-l-to-95%"
         format="webp"
         quality="80"
+        loading="lazy"
       />
     </div>
   </section>
