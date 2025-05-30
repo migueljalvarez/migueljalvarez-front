@@ -1,32 +1,32 @@
 export type SocialMediaType = {
-  name: string;
-  link: string;
-  icon: string;
-  isHovered: boolean;
-};
+  name: string
+  link: string
+  icon: string
+  isHovered: boolean
+}
 
 export type Testimonial = {
-  name: string;
-  position: string;
-  description: string;
-  image: string;
-  type: string;
-  socialMedia: Array<SocialMediaType>;
-};
+  name: string
+  position: string
+  description: string
+  image: string
+  type: string
+  socialMedia: Array<SocialMediaType>
+}
 export type Image = {
-  title: string;
-  url: string;
-};
+  title: string
+  url: string
+}
 export type PortafolioType = {
-  id: string;
-  title: string;
-  technologies: string[];
-  version: string;
-  state: string;
-  description: string;
-  urlImage: string;
-  url: string;
-  initialProblem: string;
-  solutionDetails: string;
-  images: Image[];
-};
+  id: string
+  title: string
+  technologies: string[]
+  version: string
+  state: string
+  description: string
+  urlImage: string
+  url: string
+  initialProblem: string
+  solutionDetails: string
+  images: Image[]
+}

@@ -1,22 +1,22 @@
 <script lang="ts" setup>
-import { ref } from "vue";
-import { PUBLIC_ROUTES } from "~/constants/routes";
-import { MY_SOCIAL_MEDIA } from "~/constants/common";
-import type { SocialMediaType } from "~/types/common";
+  import { ref } from 'vue'
+  import { MY_SOCIAL_MEDIA } from '~/constants/common'
+  import { PUBLIC_ROUTES } from '~/constants/routes'
+  import type { SocialMediaType } from '~/types/common'
 
-const sidebarOpen = ref(false);
-const socials = ref<SocialMediaType[]>(MY_SOCIAL_MEDIA);
+  const sidebarOpen = ref(false)
+  const socials = ref<SocialMediaType[]>(MY_SOCIAL_MEDIA)
 
-const toggleSidebar = () => {
-  sidebarOpen.value = !sidebarOpen.value;
-};
+  const toggleSidebar = () => {
+    sidebarOpen.value = !sidebarOpen.value
+  }
 
-const hoverIcon = (item: SocialMediaType) => {
-  item.isHovered = true;
-};
-const leaveIcon = (item: SocialMediaType) => {
-  item.isHovered = false;
-};
+  const hoverIcon = (item: SocialMediaType) => {
+    item.isHovered = true
+  }
+  const leaveIcon = (item: SocialMediaType) => {
+    item.isHovered = false
+  }
 </script>
 
 <template>
@@ -54,9 +54,9 @@ const leaveIcon = (item: SocialMediaType) => {
 
     <!-- Botón hamburguesa (solo móvil) -->
     <button
-      @click="toggleSidebar"
       aria-label="Toggle menu"
       class="p-2 ml-auto rounded md:hidden focus:outline-none focus:ring-2 focus:ring-blue-400"
+      @click="toggleSidebar"
     >
       <svg
         class="w-6 h-6 transition-transform duration-300 ease-in-out"
@@ -89,7 +89,7 @@ const leaveIcon = (item: SocialMediaType) => {
     :class="[
       'fixed top-0 left-0 h-full bg-zinc-400/10 text-white w-72 p-6 flex flex-col justify-between transform transition-transform duration-300 ease-in-out z-50',
       sidebarOpen ? 'translate-x-0' : '-translate-x-full',
-      'md:hidden ',
+      'md:hidden '
     ]"
   >
     <div>
@@ -156,5 +156,5 @@ const leaveIcon = (item: SocialMediaType) => {
 </template>
 
 <style scoped>
-/* Puedes agregar aquí estilos extra si quieres */
+  /* Puedes agregar aquí estilos extra si quieres */
 </style>

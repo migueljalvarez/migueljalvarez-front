@@ -1,43 +1,40 @@
 <script setup lang="ts">
-import type { SocialMediaType, Testimonial } from "~/types/common";
+  import type { PropType } from 'vue'
+  import type { SocialMediaType, Testimonial } from '~/types/common'
 
-import type { PropType } from "vue";
+  defineProps({
+    item: { type: Object as PropType<Testimonial>, required: true },
+    color: { type: String, default: 'gray/10' },
+    background: { type: String, default: 'black' }
+  })
 
-defineProps({
-  item: { type: Object as PropType<Testimonial>, required: true },
-  color: { type: String, default: "gray/10" },
-  background: { type: String, default: "black" },
-});
-
-const iconStyles = {
-  base: { color: "gray" },
-  hover: { color: "oklch(70.7% 0.165 254.624)" },
-};
-const hoverIcon = (item: SocialMediaType) => {
-  item.isHovered = true;
-};
-const leaveIcon = (item: SocialMediaType) => {
-  item.isHovered = false;
-};
+  const iconStyles = {
+    base: { color: 'gray' },
+    hover: { color: 'oklch(70.7% 0.165 254.624)' }
+  }
+  const hoverIcon = (item: SocialMediaType) => {
+    item.isHovered = true
+  }
+  const leaveIcon = (item: SocialMediaType) => {
+    item.isHovered = false
+  }
 </script>
 
 <template>
-  <section
-    class="relative flex items-center justify-center w-full h-auto py-8 overflow-hidden"
-  >
+  <section class="relative flex items-center justify-center w-full h-auto py-8 overflow-hidden">
     <div
       class="flex items-center justify-center w-full"
       :style="{
         backgroundColor: color,
         backgroundImage: background ? `url(${background})` : 'none',
         backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundPosition: 'center'
       }"
     >
       <div
         class="flex flex-col w-full max-w-xs mx-auto my-4 bg-white border-2 border-gray-200 rounded-lg shadow-xl sm:max-w-md md:max-w-lg lg:max-w-4xl md:h-100 lg:h-90 backdrop-blur-sm"
       >
-        <div class="flex flex-col gap-2 px-4 pt-4 md:flex-row ">
+        <div class="flex flex-col gap-2 px-4 pt-4 md:flex-row">
           <img
             :src="item.image"
             :alt="item.name"
@@ -61,9 +58,7 @@ const leaveIcon = (item: SocialMediaType) => {
                   <Icon
                     :name="social.icon"
                     :size="22"
-                    :style="
-                      social.isHovered ? iconStyles.hover : iconStyles.base
-                    "
+                    :style="social.isHovered ? iconStyles.hover : iconStyles.base"
                     @mouseover="hoverIcon(social)"
                     @mouseleave="leaveIcon(social)"
                   />
@@ -81,9 +76,7 @@ const leaveIcon = (item: SocialMediaType) => {
           </div>
         </div>
         <div>
-          <p
-            class="p-4 text-sm font-light text-center md:p-8 md:text-lg md:text-left"
-          >
+          <p class="p-4 text-sm font-light text-center md:p-8 md:text-lg md:text-left">
             <q>{{ item.description }}</q>
           </p>
         </div>

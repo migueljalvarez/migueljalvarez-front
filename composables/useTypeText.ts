@@ -1,23 +1,19 @@
 // composables/useTypeText.ts
-import type { Ref } from "vue";
+import type { Ref } from 'vue'
 
 export const useTypeText = (typingSpeed = 100) => {
-  const typeText = (
-    fullText: string,
-    target: Ref<string>,
-    callback?: () => void
-  ) => {
-    let index = 0;
+  const typeText = (fullText: string, target: Ref<string>, callback?: () => void) => {
+    let index = 0
     const interval = setInterval(() => {
       if (index < fullText.length) {
-        target.value += fullText[index];
-        index++;
+        target.value += fullText[index]
+        index++
       } else {
-        clearInterval(interval);
-        callback?.();
+        clearInterval(interval)
+        callback?.()
       }
-    }, typingSpeed);
-  };
+    }, typingSpeed)
+  }
 
-  return { typeText };
-};
+  return { typeText }
+}

@@ -1,21 +1,21 @@
 <script lang="ts" setup>
-defineProps({
-  link: { type: String, required: true },
-  name: { type: String, required: true },
-  icon: { type: String, required: true },
-  isHovered: { type: Boolean, required: true },
+  defineProps({
+    link: { type: String, required: true },
+    name: { type: String, required: true },
+    icon: { type: String, required: true },
+    isHovered: { type: Boolean, required: true },
 
-  size: { type: Number, required: true },
-});
+    size: { type: Number, required: true }
+  })
 
-const iconStyles = {
-  base: {
-    color: "white",
-  },
-  hover: {
-    color: "oklch(70.7% 0.165 254.624)",
-  },
-};
+  const iconStyles = {
+    base: {
+      color: 'white'
+    },
+    hover: {
+      color: 'oklch(70.7% 0.165 254.624)'
+    }
+  }
 </script>
 <template>
   <div>
@@ -27,7 +27,8 @@ const iconStyles = {
               :name="icon"
               :size="size"
               :style="isHovered ? iconStyles.hover : iconStyles.base"
-          /></a>
+            />
+          </a>
         </li>
       </ul>
     </div>

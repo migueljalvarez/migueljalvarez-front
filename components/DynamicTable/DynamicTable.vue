@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import CellComponent from "./CellComponent.vue";
-import type { DynamicTableProps } from "./DynamicTable.d.ts";
-defineProps<DynamicTableProps>();
+  import CellComponent from './CellComponent.vue'
+  import type { DynamicTableProps } from './DynamicTable.d.ts'
+  defineProps<DynamicTableProps>()
 </script>
 
 <template>
@@ -19,11 +19,7 @@ defineProps<DynamicTableProps>();
         </tr>
       </thead>
       <tbody class="text-sm text-gray-700">
-        <tr
-          v-for="(row, rowIndex) in rows"
-          :key="rowIndex"
-          class="odd:bg-white even:bg-gray-50"
-        >
+        <tr v-for="(row, rowIndex) in rows" :key="rowIndex" class="odd:bg-white even:bg-gray-50">
           <td
             v-for="(cell, cellIndex) in row"
             :key="cellIndex"

@@ -1,15 +1,15 @@
 type RenderableComponent = {
-  component: string;
+  component: string
   props?: {
-    default?: Array<RenderableComponent>;
-  } & Record<string, unknown>;
-};
+    default?: Array<RenderableComponent>
+  } & Record<string, unknown>
+}
 
-type TableCellType = string | number | RenderableComponent;
-type TableRowType = TableCellType[];
-export type TableDataType = TableRowType[];
+type TableCellType = string | number | RenderableComponent
+type TableRowType = TableCellType[]
+export type TableDataType = TableRowType[]
 export type DynamicTableProps = {
-  rows: TableDataType;
-  headers?: string[];
-  columnIndex?: number;
-};
+  rows: TableDataType
+  headers?: string[]
+  columnIndex?: number
+}

@@ -1,24 +1,23 @@
-@import "tailwindcss";
-
+@import 'tailwindcss';
 
 .layout {
-    display: grid;
-    min-height: 100vh;
-    grid-template-rows: auto 1fr auto;
-    min-width: 100%;
+  display: grid;
+  min-height: 100vh;
+  grid-template-rows: auto 1fr auto;
+  min-width: 100%;
 }
 
 @layer utilities {
-    h1 {
-        font-size: theme('fontSize.6xl');
-    }
-    h2 {
-        font-size: theme('fontSize.4xl');
-    }
-    h3 {
-        font-size: theme('fontSize.3xl');
-    }
-    h4 {
-        font-size: theme('fontSize.2xl');
-    }
+  h1 {
+    font-size: theme('fontSize.6xl');
+  }
+  h2 {
+    font-size: theme('fontSize.4xl');
+  }
+  h3 {
+    font-size: theme('fontSize.3xl');
+  }
+  h4 {
+    font-size: theme('fontSize.2xl');
+  }
 }

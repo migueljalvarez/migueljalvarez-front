@@ -1,43 +1,45 @@
 <script setup lang="ts">
-import type { PortafolioType, Testimonial } from "~/types/common";
-import { MAIN_HERO } from "~/constants/common";
-import Carousel from "../components/Carousel/Carousel.vue";
+  import Carousel from '../components/Carousel/Carousel.vue'
+  import { MAIN_HERO } from '~/constants/common'
+  import type { PortafolioType, Testimonial } from '~/types/common'
 
-definePageMeta({ layout: "default" });
+  definePageMeta({ layout: 'default' })
 
-const { logos } = useLogos();
-const duplicatedLogos = [...logos];
-const currentIndex = ref(0);
-const testimonial = ref<Testimonial[]>([]);
-const portafolio = ref<PortafolioType[]>([]);
-const portafolioCurrentIndex = ref(0);
-const touchStartX = ref(0);
+  const { logos } = useLogos()
+  const duplicatedLogos = [...logos]
+  const currentIndex = ref(0)
+  const testimonial = ref<Testimonial[]>([])
+  const portafolio = ref<PortafolioType[]>([])
+  const portafolioCurrentIndex = ref(0)
+  const touchStartX = ref(0)
 
-// 🛡️ Seguro para prerender (fallback y errores controlados)
-const { data: testimonialResult, error: testimonialError } = await useFetch<
-  Testimonial[]
->("/api/testimonials", {
-  server: true,
-  default: () => [],
-});
+  // 🛡️ Seguro para prerender (fallback y errores controlados)
+  const { data: testimonialResult, error: testimonialError } = await useFetch<Testimonial[]>(
+    '/api/testimonials',
+    {
+      server: true,
+      default: () => []
+    }
+  )
 
-if (testimonialError.value) {
-  console.error("Error fetching testimonials:", testimonialError.value);
-}
-testimonial.value = testimonialResult.value || [];
+  if (testimonialError.value) {
+    console.error('Error fetching testimonials:', testimonialError.value)
+  }
+  testimonial.value = testimonialResult.value || []
 
-// 🛡️ Seguro para prerender (fallback y errores controlados)
-const { data: portafolioResult, error: portafolioError } = await useFetch<
-  PortafolioType[]
->("/api/portafolio", {
-  server: true,
-  default: () => [],
-});
+  // 🛡️ Seguro para prerender (fallback y errores controlados)
+  const { data: portafolioResult, error: portafolioError } = await useFetch<PortafolioType[]>(
+    '/api/portafolio',
+    {
+      server: true,
+      default: () => []
+    }
+  )
 
-if (portafolioError.value) {
-  console.error("Error fetching portafolio:", portafolioError.value);
-}
-portafolio.value = portafolioResult.value || [];
+  if (portafolioError.value) {
+    console.error('Error fetching portafolio:', portafolioError.value)
+  }
+  portafolio.value = portafolioResult.value || []
 </script>
 <template>
   <section>
@@ -54,13 +56,13 @@ portafolio.value = portafolioResult.value || [];
         <TestimonialCarousel
           :key="currentIndex"
           :item="testimonial[currentIndex]"
-          @touchstart="(e) => (touchStartX = e.changedTouches[0].screenX)"
+          @touchstart="e => (touchStartX = e.changedTouches[0].screenX)"
           @touchend="
-            (e) => {
-              const diff = e.changedTouches[0].screenX - touchStartX;
+            e => {
+              const diff = e.changedTouches[0].screenX - touchStartX
               if (Math.abs(diff) > 50) {
-                if (diff < 0) goNext();
-                else goPrev();
+                if (diff < 0) goNext()
+                else goPrev()
               }
             }
           "
@@ -84,13 +86,13 @@ portafolio.value = portafolioResult.value || [];
           v-if="portafolio && portafolio.length > 0"
           :key="portafolioCurrentIndex"
           class="flex items-center justify-center w-full h-full select-none"
-          @touchstart="(e) => (touchStartX = e.changedTouches[0].screenX)"
+          @touchstart="e => (touchStartX = e.changedTouches[0].screenX)"
           @touchend="
-            (e) => {
-              const diff = e.changedTouches[0].screenX - touchStartX;
+            e => {
+              const diff = e.changedTouches[0].screenX - touchStartX
               if (Math.abs(diff) > 50) {
-                if (diff < 0) goNext();
-                else goPrev();
+                if (diff < 0) goNext()
+                else goPrev()
               }
             }
           "
@@ -111,8 +113,7 @@ portafolio.value = portafolioResult.value || [];
                 </h4>
                 <div class="flex flex-wrap gap-2 px-2 pt-2">
                   <span
-                    v-for="(tech, i) in portafolio[portafolioCurrentIndex]
-                      .technologies"
+                    v-for="(tech, i) in portafolio[portafolioCurrentIndex].technologies"
                     :key="i"
                     class="flex flex-row"
                   >
@@ -125,9 +126,7 @@ portafolio.value = portafolioResult.value || [];
               </div>
             </div>
             <div class="flex justify-end gap-2 mt-4">
-              <NuxtLink
-                :to="`/portafolio/${portafolio[portafolioCurrentIndex].id}`"
-              >
+              <NuxtLink :to="`/portafolio/${portafolio[portafolioCurrentIndex].id}`">
                 <Button icon="mdi:file-search-outline">Detalles</Button>
               </NuxtLink>
             </div>
