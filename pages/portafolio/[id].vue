@@ -29,7 +29,14 @@
   >
     <div class="flex-wrap w-3/5 p-8 bg-white border-2 border-gray-300 shadow-lg rounded-xl">
       <div class="flex items-center gap-4 p-4">
-        <NuxtImg :src="data?.urlImage" :alt="data?.title" width="160" height="120" format="webp" />
+        <NuxtImg
+          :src="data?.urlImage"
+          :alt="data?.title"
+          width="160"
+          height="120"
+          format="webp"
+          loading="lazy"
+        />
         <div class="flex flex-col justify-center p-4">
           <h1 class="font-bold text-slate-800">{{ data?.title }}</h1>
         </div>

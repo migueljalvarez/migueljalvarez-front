@@ -66,7 +66,13 @@
       <div class="flex flex-col items-start gap-2 mt-8 lg:mt-0">
         <h5 class="mb-2 font-black text-white uppercase">Sobre Mi</h5>
         <div>
-          <NuxtImg src="isotipo.svg" alt="Miguel Alvarez" width="160" height="auto" />
+          <NuxtImg
+            src="isotipo.svg"
+            alt="Miguel Alvarez"
+            width="160"
+            height="auto"
+            loading="lazy"
+          />
           <p class="max-w-xl text-sm text-slate-400 sm:text-base">
             Desarrollador de software enfocado en crear soluciones digitales eficientes y
             escalables. Transformo ideas en productos tecnológicos útiles y orientados a resultados.

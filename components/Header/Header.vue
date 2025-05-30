@@ -23,7 +23,7 @@
   <header class="flex items-center w-full h-20 px-6 text-white bg-black">
     <!-- Menú tradicional para md+ -->
     <div class="md:hidden">
-      <NuxtImg src="isotipo.svg" alt="Miguel Alvarez" width="100" height="auto" />
+      <NuxtImg src="isotipo.svg" alt="Miguel Alvarez" width="100" height="auto" loading="lazy" />
     </div>
     <nav class="hidden gap-8 ml-2 font-semibold uppercase md:flex">
       <nuxt-link

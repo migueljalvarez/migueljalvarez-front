@@ -1,12 +1,13 @@
 <script setup lang="ts">
-  import Carousel from '../components/Carousel/Carousel.vue'
+  import Carousel from '@components/Carousel/Carousel.vue'
+
   import { MAIN_HERO } from '~/constants/common'
   import type { PortafolioType, Testimonial } from '~/types/common'
 
   definePageMeta({ layout: 'default' })
 
   const { logos } = useLogos()
-  const duplicatedLogos = [...logos]
+  const loopingLogos = [...logos]
   const currentIndex = ref(0)
   const testimonial = ref<Testimonial[]>([])
   const portafolio = ref<PortafolioType[]>([])
@@ -22,10 +23,11 @@
     }
   )
 
-  if (testimonialError.value) {
+  if (testimonialResult.value) {
+    testimonial.value = testimonialResult.value
+  } else {
     console.error('Error fetching testimonials:', testimonialError.value)
   }
-  testimonial.value = testimonialResult.value || []
 
   // 🛡️ Seguro para prerender (fallback y errores controlados)
   const { data: portafolioResult, error: portafolioError } = await useFetch<PortafolioType[]>(
@@ -71,7 +73,7 @@
     </Carousel>
     <!--  -->
     <div class="box-border grid min-w-full">
-      <InfiniteCarousel :items="duplicatedLogos" />
+      <InfiniteCarousel :items="loopingLogos" />
     </div>
     <Carousel
       v-model:portafolio-current-index="portafolioCurrentIndex"

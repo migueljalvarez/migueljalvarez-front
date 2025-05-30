@@ -40,6 +40,7 @@
             :alt="item.name"
             format="webp"
             class="self-center object-cover mb-2 border-4 border-blue-400 rounded-full cursor-pointer size-20 md:mb-0 md:size-25 lg:size-30"
+            loading="lazy"
           />
           <div
             class="flex flex-col items-center justify-center w-full lg:justify-baseline lg:items-start md:items-start"
