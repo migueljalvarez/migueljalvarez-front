@@ -2,11 +2,18 @@
 import { resolve } from 'pathe'
 export default defineNuxtConfig({
   app: {
+    rootAttrs: {
+      lang: 'es'
+    },
     head: {
       title: 'Miguel Alvarez',
       titleTemplate: '%s - Ingeniero de Software',
       meta: [
-        { name: 'description', content: 'My Nuxt 3 application' },
+        {
+          name: 'description',
+          content:
+            'Desarrollador de Software con enfoque en crear soluciones digitales escalables y de alto impacto. Transformo ideas en productos funcionales, combinando eficiencia técnica con una visión orientada a resultados.'
+        },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
       ],
       link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' }]
