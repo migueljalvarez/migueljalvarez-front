@@ -27,54 +27,68 @@
   <section
     class="flex justify-center py-8 bg-[url('../../assets/images/64363.jpg')] bg-cover bg-center bg-no-repeat bg-fixed relative"
   >
-    <div class="flex-wrap w-3/5 p-8 bg-white border-2 border-gray-300 shadow-lg rounded-xl">
-      <div class="flex items-center gap-4 p-4">
+    <div
+      class="w-[95%] sm:w-11/12 md:w-4/5 lg:w-full max-w-6xl p-4 sm:p-6 md:p-8 bg-white border-2 border-gray-300 shadow-lg rounded-xl"
+    >
+      <div>
+        <span class="flex items-center gap-2 cursor-pointer hover:text-blue-400">
+          <nuxt-link to="/">
+            <Icon name="mdi:arrow-left" size="30" />
+          </nuxt-link>
+        </span>
+      </div>
+      <!-- Header -->
+      <div class="flex flex-col items-center gap-4 p-4 sm:flex-row">
         <NuxtImg
           :src="data?.urlImage"
           :alt="data?.title"
-          width="160"
-          height="120"
+          width="130"
+          height="auto"
           format="webp"
           loading="lazy"
+          class="rounded-lg"
         />
-        <div class="flex flex-col justify-center p-4">
-          <h1 class="font-bold text-slate-800">{{ data?.title }}</h1>
+        <div class="flex flex-col justify-center text-center sm:text-left">
+          <h1 class="text-xl font-bold sm:text-2xl text-slate-800">
+            {{ data?.title }}
+          </h1>
         </div>
       </div>
 
-      <article class="flex justify-center w-auto p-4 text-gray-500">
+      <!-- Descripción -->
+      <article class="px-4 pb-4 text-sm text-justify text-gray-500 sm:text-base">
         {{ data?.description }}
       </article>
 
-      <h3 class="p-4 font-bold text-slate-900">Ficha Tecnica</h3>
-
+      <!-- Ficha técnica -->
+      <h3 class="p-4 text-lg font-semibold text-slate-900">Ficha Técnica</h3>
       <DynamicTable :headers="titlesTables" :rows="rows" :column-index="0" />
 
-      <div class="flex flex-col flex-wrap justify-center gap-6 px-4 mt-8 grow">
-        <h3>Capturas de pantalla</h3>
-        <div class="flex flex-row flex-wrap justify-between gap-4 grow">
+      <!-- Capturas de pantalla -->
+      <div class="flex flex-col gap-4 px-4 mt-8">
+        <h3 class="text-base font-medium">Capturas de pantalla</h3>
+        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
           <img
             v-for="(image, index) of data?.images"
             :key="index"
             :src="image.url"
             :alt="image.title"
-            class="flex-row object-cover cursor-pointer h-45 w-50 rounded-xl"
+            class="object-cover w-full transition-transform duration-300 cursor-pointer aspect-video rounded-xl hover:scale-105"
             @click="handleClickImage"
           />
         </div>
       </div>
     </div>
-    <div v-if="showPreviewImage" class="absolute top-0 z-20 w-full h-full bg-black/90">
-      <div class="relative flex justify-center h-full cursor-pointer" @click="handleClose">
-        <img
-          :src="previewImage"
-          alt=""
-          srcset=""
-          class="w-[800px] cursor-auto h-[600px] rounded-3xl"
-        />
+
+    <!-- Vista previa de imagen -->
+    <div
+      v-if="showPreviewImage"
+      class="fixed inset-0 z-50 flex items-center justify-center px-4 cursor-pointer bg-black/90"
+      @click="handleClose"
+    >
+      <div class="relative max-w-[90vw] max-h-[80vh]">
+        <img :src="previewImage" alt="" class="w-full h-auto cursor-auto rounded-3xl" @click.stop />
       </div>
     </div>
   </section>
 </template>
-
-<style></style>

@@ -1,35 +1,63 @@
 <script lang="ts" setup>
   import CellComponent from './CellComponent.vue'
-  import type { DynamicTableProps } from './DynamicTable.d.ts'
-  defineProps<DynamicTableProps>()
+  import type { DynamicTableProps } from './DynamicTable'
+
+  const props = withDefaults(defineProps<Readonly<DynamicTableProps>>(), {
+    headers: () => [],
+    columnIndex: 0
+  })
 </script>
 
 <template>
-  <div class="flex">
-    <table class="w-full m-4 border border-gray-200 table-auto">
+  <div class="w-full px-4">
+    <!-- Desktop Table -->
+    <table class="hidden w-full border border-gray-200 rounded-md shadow-sm table-auto md:table">
       <thead>
-        <tr class="bg-blue-200">
+        <tr class="text-left text-gray-800 bg-blue-100">
           <th
-            v-for="(header, index) in headers"
-            :key="index"
-            class="px-4 py-2 font-semibold text-left border-b border-gray-200"
+            v-for="(header, index) in props.headers"
+            :key="'header-' + index"
+            class="px-4 py-2 font-semibold border-b border-gray-300"
+            scope="col"
           >
             {{ header }}
           </th>
         </tr>
       </thead>
       <tbody class="text-sm text-gray-700">
-        <tr v-for="(row, rowIndex) in rows" :key="rowIndex" class="odd:bg-white even:bg-gray-50">
+        <tr
+          v-for="(row, rowIndex) in props.rows"
+          :key="'row-' + rowIndex"
+          class="transition-colors odd:bg-white even:bg-gray-50 hover:bg-gray-100"
+        >
           <td
             v-for="(cell, cellIndex) in row"
-            :key="cellIndex"
-            class="px-4 py-2 border-b border-r border-gray-200"
-            :class="{ 'font-bold': cellIndex === columnIndex }"
+            :key="'cell-' + rowIndex + '-' + cellIndex"
+            class="px-4 py-2 break-words align-top border-b border-r border-gray-200"
+            :class="{ 'font-bold text-slate-800': cellIndex === props.columnIndex }"
           >
             <CellComponent :cell="cell" />
           </td>
         </tr>
       </tbody>
     </table>
+
+    <!-- Mobile stacked version -->
+    <div class="flex flex-col gap-4 md:hidden">
+      <div
+        v-for="(row, rowIndex) in rows"
+        :key="`stacked-row-${rowIndex}`"
+        class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm"
+      >
+        <div class="flex flex-col pb-2">
+          <span class="text-xs font-bold text-gray-500">
+            {{ row[0] }}
+          </span>
+          <div class="py-4 text-sm text-gray-800" :class="{ 'font-bold': 1 === columnIndex }">
+            <CellComponent :cell="row[1]" class="flex-wrap" />
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
