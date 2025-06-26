@@ -21,13 +21,7 @@
     subject: '',
     message: ''
   })
-  watch(
-    form,
-    newVal => {
-      console.log('Form changed:', { ...newVal })
-    },
-    { deep: true }
-  )
+
   const { sendEmail } = useEmail()
   const disabledButton = computed(() => {
     return (
@@ -85,29 +79,14 @@
           <h3>Medellin, Antioquia - Colombia</h3>
         </span>
       </div>
-      <div class="flex flex-col w-2/4 p-8 bg-white rounded-lg shadow-lg z-1">
-        <h2 class="mb-4 text-2xl font-bold">Formulario de contacto</h2>
-        <p class="mb-4">
-          Completa el formulario a continuación y me pondré en contacto contigo lo antes posible.
-        </p>
-
-        <div
-          v-if="isSendedSuccessful"
-          class="flex items-center justify-center gap-2 p-4 mb-4 text-green-900 bg-green-200 rounded-lg"
+      <div class="flex flex-col w-2/4 h-auto p-8 bg-white rounded-lg shadow-lg z-1">
+        <Form
+          title="Formulario de contacto"
+          description="Completa el formulario a continuación y me pondré en contacto contigo lo antes posible."
+          :successful="isSendedSuccessful"
+          :validation-message="isSendedSuccessful ? 'Mensaje enviado exitosamente' : errorMessage"
+          @submit="onSubmit"
         >
-          <Icon name="mdi:check-circle" size="20" class="" />
-          <p>Mensaje enviado exitosamente</p>
-        </div>
-
-        <div
-          v-if="errorMessage"
-          class="flex items-center justify-center gap-2 p-4 mb-4 text-red-900 bg-red-200 rounded-lg"
-        >
-          <Icon name="mdi:close-circle" size="20" class="" />
-          <p>{{ errorMessage }}</p>
-        </div>
-
-        <form class="flex flex-col gap-4">
           <div class="grid grid-cols-2 gap-2">
             <Input
               v-model="form.name"
@@ -143,16 +122,16 @@
             placeholder="Selecciona un asunto"
             required
           />
-          <textarea
+          <TextArea
             v-model="form.message"
+            :label="'Mensaje'"
             name="message"
-            placeholder="Mensaje"
-            class="w-full p-2 mb-4 border rounded"
+            place-holder="Deja aqui tu mensaje"
             rows="4"
             required
-          ></textarea>
-        </form>
-        <Button :onclick="onSubmit" :disabled="disabledButton">Enviar</Button>
+          />
+          <Button :disabled="disabledButton">Enviar</Button>
+        </Form>
       </div>
     </div>
   </section>
