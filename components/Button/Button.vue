@@ -4,7 +4,8 @@
     theme: { type: String, default: 'primary' },
     variant: { type: String, default: 'lowercase' },
     icon: { type: String, default: 'lowercase' },
-    iconPosition: { type: String, default: 'left' }
+    iconPosition: { type: String, default: 'left' },
+    disabled: { type: Boolean, default: false }
   })
   const btnClass = computed(() => ({
     'flex-row-reverse': props.iconPosition !== 'left',
@@ -18,8 +19,9 @@
 <template>
   <div>
     <button
-      class="flex flex-row items-center w-auto gap-2 font-bold rounded-md cursor-pointer"
+      class="flex flex-row items-center justify-center w-full gap-2 font-bold rounded-md cursor-pointer disabled:bg-gray-200 disabled:cursor-not-allowed"
       :class="btnClass"
+      :disabled="disabled"
     >
       <Icon v-if="icon" :name="icon" :size="size === 'sm' ? 24 : 32" />
       <slot />
