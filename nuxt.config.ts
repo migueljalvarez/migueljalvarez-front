@@ -6,8 +6,8 @@ export default defineNuxtConfig({
       lang: 'es'
     },
     head: {
-      title: 'Miguel Alvarez',
-      titleTemplate: '%s - Ingeniero de Software',
+      title: 'Miguel Alvarez | Ingeniero de Software',
+      titleTemplate: '%s | Ingeniero de Software',
       meta: [
         {
           name: 'description',
