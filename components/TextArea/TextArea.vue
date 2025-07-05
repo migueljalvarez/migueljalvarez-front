@@ -6,6 +6,7 @@
     placeHolder: string
     modelValue?: string
     disabled?: boolean
+    rows?: number
   }>()
   const emit = defineEmits(['update:modelValue'])
   const modelValue = ref(props.modelValue ?? '')
@@ -30,7 +31,7 @@
       :name="name"
       :placeholder="placeHolder"
       class="w-full p-2 border-2 border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-400"
-      rows="8"
+      :rows="rows || 4"
       :required="required"
       @input="handleInput"
     />

@@ -1,11 +1,10 @@
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { MY_SOCIAL_MEDIA } from '~/constants/common'
+  import { useSocialMedia } from '~/composables/useSocialMedia'
   import { PUBLIC_ROUTES } from '~/constants/routes'
   import type { SocialMediaType } from '~/types/common'
 
   const sidebarOpen = ref(false)
-  const socials = ref<SocialMediaType[]>(MY_SOCIAL_MEDIA)
 
   const toggleSidebar = () => {
     sidebarOpen.value = !sidebarOpen.value
@@ -17,17 +16,30 @@
   const leaveIcon = (item: SocialMediaType) => {
     item.isHovered = false
   }
+
+  const route = useRoute()
+
+  const isActive = (link: string) => {
+    return route.fullPath === link
+  }
+  const isActiveClass = (link: string) => {
+    return isActive(link) ? 'text-blue-400' : 'text-white'
+  }
+  const { socials } = useSocialMedia()
 </script>
 
 <template>
-  <header class="flex items-center w-full h-20 px-6 text-white bg-black">
+  <header
+    class="z-50 flex items-center w-full h-20 px-6 text-white bg-black shadow-md lg:justify-between"
+  >
     <!-- Menú tradicional para md+ -->
 
-    <nav class="hidden gap-8 ml-2 font-semibold uppercase md:flex">
+    <nav class="hidden w-full gap-4 ml-2 font-semibold uppercase md:gap-8 lg:flex">
       <nuxt-link
         v-for="item in PUBLIC_ROUTES"
         :key="item.name"
         :to="item.link"
+        :class="isActiveClass(item.link)"
         class="transition-colors duration-300 hover:text-blue-400"
       >
         {{ item.name }}
@@ -35,7 +47,7 @@
     </nav>
 
     <!-- Social media (md+) -->
-    <div class="hidden gap-4 ml-auto md:flex">
+    <div class="hidden gap-4 ml-auto lg:flex">
       <SocialMedia
         v-for="item in socials"
         :key="item.name"
@@ -51,43 +63,46 @@
     </div>
 
     <!-- Botón hamburguesa (solo móvil) -->
-    <button
-      aria-label="Toggle menu"
-      class="p-2 ml-auto rounded md:hidden focus:outline-none focus:ring-2 focus:ring-blue-400"
-      @click="toggleSidebar"
-    >
-      <svg
-        class="w-6 h-6 transition-transform duration-300 ease-in-out"
-        :class="sidebarOpen ? 'rotate-90' : 'rotate-0'"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
+    <div class="flex items-center justify-end w-full mx-auto max-w-7xl lg:hidden">
+      <button
+        aria-label="Toggle menu"
+        :class="sidebarOpen ? 'hidden' : 'block'"
+        class="p-2 ml-auto rounded lg:hidden focus:outline-none focus:transparent"
+        @click="toggleSidebar"
       >
-        <path
-          v-if="!sidebarOpen"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M4 6h16M4 12h16M4 18h16"
-        />
-        <path
-          v-else
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M6 18L18 6M6 6l12 12"
-        />
-      </svg>
-    </button>
+        <svg
+          class="w-6 h-6 transition-transform duration-300 ease-in-out"
+          :class="sidebarOpen ? 'rotate-90' : 'rotate-0'"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            v-if="!sidebarOpen"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+          <path
+            v-else
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
   </header>
 
   <!-- Sidebar móvil -->
   <aside
     :class="[
-      'fixed top-0 left-0 h-full bg-zinc-400/10 text-white w-72 p-6 flex flex-col justify-between transform transition-transform duration-300 ease-in-out z-50',
+      'fixed top-0 left-0 h-full bg-black text-white w-full max-w-xs p-6 flex flex-col justify-between transform transition-transform duration-300 ease-in-out z-50',
       sidebarOpen ? 'translate-x-0' : '-translate-x-full',
-      'md:hidden '
+      'lg:hidden '
     ]"
   >
     <div>

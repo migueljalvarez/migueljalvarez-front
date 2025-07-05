@@ -1,6 +1,8 @@
 <script lang="ts" setup>
+  import Title from '../Title/Title.vue'
+
   const props = defineProps<{
-    title?: string
+    title: string
     description?: string
     successful?: boolean
     validationMessage?: string
@@ -12,19 +14,24 @@
   }))
 </script>
 <template>
-  <div>
-    <form class="flex flex-col gap-4" @submit.prevent="emit('submit')">
-      <h2 class="mb-4 text-2xl font-bold">{{ title }}</h2>
-      <legend class="mb-4">
-        {{ description }}
-      </legend>
+  <section>
+    <form @submit.prevent="emit('submit')">
+      <div class="flex flex-col mb-4">
+        <Title :text="title" variant="h3" class="mb-4 font-bold text-gray-800" />
+        <legend class="mb-4">
+          {{ description }}
+        </legend>
+      </div>
+
       <div :class="validationClass" class="items-center justify-center gap-2 p-4 mb-4 rounded-lg">
         <Icon :name="successful ? 'mdi:check-circle' : 'mdi:close-circle'" size="20" />
         <p>{{ validationMessage }}</p>
       </div>
-      <slot />
+      <div class="flex flex-col h-auto gap-4 py-4">
+        <slot />
+      </div>
     </form>
-  </div>
+  </section>
 </template>
 
 <style></style>
