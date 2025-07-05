@@ -1,145 +1,61 @@
 <script setup lang="ts">
-  import Carousel from '@components/Carousel/Carousel.vue'
-
+  import About from '~/components/About/About.vue'
+  import Contact from '~/components/Contact/Contact.vue'
+  import Testimonial from '~/components/Testimonial/Testimonial.vue'
+  import Title from '~/components/Title/Title.vue'
   import { MAIN_HERO } from '~/constants/common'
-  import type { PortafolioType, Testimonial } from '~/types/common'
+  import { API } from '~/constants/routes'
+  import type { PortafolioType, Testimonial as TestimonialType } from '~/types/common'
 
-  definePageMeta({ layout: 'default' })
+  definePageMeta({ layout: 'default', keepalive: true })
 
   const { logos } = useLogos()
-  const loopingLogos = [...logos]
-  const currentIndex = ref(0)
-  const testimonial = ref<Testimonial[]>([])
-  const portafolio = ref<PortafolioType[]>([])
-  const portafolioCurrentIndex = ref(0)
-  const touchStartX = ref(0)
 
-  // 🛡️ Seguro para prerender (fallback y errores controlados)
-  const { data: testimonialResult, error: testimonialError } = await useFetch<Testimonial[]>(
-    '/api/testimonials',
+  const loopingLogos = [...logos]
+
+  const { data: testimonialResult, error: testimonialError } = await useFetch<TestimonialType[]>(
+    API.TESTIMONIALS,
     {
       server: true,
       default: () => []
     }
   )
 
-  if (testimonialResult.value) {
-    testimonial.value = testimonialResult.value
-  } else {
+  if (!testimonialResult.value) {
     console.error('Error fetching testimonials:', testimonialError.value)
   }
 
-  // 🛡️ Seguro para prerender (fallback y errores controlados)
-  const { data: portafolioResult, error: portafolioError } = await useFetch<PortafolioType[]>(
-    '/api/portafolio',
-    {
-      server: true,
-      default: () => []
-    }
+  const { data: projects, error: portafolioError } = await useAsyncData<PortafolioType[]>(
+    'projects',
+    () => $fetch<PortafolioType[]>(API.PORTAFOLIO)
   )
 
   if (portafolioError.value) {
     console.error('Error fetching portafolio:', portafolioError.value)
   }
-  portafolio.value = portafolioResult.value || []
 </script>
 <template>
-  <section>
+  <div class="box-border">
     <Main />
-    <Hero :value="MAIN_HERO" color="gray" />
-    <!--  -->
-    <Carousel
-      v-model:current-index="currentIndex"
-      title="Ellos confían en mí"
-      background="/testimonial-bg.webp"
-      :items="testimonial"
+    <Hero value="¿Que puedo hacer por ti?" color="blue" class="w-full" />
+    <section
+      id="services"
+      class="flex flex-col items-center justify-center w-full h-auto px-4 py-8 pt-20 text-lg font-bold text-gray-800 bg-white"
     >
-      <template #default="{ goPrev, goNext }">
-        <TestimonialCarousel
-          :key="currentIndex"
-          :item="testimonial[currentIndex]"
-          @touchstart="e => (touchStartX = e.changedTouches[0].screenX)"
-          @touchend="
-            e => {
-              const diff = e.changedTouches[0].screenX - touchStartX
-              if (Math.abs(diff) > 50) {
-                if (diff < 0) goNext()
-                else goPrev()
-              }
-            }
-          "
-        />
-      </template>
-    </Carousel>
-    <!--  -->
-    <div class="box-border grid min-w-full">
+      <Title text="Servicios" variant="h2" class="pb-8 mb-4 italic text-center text-gray-800" />
+      <div
+        class="grid grid-cols-1 gap-8 p-8 rounded-lg md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+      ></div>
+    </section>
+    <div v-if="false" class="box-border grid min-w-full">
       <InfiniteCarousel :items="loopingLogos" />
     </div>
-    <Carousel
-      v-model:portafolio-current-index="portafolioCurrentIndex"
-      class="min-h-[700px]"
-      title="Portafolio"
-      background-color="black"
-      :show-arrow="false"
-      :items="portafolio as unknown as PortafolioType[]"
-    >
-      <template #default="{ goPrev, goNext }">
-        <div
-          v-if="portafolio && portafolio.length > 0"
-          :key="portafolioCurrentIndex"
-          class="flex items-center justify-center w-full h-full select-none"
-          @touchstart="e => (touchStartX = e.changedTouches[0].screenX)"
-          @touchend="
-            e => {
-              const diff = e.changedTouches[0].screenX - touchStartX
-              if (Math.abs(diff) > 50) {
-                if (diff < 0) goNext()
-                else goPrev()
-              }
-            }
-          "
-        >
-          <Card
-            size="md"
-            class="w-full max-w-sm px-4 h-[600px] 2xl:h-[500px] lg:min-w-2xl 2xl:min-w-4xl"
-          >
-            <div class="flex flex-col gap-4">
-              <NuxtImg
-                :src="portafolio[portafolioCurrentIndex].urlImage"
-                :alt="portafolio[portafolioCurrentIndex].title"
-                class="self-center object-cover w-40 h-auto rounded md:w-40"
-                format="webp"
-              />
-              <div class="flex-1">
-                <h4 class="p-2 font-bold text-slate-800">
-                  {{ portafolio[portafolioCurrentIndex].title }}
-                </h4>
-                <div class="flex flex-wrap gap-2 px-2 pt-2">
-                  <span
-                    v-for="(tech, i) in portafolio[portafolioCurrentIndex].technologies"
-                    :key="i"
-                    class="flex flex-row"
-                  >
-                    <Badge theme="info" :value="tech" />
-                  </span>
-                </div>
-                <p class="p-2 mt-2 text-sm text-gray-800 lg:text-lg">
-                  {{ portafolio[portafolioCurrentIndex].description }}
-                </p>
-              </div>
-            </div>
-            <div class="flex justify-end gap-2 mt-4">
-              <NuxtLink :to="`/portafolio/${portafolio[portafolioCurrentIndex].id}`">
-                <Button icon="mdi:file-search-outline">Detalles</Button>
-              </NuxtLink>
-            </div>
-          </Card>
-        </div>
-      </template>
-    </Carousel>
-    <section class="flex flex-row w-full">
-      <Hero value="¿Que puedo hacer por ti?" color="blue" class="w-full" />
-    </section>
-  </section>
+    <Testimonial title="Ellos Confian en Mi" :items="testimonialResult || []" />
+    <Portfolio title="Portafolio" :projects="projects || []" class="bg-blue-300" />
+    <Hero :value="MAIN_HERO" color="gray" />
+
+    <About title="Sobre mí" />
+    <Contact title="Contactame" />
+  </div>
 </template>
 <style scoped></style>

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
   import { computed, onMounted, onBeforeUnmount } from 'vue'
+  import Title from '../Title/Title.vue'
 
   // Emits for v-model support
   const emit = defineEmits(['update:currentIndex', 'update:portafolioCurrentIndex'])
@@ -104,9 +105,7 @@
     <div
       class="relative flex flex-col items-center justify-center w-full px-2 py-8 mx-auto shadow-lg max-w-8xl sm:px-6 bg-black/30 backdrop-blur-md"
     >
-      <h3 v-if="title" class="py-6 text-xl italic text-center text-white sm:text-2xl md:text-3xl">
-        {{ title }}
-      </h3>
+      <Title :text="title" variant="h2" class="italic text-center text-white" />
       <div class="flex items-center justify-center w-full min-h-[700px] relative overflow-hidden">
         <Transition name="fade" mode="out-in">
           <slot :go-prev="prevSlide" :go-next="nextSlide" />

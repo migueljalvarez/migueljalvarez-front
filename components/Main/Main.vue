@@ -1,40 +1,51 @@
 <script lang="ts" setup>
   import { ref, onMounted } from 'vue'
-  import {
-    MAIN_DESCRIPTION_PRESENTATION,
-    MAIN_SUBTITLE_PRESENTATION,
-    MAIN_TITLE_PRESENTATION
-  } from '~/constants/common'
+  import Title from '../Title/Title.vue'
+  import { MAIN_TITLE_PRESENTATION } from '~/constants/common'
   const title = ref('')
   const subtitle = ref('')
   const description = ref('')
-  const fullTitle = MAIN_TITLE_PRESENTATION
-  const fullSubtitle = MAIN_SUBTITLE_PRESENTATION
-
+  const fullTitle = ref('')
+  const fullSubtitle = ref('')
+  type Me = {
+    id: string
+    name: string
+    profession: string
+    jobDescription: string
+  }
   const { typeText } = useTypeText(100)
-  onMounted(() => {
-    typeText(fullTitle, title, () => {
-      typeText(fullSubtitle, subtitle, () => {
-        description.value = MAIN_DESCRIPTION_PRESENTATION
+
+  onMounted(async () => {
+    const me = await $fetch<Omit<Me, 'id'>>('/api/me')
+
+    if (me) {
+      fullTitle.value = `${MAIN_TITLE_PRESENTATION} ${me.name}!`
+      fullSubtitle.value = me.profession
+
+      typeText(fullTitle.value, title, () => {
+        typeText(fullSubtitle.value, subtitle, () => {
+          description.value = me.jobDescription || ''
+        })
       })
-    })
+    }
   })
 </script>
 <template>
-  <section class="relative flex justify-between overflow-hidden">
+  <section class="box-border relative flex justify-between w-full h-auto overflow-hidden">
     <div
-      class="sm:hidden absolute 2xl:w-full inset-0 z-10 lg:flex 2xl:flex lg:bg-gradient-to-r lg:from-black lg:via-black lg:to-black/10 2xl:bg-gradient-to-r 2xl:from-black 2xl:via-black 2xl:to-black/10 h-[600px]"
+      class="absolute 2xl:w-full inset-0 z-10 lg:flex 2xl:flex lg:bg-gradient-to-r lg:from-black lg:via-black lg:to-black/10 2xl:bg-gradient-to-r 2xl:from-black 2xl:via-black 2xl:to-black/10 h-[600px]"
     />
 
     <div
-      class="relative z-20 flex flex-col w-4/6 lg:w-full px-8 2xl:px-24 text-white h-[600px] justify-center 2xl:ml-20 grow bg-black flex-wrap lg:bg-transparent"
+      class="relative z-20 flex flex-col flex-wrap justify-center h-auto gap-2 p-4 pt-40 text-white bg-black lg:p-8 lg:w-full 2xl:px-24 2xl:ml-20 grow lg:bg-transparent"
     >
-      <h1 class="justify-start font-bold text-white">
-        {{ title }}
-      </h1>
-      <h2 v-if="title === fullTitle" class="justify-start p-1 text-blue-400">
-        {{ subtitle }}
-      </h2>
+      <Title :text="title" variant="h1" />
+      <Title
+        v-if="subtitle === fullSubtitle"
+        :text="subtitle"
+        variant="h3"
+        class="justify-start p-1 text-blue-400"
+      />
       <p v-if="subtitle === fullSubtitle" class="text-gray-400 max-w-[90%] sm:max-w-[80%]">
         {{ description }}
       </p>
@@ -55,5 +66,3 @@
     </div>
   </section>
 </template>
-
-<style></style>
