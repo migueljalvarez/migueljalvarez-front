@@ -3,7 +3,7 @@
     size: { type: String, default: 'sm' },
     theme: { type: String, default: 'primary' },
     variant: { type: String, default: 'lowercase' },
-    icon: { type: String, default: 'lowercase' },
+    icon: { type: String, default: '' },
     iconPosition: { type: String, default: 'left' },
     disabled: { type: Boolean, default: false }
   })

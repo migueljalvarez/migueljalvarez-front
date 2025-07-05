@@ -3,6 +3,7 @@
 
   defineProps<{ cell: TableCellType }>()
 
+  const attrs = useAttrs()
   const isPrimitive = (val: unknown): val is string | number =>
     typeof val === 'string' || typeof val === 'number'
 
@@ -10,26 +11,28 @@
     val: unknown
   ): val is {
     component: string
-    props?: Record<string, unknown> & { default?: Array<any> }
+    props?: Record<string, unknown> & { theme?: string; value?: string }
   } => typeof val === 'object' && val !== null && 'component' in val
 </script>
 
 <template>
-  <template v-if="isPrimitive(cell)">
-    <span>{{ cell }}</span>
+  <template v-if="cell && isPrimitive(cell)">
+    <span v-bind="attrs">{{ cell }}</span>
   </template>
 
   <template v-else-if="isRenderable(cell)">
-    <component :is="cell.component" v-bind="cell.props">
-      <template v-if="Array.isArray(cell.props?.default)">
-        <component
-          :is="child.component"
-          v-for="(child, i) in cell.props.default"
-          :key="i"
-          v-bind="child.props"
-        />
-      </template>
-    </component>
+    <ClientOnly>
+      <component :is="cell.component" v-bind="{ ...cell.props, ...attrs }">
+        <template v-if="Array.isArray(cell.props?.default)">
+          <component
+            :is="child.component"
+            v-for="(child, i) in cell.props.default"
+            :key="i"
+            v-bind="child.props"
+          />
+        </template>
+      </component>
+    </ClientOnly>
   </template>
 
   <template v-else>

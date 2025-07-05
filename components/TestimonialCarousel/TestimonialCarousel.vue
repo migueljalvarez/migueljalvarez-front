@@ -26,7 +26,6 @@
       class="flex items-center justify-center w-full"
       :style="{
         backgroundColor: color,
-        backgroundImage: background ? `url(${background})` : 'none',
         backgroundSize: 'cover',
         backgroundPosition: 'center'
       }"
