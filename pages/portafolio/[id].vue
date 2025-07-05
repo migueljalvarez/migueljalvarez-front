@@ -3,7 +3,9 @@
   import { NuxtImg } from '#components'
   import type { PortafolioType } from '~/types/common'
   definePageMeta({
-    layout: 'default'
+    layout: 'default',
+    keepalive: true,
+    title: 'Portafolio'
   })
   const route = useRoute()
 
@@ -72,7 +74,7 @@
         <div class="flex flex-col gap-4 px-4 mt-8">
           <h3 class="text-base font-medium">Capturas de pantalla</h3>
           <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-            <img
+            <NuxtImg
               v-for="(image, index) of data?.images"
               :key="index"
               :src="image.url"

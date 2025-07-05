@@ -2,7 +2,7 @@
   import CellComponent from './CellComponent.vue'
   import type { DynamicTableProps } from './DynamicTable'
 
-  const props = withDefaults(defineProps<Readonly<DynamicTableProps>>(), {
+  withDefaults(defineProps<Readonly<DynamicTableProps>>(), {
     headers: () => [],
     columnIndex: 0
   })
@@ -15,7 +15,7 @@
       <thead>
         <tr class="text-left text-gray-800 bg-blue-100">
           <th
-            v-for="(header, index) in props.headers"
+            v-for="(header, index) in headers"
             :key="'header-' + index"
             class="px-4 py-2 font-semibold border-b border-gray-300"
             scope="col"
@@ -26,7 +26,7 @@
       </thead>
       <tbody class="text-sm text-gray-700">
         <tr
-          v-for="(row, rowIndex) in props.rows"
+          v-for="(row, rowIndex) in rows"
           :key="'row-' + rowIndex"
           class="transition-colors odd:bg-white even:bg-gray-50 hover:bg-gray-100"
         >
@@ -34,9 +34,11 @@
             v-for="(cell, cellIndex) in row"
             :key="'cell-' + rowIndex + '-' + cellIndex"
             class="px-4 py-2 break-words align-top border-b border-r border-gray-200"
-            :class="{ 'font-bold text-slate-800': cellIndex === props.columnIndex }"
+            :class="{ 'font-bold text-slate-800': cellIndex === columnIndex }"
           >
-            <CellComponent :cell="cell" />
+            <ClientOnly>
+              <CellComponent :cell="cell" />
+            </ClientOnly>
           </td>
         </tr>
       </tbody>

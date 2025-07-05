@@ -1,6 +1,10 @@
 <script setup lang="ts">
+  import type { PropType } from 'vue'
   import Badge from '../Badge/Badge.vue'
   import { NuxtLink } from '#components'
+
+  // Define or import PorfolioType
+  type PorfolioType = 'Cliente' | 'Practica' | string
 
   const props = defineProps({
     id: {
@@ -11,16 +15,16 @@
       type: String,
       required: true
     },
-
     portfolioType: {
-      type: String,
-      default: 'default'
+      type: String as PropType<PorfolioType>,
+      required: true
     },
     technologies: {
-      type: Array as () => string[],
+      type: Array as PropType<string[]>,
       default: () => []
     }
   })
+
   const portfolioTypeClass = computed(() => ({
     'text-white bg-green-600/80': props.portfolioType === 'Cliente',
     'text-white bg-gray-400/80': props.portfolioType === 'Practica'

@@ -27,21 +27,14 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   css: ['@/assets/css/main.css'],
-  modules: [
-    '@nuxt/eslint',
-    '@nuxt/icon',
-    '@nuxt/image',
-    '@nuxt/scripts',
-    '@nuxt/ui',
-    '@nuxtjs/google-fonts'
-  ],
+  modules: ['@nuxt/icon', '@nuxt/image', '@nuxt/ui', '@nuxtjs/google-fonts'],
 
   googleFonts: {
     families: {
       Roboto: [400, 700]
     },
     display: 'swap',
-    download: true,
+    download: false,
     inject: true,
     subsets: ['latin'],
     preconnect: true,
