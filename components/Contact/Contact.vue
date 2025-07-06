@@ -1,11 +1,9 @@
 <script lang="ts" setup>
-  import { reactive } from 'vue'
-  useHead({
-    titleTemplate: titleChunk => {
-      return titleChunk ? `Contactame - ${titleChunk}` : ''
-    }
-  })
-
+  import Title from '../Title/Title.vue'
+  defineProps<{
+    title: string
+  }>()
+  // Contact Form
   const subjectOptions = [
     { value: 'desarrollo', label: 'Desarrollo' },
     { value: 'contrato', label: 'Contratar' },
@@ -21,7 +19,6 @@
     subject: '',
     message: ''
   })
-
   const { sendEmail } = useEmail()
   const disabledButton = computed(() => {
     return (
@@ -42,7 +39,6 @@
     form.subject = ''
     form.message = ''
   }
-
   async function onSubmit() {
     const name = form.name.trim()
     const lastName = form.lastName.trim()
@@ -61,25 +57,27 @@
 </script>
 <template>
   <section
+    id="contact"
     class="flex items-center justify-center min-h-screen gap-4 bg-[url('../../assets/images/64363.jpg')] bg-cover bg-center bg-no-repeat bg-fixed relative"
   >
     <div
-      class="flex justify-center min-h-screen gap-4 p-8 shadow-lg z-1 bg-black/60 backdrop-blur-md"
+      class="flex flex-col justify-center min-h-screen gap-4 shadow-lg lg:justify-around lg:gap-8 lg:flex-row lg:p-8 pt-30 lg:pt-30 z-1 bg-black/60 backdrop-blur-md"
     >
-      <div class="flex flex-col w-2/6 gap-4 text-wrap z-1">
-        <h1 class="font-bold text-white">Contactame</h1>
-        <p class="mb-4 text-white">
+      <div class="flex flex-col flex-wrap w-full gap-4 p-4 lg:w-2/6 z-1">
+        <Title variant="h2" :text="title" class="text-white" />
+
+        <p class="flex mb-4 text-white text-wrap">
           ¿Buscas impulsar tus proyectos con soluciones creativas y efectivas? ¡Estoy listo para
           ayudarte! Ponte en contacto conmigo y descubre cómo juntos podemos llevar tus ideas al
           siguiente nivel. Tu mensaje es el primer paso para comenzar algo increíble.
         </p>
 
-        <span class="flex items-center gap-2 mb-4 text-white">
+        <span class="flex items-center gap-2 mb-4 text-lg text-white">
           <Icon name="mdi:location" size="50" />
-          <h3>Medellin, Antioquia - Colombia</h3>
+          <h3 class="flex text-lg text-wrap">Medellin, Antioquia - Colombia</h3>
         </span>
       </div>
-      <div class="flex flex-col w-2/4 h-auto p-8 bg-white rounded-lg shadow-lg z-1">
+      <div class="p-8 bg-white rounded-lg shadow-lg lg:w-2/4 z-1 2xl:w-2/5 h-min">
         <Form
           title="Formulario de contacto"
           description="Completa el formulario a continuación y me pondré en contacto contigo lo antes posible."
@@ -87,7 +85,7 @@
           :validation-message="isSendedSuccessful ? 'Mensaje enviado exitosamente' : errorMessage"
           @submit="onSubmit"
         >
-          <div class="grid grid-cols-2 gap-2">
+          <div class="flex flex-col gap-2 lg:grid-cols-2 lg:grid">
             <Input
               v-model="form.name"
               type="text"
@@ -127,7 +125,7 @@
             :label="'Mensaje'"
             name="message"
             place-holder="Deja aqui tu mensaje"
-            rows="4"
+            :rows="4"
             required
           />
           <Button :disabled="disabledButton">Enviar</Button>

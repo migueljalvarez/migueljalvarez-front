@@ -19,25 +19,22 @@ export default defineNuxtConfig({
       link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' }]
     }
   },
-
+  runtimeConfig: {
+    firebaseProjectId: process.env.FIREBASE_PROJECT_ID,
+    firebaseClientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    firebasePrivateKey: process.env.FIREBASE_PRIVATE_KEY
+  },
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   css: ['@/assets/css/main.css'],
-  modules: [
-    '@nuxt/eslint',
-    '@nuxt/fonts',
-    '@nuxt/icon',
-    '@nuxt/image',
-    '@nuxt/scripts',
-    '@nuxt/ui',
-    '@nuxtjs/google-fonts'
-  ],
+  modules: ['@nuxt/icon', '@nuxt/image', '@nuxt/ui', '@nuxtjs/google-fonts'],
+
   googleFonts: {
     families: {
       Roboto: [400, 700]
     },
     display: 'swap',
-    download: true,
+    download: false,
     inject: true,
     subsets: ['latin'],
     preconnect: true,
@@ -56,6 +53,10 @@ export default defineNuxtConfig({
       xl: 1280,
       '2xl': 1536
     }
+  },
+  devServer: {
+    host: '0.0.0.0',
+    port: 3000
   },
   nitro: {
     prerender: {
