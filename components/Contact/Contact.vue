@@ -1,12 +1,16 @@
 <script lang="ts" setup>
+  import Section from '../Section/Section.vue'
   import Title from '../Title/Title.vue'
+  import { CONTACT_INFO, CONTACT_INFO_DESCRIPTION } from '~/constants/common'
+  const { email, phone, location } = CONTACT_INFO
   defineProps<{
     title: string
   }>()
+  const iconSize = 40
   // Contact Form
   const subjectOptions = [
     { value: 'desarrollo', label: 'Desarrollo' },
-    { value: 'contrato', label: 'Contratar' },
+    { value: 'oferta', label: 'Oferta' },
     { value: 'consulta', label: 'Consulta' },
     { value: 'soporte', label: 'Soporte' },
     { value: 'otro', label: 'Otro' }
@@ -66,16 +70,33 @@
       <div class="flex flex-col flex-wrap w-full gap-4 p-4 lg:w-2/6 z-1">
         <Title variant="h2" :text="title" class="text-white" />
 
-        <p class="flex mb-4 text-white text-wrap">
-          ¿Buscas impulsar tus proyectos con soluciones creativas y efectivas? ¡Estoy listo para
-          ayudarte! Ponte en contacto conmigo y descubre cómo juntos podemos llevar tus ideas al
-          siguiente nivel. Tu mensaje es el primer paso para comenzar algo increíble.
+        <p class="flex mb-4 text-white text-wrap lg:text-xl">
+          {{ CONTACT_INFO_DESCRIPTION }}
         </p>
 
-        <span class="flex items-center gap-2 mb-4 text-lg text-white">
-          <Icon name="mdi:location" size="50" />
-          <h3 class="flex text-lg text-wrap">Medellin, Antioquia - Colombia</h3>
-        </span>
+        <div class="flex flex-col lg:text-xl">
+          <span class="flex items-center gap-2 mb-4 text-lg text-white">
+            <Icon name="mdi:phone" :size="iconSize" />
+            <h3 class="flex text-lg text-wrap">{{ phone }}</h3>
+          </span>
+          <span class="flex items-center gap-2 mb-4 text-lg text-white">
+            <Icon name="mdi:email" :size="iconSize" />
+            <h3 class="flex text-lg text-wrap">{{ email }}</h3>
+          </span>
+          <span class="flex items-center gap-2 mb-4 text-lg text-white">
+            <Icon name="mdi:location" :size="iconSize" />
+            <h3 class="flex text-lg text-wrap">{{ location }}</h3>
+          </span>
+        </div>
+
+        <div class="flex flex-row gap-2 mt-4">
+          <div class="flex flex-col gap-4">
+            <p class="text-2xl italic text-white">¿Quieres que hablemos?</p>
+            <NuxtLink to="https://wa.link/bxjfgq" target="_blank">
+              <Button variant="uppercase" icon="mdi:whatsapp" theme="tertiary">Conatctar</Button>
+            </NuxtLink>
+          </div>
+        </div>
       </div>
       <div class="p-8 bg-white rounded-lg shadow-lg lg:w-2/4 z-1 2xl:w-2/5 h-min">
         <Form

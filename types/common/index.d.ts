@@ -32,3 +32,10 @@ export type PortafolioType = {
   solutionDetails: string
   images: Image[]
 }
+
+export type Me = {
+  id: string
+  name: string
+  profession: string
+  jobDescription: string
+}

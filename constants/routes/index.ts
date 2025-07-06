@@ -6,6 +6,7 @@ export const PUBLIC_ROUTES = [
 ]
 
 export const API = {
+  ME: '/api/me',
   PORTAFOLIO: '/api/portafolio',
   TESTIMONIALS: '/api/testimonials'
 }
