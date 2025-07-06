@@ -18,6 +18,17 @@
     <section
       class="grid w-full grid-cols-1 gap-8 px-4 py-10 mx-auto max-w-7xl md:grid-cols-1 lg:grid-cols-4"
     >
+      <!-- Logo & Description -->
+
+      <div class="flex flex-col items-start gap-2 mt-8 lg:mt-0">
+        <h5 class="mb-2 font-black text-white uppercase">Sobre Mi</h5>
+        <div>
+          <p class="max-w-xl text-sm text-slate-400 sm:text-base">
+            Desarrollador de software enfocado en crear soluciones digitales eficientes y
+            escalables. Transformo ideas en productos tecnológicos útiles y orientados a resultados.
+          </p>
+        </div>
+      </div>
       <!-- Menu -->
       <div>
         <h5 class="mb-2 font-black text-white uppercase">Menu</h5>
@@ -27,7 +38,7 @@
             :key="item.name"
             class="text-white cursor-pointer hover:text-blue-400"
           >
-            <nuxt-link :to="item.link">{{ item.name }}</nuxt-link>
+            <NuxtLink :to="item.link">{{ item.name }}</NuxtLink>
           </li>
         </ul>
       </div>
@@ -50,25 +61,14 @@
           />
         </div>
       </div>
-      <!-- Logo & Description -->
-
-      <div class="flex flex-col items-start gap-2 mt-8 lg:mt-0">
-        <h5 class="mb-2 font-black text-white uppercase">Sobre Mi</h5>
-        <div>
-          <p class="max-w-xl text-sm text-slate-400 sm:text-base">
-            Desarrollador de software enfocado en crear soluciones digitales eficientes y
-            escalables. Transformo ideas en productos tecnológicos útiles y orientados a resultados.
-          </p>
-        </div>
-      </div>
     </section>
     <div
       class="flex w-full px-4 py-4 mx-auto text-sm bg-blue-400 grid-cols text-slate-900 sm:flex-row sm:text-base"
     >
-      <p class="flex justify-center w-full gap-8 px-4 mx-auto lg:justify-end max-w-7xl">
+      <p class="flex justify-center w-full gap-8 px-4 mx-auto max-w-7xl">
         <strong>
           &copy; {{ new Date().getFullYear() }} Miguel Alvarez
-          <span class="font-normal">| Software Developer</span>
+          <span class="font-normal">| Desarrollo de Software</span>
         </strong>
       </p>
     </div>

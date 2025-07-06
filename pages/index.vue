@@ -1,56 +1,48 @@
 <script setup lang="ts">
   import About from '~/components/About/About.vue'
   import Contact from '~/components/Contact/Contact.vue'
+  import Section from '~/components/Section/Section.vue'
   import Testimonial from '~/components/Testimonial/Testimonial.vue'
   import Title from '~/components/Title/Title.vue'
   import { MAIN_HERO } from '~/constants/common'
   import { API } from '~/constants/routes'
-  import type { PortafolioType, Testimonial as TestimonialType } from '~/types/common'
+  import type { Me, PortafolioType, Testimonial as TestimonialType } from '~/types/common'
 
   definePageMeta({ layout: 'default', keepalive: true })
 
   const { logos } = useLogos()
 
   const loopingLogos = [...logos]
+  const [profileData, testimonialsData, projectsData] = await Promise.all([
+    $fetch<Me>(API.ME),
+    $fetch<TestimonialType[]>(API.TESTIMONIALS),
+    $fetch<PortafolioType[]>(API.PORTAFOLIO)
+  ])
 
-  const { data: testimonialResult, error: testimonialError } = await useFetch<TestimonialType[]>(
-    API.TESTIMONIALS,
-    {
-      server: true,
-      default: () => []
-    }
-  )
-
-  if (!testimonialResult.value) {
-    console.error('Error fetching testimonials:', testimonialError.value)
+  const profile = profileData ?? {
+    id: '',
+    name: '',
+    profession: '',
+    jobDescription: ''
   }
 
-  const { data: projects, error: portafolioError } = await useAsyncData<PortafolioType[]>(
-    'projects',
-    () => $fetch<PortafolioType[]>(API.PORTAFOLIO)
-  )
-
-  if (portafolioError.value) {
-    console.error('Error fetching portafolio:', portafolioError.value)
-  }
+  const testimonials = testimonialsData ?? []
+  const projects = projectsData ?? []
 </script>
 <template>
   <div class="box-border">
-    <Main />
+    <Main :me="profile" />
     <Hero value="¿Que puedo hacer por ti?" color="blue" class="w-full" />
-    <section
-      id="services"
-      class="flex flex-col items-center justify-center w-full h-auto px-4 py-8 pt-20 text-lg font-bold text-gray-800 bg-white"
-    >
-      <Title text="Servicios" variant="h2" class="pb-8 mb-4 italic text-center text-gray-800" />
+    <Section id="services" title="Servicios" background="bg-white">
       <div
         class="grid grid-cols-1 gap-8 p-8 rounded-lg md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       ></div>
-    </section>
+    </Section>
+
     <div v-if="false" class="box-border grid min-w-full">
       <InfiniteCarousel :items="loopingLogos" />
     </div>
-    <Testimonial title="Ellos Confian en Mi" :items="testimonialResult || []" />
+    <Testimonial title="Ellos Confian en Mi" :items="testimonials" />
     <Portfolio title="Portafolio" :projects="projects || []" class="bg-blue-300" />
     <Hero :value="MAIN_HERO" color="gray" />
 

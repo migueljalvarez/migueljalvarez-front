@@ -28,3 +28,11 @@ export const MY_SOCIAL_MEDIA = [
 ]
 
 export const MAIN_HERO = 'Con mas de 9 años de Experiencia en el Sector'
+export const CONTACT_INFO = {
+  phone: '+57 320-318-7076',
+  email: 'ing.migueljalvarez@gamil.com',
+  location: 'Medellin, Antioquia - Colombia'
+}
+export const CONTACT_INFO_DESCRIPTION = `¿Buscas impulsar tus proyectos con soluciones creativas y efectivas? ¡Estoy listo para
+          ayudarte! Ponte en contacto conmigo y descubre cómo juntos podemos llevar tus ideas al
+          siguiente nivel. Tu mensaje es el primer paso para comenzar algo increíble.`

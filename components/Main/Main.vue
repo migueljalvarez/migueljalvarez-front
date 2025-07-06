@@ -2,29 +2,28 @@
   import { ref, onMounted } from 'vue'
   import Title from '../Title/Title.vue'
   import { MAIN_TITLE_PRESENTATION } from '~/constants/common'
+  import type { Me } from '~/types/common'
   const title = ref('')
   const subtitle = ref('')
   const description = ref('')
   const fullTitle = ref('')
   const fullSubtitle = ref('')
-  type Me = {
-    id: string
-    name: string
-    profession: string
-    jobDescription: string
-  }
-  const { typeText } = useTypeText(100)
+  const fullDescription = ref('')
+  const finishWrite = ref(false)
+
+  const props = defineProps<{ me: Me | null }>()
+  const { typeText } = useTypeText(90)
 
   onMounted(async () => {
-    const me = await $fetch<Omit<Me, 'id'>>('/api/me')
-
-    if (me) {
-      fullTitle.value = `${MAIN_TITLE_PRESENTATION} ${me.name}!`
-      fullSubtitle.value = me.profession
-
+    if (props.me) {
+      fullTitle.value = `${MAIN_TITLE_PRESENTATION} ${props.me.name}!`
+      fullSubtitle.value = props.me.profession
+      fullDescription.value = props.me.jobDescription || ''
       typeText(fullTitle.value, title, () => {
         typeText(fullSubtitle.value, subtitle, () => {
-          description.value = me.jobDescription || ''
+          typeText(fullDescription.value, description, () => {
+            finishWrite.value = true
+          })
         })
       })
     }
@@ -41,7 +40,7 @@
     >
       <Title :text="title" variant="h1" />
       <Title
-        v-if="subtitle === fullSubtitle"
+        v-if="title === fullTitle"
         :text="subtitle"
         variant="h3"
         class="justify-start p-1 text-blue-400"
@@ -49,9 +48,14 @@
       <p v-if="subtitle === fullSubtitle" class="text-gray-400 max-w-[90%] sm:max-w-[80%]">
         {{ description }}
       </p>
-      <div v-if="subtitle === fullSubtitle" class="flex flex-row gap-2 mt-4">
-        <Button variant="uppercase" icon="mdi:whatsapp" theme="tertiary">Contactar</Button>
-        <Button variant="uppercase" icon="mdi:download">Descargar CV</Button>
+      <div v-if="finishWrite" class="flex flex-row gap-2 mt-4">
+        <NuxtLink to="https://wa.link/bxjfgq" target="_blank">
+          <Button variant="uppercase" icon="mdi:whatsapp" theme="tertiary">Contactar</Button>
+        </NuxtLink>
+
+        <NuxtLink to="./docs/cv.pdf" target="_blank">
+          <Button variant="uppercase" icon="mdi:download">Descargar CV</Button>
+        </NuxtLink>
       </div>
     </div>
     <div class="hidden relative z-0 2xl:w-full overflow-hidden h-[600px] ml-25 lg:flex 2xl:flex">

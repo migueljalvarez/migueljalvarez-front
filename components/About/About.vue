@@ -54,10 +54,6 @@
               <NuxtImg src="FreeCodeCamp.svg" alt="Estudios" width="150" />
               <NuxtImg src="Platzi.svg" alt="Estudios" width="150" />
             </div>
-            <span class="flex flex-col w-full gap-4 font-normal">
-              <p>¿Quieres conocer más de mi experiencia?</p>
-              <Button variant="uppercase" icon="mdi:download">Descargar CV</Button>
-            </span>
           </div>
         </div>
       </div>
