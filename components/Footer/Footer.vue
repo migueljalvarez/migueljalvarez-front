@@ -1,9 +1,8 @@
 <script setup lang="ts">
-  import { MY_SOCIAL_MEDIA } from '~/constants/common'
-  import { PUBLIC_ROUTES, OTHER_PUBLIC_ROUTES } from '~/constants/routes'
-  import type { SocialMediaType } from '~/types/common'
+  import { useSocialMedia } from '~/composables/useSocialMedia'
+  import { PUBLIC_ROUTES } from '~/constants/routes'
 
-  const socials = ref<SocialMediaType[]>(MY_SOCIAL_MEDIA)
+  import type { SocialMediaType } from '~/types/common'
 
   const hoverIcon = (item: SocialMediaType) => {
     item.isHovered = true
@@ -11,10 +10,11 @@
   const leaveIcon = (item: SocialMediaType) => {
     item.isHovered = false
   }
+  const { socials } = useSocialMedia()
 </script>
 
 <template>
-  <footer class="flex flex-col w-full bg-black">
+  <footer class="box-border flex flex-col w-full bg-black">
     <section
       class="grid w-full grid-cols-1 gap-8 px-4 py-10 mx-auto max-w-7xl md:grid-cols-1 lg:grid-cols-4"
     >
@@ -63,14 +63,14 @@
       </div>
     </section>
     <div
-      class="flex flex-col items-center justify-center gap-2 p-3 text-sm bg-blue-400 text-slate-900 sm:flex-row sm:text-base"
+      class="flex w-full px-4 py-4 mx-auto text-sm bg-blue-400 grid-cols text-slate-900 sm:flex-row sm:text-base"
     >
-      <p>
-        Copyright &copy;
-        <strong>{{ new Date().getFullYear() }}</strong>
+      <p class="flex justify-center w-full gap-8 px-4 mx-auto lg:justify-end max-w-7xl">
+        <strong>
+          &copy; {{ new Date().getFullYear() }} Miguel Alvarez
+          <span class="font-normal">| Software Developer</span>
+        </strong>
       </p>
-      <span class="hidden mx-2 sm:inline">|</span>
-      <strong>Miguel Alvarez</strong>
     </div>
   </footer>
 </template>

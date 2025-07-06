@@ -1,6 +1,7 @@
 // @ts-nocheck
 import prettierConfig from 'eslint-config-prettier'
 import prettierPlugin from 'eslint-plugin-prettier'
+
 import withNuxt from './.nuxt/eslint.config.mjs'
 export default withNuxt([
   {
@@ -35,15 +36,6 @@ export default withNuxt([
             'EVENTS',
             'CONTENT'
           ]
-        }
-      ],
-
-      // 📦 Importaciones ordenadas
-      'import/order': [
-        'warn',
-        {
-          groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index']],
-          alphabetize: { order: 'asc', caseInsensitive: true }
         }
       ],
 
