@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { computed, onMounted, onBeforeUnmount } from 'vue'
-  import Title from '../Title/Title.vue'
+  import { Title } from '../atoms'
 
   // Emits for v-model support
   const emit = defineEmits(['update:currentIndex', 'update:portafolioCurrentIndex'])
@@ -103,7 +103,7 @@
 <template>
   <section :style="backgroundStyle" class="flex flex-col min-h-[400px]">
     <div
-      class="relative flex flex-col items-center justify-center w-full px-2 py-8 mx-auto shadow-lg max-w-8xl sm:px-6 bg-black/30 backdrop-blur-md"
+      class="relative flex flex-col items-center justify-center w-full px-2 py-8 pt-20 mx-auto shadow-lg max-w-8xl sm:px-6 bg-black/30 backdrop-blur-md"
     >
       <Title :text="title" variant="h2" class="italic text-center text-white" />
       <div class="flex items-center justify-center w-full min-h-[700px] relative overflow-hidden">

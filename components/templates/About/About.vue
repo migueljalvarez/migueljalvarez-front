@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-  import Title from '../Title/Title.vue'
+  import Title from '~/components/atoms/Title/Title.vue'
+
   defineProps<{
     title: string
   }>()

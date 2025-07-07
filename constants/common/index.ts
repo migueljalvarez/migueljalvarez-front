@@ -1,3 +1,7 @@
+export const REGEX_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+export const REGEX_COMMON = /^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?: [A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$/
+export const REGEX_LARGE_TEXT = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9,.\-+¿¡?"'()!\s]+$/
+
 export const MAIN_TITLE_PRESENTATION = 'Hola 👋, soy'
 
 export const MY_SOCIAL_MEDIA = [
@@ -28,6 +32,7 @@ export const MY_SOCIAL_MEDIA = [
 ]
 
 export const MAIN_HERO = 'Con mas de 9 años de Experiencia en el Sector'
+//Contact Information
 export const CONTACT_INFO = {
   phone: '+57 320-318-7076',
   email: 'ing.migueljalvarez@gamil.com',

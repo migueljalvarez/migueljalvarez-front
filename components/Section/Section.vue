@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import Title from '../Title/Title.vue'
+  import Title from '../atoms/Title/Title.vue'
 
   type SectionType = {
     id: string

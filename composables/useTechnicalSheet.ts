@@ -1,4 +1,4 @@
-import Badge from '@components/Badge/Badge.vue'
+import Badge from '~/components/atoms/Badge/Badge.vue'
 import type { PortafolioType } from '~/types/common'
 
 const NOT_APPLY = 'N/A'

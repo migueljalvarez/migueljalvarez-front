@@ -1,7 +1,14 @@
 <script lang="ts" setup>
-  import Section from '../Section/Section.vue'
-  import Title from '../Title/Title.vue'
-  import { CONTACT_INFO, CONTACT_INFO_DESCRIPTION } from '~/constants/common'
+  import { Title, Button, Input } from '~/components/atoms'
+
+  import {
+    CONTACT_INFO,
+    CONTACT_INFO_DESCRIPTION,
+    REGEX_COMMON,
+    REGEX_EMAIL,
+    REGEX_LARGE_TEXT
+  } from '~/constants/common'
+
   const { email, phone, location } = CONTACT_INFO
   defineProps<{
     title: string
@@ -70,11 +77,11 @@
       <div class="flex flex-col flex-wrap w-full gap-4 p-4 lg:w-2/6 z-1">
         <Title variant="h2" :text="title" class="text-white" />
 
-        <p class="flex mb-4 text-white text-wrap lg:text-xl">
+        <p class="flex mb-4 font-light text-white text-wrap lg:text-xl">
           {{ CONTACT_INFO_DESCRIPTION }}
         </p>
 
-        <div class="flex flex-col lg:text-xl">
+        <div class="flex flex-col font-light lg:text-xl">
           <span class="flex items-center gap-2 mb-4 text-lg text-white">
             <Icon name="mdi:phone" :size="iconSize" />
             <h3 class="flex text-lg text-wrap">{{ phone }}</h3>
@@ -93,7 +100,7 @@
           <div class="flex flex-col gap-4">
             <p class="text-2xl italic text-white">¿Quieres que hablemos?</p>
             <NuxtLink to="https://wa.link/bxjfgq" target="_blank">
-              <Button variant="uppercase" icon="mdi:whatsapp" theme="tertiary">Conatctar</Button>
+              <Button uppercase icon="mdi:whatsapp" theme="tertiary">Conatctar</Button>
             </NuxtLink>
           </div>
         </div>
@@ -114,24 +121,30 @@
               place-holder="Nombre"
               label="Nombre"
               required
+              :pattern="REGEX_COMMON"
+              error-message="Nombre inválido"
             />
             <Input
               v-model="form.lastName"
+              :pattern="REGEX_COMMON"
               type="text"
               name="lastName"
               place-holder="Apellido"
               label="Apellido"
               required
+              error-message="Apellido inválido"
             />
           </div>
 
           <Input
             v-model="form.email"
+            :pattern="REGEX_EMAIL"
             type="email"
             name="email"
             place-holder="Correo electrónico"
             label="Email"
             required
+            error-message="Email inválido"
           />
           <Select
             v-model="form.subject"
@@ -141,13 +154,17 @@
             placeholder="Selecciona un asunto"
             required
           />
-          <TextArea
+          <Input
             v-model="form.message"
-            :label="'Mensaje'"
+            :pattern="REGEX_LARGE_TEXT"
+            type="text"
+            tag="textarea"
+            label="Mensaje"
             name="message"
             place-holder="Deja aqui tu mensaje"
             :rows="4"
             required
+            error-message="Se ha detectado uso de caracter inválido"
           />
           <Button :disabled="disabledButton">Enviar</Button>
         </Form>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
   import type { PropType } from 'vue'
-  import Badge from '../Badge/Badge.vue'
+
   import { NuxtLink } from '#components'
+  import { Badge } from '~/components/atoms'
 
   // Define or import PorfolioType
   type PorfolioType = 'Cliente' | 'Practica' | string

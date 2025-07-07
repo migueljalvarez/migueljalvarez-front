@@ -1,23 +1,15 @@
 <script setup lang="ts">
   import type { PropType } from 'vue'
-  import type { SocialMediaType, Testimonial } from '~/types/common'
+  import type { Testimonial } from '~/types/common'
+
+  import { AvatarCard } from '../molecules'
 
   defineProps({
+    title: { type: String, default: '' },
     item: { type: Object as PropType<Testimonial>, required: true },
     color: { type: String, default: 'gray/10' },
     background: { type: String, default: 'black' }
   })
-
-  const iconStyles = {
-    base: { color: 'gray' },
-    hover: { color: 'oklch(70.7% 0.165 254.624)' }
-  }
-  const hoverIcon = (item: SocialMediaType) => {
-    item.isHovered = true
-  }
-  const leaveIcon = (item: SocialMediaType) => {
-    item.isHovered = false
-  }
 </script>
 
 <template>
@@ -31,57 +23,37 @@
       }"
     >
       <div
-        class="flex flex-col w-full max-w-xs mx-auto my-4 bg-white border-2 border-gray-200 rounded-lg shadow-xl sm:max-w-md md:max-w-lg lg:max-w-4xl md:h-100 lg:h-90 backdrop-blur-sm"
+        class="flex flex-col w-full max-w-xs mx-auto my-4 bg-white border-2 border-gray-200 rounded-lg shadow-xl min-h-max sm:max-w-md md:max-w-lg lg:max-w-2xl md:h-100 lg:h-90 backdrop-blur-sm"
       >
-        <div class="flex flex-col gap-2 px-4 pt-4 md:flex-row">
-          <NuxtImg
-            :src="item.image"
-            :alt="item.name"
-            format="webp"
-            class="self-center object-cover mb-2 border-4 border-blue-400 rounded-full cursor-pointer size-20 md:mb-0 md:size-25 lg:size-30"
-            loading="lazy"
-          />
-          <div
-            class="flex flex-col items-center justify-center w-full lg:justify-baseline lg:items-start md:items-start"
+        <div class="w-full py-4 md:p-8 max-w-[600px] my-5 mx-auto lg:mx-8">
+          <blockquote
+            class="relative px-8 text-sm italic text-gray-800 md:p-8 md:text-lg md:text-left"
           >
-            <h4
-              class="flex flex-row flex-wrap items-center justify-center text-base font-bold uppercase md:text-lg md:justify-start"
+            <span
+              class="absolute text-5xl left-[6px] top-[-20px] md:top-2.5 lg:left-[-30px] lg:top-[0px] lg:text-8xl text-gray-600 opacity-20 font-mono"
             >
-              {{ item.name }}
-              <span class="flex flex-row gap-2 px-2">
-                <a
-                  v-for="social in item.socialMedia"
-                  :key="social.name"
-                  :href="social.link"
-                  target="_blank"
-                  class="flex flex-row"
-                >
-                  <Icon
-                    :name="social.icon"
-                    :size="22"
-                    :style="social.isHovered ? iconStyles.hover : iconStyles.base"
-                    @mouseover="hoverIcon(social)"
-                    @mouseleave="leaveIcon(social)"
-                  />
-                </a>
-              </span>
-            </h4>
-            <p class="mt-1 text-xs text-gray-500 md:text-sm">
-              {{ item.position }}
-            </p>
-            <Badge
-              class="py-2 text-xs font-bold md:text-sm"
-              :theme="item.type === 'Trabajo' ? 'warning' : 'success'"
-              :value="item.type"
+              “
+            </span>
+            <p>{{ item.description }}</p>
+          </blockquote>
+          <div class="flex flex-col gap-2 px-4 pt-4 md:flex-row">
+            <AvatarCard
+              :image="item.image"
+              :name="item.name"
+              :social-media="item.socialMedia"
+              :sub-title="item.position"
+              :type="item.type"
             />
           </div>
-        </div>
-        <div>
-          <p class="p-4 text-sm font-light text-center md:p-8 md:text-lg md:text-left">
-            <q>{{ item.description }}</q>
-          </p>
         </div>
       </div>
     </div>
   </section>
 </template>
+<style scoped>
+  .cita-card .text-6xl {
+    font-size: 6rem; /* Ajuste del tamaño */
+    opacity: 0.15;
+    font-weight: 700; /* Comillas más prominentes */
+  }
+</style>
