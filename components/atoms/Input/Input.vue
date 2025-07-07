@@ -1,21 +1,18 @@
 <script lang="ts" setup>
   import { defineProps, defineEmits, ref } from 'vue'
+  import type { InputProps } from '../atom'
 
-  const props = defineProps<{
-    inputType?: string
-    name?: string
-    label?: string
-    required?: boolean
-    placeHolder?: string
-    modelValue?: string
-    disabled?: boolean
-  }>()
+  const props = withDefaults(defineProps<InputProps>(), {
+    type: 'text',
+    tag: 'input'
+  })
 
   const emit = defineEmits(['update:modelValue'])
+  const error = ref(false)
   const modelValue = ref(props.modelValue ?? '')
   const handleInput = (event: Event) => {
     modelValue.value = (event.target as HTMLInputElement).value
-
+    validate(modelValue.value)
     emit('update:modelValue', modelValue.value)
   }
   const requiredClass = computed(() => ({
@@ -23,8 +20,30 @@
   }))
   const inputClass = computed(() => ({
     'text-gray-700': !props.disabled,
-    'text-gray-400': props.disabled
+    'text-gray-400': props.disabled,
+    'resize-none': props.tag === 'textarea'
   }))
+  const rows = computed(() => {
+    if (props.tag === 'textarea') {
+      return 4
+    }
+    return undefined
+  })
+  function validate(value: string) {
+    console.log(value)
+    error.value = !props.pattern.test(value)
+  }
+  function handlePaste(e: ClipboardEvent) {
+    const clipboard = e.clipboardData
+    if (clipboard) {
+      const pasted = clipboard.getData('text')
+      const target = e.target as HTMLInputElement | HTMLTextAreaElement
+      const newValue = target.value + pasted
+
+      validate(newValue)
+      emit('update:modelValue', newValue)
+    }
+  }
 </script>
 <template>
   <div>
@@ -36,9 +55,10 @@
     >
       {{ label }}
     </label>
-    <input
+    <component
+      :is="tag"
       :id="name"
-      :type="inputType"
+      :type="type"
       :name="name"
       :class="inputClass"
       class="w-full p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-400"
@@ -47,8 +67,11 @@
       :disabled="disabled"
       :value="modelValue"
       autocomplete="false"
+      :rows="tag === 'textarea' ? rows : 4"
       @input="handleInput"
+      @paste="handlePaste"
     />
+    <p v-if="error" class="py-1 text-xs text-red-500">{{ errorMessage }}</p>
   </div>
 </template>
 

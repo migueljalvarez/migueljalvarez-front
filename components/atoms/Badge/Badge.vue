@@ -1,13 +1,8 @@
 <script lang="ts" setup>
-  const props = defineProps({
-    value: {
-      type: String,
-      required: true
-    },
-    theme: {
-      type: String,
-      default: 'bg-gray-200'
-    }
+  import type { BadgeProps } from '../atom'
+
+  const props = withDefaults(defineProps<BadgeProps>(), {
+    theme: 'info'
   })
   const bannerClass = computed(() => ({
     'bg-slate-200/60 text-slate-900': props.theme === 'info',
@@ -17,8 +12,8 @@
   }))
 </script>
 <template>
-  <div>
-    <p class="px-4 text-sm rounded-full" :class="bannerClass">{{ value }}</p>
+  <div class="min-w-max">
+    <p class="px-3 py-0.5 rounded-full font-semibold text-sm" :class="bannerClass">{{ value }}</p>
   </div>
 </template>
 

@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-  import Title from '../Title/Title.vue'
-  import type { PortafolioType } from '~/types/common'
+  import { Title } from '~/components/atoms'
 
-  defineProps<{
-    title: string
-    projects: PortafolioType[]
-  }>()
+  import type { PortfolioProps } from '../templates'
+  import PortfolioItem from './PortfolioItem.vue'
+
+  defineProps<PortfolioProps>()
 </script>
 <template>
   <section

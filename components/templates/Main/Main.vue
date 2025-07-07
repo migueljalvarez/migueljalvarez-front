@@ -1,8 +1,11 @@
 <script lang="ts" setup>
   import { ref, onMounted } from 'vue'
-  import Title from '../Title/Title.vue'
+  import Button from '~/components/atoms/Button/Button.vue'
+  import Title from '~/components/atoms/Title/Title.vue'
+
   import { MAIN_TITLE_PRESENTATION } from '~/constants/common'
   import type { Me } from '~/types/common'
+
   const title = ref('')
   const subtitle = ref('')
   const description = ref('')
@@ -12,7 +15,7 @@
   const finishWrite = ref(false)
 
   const props = defineProps<{ me: Me | null }>()
-  const { typeText } = useTypeText(90)
+  const { typeText } = useTypeText(80)
 
   onMounted(async () => {
     if (props.me) {
@@ -50,11 +53,11 @@
       </p>
       <div v-if="finishWrite" class="flex flex-row gap-2 mt-4">
         <NuxtLink to="https://wa.link/bxjfgq" target="_blank">
-          <Button variant="uppercase" icon="mdi:whatsapp" theme="tertiary">Contactar</Button>
+          <Button :uppercase="true" icon="mdi:whatsapp" theme="tertiary">Contactar</Button>
         </NuxtLink>
 
         <NuxtLink to="./docs/cv.pdf" target="_blank">
-          <Button variant="uppercase" icon="mdi:download">Descargar CV</Button>
+          <Button :uppercase="true" icon="mdi:download">Descargar CV</Button>
         </NuxtLink>
       </div>
     </div>
