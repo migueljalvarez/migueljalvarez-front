@@ -4,4 +4,5 @@ import Badge from './Badge/Badge.vue'
 import Input from './Input/Input.vue'
 import Hero from './Hero/Hero.vue'
 import Avatar from './Avatar/Avatar.vue'
-export { Title, Button, Badge, Input, Hero, Avatar }
+import Select from './Select/Select.vue'
+export { Title, Button, Badge, Input, Hero, Avatar, Select }

@@ -21,7 +21,10 @@
   const inputClass = computed(() => ({
     'text-gray-700': !props.disabled,
     'text-gray-400': props.disabled,
-    'resize-none': props.tag === 'textarea'
+    'resize-none': props.tag === 'textarea',
+    'border-red-500 focus:ring-0 focus:ring-red-500 focus:outline-none': error.value,
+    'focus:ring-0 focus:ring-blue-500 border-gray-300 focus:outline-1 outline-blue-400':
+      !error.value
   }))
   const rows = computed(() => {
     if (props.tag === 'textarea') {
@@ -61,7 +64,7 @@
       :type="type"
       :name="name"
       :class="inputClass"
-      class="w-full p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-400"
+      class="w-full p-2 rounded-lg border-1 placeholder:text-gray-400"
       :placeholder="placeHolder"
       :required="required"
       :disabled="disabled"

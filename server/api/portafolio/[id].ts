@@ -3,7 +3,7 @@ import type { PortafolioType } from '~/types/common'
 export default defineEventHandler(async event => {
   const portafolioId = getRouterParam(event, 'id')
 
-  const portafolio: PortafolioType[] = [
+  const portafolio: Omit<PortafolioType, 'portafolioType'>[] = [
     {
       id: '576754d6-7fa4-4529-8628-207e36cac3a2',
       title: 'Tu Radio AR Stereo',

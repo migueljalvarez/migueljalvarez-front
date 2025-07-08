@@ -1,14 +1,8 @@
 <script lang="ts" setup>
   import { defineProps, defineEmits } from 'vue'
+  import type { SelectProps } from '../atom'
 
-  const props = defineProps<{
-    modelValue: string
-    name: string
-    label?: string
-    options: { value: string; label: string }[]
-    placeholder?: string
-    required?: boolean
-  }>()
+  const props = defineProps<SelectProps>()
 
   const emit = defineEmits(['update:modelValue'])
 
@@ -33,7 +27,7 @@
     <select
       :id="name"
       :name="name"
-      class="w-full h-10 p-2 pr-10 text-gray-800 border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-blue-400"
+      class="w-full h-10 p-2 pr-10 text-gray-800 border-gray-300 rounded-lg appearance-none border-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
       :required="required"
       :value="modelValue"
       @change="onChange"

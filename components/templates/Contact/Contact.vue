@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { Title, Button, Input } from '~/components/atoms'
+  import { Title, Button, Input, Select } from '~/components/atoms'
 
   import {
     CONTACT_INFO,
