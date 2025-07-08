@@ -32,6 +32,7 @@
             :alt="title"
             class="object-center rounded-lg rounded-b-none w-80"
             format="webp"
+            :preload="true"
           />
         </div>
       </div>

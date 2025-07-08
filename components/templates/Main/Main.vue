@@ -69,6 +69,8 @@
         format="webp"
         quality="80"
         loading="lazy"
+        :preload="true"
+        priority
       />
     </div>
   </section>
