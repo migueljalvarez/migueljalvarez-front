@@ -3,37 +3,20 @@
 
   import { NuxtLink } from '#components'
   import { Badge } from '~/components/atoms'
+  import type { PorfolioItemProps } from '../templates'
 
   // Define or import PorfolioType
-  type PorfolioType = 'Cliente' | 'Practica' | string
 
-  const props = defineProps({
-    id: {
-      type: String,
-      required: true
-    },
-    title: {
-      type: String,
-      required: true
-    },
-    portfolioType: {
-      type: String as PropType<PorfolioType>,
-      required: true
-    },
-    technologies: {
-      type: Array as PropType<string[]>,
-      default: () => []
-    }
-  })
+  const props = defineProps<PorfolioItemProps>()
 
   const portfolioTypeClass = computed(() => ({
-    'text-white bg-green-600/80': props.portfolioType === 'Cliente',
-    'text-white bg-gray-400/80': props.portfolioType === 'Practica'
+    'text-white bg-green-600': props.portfolioType === 'Cliente',
+    'text-white bg-gray-400': props.portfolioType === 'Practica'
   }))
 </script>
 <template>
   <div
-    class="relative flex flex-col h-full overflow-hidden hover:shadow-2xl w-70 2xl:w-80 rounded-xl hover:scale-110"
+    class="relative flex flex-col h-full overflow-hidden border border-gray-300 hover:shadow-2xl w-70 2xl:w-80 rounded-xl hover:scale-110"
   >
     <NuxtLink :to="`/portafolio/${id}`" class="flex flex-col h-full">
       <div
@@ -45,14 +28,14 @@
       <div class="flex items-center justify-center w-full bg-gray-100">
         <div class="w-full">
           <NuxtImg
-            src="/ar-stereo.webp"
-            alt="ar-stereo"
+            :src="image"
+            :alt="title"
             class="object-center rounded-lg rounded-b-none w-80"
             format="webp"
           />
         </div>
       </div>
-      <div class="flex items-center justify-between w-full p-4 bg-white rounded-b-lg">
+      <div class="flex items-center justify-between w-full p-4 rounded-b-lg bg-gray-50">
         <span class="flex-col text-black">
           <p class="font-sans italic font-medium">{{ title }}</p>
           <span

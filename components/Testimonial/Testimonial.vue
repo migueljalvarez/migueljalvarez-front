@@ -15,7 +15,7 @@
   })
 </script>
 <template>
-  <div>
+  <section>
     <Carousel
       v-model:current-index="currentIndex"
       title="Ellos confían en mí"
@@ -39,7 +39,7 @@
         />
       </template>
     </Carousel>
-  </div>
+  </section>
 </template>
 
 <style></style>

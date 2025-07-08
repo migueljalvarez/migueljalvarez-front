@@ -41,3 +41,36 @@ export const CONTACT_INFO = {
 export const CONTACT_INFO_DESCRIPTION = `¿Buscas impulsar tus proyectos con soluciones creativas y efectivas? ¡Estoy listo para
           ayudarte! Ponte en contacto conmigo y descubre cómo juntos podemos llevar tus ideas al
           siguiente nivel. Tu mensaje es el primer paso para comenzar algo increíble.`
+
+/* Services */
+export const SERVICES = [
+  {
+    title: 'Consultoría',
+    icon: 'fa-solid:users',
+    items: ['Aterrizaje de ideas', 'Planificación y Roadmap']
+  },
+  {
+    title: 'Desarrollo de Software',
+    icon: 'fa-solid:code',
+    items: [
+      'Desarrollo web a la medida',
+      'Mantenimiento y optimización',
+      'Integraciones y APIs',
+      'Documentación técnica',
+      'Despliegue Automatizado',
+      'Certificado SSL',
+      'Posicionamiento SEO'
+    ]
+  },
+  {
+    title: 'Freelance',
+    icon: 'fa6-solid:laptop-code',
+    items: [
+      'Creación de Landign Page',
+      'Creación de MVPs',
+      'Desarrollo de Funciones',
+      'Corrección de Bugs',
+      'Soporte y mantenimiento'
+    ]
+  }
+]

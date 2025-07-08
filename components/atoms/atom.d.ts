@@ -35,3 +35,11 @@ export type AvatarProps = {
   name: string
   size?: 'sm' | 'md' | 'lg'
 }
+export type SelectProps = {
+  modelValue: string
+  name: string
+  label?: string
+  options: { value: string; label: string }[]
+  placeholder?: string
+  required?: boolean
+}
