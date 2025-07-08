@@ -1,13 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { resolve } from 'pathe'
+import compression from 'vite-plugin-compression'
 export default defineNuxtConfig({
   app: {
     rootAttrs: {
       lang: 'es'
     },
     head: {
-      title: 'Miguel Alvarez | Ingeniero de Software',
-      titleTemplate: '%s | Ingeniero de Software',
+      title: 'Miguel Alvarez | Desarrollo de Software',
+      titleTemplate: '%s | Desarrollo de Software',
       meta: [
         {
           name: 'description',
@@ -34,10 +35,9 @@ export default defineNuxtConfig({
       Roboto: [400, 700]
     },
     display: 'swap',
-    download: false,
+    download: true,
     inject: true,
     subsets: ['latin'],
-    preconnect: true,
     prefetch: true
   },
   imports: {
@@ -60,7 +60,7 @@ export default defineNuxtConfig({
   },
   nitro: {
     prerender: {
-      routes: ['/']
+      routes: ['/', '/portfolio']
     }
   },
   alias: {
@@ -70,5 +70,8 @@ export default defineNuxtConfig({
     '@types': resolve(__dirname, 'types'),
     '@assets': resolve(__dirname, 'assets'),
     '@public': resolve(__dirname, 'public')
+  },
+  vite: {
+    plugins: [compression()]
   }
 })

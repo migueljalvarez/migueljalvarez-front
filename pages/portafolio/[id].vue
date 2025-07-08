@@ -53,6 +53,7 @@
             format="webp"
             loading="lazy"
             class="rounded-lg"
+            :preload="true"
           />
           <div class="flex flex-col justify-center text-center sm:text-left">
             <h1 class="text-xl font-bold sm:text-2xl text-slate-800">
@@ -80,6 +81,7 @@
               :src="image.url"
               :alt="image.title"
               class="object-cover w-full transition-transform duration-300 cursor-pointer aspect-video rounded-xl hover:scale-105"
+              :preload="true"
               @click="handleClickImage"
             />
           </div>
@@ -97,6 +99,7 @@
           :src="previewImage"
           alt=""
           class="w-full h-auto cursor-auto rounded-3xl"
+          :preload="true"
           @click.stop
         />
       </div>

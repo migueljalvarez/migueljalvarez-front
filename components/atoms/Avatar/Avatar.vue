@@ -19,6 +19,7 @@
       format="webp"
       class="self-center object-cover mb-2 border-4 border-blue-400 rounded-full cursor-pointer"
       loading="lazy"
+      :preload="true"
     />
   </div>
 </template>

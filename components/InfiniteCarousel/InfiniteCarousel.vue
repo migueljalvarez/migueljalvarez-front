@@ -35,6 +35,7 @@
             class="transition cursor-pointer size-10 sm:size-12 md:size-14 hover:scale-110"
             :title="item.alt"
             draggable="false"
+            :preload="true"
           />
         </template>
       </div>

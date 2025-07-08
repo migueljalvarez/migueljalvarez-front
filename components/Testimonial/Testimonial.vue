@@ -1,6 +1,8 @@
 <script lang="ts" setup>
-  import Carousel from '../Carousel/Carousel.vue'
+  import { defineAsyncComponent } from 'vue'
   import type { Testimonial } from '~/types/common'
+  const Carousel = defineAsyncComponent(() => import('~/components/Carousel/Carousel.vue'))
+
   const currentIndex = ref(0)
   const touchStartX = ref(0)
   defineProps({

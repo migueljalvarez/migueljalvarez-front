@@ -23,6 +23,7 @@
               alt="Miguel Alvarez"
               class="self-center rounded-lg lg:self-start"
               width="500"
+              :preload="true"
             />
           </div>
           <div class="flex flex-col items-start gap-4 lg:p-4 lg:w-5/6">
@@ -51,9 +52,9 @@
             <div
               class="flex flex-col self-center gap-8 p-2 md:flex-row lg:gap-4 lg:justify-around lg:w-full lg:flex-wrap"
             >
-              <NuxtImg src="academia-geek.jpeg" alt="Estudios" width="150" />
-              <NuxtImg src="FreeCodeCamp.svg" alt="Estudios" width="150" />
-              <NuxtImg src="Platzi.svg" alt="Estudios" width="150" />
+              <NuxtImg src="academia-geek.jpeg" alt="Estudios" width="150" :preload="true" />
+              <NuxtImg src="FreeCodeCamp.svg" alt="Estudios" width="150" :preload="true" />
+              <NuxtImg src="Platzi.svg" alt="Estudios" width="150" :preload="true" />
             </div>
           </div>
         </div>
