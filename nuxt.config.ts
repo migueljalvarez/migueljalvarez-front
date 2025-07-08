@@ -60,7 +60,7 @@ export default defineNuxtConfig({
   },
   nitro: {
     prerender: {
-      routes: ['/', '/portfolio']
+      routes: ['/']
     }
   },
   alias: {
