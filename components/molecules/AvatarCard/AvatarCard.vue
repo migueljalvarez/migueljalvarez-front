@@ -23,7 +23,7 @@
     <Avatar :image="image" :name="name" />
     <div class="flex flex-col items-center justify-start min-w-max">
       <div class="flex items-center">
-        <p class="py-2 text-lg font-black text-white uppercase">{{ name }}</p>
+        <p class="text-lg font-black text-black uppercase">{{ name }}</p>
         <span v-for="social in socialMedia" :key="social.name" class="gap-2 px-2">
           <NuxtLink
             :href="social.link"

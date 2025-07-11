@@ -39,7 +39,7 @@
     />
 
     <div
-      class="relative z-20 flex flex-col flex-wrap justify-center h-auto gap-2 p-4 pt-40 text-white bg-black lg:p-8 lg:w-full 2xl:px-24 2xl:ml-20 grow lg:bg-transparent"
+      class="relative z-20 flex flex-col flex-wrap justify-center h-auto gap-2 p-4 py-20 text-white bg-black lg:px-10 lg:p-8 lg:w-full 2xl:px-24 2xl:ml-20 grow lg:bg-transparent"
     >
       <Title :text="title" variant="h1" />
       <Title
@@ -68,6 +68,7 @@
         class="object-cover w-full h-full overflow-hidden mask-linear-at-left mask-l-from-black mask-l-to-transparent mask-l-from-50% mask-l-to-95%"
         format="webp"
         quality="80"
+        preload
         priority
       />
     </div>

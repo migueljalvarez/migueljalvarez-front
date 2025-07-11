@@ -1,6 +1,6 @@
 export const PUBLIC_ROUTES = [
   { name: 'Inicio', link: '/' },
-  { name: 'Servicios', link: '/#service' },
+  { name: 'Servicios', link: '/#services' },
   { name: 'Portafolio', link: '/#portfolio' },
   { name: 'Sobre mi', link: '/#about' },
   { name: 'Contacto', link: '/#contact' }

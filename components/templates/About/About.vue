@@ -52,7 +52,7 @@
               Cuando no estoy programando, disfruto de la música, el cine, salir a caminar, ver
               videos y tutoriales, siempre estoy en constante aprendizaje.
             </p>
-            <Title text="Formacion Complementaria" variant="h4" class="py-2 italic text-gray-800" />
+            <Title text="Formacion Complementaria" variant="h3" class="py-2 italic text-gray-800" />
             <div
               class="flex flex-col self-center gap-8 p-2 md:flex-row lg:gap-4 lg:justify-around lg:w-full lg:flex-wrap"
             >
