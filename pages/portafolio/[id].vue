@@ -26,23 +26,27 @@
   const handleClose = () => {
     showPreviewImage.value = false
   }
-  onMounted(async () => {
-    const paramId = route.params.id
-    const { data } = await useFetch(`/api/portafolio/${paramId}`)
-    if (data) {
-      porfolioDetails.value = data.value
-      const technicalSheet = getTechnicalSheet(
-        data.value as PortafolioType
-      ) as unknown as TableRowType[]
+
+  const paramId = route.params.id
+  const { data } = await useFetch(`/api/portafolio/${paramId}`)
+  if (data) {
+    porfolioDetails.value = data.value
+    const technicalSheet = getTechnicalSheet(
+      data.value as PortafolioType
+    ) as unknown as TableRowType[]
+    if (technicalSheet) {
       rows.value = cleanNotApply(technicalSheet)
     }
-  })
+  }
+
   onUnmounted(() => {
     porfolioDetails.value = null
   })
 </script>
 <template>
-  <section class="flex bg-[url('/64363.webp')] bg-cover bg-center bg-no-repeat bg-fixed relative">
+  <section
+    class="flex bg-[url('/contact-bg.webp')] bg-cover bg-center bg-no-repeat bg-fixed relative"
+  >
     <div
       class="flex justify-center w-full min-h-screen p-8 shadow-lg bg-black/60 backdrop-blur-md z-1"
     >

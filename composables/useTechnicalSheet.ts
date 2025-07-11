@@ -43,7 +43,7 @@ export const useTechnicalSheet = () => {
         'Estado',
         data.state
           ? {
-              component: Badge,
+              component: markRaw(Badge),
               props: {
                 class: 'inline-block text-xs',
                 value: String(data.state),
