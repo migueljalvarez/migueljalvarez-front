@@ -1,5 +1,6 @@
-type RenderableComponent = {
-  component: string
+import type { Component } from 'vue'
+export type RenderableComponent = {
+  component: string | Component
   props?: {
     default?: Array<RenderableComponent>
   } & Record<string, unknown>

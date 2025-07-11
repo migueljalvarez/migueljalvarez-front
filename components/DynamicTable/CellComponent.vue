@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-  import type { TableCellType } from './DynamicTable'
+  import type { Component } from 'vue'
+  import type { RenderableComponent, TableCellType } from './DynamicTable'
 
   defineProps<{ cell: TableCellType }>()
 
@@ -10,7 +11,7 @@
   const isRenderable = (
     val: unknown
   ): val is {
-    component: string
+    component: RenderableComponent
     props?: Record<string, unknown> & { theme?: string; value?: string }
   } => typeof val === 'object' && val !== null && 'component' in val
 </script>
