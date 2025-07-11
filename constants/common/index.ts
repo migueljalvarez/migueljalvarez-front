@@ -66,7 +66,7 @@ export const SERVICES = [
     title: 'Freelance',
     icon: 'fa6-solid:laptop-code',
     items: [
-      'Creación de Landign Page',
+      'Creación de Landing Page',
       'Creación de MVPs',
       'Desarrollo de Funciones',
       'Corrección de Bugs',

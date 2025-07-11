@@ -31,7 +31,7 @@
 
 <template>
   <header
-    class="z-50 flex items-center w-full h-20 gap-4 px-6 text-white bg-black shadow-md min-w-5xl lg:justify-center"
+    class="z-50 flex items-center w-full h-20 gap-4 px-6 text-white bg-black shadow-md lg:justify-center"
   >
     <div class="flex w-full max-w-7xl">
       <NuxtImg src="brand_white_v2.svg" width="200" alt="Miguel ALvarez" />
