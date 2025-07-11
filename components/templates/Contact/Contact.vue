@@ -1,5 +1,7 @@
 <script lang="ts" setup>
   import { Title, Button, Input, Select } from '~/components/atoms'
+  import Form from '~/components/Form/Form.vue'
+  import { Section } from '~/components/organisms'
 
   import {
     CONTACT_INFO,
@@ -67,9 +69,10 @@
   }
 </script>
 <template>
-  <section
+  <Section
     id="contact"
-    class="flex items-center justify-center min-h-screen gap-4 bg-[url('../../assets/images/64363.jpg')] bg-cover bg-center bg-no-repeat bg-fixed relative"
+    class="relative flex justify-center min-h-screen bg-fixed bg-center bg-no-repeat bg-cover"
+    background-image="/contact-bg.webp"
   >
     <div
       class="flex flex-col justify-center min-h-screen gap-4 shadow-lg lg:justify-around lg:gap-8 lg:flex-row lg:p-8 pt-30 lg:pt-30 z-1 bg-black/60 backdrop-blur-md"
@@ -170,7 +173,7 @@
         </Form>
       </div>
     </div>
-  </section>
+  </Section>
 </template>
 
 <style></style>

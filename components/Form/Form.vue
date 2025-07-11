@@ -16,9 +16,9 @@
 <template>
   <section>
     <form @submit.prevent="emit('submit')">
-      <div class="flex flex-col mb-4">
-        <Title :text="title" variant="h3" class="mb-4 font-bold text-gray-800" />
-        <legend class="mb-4">
+      <div class="flex flex-col mb-4 text-gray-800">
+        <Title :text="title" variant="h3" class="mb-4 font-bold" />
+        <legend class="mb-4 text-sm font-normal">
           {{ description }}
         </legend>
       </div>

@@ -1,4 +1,4 @@
-import { dbAdmin } from '../../utils/firebase-admin.ts'
+import { model } from '../../utils/firebase-admin.ts'
 type SocialMediaType = {
   id: string
   name: string
@@ -11,16 +11,26 @@ type snapshotType = {
   data: () => Partial<SocialMediaType>
 }
 export default defineEventHandler(async (): Promise<SocialMediaType[]> => {
-  const snapshot = await dbAdmin.collection('SocialMedia').get()
+  const storage = useStorage()
+  const key = 'social-media-cache'
+
+  const cached = (await storage.getItem(key)) as SocialMediaType[]
+  if (cached) {
+    return cached
+  }
+  const snapshot = await model.socialMedia.get()
   if (snapshot.empty) {
     throw createError({
       statusCode: 404,
-      statusMessage: 'No documents found in the Me collection'
+      statusMessage: 'No documents found in the SocialMedia collection'
     })
   }
 
-  return snapshot.docs.map((doc: snapshotType) => ({
+  const data = snapshot.docs.map((doc: snapshotType) => ({
     id: doc.id,
     ...(doc.data() as Omit<SocialMediaType, 'id'>)
   })) as SocialMediaType[]
+
+  await storage.setItem(key, data)
+  return data
 })

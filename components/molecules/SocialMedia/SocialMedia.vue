@@ -22,13 +22,13 @@
     <div class="flex flex-col my-2">
       <ul class="flex flex-row gap-2">
         <li :key="name" class="text-white cursor-pointer hover:text-gray-400">
-          <a :href="link" target="_blank">
+          <NuxtLink :to="link" target="_blank" :aria-label="name">
             <Icon
               :name="icon"
               :size="size"
               :style="isHovered ? iconStyles.hover : iconStyles.base"
             />
-          </a>
+          </NuxtLink>
         </li>
       </ul>
     </div>

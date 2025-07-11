@@ -16,4 +16,8 @@ if (!getApps().length) {
   })
 }
 
-export const dbAdmin = getFirestore()
+const db = getFirestore()
+const me = db.collection('/Me')
+const portfolio = db.collection('/Portfolio')
+const socialMedia = db.collection('/SocialMedia')
+export const model = { me, portfolio, socialMedia }

@@ -6,3 +6,4 @@ export type AvatarCardProps = AvatarProps & {
   type: string
   socialMedia: SocialMediaType[]
 }
+export type BlockquoteProps = { text: string; color?: string }

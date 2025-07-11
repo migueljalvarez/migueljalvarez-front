@@ -45,7 +45,7 @@
       <Title
         v-if="title === fullTitle"
         :text="subtitle"
-        variant="h3"
+        variant="h2"
         class="justify-start p-1 text-blue-400"
       />
       <p v-if="subtitle === fullSubtitle" class="text-gray-400 max-w-[90%] sm:max-w-[80%]">
@@ -56,9 +56,9 @@
           <Button :uppercase="true" icon="mdi:whatsapp" theme="tertiary">Contactar</Button>
         </NuxtLink>
 
-        <NuxtLink to="./docs/cv.pdf" target="_blank">
+        <a href="/docs/CV_DOWNLOAD.pdf" target="_blank" download="cv_download">
           <Button :uppercase="true" icon="mdi:download">Descargar CV</Button>
-        </NuxtLink>
+        </a>
       </div>
     </div>
     <div class="hidden relative z-0 2xl:w-full overflow-hidden h-[600px] ml-25 lg:flex 2xl:flex">
@@ -68,8 +68,6 @@
         class="object-cover w-full h-full overflow-hidden mask-linear-at-left mask-l-from-black mask-l-to-transparent mask-l-from-50% mask-l-to-95%"
         format="webp"
         quality="80"
-        loading="lazy"
-        :preload="true"
         priority
       />
     </div>

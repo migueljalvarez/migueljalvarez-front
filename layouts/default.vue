@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import { Header, Footer } from '~/components/molecules'
+</script>
 <template>
   <div class="layout">
     <Header />

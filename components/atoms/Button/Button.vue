@@ -12,7 +12,7 @@
     'py-2 px-4 text-xs': props.size === 'sm',
     'bg-blue-400 text-black hover:bg-blue-500': props.theme === 'primary',
     'bg-gray-200 text-black hover:bg-gray-400': props.theme === 'secondary',
-    'bg-green-600 text-white hover:bg-green-800': props.theme === 'tertiary'
+    'bg-green-700 text-white hover:bg-green-800': props.theme === 'tertiary'
   }))
 </script>
 <template>

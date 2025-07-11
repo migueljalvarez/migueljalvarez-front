@@ -8,8 +8,8 @@
     'text-6xl lg:text-7xl font-bold': props.variant === 'h1',
     'text-3xl lg:text-6xl font-bold italic': props.variant === 'h2',
     'text-2xl lg:text-3xl font-medium italic': props.variant === 'h3',
-    'text-lg lg:text-2xl font-normal': props.variant === 'h4',
-    'text-sm lg:text-lg': props.variant === 'h5',
+    'text-sm lg:text-lg font-black': props.variant === 'h4',
+    'text-lg lg:text-2xl font-normal': props.variant === 'h5',
     'text-base font-thin': props.variant === 'h6'
   }))
 </script>

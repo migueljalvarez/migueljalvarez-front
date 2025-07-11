@@ -1,6 +1,4 @@
 <script setup lang="ts">
-  import type { PropType } from 'vue'
-
   import { NuxtLink } from '#components'
   import { Badge } from '~/components/atoms'
   import type { PorfolioItemProps } from '../templates'
@@ -10,8 +8,8 @@
   const props = defineProps<PorfolioItemProps>()
 
   const portfolioTypeClass = computed(() => ({
-    'text-white bg-green-600': props.portfolioType === 'Cliente',
-    'text-white bg-gray-400': props.portfolioType === 'Practica'
+    'text-white bg-green-700': props.portfolioType === 'Cliente',
+    'text-white bg-gray-500': props.portfolioType === 'Practica'
   }))
 </script>
 <template>
@@ -32,7 +30,7 @@
             :alt="title"
             class="object-center rounded-lg rounded-b-none w-80"
             format="webp"
-            :preload="true"
+            loading="lazy"
           />
         </div>
       </div>

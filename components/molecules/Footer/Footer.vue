@@ -3,6 +3,7 @@
   import { PUBLIC_ROUTES } from '~/constants/routes'
 
   import type { SocialMediaType } from '~/types/common'
+  import SocialMedia from '../SocialMedia/SocialMedia.vue'
 
   const hoverIcon = (item: SocialMediaType) => {
     item.isHovered = true
@@ -18,21 +19,10 @@
     <section
       class="grid w-full grid-cols-1 gap-8 px-4 py-10 mx-auto max-w-7xl md:grid-cols-1 lg:grid-cols-4"
     >
-      <!-- Logo & Description -->
-
-      <div class="flex flex-col items-start gap-2 mt-8 lg:mt-0">
-        <h5 class="mb-2 font-black text-white uppercase">Sobre Mi</h5>
-        <div>
-          <p class="max-w-xl text-sm text-slate-400 sm:text-base">
-            Desarrollador de software enfocado en crear soluciones digitales eficientes y
-            escalables. Transformo ideas en productos tecnológicos útiles y orientados a resultados.
-          </p>
-        </div>
-      </div>
       <!-- Menu -->
       <div>
-        <h5 class="mb-2 font-black text-white uppercase">Menu</h5>
-        <ul class="flex flex-col gap-2">
+        <p class="py-2 text-lg font-black text-white uppercase">Menu</p>
+        <ul class="flex flex-col gap-2 uppercase">
           <li
             v-for="item in PUBLIC_ROUTES"
             :key="item.name"
@@ -45,7 +35,7 @@
 
       <!-- Social Media -->
       <div>
-        <h5 class="mb-2 font-black text-white uppercase">Contacto</h5>
+        <p class="py-2 text-lg font-black text-white uppercase">Contacto</p>
         <div class="flex flex-wrap gap-3">
           <SocialMedia
             v-for="item in socials"
@@ -55,10 +45,22 @@
             :icon="item.icon"
             :is-hovered="item.isHovered"
             orientation="horizontal"
-            :size="24"
+            :size="32"
             @mouseover="hoverIcon(item)"
             @mouseleave="leaveIcon(item)"
           />
+        </div>
+      </div>
+      <div></div>
+      <!-- Logo & Description -->
+      <div class="flex flex-col items-start gap-4 mt-8 lg:mt-0">
+        <p class="py-2 text-lg font-black text-white uppercase">Sobre Mi</p>
+        <NuxtImg src="brand_white.svg" width="150" alt="Miguel Alvarez" />
+        <div>
+          <p class="max-w-xl text-sm text-slate-400 sm:text-base">
+            Desarrollador de software enfocado en crear soluciones digitales eficientes y
+            escalables. Transformo ideas en productos tecnológicos útiles y orientados a resultados.
+          </p>
         </div>
       </div>
     </section>
