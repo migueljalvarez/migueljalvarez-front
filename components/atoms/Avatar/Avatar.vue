@@ -5,7 +5,7 @@
     size: 'sm'
   })
   const avatarClass = computed(() => ({
-    'size-15 lg:size-20': props.size === 'sm',
+    'size-18 lg:size-20': props.size === 'sm',
     'size-20 lg:size-25': props.size === 'md',
     'size-30': props.size === 'lg'
   }))

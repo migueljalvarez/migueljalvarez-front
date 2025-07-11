@@ -13,7 +13,7 @@
 </script>
 <template>
   <div class="min-w-max">
-    <p class="px-3 py-0.5 rounded-full font-semibold text-sm" :class="bannerClass">{{ value }}</p>
+    <p class="px-3 py-0.5 rounded-full text-sm" :class="bannerClass">{{ value }}</p>
   </div>
 </template>
 
