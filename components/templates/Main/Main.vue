@@ -18,10 +18,8 @@
 
   const props = defineProps<{ me: Me | null }>()
   const { typeText } = useTypeText(80)
-  const emojiRef = ref<HTMLElement | null>(null)
   onMounted(async () => {
     const emoji = h('img', {
-      ref: emojiRef,
       src: '/waving.png',
       alt: '👋',
       'aria-label': 'saludo',
