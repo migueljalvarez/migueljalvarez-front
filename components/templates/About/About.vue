@@ -27,11 +27,20 @@
             />
           </div>
           <div class="flex flex-col items-start gap-4 text-justify lg:p-4 lg:w-5/6">
-            <Title
-              text="¡Hola 👋, soy Miguel!"
-              variant="h3"
-              class="self-start p-2 mb-4 font-bold text-gray-800"
-            />
+            <span>
+              <h3 class="italic font-medium">
+                ¡Hola
+                <NuxtImg
+                  src="waving.png"
+                  alt="👋"
+                  class="inline-block mx-1 align-middle rotate-16 translate-y-[-8px] size-8"
+                  draggable="false"
+                  loading="lazy"
+                />
+                , soy Miguel!
+              </h3>
+            </span>
+
             <p class="font-normal">
               Soy
               <strong>Ingeniero de Sistemas</strong>

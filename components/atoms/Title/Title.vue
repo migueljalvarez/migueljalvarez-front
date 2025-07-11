@@ -16,7 +16,10 @@
 
 <template>
   <div>
-    <component :is="variant" :class="titleClass">{{ text }}</component>
+    <component :is="variant" :class="titleClass">
+      {{ text }}
+      <slot />
+    </component>
   </div>
 </template>
 

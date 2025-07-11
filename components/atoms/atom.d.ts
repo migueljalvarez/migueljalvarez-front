@@ -1,3 +1,5 @@
+import type { Component } from 'nuxt/schema'
+
 export type ButtonProps = {
   size?: 'sm' | 'md' | 'lg'
   theme?: 'primary' | 'secondary' | 'tertiary'

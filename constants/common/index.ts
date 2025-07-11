@@ -2,8 +2,8 @@ export const REGEX_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 export const REGEX_COMMON = /^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?: [A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$/
 export const REGEX_LARGE_TEXT = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9,.\-+¿¡?"'()!\s]+$/
 
-export const MAIN_TITLE_PRESENTATION = 'Hola 👋, soy'
-
+export const MAIN_TITLE_PRESENTATION = 'Hola'
+export const MAIN_TITLE_PRESENTATION_COMPLEMENT = 'soy'
 export const MY_SOCIAL_MEDIA = [
   {
     name: 'LinkedIn',
