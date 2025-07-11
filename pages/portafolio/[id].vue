@@ -10,19 +10,13 @@
   })
   const route = useRoute()
 
-  const paramId = route.params.id
-
-  const { data } = await useFetch(`/api/portafolio/${paramId}`)
-
   const titlesTables = ['Detalles', 'Informacion']
   const { getTechnicalSheet } = useTechnicalSheet()
-  const cleanNotApply = (rows: TableRowType[]) => {
+  const cleanNotApply = (rows: TableRowType[]): TableRowType[] => {
     return rows.filter(row => !row.includes('N/A'))
   }
-  const rows = cleanNotApply(
-    getTechnicalSheet(data.value as PortafolioType) as unknown as TableRowType[]
-  )
-
+  const rows = ref()
+  const porfolioDetails = ref()
   const showPreviewImage = ref(false)
   const previewImage = ref('')
   const handleClickImage = (event: MouseEvent) => {
@@ -32,11 +26,23 @@
   const handleClose = () => {
     showPreviewImage.value = false
   }
+  onMounted(async () => {
+    const paramId = route.params.id
+    const { data } = await useFetch(`/api/portafolio/${paramId}`)
+    if (data) {
+      porfolioDetails.value = data.value
+      const technicalSheet = getTechnicalSheet(
+        data.value as PortafolioType
+      ) as unknown as TableRowType[]
+      rows.value = cleanNotApply(technicalSheet)
+    }
+  })
+  onUnmounted(() => {
+    porfolioDetails.value = null
+  })
 </script>
 <template>
-  <section
-    class="flex bg-[url('../../assets/images/64363.jpg')] bg-cover bg-center bg-no-repeat bg-fixed relative"
-  >
+  <section class="flex bg-[url('/64363.webp')] bg-cover bg-center bg-no-repeat bg-fixed relative">
     <div
       class="flex justify-center w-full min-h-screen p-8 shadow-lg bg-black/60 backdrop-blur-md z-1"
     >
@@ -53,12 +59,12 @@
           <div class="p-4">
             <Title text="Portafolio" variant="h1" class="italic text-gray-800" />
             <div class="py-4 pb-4 text-sm text-justify text-gray-500 sm:text-base">
-              <p v-if="data?.portfolioType === 'Cliente'">
+              <p v-if="porfolioDetails?.portfolioType === 'Cliente'">
                 Resumen del problema, objetivos y solución técnica implementada. Descubre cómo se
                 transformó una necesidad en un proyecto funcional y bien estructurado.
               </p>
 
-              <p v-if="data?.portfolioType === 'Practica'">
+              <p v-if="porfolioDetails?.portfolioType === 'Practica'">
                 Práctica desarrollada para aplicar y consolidar conocimientos adquiridos en
                 distintas tecnologías como parte del proceso de aprendizaje.
               </p>
@@ -68,8 +74,8 @@
         <!-- Header -->
         <div class="flex flex-col items-center gap-4 p-4 sm:flex-row">
           <NuxtImg
-            :src="data?.urlImage"
-            :alt="data?.title"
+            :src="porfolioDetails?.urlImage"
+            :alt="porfolioDetails?.title"
             width="130"
             height="auto"
             format="webp"
@@ -77,17 +83,20 @@
             class="rounded-lg"
             :preload="true"
           />
-          <div v-if="data?.title" class="flex flex-col justify-center text-center sm:text-left">
-            <Title :text="data.title" variant="h2" class="italic text-gray-800" />
+          <div
+            v-if="porfolioDetails?.title"
+            class="flex flex-col justify-center text-center sm:text-left"
+          >
+            <Title :text="porfolioDetails.title" variant="h2" class="italic text-gray-800" />
           </div>
         </div>
 
         <!-- Descripción -->
         <article
-          v-if="!data?.description || data?.description !== 'N/A'"
+          v-if="!porfolioDetails?.description || porfolioDetails?.description !== 'N/A'"
           class="px-4 pb-4 text-sm text-justify text-gray-500 sm:text-base"
         >
-          {{ data?.description }}
+          {{ porfolioDetails?.description }}
         </article>
 
         <!-- Ficha técnica -->
@@ -95,11 +104,14 @@
         <DynamicTable :headers="titlesTables" :rows="rows" :column-index="0" />
 
         <!-- Capturas de pantalla -->
-        <div v-if="data?.images && data?.images.length > 0" class="flex flex-col gap-4 px-4 mt-8">
+        <div
+          v-if="porfolioDetails?.images && porfolioDetails?.images.length > 0"
+          class="flex flex-col gap-4 px-4 mt-8"
+        >
           <h3 class="text-base font-medium">Capturas de pantalla</h3>
           <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
             <NuxtImg
-              v-for="(image, index) of data?.images"
+              v-for="(image, index) of porfolioDetails?.images"
               :key="index"
               :src="image.url"
               :alt="image.title"

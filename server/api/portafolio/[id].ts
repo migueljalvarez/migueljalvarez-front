@@ -1,14 +1,14 @@
 import type { PortafolioType } from '~/types/common'
 
 export default defineEventHandler(async event => {
+  const portafolioId = getRouterParam(event, 'id') as string
   const storage = useStorage()
-  const key = 'portfolio-item-cache'
 
-  const cached = await storage.getItem(key)
+  const cached = await storage.getItem(portafolioId)
   if (cached) {
     return cached
   }
-  const portafolioId = getRouterParam(event, 'id')
+
   if (!portafolioId) {
     throw createError({
       statusCode: 400,
@@ -28,6 +28,6 @@ export default defineEventHandler(async event => {
     ...(doc.data() as Omit<PortafolioType, 'id'>)
   }
 
-  await storage.setItem(key, data)
-  return
+  await storage.setItem(portafolioId, data)
+  return data
 })
