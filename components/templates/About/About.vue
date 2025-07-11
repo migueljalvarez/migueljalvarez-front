@@ -23,10 +23,10 @@
               alt="Miguel Alvarez"
               class="self-center rounded-lg lg:self-start"
               width="500"
-              :preload="true"
+              loading="lazy"
             />
           </div>
-          <div class="flex flex-col items-start gap-4 lg:p-4 lg:w-5/6">
+          <div class="flex flex-col items-start gap-4 text-justify lg:p-4 lg:w-5/6">
             <Title
               text="¡Hola 👋, soy Miguel!"
               variant="h3"
@@ -35,12 +35,16 @@
             <p class="font-normal">
               Soy
               <strong>Ingeniero de Sistemas</strong>
-              y me dedico al desarrollo de software desde hace más de 9 años. Me apasiona crear
-              soluciones tecnológicas que ayuden a las personas y empresas a alcanzar sus objetivos.
+              y me dedico al desarrollo de software desde hace más de
+              <strong>9 años</strong>
+              . Me apasiona crear soluciones tecnológicas que ayuden a las personas y empresas a
+              alcanzar sus objetivos.
             </p>
-            <p class="font-normal">
+            <p class="font-normal text-justify">
               Fui
               <strong>Microsoft Student Partner (MSP)</strong>
+              para
+              <strong>Microsoft de Venezuela</strong>
               durante mi epoca de estudiante, lo que me permitió aprender, liderar y compartir
               conocimientos con otros estudiantes y profesionales del sector.
             </p>
@@ -52,9 +56,9 @@
             <div
               class="flex flex-col self-center gap-8 p-2 md:flex-row lg:gap-4 lg:justify-around lg:w-full lg:flex-wrap"
             >
-              <NuxtImg src="academia-geek.jpeg" alt="Estudios" width="150" :preload="true" />
-              <NuxtImg src="FreeCodeCamp.svg" alt="Estudios" width="150" :preload="true" />
-              <NuxtImg src="Platzi.svg" alt="Estudios" width="150" :preload="true" />
+              <NuxtImg src="academia-geek.jpeg" alt="Estudios" width="150" loading="lazy" />
+              <NuxtImg src="FreeCodeCamp.svg" alt="Estudios" width="150" loading="lazy" />
+              <NuxtImg src="Platzi.svg" alt="Estudios" width="150" loading="lazy" />
             </div>
           </div>
         </div>

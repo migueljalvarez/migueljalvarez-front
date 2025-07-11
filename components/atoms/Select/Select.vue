@@ -27,12 +27,12 @@
     <select
       :id="name"
       :name="name"
-      class="w-full h-10 p-2 pr-10 text-gray-800 border-gray-300 rounded-lg appearance-none border-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
+      class="w-full h-10 p-2 pr-10 text-sm font-normal text-gray-800 border-gray-300 rounded-lg appearance-none border-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
       :required="required"
       :value="modelValue"
       @change="onChange"
     >
-      <option class="!text-gray-200/90" value="" disabled selected hidden>
+      <option class="text-gray-200/90" value="" disabled selected hidden>
         {{ placeholder || 'Selecciona una opción' }}
       </option>
       <option v-for="option in options" :key="option.value" :value="option.value">

@@ -5,4 +5,5 @@ import Input from './Input/Input.vue'
 import Hero from './Hero/Hero.vue'
 import Avatar from './Avatar/Avatar.vue'
 import Select from './Select/Select.vue'
-export { Title, Button, Badge, Input, Hero, Avatar, Select }
+import DotNavigation from './DotNavigation/DotNavigation.vue'
+export { Title, Button, Badge, Input, Hero, Avatar, Select, DotNavigation }

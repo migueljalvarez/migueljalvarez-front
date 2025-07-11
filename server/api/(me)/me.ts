@@ -1,4 +1,4 @@
-import { dbAdmin } from '../../utils/firebase-admin.ts'
+import { model } from '../../utils/firebase-admin.ts'
 type Me = {
   id: string
   name: string
@@ -10,15 +10,25 @@ type snapshotType = {
   data: () => Partial<Me>
 }
 export default defineEventHandler(async (): Promise<Partial<Me>> => {
-  const snapshot = await dbAdmin.collection('Me').get()
+  const storage = useStorage()
+  const key = 'me-cache'
+
+  const cached = (await storage.getItem(key)) as Partial<Me>
+  if (cached) {
+    return cached
+  }
+
+  const snapshot = await model.me.get()
   if (snapshot.empty) {
     throw createError({
       statusCode: 404,
       statusMessage: 'No documents found in the Me collection'
     })
   }
-  return snapshot.docs.map((doc: snapshotType) => ({
+  const data = snapshot.docs.map((doc: snapshotType) => ({
     id: doc.id,
     ...(doc.data() as Omit<Me, 'id'>)
   }))[0] as Me
+  await storage.setItem(key, data)
+  return data
 })

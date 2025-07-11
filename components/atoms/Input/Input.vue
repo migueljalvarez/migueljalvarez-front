@@ -64,7 +64,7 @@
       :type="type"
       :name="name"
       :class="inputClass"
-      class="w-full p-2 rounded-lg border-1 placeholder:text-gray-400"
+      class="w-full p-2 text-sm font-normal rounded-lg border-1 placeholder:text-gray-400"
       :placeholder="placeHolder"
       :required="required"
       :disabled="disabled"

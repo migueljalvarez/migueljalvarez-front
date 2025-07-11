@@ -31,7 +31,7 @@ export const MY_SOCIAL_MEDIA = [
   } */
 ]
 
-export const MAIN_HERO = 'Con mas de 9 años de Experiencia en el Sector'
+export const MAIN_HERO = 'Con mas de 9 años de experiencia como Desarrollador de Software'
 //Contact Information
 export const CONTACT_INFO = {
   phone: '+57 320-318-7076',

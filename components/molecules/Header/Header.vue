@@ -3,6 +3,7 @@
   import { useSocialMedia } from '~/composables/useSocialMedia'
   import { PUBLIC_ROUTES } from '~/constants/routes'
   import type { SocialMediaType } from '~/types/common'
+  import SocialMedia from '../SocialMedia/SocialMedia.vue'
 
   const sidebarOpen = ref(false)
 
@@ -30,70 +31,56 @@
 
 <template>
   <header
-    class="z-50 flex items-center w-full h-20 px-6 text-white bg-black shadow-md lg:justify-between"
+    class="z-50 flex items-center w-full h-20 gap-4 px-6 text-white bg-black shadow-md min-w-5xl lg:justify-center"
   >
-    <!-- Menú tradicional para md+ -->
-
-    <nav class="hidden w-full gap-4 ml-2 font-semibold uppercase md:gap-8 lg:flex">
-      <nuxt-link
-        v-for="item in PUBLIC_ROUTES"
-        :key="item.name"
-        :to="item.link"
-        :class="isActiveClass(item.link)"
-        class="transition-colors duration-300 hover:text-blue-400"
-      >
-        {{ item.name }}
-      </nuxt-link>
-    </nav>
-
-    <!-- Social media (md+) -->
-    <div class="hidden gap-4 ml-auto lg:flex">
-      <SocialMedia
-        v-for="item in socials"
-        :key="item.name"
-        :link="item.link"
-        :name="item.name"
-        :icon="item.icon"
-        :is-hovered="item.isHovered"
-        orientation="horizontal"
-        :size="24"
-        @mouseover="hoverIcon(item)"
-        @mouseleave="leaveIcon(item)"
-      />
-    </div>
-
-    <!-- Botón hamburguesa (solo móvil) -->
-    <div class="flex items-center justify-end w-full mx-auto max-w-7xl lg:hidden">
-      <button
-        aria-label="Toggle menu"
-        :class="sidebarOpen ? 'hidden' : 'block'"
-        class="p-2 ml-auto rounded lg:hidden focus:outline-none focus:transparent"
-        @click="toggleSidebar"
-      >
-        <svg
-          class="w-6 h-6 transition-transform duration-300 ease-in-out"
-          :class="sidebarOpen ? 'rotate-90' : 'rotate-0'"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
+    <div class="flex w-full max-w-7xl">
+      <NuxtImg src="brand_white_v2.svg" width="200" alt="Miguel ALvarez" />
+      <!-- Menú tradicional para md+ -->
+      <nav class="justify-end hidden w-full gap-4 font-semibold uppercase md:gap-8 lg:flex">
+        <nuxt-link
+          v-for="item in PUBLIC_ROUTES"
+          :key="item.name"
+          :to="item.link"
+          :class="isActiveClass(item.link)"
+          class="transition-colors duration-300 hover:text-blue-400"
         >
-          <path
-            v-if="!sidebarOpen"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-          <path
-            v-else
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </button>
+          {{ item.name }}
+        </nuxt-link>
+      </nav>
+
+      <!-- Botón hamburguesa (solo móvil) -->
+      <div class="flex items-center justify-end w-full mx-auto max-w-7xl lg:hidden">
+        <button
+          aria-label="Toggle menu"
+          :class="sidebarOpen ? 'hidden' : 'block'"
+          class="p-2 ml-auto rounded lg:hidden focus:outline-none focus:transparent"
+          @click="toggleSidebar"
+        >
+          <svg
+            class="w-6 h-6 transition-transform duration-300 ease-in-out"
+            :class="sidebarOpen ? 'rotate-90' : 'rotate-0'"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              v-if="!sidebarOpen"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+            <path
+              v-else
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
   </header>
 

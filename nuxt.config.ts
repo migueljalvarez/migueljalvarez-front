@@ -17,7 +17,10 @@ export default defineNuxtConfig({
         },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
       ],
-      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' }]
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' },
+        { rel: 'preload', as: 'image', href: '/bg.webp' }
+      ]
     }
   },
   runtimeConfig: {
@@ -45,13 +48,13 @@ export default defineNuxtConfig({
   },
   image: {
     dir: 'public',
+    formats: ['webp', 'avif', 'svg'],
+    provider: 'ipx',
     screens: {
-      xs: 320,
-      sm: 640,
-      md: 768,
+      sm: 320,
+      md: 640,
       lg: 1024,
-      xl: 1280,
-      '2xl': 1536
+      xl: 1280
     }
   },
   devServer: {
@@ -61,6 +64,13 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       routes: ['/']
+    },
+    storage: {
+      // almacenamiento en memoria para cache en tiempo de desarrollo
+      cache: {
+        driver: 'memory',
+        ttl: 60
+      }
     }
   },
   alias: {
