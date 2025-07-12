@@ -17,7 +17,9 @@
   const finishWrite = ref(false)
 
   const props = defineProps<{ me: Me | null }>()
-  const { typeText } = useTypeText(80)
+  const speed = 140
+  const { typeText } = useTypeText(speed)
+  const { typeContent } = useTypeContent(speed)
   onMounted(async () => {
     const emoji = h('img', {
       src: '/waving.png',
@@ -50,7 +52,6 @@
 
       fullSubtitle.value = props.me.profession
       fullDescription.value = props.me.jobDescription || ''
-      const { typeContent } = useTypeContent(200)
 
       typeContent(rawContent, title, async () => {
         titleFinish.value = true
