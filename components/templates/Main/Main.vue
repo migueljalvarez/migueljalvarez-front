@@ -22,8 +22,10 @@
   const { typeContent } = useTypeContent(speed)
   onMounted(async () => {
     const emoji = h('img', {
-      src: '/waving.png',
+      src: '/waving.webp',
       alt: '👋',
+      width: '80',
+      height: '80',
       'aria-label': 'saludo',
       class: 'size-20 mx-1 scale-110 translate-y-[-10px] align-middle inline-block',
       draggable: false,
@@ -39,10 +41,7 @@
         ' ',
         MAIN_TITLE_PRESENTATION_COMPLEMENT
       ]
-
-      //console.log(content)
       const complement = ` ${props.me.name}!`
-      //fullTitle.value = `${content} ${props.me.name}!`
       const rawContent = [...content, complement]
 
       title.value = []
@@ -100,11 +99,12 @@
     <div class="hidden relative z-0 2xl:w-full overflow-hidden h-[600px] ml-25 lg:flex 2xl:flex">
       <NuxtImg
         src="bg.webp"
-        alt="Ponente"
+        alt="background"
         class="object-cover w-full h-full overflow-hidden mask-linear-at-left mask-l-from-black mask-l-to-transparent mask-l-from-50% mask-l-to-95%"
         format="webp"
         quality="80"
         priority
+        sizes="md:150vw lg:400vw"
       />
     </div>
   </section>

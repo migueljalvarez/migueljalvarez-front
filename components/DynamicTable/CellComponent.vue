@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-  import type { Component } from 'vue'
   import type { RenderableComponent, TableCellType } from './DynamicTable'
 
   defineProps<{ cell: TableCellType }>()
