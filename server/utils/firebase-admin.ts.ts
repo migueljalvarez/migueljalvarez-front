@@ -20,4 +20,5 @@ const db = getFirestore()
 const me = db.collection('/Me')
 const portfolio = db.collection('/Portfolio')
 const socialMedia = db.collection('/SocialMedia')
-export const model = { me, portfolio, socialMedia }
+const testimonial = db.collection('/Testimonial')
+export const model = { me, portfolio, socialMedia, testimonial }

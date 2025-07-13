@@ -33,7 +33,6 @@
     return undefined
   })
   function validate(value: string) {
-    console.log(value)
     error.value = !props.pattern.test(value)
   }
   function handlePaste(e: ClipboardEvent) {

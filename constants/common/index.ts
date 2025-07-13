@@ -74,3 +74,5 @@ export const SERVICES = [
     ]
   }
 ]
+
+export const CACHE_EXP = 1800
