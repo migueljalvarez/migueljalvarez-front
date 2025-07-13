@@ -28,6 +28,8 @@
           <NuxtImg
             :src="image"
             :alt="title"
+            width="278"
+            height="209"
             class="object-center rounded-lg rounded-b-none w-80"
             format="webp"
             loading="lazy"

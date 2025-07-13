@@ -11,7 +11,7 @@
       <template #card="{ item }">
         <Card v-if="item">
           <div class="w-full py-4 md:p-8 max-w-[600px] my-5 mx-auto lg:mx-8">
-            <Blockquote :text="item.description" />
+            <Blockquote :text="item.testimonial" />
             <div class="flex flex-col items-center gap-2 px-4 pt-4 md:flex-row">
               <AvatarCard
                 :image="item.image"
