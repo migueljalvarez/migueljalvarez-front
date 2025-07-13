@@ -1,4 +1,5 @@
 import type { PortafolioType } from '~/components/templates/templates'
+import { CACHE_EXP } from '~/constants/common'
 import { model } from '~/server/utils/firebase-admin.ts'
 
 type snapshotType = {
@@ -6,25 +7,24 @@ type snapshotType = {
   data: () => Partial<PortafolioType>
 }
 
-export default defineEventHandler(async (_event): Promise<Omit<PortafolioType, 'images'>[]> => {
-  const storage = useStorage()
-  const key = 'portfolio-cache'
+export default defineCachedEventHandler(
+  defineEventHandler(async (_event): Promise<Omit<PortafolioType, 'images'>[]> => {
+    const snapshot = await model.portfolio.limit(10).get()
+    if (snapshot.empty) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'No documents found in the Porfolio collection'
+      })
+    }
+    const data = snapshot.docs.map((doc: snapshotType) => ({
+      id: doc.id,
+      ...(doc.data() as Omit<PortafolioType, 'id'>)
+    })) as PortafolioType[]
 
-  const cached = (await storage.getItem(key)) as Omit<PortafolioType, 'images'>[]
-  if (cached) {
-    return cached
+    return data
+  }),
+  {
+    maxAge: CACHE_EXP,
+    swr: true
   }
-  const snapshot = await model.portfolio.limit(10).get()
-  if (snapshot.empty) {
-    throw createError({
-      statusCode: 404,
-      statusMessage: 'No documents found in the Porfolio collection'
-    })
-  }
-  const data = snapshot.docs.map((doc: snapshotType) => ({
-    id: doc.id,
-    ...(doc.data() as Omit<PortafolioType, 'id'>)
-  })) as PortafolioType[]
-  await storage.setItem(key, data)
-  return data
-})
+)

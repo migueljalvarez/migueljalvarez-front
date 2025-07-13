@@ -8,7 +8,7 @@ export type SocialMediaType = {
 export type Testimonial = {
   name: string
   position: string
-  description: string
+  testimonial: string
   image: string
   type: string
   socialMedia: Array<SocialMediaType>

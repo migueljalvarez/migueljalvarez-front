@@ -121,6 +121,7 @@
               :alt="image.title"
               class="object-cover w-full transition-transform duration-300 cursor-pointer aspect-video rounded-xl hover:scale-105"
               :preload="true"
+              format="webp"
               @click="handleClickImage"
             />
           </div>
@@ -136,9 +137,10 @@
       <div class="relative max-w-[90vw] max-h-[80vh]">
         <NuxtImg
           :src="previewImage"
-          alt=""
+          alt="preview"
           class="w-full h-auto cursor-auto rounded-3xl"
           :preload="true"
+          format="webp"
           @click.stop
         />
       </div>

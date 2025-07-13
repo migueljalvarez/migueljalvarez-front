@@ -19,11 +19,13 @@
         <div class="flex flex-col justify-center w-full p-2 lg:w-full lg:flex-row">
           <div class="flex justify-center lg:w-4/6">
             <NuxtImg
-              src="about-me.png"
+              src="about-me.webp"
               alt="Miguel Alvarez"
               class="self-center rounded-lg lg:self-start"
               width="500"
+              height="548"
               loading="lazy"
+              format="webp"
             />
           </div>
           <div class="flex flex-col items-start gap-4 text-justify lg:p-4 lg:w-5/6">
@@ -31,11 +33,12 @@
               <h3 class="italic font-medium">
                 ¡Hola
                 <NuxtImg
-                  src="waving.png"
+                  src="waving.webp"
                   alt="👋"
                   class="inline-block mx-1 align-middle rotate-16 translate-y-[-8px] size-8"
                   draggable="false"
                   loading="lazy"
+                  format="webp"
                 />
                 , soy Miguel!
               </h3>
@@ -65,9 +68,30 @@
             <div
               class="flex flex-col self-center gap-8 p-2 md:flex-row lg:gap-4 lg:justify-around lg:w-full lg:flex-wrap"
             >
-              <NuxtImg src="academia-geek.jpeg" alt="Estudios" width="150" loading="lazy" />
-              <NuxtImg src="FreeCodeCamp.svg" alt="Estudios" width="150" loading="lazy" />
-              <NuxtImg src="Platzi.svg" alt="Estudios" width="150" loading="lazy" />
+              <NuxtImg
+                src="academia-geek.jpeg"
+                alt="Estudios"
+                width="150"
+                height="150"
+                loading="lazy"
+                format="webp"
+              />
+              <NuxtImg
+                src="FreeCodeCamp.svg"
+                alt="Estudios"
+                width="150"
+                height="150"
+                loading="lazy"
+                format="webp"
+              />
+              <NuxtImg
+                src="Platzi.svg"
+                alt="Estudios"
+                width="150"
+                height="150"
+                loading="lazy"
+                format="webp"
+              />
             </div>
           </div>
         </div>

@@ -34,7 +34,7 @@
     class="z-50 flex items-center w-full h-20 gap-4 px-6 text-white bg-black shadow-md lg:justify-center"
   >
     <div class="flex w-full max-w-7xl">
-      <NuxtImg src="brand_white_v2.svg" width="200" alt="Miguel ALvarez" />
+      <NuxtImg src="brand_white_v2.svg" width="250" height="40" alt="Miguel ALvarez" format="svg" />
       <!-- Menú tradicional para md+ -->
       <nav class="justify-end hidden w-full gap-4 font-semibold uppercase md:gap-8 lg:flex">
         <nuxt-link

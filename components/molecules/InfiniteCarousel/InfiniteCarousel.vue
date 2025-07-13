@@ -36,6 +36,7 @@
             :title="item.alt"
             draggable="false"
             loading="lazy"
+            format="webp"
           />
         </template>
       </div>
