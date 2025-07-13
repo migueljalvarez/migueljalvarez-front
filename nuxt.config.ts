@@ -49,7 +49,7 @@ export default defineNuxtConfig({
   image: {
     dir: 'public',
     formats: ['webp', 'avif', 'svg'],
-    provider: 'ipx',
+    provider: 'static',
     screens: {
       sm: 320,
       md: 640,
