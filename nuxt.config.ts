@@ -57,10 +57,6 @@ export default defineNuxtConfig({
         options: {
           cloudName: 'm2a'
         }
-      },
-      netlify: {
-        name: 'netlify',
-        provider: 'netlify'
       }
     },
     screens: {
