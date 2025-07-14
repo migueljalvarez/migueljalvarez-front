@@ -49,7 +49,20 @@ export default defineNuxtConfig({
   image: {
     dir: 'public',
     formats: ['webp', 'avif', 'svg'],
-
+    provider: process.env.NODE_ENV === 'production' ? 'netlify' : undefined,
+    providers: {
+      cloudinary: {
+        name: 'cloudinary',
+        provider: 'cloudinary',
+        options: {
+          cloudName: 'm2a'
+        }
+      },
+      netlify: {
+        name: 'netlify',
+        provider: 'netlify'
+      }
+    },
     screens: {
       sm: 320,
       md: 640,
