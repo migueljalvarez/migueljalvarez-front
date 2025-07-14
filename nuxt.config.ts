@@ -57,6 +57,12 @@ export default defineNuxtConfig({
     port: 3000
   },
   nitro: {
+    publicAssets: [
+      {
+        baseURL: '/',
+        dir: 'public'
+      }
+    ],
     prerender: {
       routes: [],
       failOnError: false,
