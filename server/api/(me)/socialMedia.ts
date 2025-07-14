@@ -14,20 +14,43 @@ type snapshotType = {
 
 export default defineCachedEventHandler(
   defineEventHandler(async (): Promise<SocialMediaType[]> => {
-    const snapshot = await model.socialMedia.get()
-    if (snapshot.empty) {
+    try {
+      const snapshot = await model.socialMedia.get()
+      if (snapshot.empty) {
+        throw createError({
+          statusCode: 404,
+          statusMessage: 'No documents found in the SocialMedia collection'
+        })
+      }
+
+      const data = snapshot.docs.map((doc: snapshotType) => ({
+        id: doc.id,
+        ...(doc.data() as Omit<SocialMediaType, 'id'>)
+      })) as SocialMediaType[]
+
+      return data
+    } catch (error) {
+      console.error('Error en /api/socia-media:', (error as Error).message)
+
+      // Durante el prerender, retornamos fallback para evitar error 500
+      if (process.env.npm_lifecycle_event === 'generate') {
+        return [
+          {
+            id: '0',
+            name: 'N/A',
+            link: '',
+            icon: '',
+            isHovered: false
+          }
+        ] as unknown as SocialMediaType[]
+      }
+
+      // En entorno real: lanzar error
       throw createError({
-        statusCode: 404,
-        statusMessage: 'No documents found in the SocialMedia collection'
+        statusCode: 500,
+        statusMessage: 'Error al cargar el perfil'
       })
     }
-
-    const data = snapshot.docs.map((doc: snapshotType) => ({
-      id: doc.id,
-      ...(doc.data() as Omit<SocialMediaType, 'id'>)
-    })) as SocialMediaType[]
-
-    return data
   }),
   {
     maxAge: CACHE_EXP,

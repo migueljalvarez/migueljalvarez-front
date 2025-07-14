@@ -1,24 +1,37 @@
+// ~/server/utils/firebase-admin.ts
 import { initializeApp, cert, getApps } from 'firebase-admin/app'
-import { getFirestore } from 'firebase-admin/firestore'
+import { getFirestore, Firestore } from 'firebase-admin/firestore'
 import type { FirebaseServiceAccount } from '~/types/firebase/firebase'
 
-const { firebaseClientEmail, firebasePrivateKey, firebaseProjectId } = useRuntimeConfig()
+let db: Firestore
 
-const serviceAccount: FirebaseServiceAccount = {
-  projectId: firebaseProjectId,
-  privateKey: firebasePrivateKey?.replace(/\\n/g, '\n'),
-  clientEmail: firebaseClientEmail
-}
-
+// ✅ Inicializa solo una vez
 if (!getApps().length) {
+  const config = useRuntimeConfig()
+
+  const { firebaseClientEmail, firebasePrivateKey, firebaseProjectId } = config
+
+  // ✅ Validación segura de las variables
+  if (!firebaseClientEmail || !firebasePrivateKey || !firebaseProjectId) {
+    throw new Error('Faltan variables de entorno para Firebase Admin')
+  }
+
+  const serviceAccount: FirebaseServiceAccount = {
+    projectId: firebaseProjectId,
+    clientEmail: firebaseClientEmail,
+    privateKey: firebasePrivateKey.replace(/\\n/g, '\n')
+  }
+
   initializeApp({
     credential: cert(serviceAccount)
   })
+  // ✅ Instancia reutilizable de Firestore
 }
-
-const db = getFirestore()
-const me = db.collection('/Me')
-const portfolio = db.collection('/Portfolio')
-const socialMedia = db.collection('/SocialMedia')
-const testimonial = db.collection('/Testimonial')
-export const model = { me, portfolio, socialMedia, testimonial }
+db = getFirestore()
+// ✅ Colecciones tipadas y reutilizables
+export const model = {
+  me: db.collection('Me'),
+  portfolio: db.collection('Portfolio'),
+  socialMedia: db.collection('SocialMedia'),
+  testimonial: db.collection('Testimonial')
+}

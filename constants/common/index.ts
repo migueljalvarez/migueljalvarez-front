@@ -45,9 +45,13 @@ export const CONTACT_INFO_DESCRIPTION = `¿Buscas impulsar tus proyectos con sol
 /* Services */
 export const SERVICES = [
   {
-    title: 'Consultoría',
+    title: 'Estrategia & Consultoría',
     icon: 'fa-solid:users',
-    items: ['Aterrizaje de ideas', 'Planificación y Roadmap']
+    items: [
+      'Aterrizaje de ideas',
+      'Planificación tecnica del proyecto.',
+      'Diseño de roadmap para lanzamientos y crecimiento.'
+    ]
   },
   {
     title: 'Desarrollo de Software',
@@ -63,12 +67,12 @@ export const SERVICES = [
     ]
   },
   {
-    title: 'Freelance',
+    title: 'Implementación & Soporte',
     icon: 'fa6-solid:laptop-code',
     items: [
       'Creación de Landing Page',
-      'Creación de MVPs',
-      'Desarrollo de Funciones',
+      'Desarrollo de MVPs funcionales y testeables',
+      'Implementación de nuevas funciones',
       'Corrección de Bugs',
       'Soporte y mantenimiento'
     ]

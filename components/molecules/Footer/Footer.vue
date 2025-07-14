@@ -55,7 +55,14 @@
       <!-- Logo & Description -->
       <div class="flex flex-col items-start gap-4 mt-8 lg:mt-0">
         <p class="py-2 text-lg font-black text-white uppercase">Sobre Mi</p>
-        <NuxtImg src="brand_white.svg" width="150" height="43" alt="Miguel Alvarez" format="webp" />
+        <NuxtImg
+          src="brand_white.svg"
+          width="150"
+          height="43"
+          alt="Miguel Alvarez"
+          format="webp"
+          loading="lazy"
+        />
         <div>
           <p class="max-w-xl text-sm text-slate-400 sm:text-base">
             Desarrollador de software enfocado en crear soluciones digitales eficientes y

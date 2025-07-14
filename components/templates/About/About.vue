@@ -15,7 +15,7 @@
     <div
       class="flex flex-col items-center justify-center w-full gap-2 text-gray-800 rounded-lg md:gap-4 lg:p-8"
     >
-      <div class="flex flex-col items-start w-full gap-2 md:gap-4 xl:w-4/6 text-wrap">
+      <div class="flex flex-col items-start w-full gap-2 md:gap-4 xl:w-4/5 text-wrap">
         <div class="flex flex-col justify-center w-full p-2 lg:w-full lg:flex-row">
           <div class="flex justify-center lg:w-4/6">
             <NuxtImg
@@ -71,26 +71,26 @@
               <NuxtImg
                 src="academia-geek.jpeg"
                 alt="Estudios"
-                width="150"
-                height="150"
                 loading="lazy"
                 format="webp"
+                sizes="(max-width: 768px) 80px, (max-width: 1024px) 120px, 300px"
+                class="object-contain w-auto"
               />
               <NuxtImg
                 src="FreeCodeCamp.svg"
                 alt="Estudios"
-                width="150"
-                height="150"
                 loading="lazy"
                 format="webp"
+                sizes="(max-width: 768px) 80px, (max-width: 1024px) 120px, 300px"
+                class="object-contain w-auto"
               />
               <NuxtImg
                 src="Platzi.svg"
                 alt="Estudios"
-                width="150"
-                height="150"
                 loading="lazy"
                 format="webp"
+                sizes="(max-width: 768px) 80px, (max-width: 1024px) 120px, 300px"
+                class="object-contain w-auto"
               />
             </div>
           </div>

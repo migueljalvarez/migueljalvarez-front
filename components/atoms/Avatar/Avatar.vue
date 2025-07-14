@@ -23,5 +23,5 @@
     />
   </div>
 </template>
-// size-20 md:mb-0 md:size-25 lg:size-30
+
 <style></style>
