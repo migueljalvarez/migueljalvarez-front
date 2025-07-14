@@ -1,5 +1,6 @@
 # Nuxt Minimal Starter
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/7bef7dfa-7ee8-420f-a044-ab8feea86837/deploy-status)](https://app.netlify.com/projects/migueljalvarez/deploys)
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
 ## Setup
