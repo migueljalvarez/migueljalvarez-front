@@ -49,7 +49,7 @@ export default defineNuxtConfig({
   image: {
     dir: 'public',
     formats: ['webp', 'avif', 'svg'],
-    provider: process.env.NODE_ENV === 'production' ? 'netlify' : undefined,
+    provider: 'ipx',
     providers: {
       cloudinary: {
         name: 'cloudinary',
