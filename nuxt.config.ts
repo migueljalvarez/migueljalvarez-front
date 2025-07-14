@@ -19,7 +19,7 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' },
-        { rel: 'prefetch', as: 'image', href: '/bg.webp' }
+        { rel: 'preload', as: 'image', href: '/about-me-transparent.webp' }
       ]
     }
   },
