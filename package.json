@@ -12,44 +12,40 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "lint": "eslint --ext .js,.ts,.vue .",
-    "lint:fix": "eslint --ext .js,.ts,.vue . --fix",
+    "lint": "eslint  .",
+    "lint:fix": "eslint  --fix",
     "format": "prettier --write \"**/*.{js,ts,vue,json,css,scss,md}\""
   },
   "dependencies": {
-    "@nuxt/fonts": "0.11.2",
+    "@nuxt/fonts": "0.11.4",
     "@nuxt/icon": "1.12.0",
     "@nuxt/image": "1.10.0",
-    "@nuxt/kit": "^3.17.6",
     "@nuxt/ui": "3.1.1",
-    "@nuxtjs/google-fonts": "3.2.0",
-    "@tailwindcss/vite": "4.1.5",
     "@unhead/vue": "2.0.8",
     "firebase-admin": "13.4.0",
-    "nuxt": "3.17.2",
+    "nuxt": "^3.17.7",
     "resend": "4.5.2",
     "tailwindcss": "4.1.5",
-    "typescript-eslint": "^8.36.0",
+    "vite-plugin-compression": "0.5.1",
     "vue": "3.5.13",
-    "vue-router": "4.5.1",
-    "vite-plugin-compression": "^0.5.1"
+    "vue-router": "4.5.1"
   },
   "devDependencies": {
     "@iconify-json/mdi": "1.2.3",
     "@types/node": "24.0.10",
-    "@typescript-eslint/eslint-plugin": "^8.36.0",
-    "@typescript-eslint/parser": "^8.36.0",
-    "eslint": "^9.26.0",
-    "eslint-config-prettier": "^10.1.5",
+    "@typescript-eslint/eslint-plugin": "8.37.0",
+    "@typescript-eslint/parser": "8.37.0",
+    "eslint": "9.26.0",
+    "eslint-config-prettier": "10.1.5",
     "eslint-plugin-import": "2.32.0",
-    "eslint-plugin-prettier": "^5.4.1",
-    "eslint-plugin-vue": "^10.3.0",
+    "eslint-plugin-prettier": "5.4.1",
+    "eslint-plugin-vue": "10.3.0",
     "prettier": "3.5.3",
     "typescript": "5.8.3",
-    "vue-eslint-parser": "^10.2.0"
+    "vue-eslint-parser": "10.2.0"
   },
   "engines": {
-    "node": ">=22.11.0 <23",
-    "npm": ">=10.9.0"
+    "node": ">=22.0.0 <23.0.0",
+    "npm": ">=10.0.0 <11.0.0"
   }
 }

@@ -1,6 +1,4 @@
-// tailwind.config.js
-
-import defaultScreens from 'tailwindcss/defaultTheme'
+import config from 'tailwindcss/defaultTheme'
 module.exports = {
   theme: {
     extend: {},
@@ -8,9 +6,12 @@ module.exports = {
       'xxx-sm': '360px', // móviles muy pequeños
       'xx-sm': '375px', // móviles tipo iPhone
       xsm: '411px', // Pixel 2
-      ...defaultScreens.screens,
+      ...config.screens,
       laptop: '1366px', // laptops comunes
       fullhd: '1920px' // pantallas grandes
+    },
+    fontFamily: {
+      sans: ['Roboto', ...fontFamily.sans]
     }
   }
 }

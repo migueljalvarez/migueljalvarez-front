@@ -19,7 +19,7 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' },
-        { rel: 'prefetch', as: 'image', href: '/bg.webp' }
+        { rel: 'preload', as: 'image', href: '/about-me-transparent.webp' }
       ]
     }
   },
@@ -31,40 +31,26 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   css: ['@/assets/css/main.css'],
-  modules: ['@nuxt/icon', '@nuxt/image', '@nuxt/ui', '@nuxtjs/google-fonts'],
-
-  googleFonts: {
-    families: {
-      Roboto: [400, 700]
-    },
-    display: 'swap',
-    download: true,
-    inject: true,
-    subsets: ['latin'],
-    prefetch: true
+  modules: ['@nuxt/icon', '@nuxt/image', '@nuxt/ui', '@nuxt/fonts'],
+  fonts: {
+    provider: 'google',
+    families: [
+      { name: 'Roboto', provider: 'google', display: 'swap', preload: true, subsets: ['latin'] }
+    ]
   },
   imports: {
     autoImport: true
   },
   image: {
+    provider: 'ipx',
     dir: 'public',
     formats: ['webp', 'avif', 'svg'],
-    provider: 'ipx',
-    providers: {
-      cloudinary: {
-        name: 'cloudinary',
-        provider: 'cloudinary',
-        options: {
-          cloudName: 'm2a'
-        }
-      }
+    screens: { sm: 320, md: 640, lg: 1024, xl: 1280 },
+    ipx: {
+      maxAge: 60 * 60 * 24 * 7 // cache IPX por 7 días :contentReference[oaicite:5]{index=5}
     },
-    screens: {
-      sm: 320,
-      md: 640,
-      lg: 1024,
-      xl: 1280
-    }
+
+    domains: ['res.cloudinary.com']
   },
   devServer: {
     host: '0.0.0.0',
