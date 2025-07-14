@@ -13,30 +13,27 @@
 
   const sectionClass = computed(() => ({
     'text-gray-800': props.background === 'bg-white' && !props.backgroundImage,
-    'text-white': props.backgroundImage
+    'text-white': !!props.backgroundImage,
+    [props.background || '']: true
   }))
-  // Background style computed
+
   const backgroundStyle = computed(() => {
-    const style: Record<string, string> = {}
-    if (props.backgroundImage) {
-      style.backgroundImage = `url(${props.backgroundImage})`
-      style.backgroundSize = 'cover'
-      style.backgroundPosition = 'center'
-      style.backgroundRepeat = 'no-repeat'
-      style.backgroundAttachment = 'fixed'
+    if (!props.backgroundImage) return {}
+    return {
+      backgroundImage: `url(${props.backgroundImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      backgroundAttachment: 'fixed'
     }
-    return style
   })
 </script>
+
 <template>
-  <section
-    :id="id"
-    :class="sectionClass"
-    :style="backgroundStyle"
-    class="flex flex-col items-center justify-center w-full h-auto text-lg font-bold"
-  >
-    <Title :text="String(title)" variant="h2" />
-    <slot />
+  <section :id="id" :class="['w-full h-auto', sectionClass]" :style="backgroundStyle">
+    <div class="flex flex-col items-center w-full gap-6">
+      <Title v-if="title" :text="String(title)" variant="h2" />
+      <slot />
+    </div>
   </section>
 </template>
-<style></style>

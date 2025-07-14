@@ -2,141 +2,171 @@
   import { ref, onMounted } from 'vue'
   import Button from '~/components/atoms/Button/Button.vue'
   import Title from '~/components/atoms/Title/Title.vue'
-  import { useTypeContent, type TypeContent } from '~/composables/useTypeContent'
 
   import { MAIN_TITLE_PRESENTATION, MAIN_TITLE_PRESENTATION_COMPLEMENT } from '~/constants/common'
   import type { Me } from '~/types/common'
 
-  const title = ref<TypeContent[]>([])
-
+  const name = ref('')
   const subtitle = ref('')
-
   const fullSubtitle = ref('')
   const fullDescription = ref('')
-  const titleFinish = ref(false)
-  const finishWrite = ref(false)
 
+  const showWave = ref(false)
   const props = defineProps<{ me: Me | null }>()
-  const speed = 140
-  const { typeText } = useTypeText(speed)
-  const { typeContent } = useTypeContent(speed)
+  const showMainImage = ref(false)
+  const isVisible = ref(false)
   onMounted(async () => {
-    const emoji = h('img', {
-      src: '/waving.webp',
-      alt: '👋',
-      width: '80',
-      height: '80',
-      'aria-label': 'saludo',
-      class: 'size-20 mx-1 scale-110 translate-y-[-10px] align-middle inline-block',
-      draggable: false,
-      loading: 'lazy'
-    })
-
     if (props.me) {
-      const content: TypeContent[] = [
-        MAIN_TITLE_PRESENTATION,
-        ' ',
-        emoji,
-        ',',
-        ' ',
-        MAIN_TITLE_PRESENTATION_COMPLEMENT
-      ]
-      const complement = ` ${props.me.name}!`
-      const rawContent = [...content, complement]
-
-      title.value = []
-      subtitle.value = ''
-
-      finishWrite.value = false
-
+      name.value = ` ${props.me.name}!`
+      subtitle.value = props.me.profession
       fullSubtitle.value = props.me.profession
       fullDescription.value = props.me.jobDescription || ''
-
-      typeContent(rawContent, title, async () => {
-        titleFinish.value = true
-
-        typeText(fullSubtitle.value, subtitle, () => (finishWrite.value = true))
-      })
+      setTimeout(() => {
+        isVisible.value = true
+        showMainImage.value = true
+      }, 100)
+      setTimeout(() => {
+        showWave.value = true
+      }, 500)
     }
   })
 </script>
 <template>
-  <section class="box-border relative flex justify-between w-full h-auto overflow-hidden">
-    <div
-      class="absolute 2xl:w-full inset-0 z-10 lg:flex 2xl:flex lg:bg-gradient-to-r lg:from-black lg:via-black lg:to-black/10 2xl:bg-gradient-to-r 2xl:from-black 2xl:via-black 2xl:to-black/10 h-[600px]"
-    />
+  <section class="box-border relative flex justify-center w-full h-auto overflow-hidden bg-black">
+    <div class="max-w-[1440px] h-screen flex items-center">
+      <Transition name="slide-left">
+        <div
+          v-if="isVisible"
+          class="relative z-20 flex flex-col flex-wrap justify-center h-auto gap-2 px-8 text-white lg:pl-18 grow md:p-10 lg:w-3/5"
+        >
+          <h1 class="w-full text-6xl font-bold lg:text-7xl">
+            {{ MAIN_TITLE_PRESENTATION }}
+            <span>
+              <Transition name="wave-fade">
+                <NuxtImg
+                  v-if="showWave"
+                  src="/waving.webp"
+                  alt="👋"
+                  width="80"
+                  height="80"
+                  aria-label="saludo"
+                  class="wave-animation size-20 mx-1 scale-110 translate-y-[-10px] align-middle inline-block"
+                  draggable="false"
+                  loading="lazy"
+                />
+              </Transition>
+            </span>
+            {{ `, ${MAIN_TITLE_PRESENTATION_COMPLEMENT} ${name}` }}
+          </h1>
 
-    <div
-      class="relative z-20 flex flex-col flex-wrap justify-center h-auto gap-2 p-4 py-20 text-white bg-black lg:px-10 lg:p-8 lg:w-full 2xl:px-24 2xl:ml-20 grow lg:bg-transparent"
-    >
-      <div class="flex items-center gap-2">
-        <h1 class="text-6xl font-bold lg:text-7xl">
-          <template v-for="(item, index) in title" :key="index">
-            <component :is="item" v-if="typeof item !== 'string'" />
-            <span v-else>{{ item }}</span>
-          </template>
-          <span v-if="!titleFinish" class="ml-1 text-gray-400 animate-pulse">_</span>
-        </h1>
-      </div>
+          <Title :text="subtitle" variant="h2" class="justify-start p-1 text-blue-400" />
+          <p v-if="subtitle === fullSubtitle" class="text-gray-400 max-w-[90%] sm:max-w-[80%]">
+            {{ fullDescription }}
+          </p>
 
-      <Title v-if="title" :text="subtitle" variant="h2" class="justify-start p-1 text-blue-400">
-        <span v-if="!finishWrite && titleFinish" class="ml-1 text-gray-400 animate-pulse">_</span>
-      </Title>
-      <p v-if="subtitle === fullSubtitle" class="text-gray-400 max-w-[90%] sm:max-w-[80%]">
-        {{ fullDescription }}
-      </p>
+          <div class="flex flex-row gap-2 mt-4">
+            <NuxtLink to="https://wa.link/bxjfgq" target="_blank">
+              <Button :uppercase="true" icon="mdi:whatsapp" theme="tertiary">Contactar</Button>
+            </NuxtLink>
 
-      <div v-if="finishWrite" class="flex flex-row gap-2 mt-4">
-        <NuxtLink to="https://wa.link/bxjfgq" target="_blank">
-          <Button :uppercase="true" icon="mdi:whatsapp" theme="tertiary">Contactar</Button>
-        </NuxtLink>
-
-        <a href="/docs/CV_DOWNLOAD.pdf" target="_blank" download="cv_download">
-          <Button :uppercase="true" icon="mdi:download">Descargar CV</Button>
-        </a>
-      </div>
-    </div>
-    <div class="hidden relative z-0 2xl:w-full overflow-hidden h-[600px] ml-25 lg:flex 2xl:flex">
-      <NuxtImg
-        src="bg.webp"
-        alt="background"
-        class="object-cover w-full h-full overflow-hidden mask-linear-at-left mask-l-from-black mask-l-to-transparent mask-l-from-50% mask-l-to-95%"
-        format="webp"
-        quality="80"
-        priority
-        sizes="md:150vw lg:400vw"
-      />
+            <a href="/docs/CV_DOWNLOAD.pdf" target="_blank" download="cv_download">
+              <Button :uppercase="true" icon="mdi:download">Descargar CV</Button>
+            </a>
+          </div>
+        </div>
+      </Transition>
+      <Transition name="fade-up" appear>
+        <div
+          v-if="showMainImage"
+          class="relative justify-center hidden w-180 rounded-2xl md:hidden lg:flex lg:w-2/5"
+        >
+          <NuxtImg
+            src="about-me-transparent.webp"
+            alt="Miguel Alvarez"
+            width="300"
+            class="relative z-10 rounded-2xl"
+            loading="eager"
+            fetchpriority="high"
+          />
+          <div class="absolute w-[300px] bg-white h-[200px] rounded-2xl top-[148px]"></div>
+        </div>
+      </Transition>
     </div>
   </section>
 </template>
 <style scoped>
-  @keyframes wave-hand {
+  .slide-left-enter-active {
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease;
+  }
+  .slide-left-leave-active {
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+  }
+  .slide-left-enter-from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  .slide-left-leave-to {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  /* Saludo animado */
+  @keyframes wave {
     0% {
       transform: rotate(0deg);
     }
-    15% {
+    10% {
       transform: rotate(14deg);
     }
-    30% {
+    20% {
       transform: rotate(-8deg);
     }
-    45% {
+    30% {
       transform: rotate(14deg);
     }
-    60% {
+    40% {
       transform: rotate(-4deg);
     }
-    75% {
+    50% {
       transform: rotate(10deg);
+    }
+    60% {
+      transform: rotate(0deg);
     }
     100% {
       transform: rotate(0deg);
     }
   }
 
-  .wave {
-    animation: wave-hand 1.5s ease-in-out;
-    transform-origin: bottom center;
+  .wave-animation {
     display: inline-block;
+    transform-origin: 70% 70%;
+    animation: wave 2s ease-in-out infinite;
+  }
+
+  /* Transición opcional */
+  .wave-fade-enter-active {
+    transition: opacity 0.4s ease;
+  }
+  .wave-fade-enter-from {
+    opacity: 0;
+  }
+
+  .fade-up-enter-active {
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease;
+  }
+  .fade-up-enter-from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  .fade-up-enter-to {
+    opacity: 1;
+    transform: translateY(0);
   }
 </style>

@@ -1,26 +1,12 @@
 {
-  "cSpell.words": [
-    "Cliente",
-    "Contactar",
-    "Contacto",
-    "Desarrollador",
-    "Descargar",
-    "Firestore",
-    "Ingeniero",
-    "Inicio",
-    "migueljalvarez",
-    "nuxt",
-    "Porfolio",
-    "Portafolio",
-    "Practica",
-    "PROYECTO",
-    "Servicios",
-    "Sobre",
-    "unhead"
-  ],
+  "cSpell.words": [],
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always"
   },
-  "eslint.validate": ["javascript", "typescript", "vue"]
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+    "vue"
+  ]
 }
