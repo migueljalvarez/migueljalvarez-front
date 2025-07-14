@@ -55,8 +55,9 @@
                   loading="lazy"
                 />
               </Transition>
+              {{ ',' }}
             </span>
-            {{ `, ${MAIN_TITLE_PRESENTATION_COMPLEMENT} ${name}` }}
+            {{ `${MAIN_TITLE_PRESENTATION_COMPLEMENT} ${name}` }}
           </h1>
 
           <Title :text="subtitle" variant="h2" class="justify-start p-1 text-blue-400" />
