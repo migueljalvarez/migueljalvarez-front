@@ -49,6 +49,7 @@ export default defineNuxtConfig({
   image: {
     dir: 'public',
     formats: ['webp', 'avif', 'svg'],
+
     screens: {
       sm: 320,
       md: 640,
@@ -62,7 +63,11 @@ export default defineNuxtConfig({
   },
   nitro: {
     prerender: {
-      routes: ['/']
+      routes: [],
+      failOnError: false,
+      crawlLinks: true,
+      concurrency: 1,
+      interval: 200 // ms entre solicitudes
     },
     storage: {
       // almacenamiento en memoria para cache en tiempo de desarrollo
