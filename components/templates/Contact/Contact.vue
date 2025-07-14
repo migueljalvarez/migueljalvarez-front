@@ -72,12 +72,12 @@
 <template>
   <Section
     id="contact"
-    class="relative flex justify-center min-h-screen bg-fixed bg-center bg-no-repeat bg-cover"
+    class="relative flex justify-center h-auto bg-fixed bg-center bg-no-repeat bg-cover"
     :background-image="backgroundUrl"
   >
     <NuxtImg style="display: none" :src="backgroundUrl" alt="background" loading="lazy" />
     <div
-      class="flex flex-col justify-center min-h-screen gap-4 shadow-lg lg:justify-around lg:gap-8 lg:flex-row lg:p-8 pt-30 lg:pt-30 z-1 bg-black/60 backdrop-blur-md"
+      class="flex flex-col justify-center gap-4 shadow-lg lg:justify-around lg:gap-8 lg:flex-row lg:p-8 py-30 lg:pt-30 z-1 bg-black/60 backdrop-blur-md"
     >
       <div class="flex flex-col flex-wrap w-full gap-4 p-4 lg:w-2/6 z-1">
         <Title variant="h2" :text="title" class="text-white" />

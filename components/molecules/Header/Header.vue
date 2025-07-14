@@ -31,12 +31,25 @@
 
 <template>
   <header
-    class="z-50 flex items-center w-full h-20 gap-4 px-6 text-white bg-black shadow-md lg:justify-center"
+    class="z-50 flex items-center w-full h-20 gap-4 px-6 overflow-hidden text-white bg-black shadow-md lg:justify-center"
   >
-    <div class="flex w-full max-w-7xl">
-      <NuxtImg src="brand_white_v2.svg" width="250" height="40" alt="Miguel ALvarez" format="svg" />
+    <div
+      class="flex items-center justify-between w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8"
+    >
+      <NuxtImg
+        src="brand_white_v2.svg"
+        width="250"
+        height="40"
+        alt="Miguel Alvarez"
+        sizes="(max-width: 640px) 150px, (max-width: 1024px) 200px, 250px"
+        format="svg"
+        class="object-contain"
+      />
+
       <!-- Menú tradicional para md+ -->
-      <nav class="justify-end hidden w-full gap-4 font-semibold uppercase md:gap-8 lg:flex">
+      <nav
+        class="items-center justify-end hidden w-full gap-4 font-semibold uppercase md:gap-8 lg:flex"
+      >
         <nuxt-link
           v-for="item in PUBLIC_ROUTES"
           :key="item.name"
@@ -86,11 +99,8 @@
 
   <!-- Sidebar móvil -->
   <aside
-    :class="[
-      'fixed top-0 left-0 h-full bg-black text-white w-full max-w-xs p-6 flex flex-col justify-between transform transition-transform duration-300 ease-in-out z-50',
-      sidebarOpen ? 'translate-x-0' : '-translate-x-full',
-      'lg:hidden '
-    ]"
+    class="fixed top-0 left-0 z-50 flex flex-col justify-between w-full h-full max-w-xs p-6 overflow-y-auto text-white transition-transform duration-300 ease-in-out transform bg-black lg:hidden"
+    :class="{ 'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen }"
   >
     <div>
       <!-- Contenedor para botón cerrar alineado a la derecha -->

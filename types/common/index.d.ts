@@ -6,6 +6,7 @@ export type SocialMediaType = {
 }
 
 export type Testimonial = {
+  id?: string
   name: string
   position: string
   testimonial: string
