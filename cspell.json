@@ -1,17 +1,10 @@
 {
-    "version": "0.2",
-    "language": "es-ES",
-    "ignorePaths": [
-        "node_modules/**",
-        "dist/**"
-    ],
-    "dictionaryDefinitions": [
-        "./.cspell/custom-words.txt"
-    ],
-    "dictionaries": [
-        "custom-words"
-    ],
-    "words": [],
-    "ignoreWords": [],
-    "import": []
+  "version": "0.2",
+  "language": "es-ES",
+  "ignorePaths": ["node_modules/**", "dist/**"],
+  "dictionaryDefinitions": ["./.cspell/custom-words.txt"],
+  "dictionaries": ["custom-words"],
+  "words": [],
+  "ignoreWords": [],
+  "import": []
 }
