@@ -31,18 +31,16 @@
 
 <template>
   <header
-    class="z-50 flex items-center w-full h-20 gap-4 px-6 overflow-hidden text-white bg-black shadow-md lg:justify-center"
+    class="z-50 flex items-center w-full h-20 gap-4 px-2 overflow-hidden text-white bg-black shadow-md lg:justify-center"
   >
-    <div
-      class="flex items-center justify-between w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8"
-    >
+    <div class="flex items-center justify-between w-full max-w-[1440px] mx-auto px-0 lg:px-8">
       <NuxtImg
         src="brand_white_v2.svg"
         width="250"
         height="40"
         alt="Miguel Alvarez"
         format="webp"
-        class="object-contain"
+        class="flex object-contain px-2"
       />
 
       <!-- Menú tradicional para md+ -->

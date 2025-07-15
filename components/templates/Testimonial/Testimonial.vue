@@ -6,8 +6,8 @@
   defineProps<{ testimonials: Testimonial[] }>()
 </script>
 <template>
-  <Section id="testimonial" background-image="/testimonial-bg.webp" class="flex min-h-[400px]">
-    <Carousel show-arrow :items="testimonials" title="Ellos Confian en Mi">
+  <Section id="testimonial" background-image="/testimonial-bg.webp" class="flex max-h-auto">
+    <Carousel show-arrow :items="testimonials" title="Ellos han trabajado conmigo">
       <template #card="{ item }">
         <Card v-if="item">
           <div class="w-full py-4 md:p-8 max-w-[600px] my-5 mx-auto lg:mx-8">

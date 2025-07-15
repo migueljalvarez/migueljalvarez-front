@@ -32,45 +32,54 @@
   })
 </script>
 <template>
-  <section class="box-border relative flex justify-center w-full h-auto overflow-hidden bg-black">
-    <div class="max-w-[1440px] h-screen flex items-center">
+  <section
+    class="box-border relative flex justify-center w-full h-[600px] lg:h-[488px] md:h-[488px] py-10 overflow-hidden bg-black"
+  >
+    <div class="max-w-[1440px] flex items-center">
       <Transition name="slide-left">
         <div
           v-if="isVisible"
-          class="relative z-20 flex flex-col flex-wrap justify-center h-auto gap-2 px-8 text-white lg:pl-18 grow md:p-10 lg:w-3/5"
+          class="relative z-20 flex flex-col flex-wrap justify-center h-auto gap-2 px-4 text-white lg:pl-18 grow md:p-10 lg:w-3/5"
         >
-          <h1 class="w-full text-6xl font-bold lg:text-7xl">
-            {{ MAIN_TITLE_PRESENTATION }}
-            <span>
+          <h1 class="w-full text-6xl italic font-bold lg:text-6xl leading-[1.2]">
+            <span class="inline-flex flex-wrap items-baseline gap-x-1">
+              {{ MAIN_TITLE_PRESENTATION }}
               <Transition name="wave-fade">
                 <NuxtImg
                   v-if="showWave"
                   src="/waving.webp"
                   alt="👋"
-                  width="80"
-                  height="80"
+                  width="64"
+                  height="64"
                   aria-label="saludo"
-                  class="wave-animation size-20 mx-1 scale-110 translate-y-[-10px] align-middle inline-block"
+                  class="wave-animation inline-block h-[1em] w-auto align-baseline translate-y-2"
                   draggable="false"
                   loading="lazy"
                 />
               </Transition>
-              {{ ',' }}
+              <span class="inline-block mr-2 align-baseline">,</span>
+              <span>
+                {{ `${MAIN_TITLE_PRESENTATION_COMPLEMENT} ${name}` }}
+              </span>
             </span>
-            {{ `${MAIN_TITLE_PRESENTATION_COMPLEMENT} ${name}` }}
           </h1>
 
           <Title :text="subtitle" variant="h2" class="justify-start p-1 text-blue-400" />
-          <p v-if="subtitle === fullSubtitle" class="text-gray-400 max-w-[90%] sm:max-w-[80%]">
+          <p v-if="subtitle === fullSubtitle" class="text-gray-400 max-w-full sm:max-w-[80%]">
             {{ fullDescription }}
           </p>
 
-          <div class="flex flex-row gap-2 mt-4">
-            <NuxtLink to="https://wa.link/bxjfgq" target="_blank">
+          <div class="flex flex-row w-full gap-2 mt-4">
+            <NuxtLink to="https://wa.link/bxjfgq" target="_blank" class="w-full md:w-2/4 xl:w-1/3">
               <Button :uppercase="true" icon="mdi:whatsapp" theme="tertiary">Contactar</Button>
             </NuxtLink>
 
-            <a href="/docs/CV_DOWNLOAD.pdf" target="_blank" download="cv_download">
+            <a
+              href="/docs/CV_DOWNLOAD.pdf"
+              target="_blank"
+              download="cv_download"
+              class="w-full md:w-2/4 xl:w-1/3"
+            >
               <Button :uppercase="true" icon="mdi:download">Descargar CV</Button>
             </a>
           </div>
@@ -85,6 +94,7 @@
             src="about-me-transparent.webp"
             alt="Miguel Alvarez"
             width="300"
+            height="350"
             class="relative z-10 rounded-2xl"
             loading="eager"
             fetchpriority="high"

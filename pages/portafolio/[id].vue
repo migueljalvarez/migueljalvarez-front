@@ -48,14 +48,14 @@
     class="flex bg-[url('/contact-bg.webp')] bg-cover bg-center bg-no-repeat bg-fixed relative"
   >
     <div
-      class="flex justify-center w-full min-h-screen p-8 shadow-lg bg-black/60 backdrop-blur-md z-1"
+      class="flex justify-center w-full min-h-screen pt-2 shadow-lg md:p-4 lg:p-8 bg-black/60 backdrop-blur-md z-1"
     >
       <div
-        class="w-[95%] sm:w-11/12 md:w-4/5 lg:w-full max-w-6xl p-4 sm:p-6 md:p-8 bg-white border-2 border-gray-300 shadow-lg rounded-xl"
+        class="w-[95%] sm:w-11/12 md:w-full lg:w-full max-w-6xl p-2 sm:p-6 bg-white border-2 border-gray-300 shadow-lg rounded-xl"
       >
-        <div class="">
+        <div>
           <span class="flex items-center gap-2 cursor-pointer hover:text-blue-400 w-min">
-            <nuxt-link to="/">
+            <nuxt-link to="/" aria-label="back">
               <Icon name="mdi:arrow-left" size="30" />
             </nuxt-link>
           </span>
@@ -80,10 +80,9 @@
           <NuxtImg
             :src="porfolioDetails?.urlImage"
             :alt="porfolioDetails?.title"
-            width="130"
-            height="auto"
             format="webp"
-            loading="lazy"
+            width="300"
+            height="250"
             class="rounded-lg"
             :preload="true"
           />

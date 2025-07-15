@@ -21,7 +21,10 @@ export default defineNuxtConfig({
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' },
         { rel: 'preload', as: 'image', href: '/about-me-transparent.webp' }
-      ]
+      ],
+      htmlAttrs: {
+        lang: 'es'
+      }
     }
   },
   runtimeConfig: {

@@ -75,26 +75,26 @@
 </script>
 
 <template>
-  <div
-    class="relative flex flex-col items-center justify-center w-full px-2 py-8 pt-20 mx-auto shadow-lg carousel-container max-w-8xl sm:px-6 bg-black/30 backdrop-blur-md"
+  <section
+    class="relative flex flex-col items-center justify-center w-full gap-2 px-2 mx-auto shadow-lg carousel-container max-w-8xl sm:px-6 bg-black/30 backdrop-blur-md"
   >
-    <Title :text="title" variant="h2" />
     <div>
       <button
         v-if="showArrow"
         aria-label="prev"
-        class="absolute z-10 flex items-center justify-center text-white -translate-y-1/2 rounded-full cursor-pointer left-2 md:left-4 lg:left-30 2xl:left-42 top-1/2 size-10 md:size-12 bg-white/20 backdrop-blur-md hover:bg-white/40"
+        class="absolute z-10 items-center justify-center hidden text-white -translate-y-1/2 rounded-full cursor-pointer md:flex left-2 md:left-4 lg:left-30 2xl:left-42 top-1/2 size-10 md:size-12 bg-white/20 backdrop-blur-md hover:bg-white/40"
         @click="prev"
       >
         <Icon name="mdi:chevron-left" size="24" />
       </button>
       <div
-        class="flex items-center justify-center w-full min-h-[700px] relative overflow-hidden"
+        class="relative flex flex-col items-center justify-center w-full gap-2 overflow-hidden h-fit"
         @touchstart="handleTouchStart"
         @touchend="handleTouchEnd"
       >
+        <Title :text="title" variant="h2" class="pt-10 text-center md:py-18" />
         <Transition :name="transitionName" mode="out-in">
-          <div :key="index" class="slide">
+          <div :key="index" class="slide min-h-[500px]">
             <slot name="card" :item="items[index]" />
           </div>
         </Transition>
@@ -102,17 +102,17 @@
       <button
         v-if="showArrow"
         aria-label="next"
-        class="absolute z-10 flex items-center justify-center text-white -translate-y-1/2 rounded-full cursor-pointer right-2 md:right-4 lg:right-30 2xl:right-42 top-1/2 size-10 md:size-12 bg-white/20 backdrop-blur-md hover:bg-white/40"
+        class="absolute z-10 items-center justify-center hidden text-white -translate-y-1/2 rounded-full cursor-pointer md:flex right-2 md:right-4 lg:right-30 2xl:right-42 top-1/2 size-10 md:size-12 bg-white/20 backdrop-blur-md hover:bg-white/40"
         @click="next"
       >
         <Icon name="mdi:chevron-right" size="24" />
       </button>
     </div>
-    <!-- Dots navigation -->
-    <div class="flex items-center justify-center gap-2 mt-6">
+
+    <div class="flex items-center justify-center gap-2 my-6">
       <DotNavigation :current-index="index" :visible-dots="visibleDots" @onclick="goToSlide" />
     </div>
-  </div>
+  </section>
 </template>
 
 <style scoped>
@@ -126,7 +126,6 @@
   .slide {
     width: 100%;
     height: 100%;
-
     display: flex;
     align-items: center;
     justify-content: center;
