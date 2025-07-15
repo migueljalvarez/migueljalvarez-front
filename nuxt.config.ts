@@ -16,13 +16,7 @@ export default defineNuxtConfig({
           content:
             'Desarrollador de Software con enfoque en crear soluciones digitales escalables y de alto impacto. Transformo ideas en productos funcionales, combinando eficiencia técnica con una visión orientada a resultados.'
         },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        {
-          name: 'csp',
-          'http-equiv': 'Content-Security-Policy',
-          content:
-            "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://res.cloudinary.com data:;"
-        }
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' }
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' },
@@ -52,7 +46,21 @@ export default defineNuxtConfig({
     dir: 'public',
     formats: ['webp', 'avif', 'svg'],
     screens: { sm: 320, md: 640, lg: 1024, xl: 1280 },
-    domains: ['res.cloudinary.com']
+    domains: ['res.cloudinary.com'],
+    providers: {
+      ipx: {
+        options: {
+          provider: 'ipx',
+          dir: 'public' // apunta a /public, que se copia a .output/public
+        }
+      },
+      cloudinary: {
+        provider: 'cloudinary',
+        options: {
+          baseURL: 'https://res.cloudinary.com/tu-cloud-name/image/upload/'
+        }
+      }
+    }
   },
   devServer: {
     host: '0.0.0.0',
