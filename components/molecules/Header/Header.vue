@@ -41,7 +41,7 @@
         width="250"
         height="40"
         alt="Miguel Alvarez"
-        format="svg"
+        format="webp"
         class="object-contain"
       />
 
