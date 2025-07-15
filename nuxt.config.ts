@@ -20,7 +20,8 @@ export default defineNuxtConfig({
         {
           name: 'csp',
           'http-equiv': 'Content-Security-Policy',
-          content: "default-src 'self'; img-src 'self' https://res.cloudinary.com data:;"
+          content:
+            "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://res.cloudinary.com data:;"
         }
       ],
       link: [
