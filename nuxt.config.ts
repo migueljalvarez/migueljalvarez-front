@@ -2,6 +2,7 @@
 import { resolve } from 'pathe'
 import compression from 'vite-plugin-compression'
 export default defineNuxtConfig({
+  ssr: true,
   app: {
     rootAttrs: {
       lang: 'es'
@@ -42,15 +43,24 @@ export default defineNuxtConfig({
     autoImport: true
   },
   image: {
-    provider: 'ipx',
     dir: 'public',
     formats: ['webp', 'avif', 'svg'],
     screens: { sm: 320, md: 640, lg: 1024, xl: 1280 },
-    ipx: {
-      maxAge: 60 * 60 * 24 * 7 // cache IPX por 7 días :contentReference[oaicite:5]{index=5}
-    },
-
-    domains: ['res.cloudinary.com']
+    domains: ['res.cloudinary.com'],
+    providers: {
+      ipx: {
+        options: {
+          provider: 'ipx',
+          dir: 'public' // apunta a /public, que se copia a .output/public
+        }
+      },
+      cloudinary: {
+        provider: 'cloudinary',
+        options: {
+          baseURL: 'https://res.cloudinary.com/tu-cloud-name/image/upload/'
+        }
+      }
+    }
   },
   devServer: {
     host: '0.0.0.0',
