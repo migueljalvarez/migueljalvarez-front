@@ -2,6 +2,7 @@
 import { resolve } from 'pathe'
 import compression from 'vite-plugin-compression'
 export default defineNuxtConfig({
+  ssr: true,
   app: {
     rootAttrs: {
       lang: 'es'
@@ -15,7 +16,12 @@ export default defineNuxtConfig({
           content:
             'Desarrollador de Software con enfoque en crear soluciones digitales escalables y de alto impacto. Transformo ideas en productos funcionales, combinando eficiencia técnica con una visión orientada a resultados.'
         },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        {
+          name: 'csp',
+          'http-equiv': 'Content-Security-Policy',
+          content: "default-src 'self'; img-src 'self' https://res.cloudinary.com data:;"
+        }
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' },
@@ -42,14 +48,9 @@ export default defineNuxtConfig({
     autoImport: true
   },
   image: {
-    provider: 'ipx',
     dir: 'public',
     formats: ['webp', 'avif', 'svg'],
     screens: { sm: 320, md: 640, lg: 1024, xl: 1280 },
-    ipx: {
-      maxAge: 60 * 60 * 24 * 7 // cache IPX por 7 días :contentReference[oaicite:5]{index=5}
-    },
-
     domains: ['res.cloudinary.com']
   },
   devServer: {
