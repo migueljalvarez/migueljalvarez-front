@@ -41,7 +41,6 @@
         width="250"
         height="40"
         alt="Miguel Alvarez"
-        sizes="(max-width: 640px) 150px, (max-width: 1024px) 200px, 250px"
         format="svg"
         class="object-contain"
       />
