@@ -103,7 +103,7 @@
 
         <div class="flex flex-row gap-2 mt-4">
           <div class="flex flex-col gap-4">
-            <p class="text-2xl italic text-white">¿Quieres que hablemos?</p>
+            <p class="text-2xl italic text-white">Quiero ayudarte, contáctame ahora.</p>
             <NuxtLink to="https://wa.link/bxjfgq" target="_blank">
               <Button :uppercase="true" icon="mdi:whatsapp" theme="tertiary">Contactar</Button>
             </NuxtLink>
