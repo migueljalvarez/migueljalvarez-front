@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 import compression from 'vite-plugin-compression'
+import { META_DESCRIPTION } from './constants/common'
 export default defineNuxtConfig({
   ssr: true,
   app: {
@@ -13,8 +14,7 @@ export default defineNuxtConfig({
       meta: [
         {
           name: 'description',
-          content:
-            'Desarrollador de Software con enfoque en crear soluciones digitales escalables y de alto impacto. Transformo ideas en productos funcionales, combinando eficiencia técnica con una visión orientada a resultados.'
+          content: META_DESCRIPTION
         },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
       ],
@@ -30,7 +30,10 @@ export default defineNuxtConfig({
   runtimeConfig: {
     firebaseProjectId: process.env.FIREBASE_PROJECT_ID,
     firebaseClientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    firebasePrivateKey: process.env.FIREBASE_PRIVATE_KEY
+    firebasePrivateKey: process.env.FIREBASE_PRIVATE_KEY,
+    public: {
+      baseUrl: process.env.NUXT_PUBLIC_BASE_URL || 'http://localhost:3000.com'
+    }
   },
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
