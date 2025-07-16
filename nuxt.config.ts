@@ -61,7 +61,7 @@ export default defineNuxtConfig({
       cloudinary: {
         provider: 'cloudinary',
         options: {
-          baseURL: 'https://res.cloudinary.com/tu-cloud-name/image/upload/'
+          baseURL: 'https://res.cloudinary.com/m2a/image/upload/'
         }
       }
     }
