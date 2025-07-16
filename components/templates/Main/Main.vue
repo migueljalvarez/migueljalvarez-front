@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-  import { ref, onMounted } from 'vue'
   import Button from '~/components/atoms/Button/Button.vue'
   import Title from '~/components/atoms/Title/Title.vue'
 
@@ -33,7 +32,7 @@
 </script>
 <template>
   <section
-    class="box-border relative flex justify-center w-full h-[600px] lg:h-[488px] md:h-[488px] py-10 overflow-hidden bg-black"
+    class="box-border relative flex justify-center w-full h-[600px] lg:h-[600px] xl:h-[488px] md:h-[488px] py-10 overflow-hidden bg-black"
   >
     <div class="max-w-[1440px] flex items-center">
       <Transition name="slide-left">

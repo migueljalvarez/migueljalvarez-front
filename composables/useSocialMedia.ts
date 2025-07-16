@@ -1,4 +1,3 @@
-import { ref, onMounted } from 'vue'
 import type { SocialMediaType } from '~/types/common/index'
 
 const socials = ref<(SocialMediaType & { isHovered: boolean })[] | null>(null)

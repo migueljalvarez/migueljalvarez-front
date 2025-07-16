@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-  import { defineProps, defineEmits, ref } from 'vue'
   import type { InputProps } from '../atom'
 
   const props = withDefaults(defineProps<InputProps>(), {

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
   import { DotNavigation, Title } from '~/components/atoms'
   import type { Testimonial } from '~/types/common'
   import type { CarouselProps } from '../organisms'
