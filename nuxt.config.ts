@@ -62,6 +62,10 @@ export default defineNuxtConfig({
         options: {
           baseURL: 'https://res.cloudinary.com/m2a/image/upload/'
         }
+      },
+      netlify: {
+        provider: 'netlify',
+        options: {} // No necesitas nada más
       }
     },
     devServer: {
