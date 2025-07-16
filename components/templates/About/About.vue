@@ -81,7 +81,7 @@
                 loading="lazy"
                 format="webp"
                 width="200"
-                class="object-contain w-auto"
+                class="object-contain"
                 sizes="lg:200px 200px"
               />
             </div>
