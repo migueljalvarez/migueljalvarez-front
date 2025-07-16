@@ -1,0 +1,7 @@
+# netlify.toml
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+[images]
+  remote_images = ["https://res.cloudinary.com/m2a/.*"]
