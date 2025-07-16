@@ -52,11 +52,7 @@ export default defineNuxtConfig({
     screens: { sm: 320, md: 640, lg: 1024, xl: 1280 },
     domains: ['res.cloudinary.com'],
     providers: {
-      ipx: {
-        options: {
-          dir: 'public'
-        }
-      },
+      ipx: {},
       cloudinary: {
         provider: 'cloudinary',
         options: {
