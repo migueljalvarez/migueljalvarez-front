@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import { resolve } from 'pathe'
+
 import compression from 'vite-plugin-compression'
 export default defineNuxtConfig({
   ssr: true,
@@ -54,8 +54,7 @@ export default defineNuxtConfig({
     providers: {
       ipx: {
         options: {
-          provider: 'ipx',
-          dir: 'public' // apunta a /public, que se copia a .output/public
+          dir: 'public'
         }
       },
       cloudinary: {
@@ -64,40 +63,40 @@ export default defineNuxtConfig({
           baseURL: 'https://res.cloudinary.com/m2a/image/upload/'
         }
       }
-    }
-  },
-  devServer: {
-    host: '0.0.0.0',
-    port: 3000
-  },
-  nitro: {
-    publicAssets: [
-      {
-        baseURL: '/',
-        dir: 'public'
-      }
-    ],
-    prerender: {
-      routes: [],
-      failOnError: false,
-      crawlLinks: false,
-      concurrency: 1,
-      interval: 200 // ms entre solicitudes
     },
-    storage: {
-      // almacenamiento en memoria para cache en tiempo de desarrollo
-      cache: {
-        driver: 'memory',
-        ttl: 60
+    devServer: {
+      host: '0.0.0.0',
+      port: 3000
+    },
+    nitro: {
+      publicAssets: [
+        {
+          baseURL: '/',
+          dir: 'public'
+        }
+      ],
+      prerender: {
+        routes: [],
+        failOnError: false,
+        crawlLinks: false,
+        concurrency: 1,
+        interval: 200 // ms entre solicitudes
+      },
+      storage: {
+        // almacenamiento en memoria para cache en tiempo de desarrollo
+        cache: {
+          driver: 'memory',
+          ttl: 60
+        }
       }
-    }
-  },
-  vite: {
-    plugins: [compression()],
-    resolve: {
-      alias: {
-        '@utils': resolve(__dirname, 'utils'),
-        '@types': resolve(__dirname, 'types')
+    },
+    vite: {
+      plugins: [compression()],
+      css: {
+        devSourcemap: false // desactiva sourcemaps CSS en desarrollo
+      },
+      build: {
+        sourcemap: false // desactiva sourcemaps completamente
       }
     }
   }
