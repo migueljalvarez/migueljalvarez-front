@@ -80,8 +80,9 @@
                 :alt="course.name"
                 loading="lazy"
                 format="webp"
+                width="200"
                 class="object-contain w-auto"
-                sizes="200px"
+                sizes="lg:200px 200px"
               />
             </div>
           </div>
