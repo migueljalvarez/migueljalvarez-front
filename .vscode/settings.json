@@ -4,10 +4,6 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always"
   },
-  "eslint.validate": [
-    "javascript",
-    "typescript",
-    "vue"
-  ],
+  "eslint.validate": ["javascript", "typescript", "vue"],
   "vue3snippets.enable-compile-vue-file-on-did-save-code": true
 }
