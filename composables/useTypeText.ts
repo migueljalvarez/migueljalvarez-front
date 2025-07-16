@@ -1,5 +1,4 @@
 // composables/useTypeText.ts
-import type { Ref } from 'vue'
 
 export const useTypeText = (typingSpeed = 100) => {
   const typeText = (fullText: string, target: Ref<string>, callback?: () => void) => {

@@ -80,3 +80,18 @@ export const SERVICES = [
 ]
 
 export const CACHE_EXP = 1800
+
+export const COMPLEMETARY_COURSE = [
+  {
+    name: 'Academia Geek',
+    logo: 'academia-geek.jpeg'
+  },
+  {
+    name: 'Free Code Camp',
+    logo: 'FreeCodeCamp.svg'
+  },
+  {
+    name: 'Platzi',
+    logo: 'Platzi.svg'
+  }
+]

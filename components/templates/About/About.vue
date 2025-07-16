@@ -1,5 +1,6 @@
 <script lang="ts" setup>
   import Title from '~/components/atoms/Title/Title.vue'
+  import { COMPLEMETARY_COURSE } from '~/constants/common'
 
   defineProps<{
     title: string
@@ -21,11 +22,12 @@
             <NuxtImg
               src="about-me.webp"
               alt="Miguel Alvarez"
-              class="self-center rounded-lg lg:self-start"
-              width="500"
-              height="548"
-              loading="lazy"
+              width="600"
+              height="700"
+              sizes="lg:600px sm:300px"
               format="webp"
+              loading="lazy"
+              class="w-full sm:w-1/2 lg:w-[600px] self-center rounded-lg lg:self-start"
             />
           </div>
           <div class="flex flex-col items-start gap-4 text-justify lg:p-4 lg:w-5/6">
@@ -64,33 +66,22 @@
               Cuando no estoy programando, disfruto de la música, el cine, salir a caminar, ver
               videos y tutoriales, siempre estoy en constante aprendizaje.
             </p>
-            <Title text="Formacion Complementaria" variant="h3" class="py-2 italic text-gray-800" />
+            <Title
+              text="Formacion Complementaria"
+              variant="h3"
+              class="w-full py-2 italic text-center text-gray-800 md:text-center"
+            />
             <div
               class="flex flex-col self-center gap-8 p-2 md:flex-row lg:gap-4 lg:justify-around lg:w-full lg:flex-wrap"
             >
               <NuxtImg
-                src="academia-geek.jpeg"
-                alt="Estudios"
+                v-for="course in COMPLEMETARY_COURSE"
+                :src="course.logo"
+                :alt="course.name"
                 loading="lazy"
                 format="webp"
-                sizes="(max-width: 768px) 80px, (max-width: 1024px) 120px, 300px"
                 class="object-contain w-auto"
-              />
-              <NuxtImg
-                src="FreeCodeCamp.svg"
-                alt="Estudios"
-                loading="lazy"
-                format="webp"
-                sizes="(max-width: 768px) 80px, (max-width: 1024px) 120px, 300px"
-                class="object-contain w-auto"
-              />
-              <NuxtImg
-                src="Platzi.svg"
-                alt="Estudios"
-                loading="lazy"
-                format="webp"
-                sizes="(max-width: 768px) 80px, (max-width: 1024px) 120px, 300px"
-                class="object-contain w-auto"
+                sizes="200px"
               />
             </div>
           </div>

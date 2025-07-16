@@ -8,7 +8,7 @@ export default defineNuxtConfig({
       lang: 'es'
     },
     head: {
-      title: 'Miguel Alvarez | Desarrollo de Software',
+      title: 'Miguel Alvarez',
       titleTemplate: '%s | Desarrollo de Software',
       meta: [
         {
@@ -35,7 +35,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   css: ['@/assets/css/main.css'],
-  modules: ['@nuxt/icon', '@nuxt/image', '@nuxt/ui', '@nuxt/fonts'],
+  modules: ['@nuxt/icon', '@nuxt/image-edge', '@nuxt/ui', '@nuxt/fonts'],
   fonts: {
     provider: 'google',
     families: [
@@ -48,6 +48,7 @@ export default defineNuxtConfig({
   image: {
     dir: 'public',
     formats: ['webp', 'avif', 'svg'],
+    sizes: [300, 480, 600, 768, 1024, 1280], // <- importante
     screens: { sm: 320, md: 640, lg: 1024, xl: 1280 },
     domains: ['res.cloudinary.com'],
     providers: {
@@ -91,15 +92,13 @@ export default defineNuxtConfig({
       }
     }
   },
-  alias: {
-    '@components': resolve(__dirname, 'components'),
-    '@composables': resolve(__dirname, 'composables'),
-    '@utils': resolve(__dirname, 'utils'),
-    '@types': resolve(__dirname, 'types'),
-    '@assets': resolve(__dirname, 'assets'),
-    '@public': resolve(__dirname, 'public')
-  },
   vite: {
-    plugins: [compression()]
+    plugins: [compression()],
+    resolve: {
+      alias: {
+        '@utils': resolve(__dirname, 'utils'),
+        '@types': resolve(__dirname, 'types')
+      }
+    }
   }
 })

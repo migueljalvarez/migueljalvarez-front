@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-  import { defineProps, defineEmits } from 'vue'
   import type { SelectProps } from '../atom'
 
   const props = defineProps<SelectProps>()
