@@ -67,15 +67,34 @@
       cleanForm()
     }
   }
-  const backgroundUrl = '/contact-bg.webp'
+  const backgroundStyle = ref({})
+  const hasLoaded = ref(false)
+  onMounted(() => {
+    const handleScroll = () => {
+      const scrollThreshold = window.innerHeight * 0.5 // 50% del viewport
+      const section = document.getElementById('contact')
+      if (!section || hasLoaded.value) return
+
+      const sectionTop = section.getBoundingClientRect().top
+
+      if (sectionTop <= scrollThreshold) {
+        backgroundStyle.value = {
+          backgroundImage: "url('/contact-bg.webp')"
+        }
+        hasLoaded.value = true
+        window.removeEventListener('scroll', handleScroll)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+  })
 </script>
 <template>
   <Section
     id="contact"
     class="relative flex justify-center h-auto bg-fixed bg-center bg-no-repeat bg-cover"
-    :background-image="backgroundUrl"
+    :style="backgroundStyle"
   >
-    <NuxtImg style="display: none" :src="backgroundUrl" alt="background" loading="lazy" />
     <div
       class="flex flex-col justify-center gap-4 shadow-lg lg:justify-around lg:gap-8 lg:flex-row lg:p-8 py-30 lg:pt-30 z-1 bg-black/60 backdrop-blur-md"
     >
@@ -177,5 +196,3 @@
     </div>
   </Section>
 </template>
-
-<style></style>

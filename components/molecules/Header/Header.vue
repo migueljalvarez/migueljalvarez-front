@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-  import { ref } from 'vue'
   import { useSocialMedia } from '~/composables/useSocialMedia'
   import { PUBLIC_ROUTES } from '~/constants/routes'
   import type { SocialMediaType } from '~/types/common'

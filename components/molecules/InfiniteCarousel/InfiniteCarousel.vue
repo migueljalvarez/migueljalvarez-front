@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-  import { ref, computed } from 'vue'
   type Image = {
     src: string
     alt: string
