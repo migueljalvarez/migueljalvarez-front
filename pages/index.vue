@@ -2,14 +2,28 @@
   import { About, Contact, Main, Portfolio, Services, Testimonial } from '~/components/templates'
   import { Hero } from '~/components/atoms'
 
-  import { MAIN_HERO } from '~/constants/common'
+  import { MAIN_HERO, META_DESCRIPTION } from '~/constants/common'
   import { API } from '~/constants/routes'
   import type { Me, Testimonial as TestimonialType } from '~/types/common'
   import type { PortafolioType } from '~/components/templates/templates'
   import { InfiniteCarousel } from '~/components/molecules'
-
+  import { useRuntimeConfig } from '#imports'
+  const aboutImage = 'og-image.jpg'
   definePageMeta({ layout: 'default', keepalive: true })
-
+  const runtime = useRuntimeConfig()
+  const nuxtApp = useNuxtApp()
+  const origin = nuxtApp.payload.serverRendered
+    ? typeof window !== 'undefined'
+      ? window.location.origin
+      : runtime.public.baseUrl
+    : runtime.public.baseUrl
+  useSeoMeta({
+    ogDescription: META_DESCRIPTION,
+    ogImage: `${origin}/${aboutImage}`,
+    ogImageAlt: 'Miguel Alvarez',
+    ogType: 'website',
+    twitterCard: 'summary_large_image'
+  })
   const { logos } = useLogos()
   const loopingLogos = [...logos]
 
