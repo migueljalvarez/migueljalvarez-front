@@ -1,4 +1,3 @@
-import type { Component } from 'vue'
 export type RenderableComponent = {
   component: string | Component
   props?: {

@@ -10,7 +10,7 @@
 </script>
 <template>
   <section class="flex flex-wrap justify-center p-2" :class="heroClass">
-    <p class="p-2 italic sm:w-auto xsm:text-2xl md:text-3xl lg:text-4xl lg:p-10">
+    <p class="p-2 italic text-center sm:w-auto xsm:text-2xl md:text-3xl lg:text-4xl lg:p-10">
       {{ value }}
     </p>
   </section>
