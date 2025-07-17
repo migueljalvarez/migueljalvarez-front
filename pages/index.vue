@@ -2,7 +2,7 @@
   import { About, Contact, Main, Portfolio, Services, Testimonial } from '~/components/templates'
   import { Hero } from '~/components/atoms'
 
-  import { MAIN_HERO, META_DESCRIPTION } from '~/constants/common'
+  import { MAIN_HERO, META } from '~/constants/common'
   import { API } from '~/constants/routes'
   import type { Me, Testimonial as TestimonialType } from '~/types/common'
   import type { PortafolioType } from '~/components/templates/templates'
@@ -18,11 +18,18 @@
       : runtime.public.baseUrl
     : runtime.public.baseUrl
   useSeoMeta({
-    ogDescription: META_DESCRIPTION,
+    title: META.TITLE,
+    description: META.DESCRIPTION,
+    ogTitle: META.TITLE,
+    ogDescription: META.DESCRIPTION,
     ogImage: `${origin}/${aboutImage}`,
-    ogImageAlt: 'Miguel Alvarez',
+    ogImageAlt: 'Imagen destacada de Miguel Alvarez',
     ogType: 'website',
-    twitterCard: 'summary_large_image'
+    ogUrl: origin,
+    twitterCard: 'summary_large_image',
+    twitterTitle: META.TITLE,
+    twitterDescription: META.DESCRIPTION,
+    twitterImage: `${origin}/${aboutImage}`
   })
   const { logos } = useLogos()
   const loopingLogos = [...logos]
