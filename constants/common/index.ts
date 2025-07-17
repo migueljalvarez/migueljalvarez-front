@@ -96,5 +96,8 @@ export const COMPLEMETARY_COURSE = [
   }
 ]
 export const CANONICAL_URL = 'https://www.migueljalvarez.com/'
-export const META_DESCRIPTION =
-  'Desarrollo sitios web, sistemas y MVPs de alto rendimiento para startups, emprendedores y empresas. Con 9+ años de experiencia, transformo ideas en soluciones digitales eficientes, escalables y con alto rendimiento.'
+export const META = {
+  TITLE: 'Miguel Alvarez | Desarrollo de Software',
+  DESCRIPTION:
+    'Desarrollo sitios web, sistemas y MVPs de alto rendimiento para startups, emprendedores y empresas. Con 9+ años de experiencia, transformo ideas en soluciones digitales eficientes, escalables y con alto rendimiento.'
+}
