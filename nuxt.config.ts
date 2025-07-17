@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 import compression from 'vite-plugin-compression'
-import { META_DESCRIPTION } from './constants/common'
+import { META } from './constants/common'
 export default defineNuxtConfig({
   ssr: true,
   app: {
@@ -14,7 +14,7 @@ export default defineNuxtConfig({
       meta: [
         {
           name: 'description',
-          content: META_DESCRIPTION
+          content: META.DESCRIPTION
         },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
       ],
