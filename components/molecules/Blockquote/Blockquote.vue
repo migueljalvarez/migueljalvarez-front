@@ -11,10 +11,12 @@
 </script>
 <template>
   <div>
-    <blockquote class="relative px-8 text-sm italic text-gray-800 md:p-8 md:text-lg md:text-left">
+    <blockquote
+      class="relative z-10 px-8 text-sm italic text-gray-800 md:p-8 md:text-lg md:text-left"
+    >
       <span
         :class="blockquoteClass"
-        class="absolute text-5xl left-[6px] top-[-20px] md:top-2.5 lg:left-[-30px] lg:top-[0px] lg:text-8xl font-mono"
+        class="absolute text-5xl left-[6px] top-[-20px] md:top-2.5 lg:left-[-30px] lg:top-[0px] lg:text-8xl font-mono leading-none select-none"
       >
         “
       </span>
