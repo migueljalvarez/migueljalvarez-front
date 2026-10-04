@@ -48,21 +48,21 @@
     class="flex bg-[url('/contact-bg.webp')] bg-cover bg-center bg-no-repeat bg-fixed relative"
   >
     <div
-      class="flex justify-center w-full min-h-screen pt-2 shadow-lg md:p-4 lg:p-8 bg-black/60 backdrop-blur-md z-1"
+      class="flex justify-center w-full min-h-screen pt-2 shadow-lg md:p-4 lg:p-8 bg-[#030507]/65 backdrop-blur-md z-1"
     >
       <div
-        class="w-[95%] sm:w-11/12 md:w-full lg:w-full max-w-6xl p-2 sm:p-6 bg-white border-2 border-gray-300 shadow-lg rounded-xl"
+        class="w-[95%] sm:w-11/12 md:w-full lg:w-full max-w-6xl p-2 sm:p-6 bg-white border border-[#E9EEF5] shadow-[0_14px_32px_rgba(18,30,48,0.08)] rounded-xl"
       >
         <div>
-          <span class="flex items-center gap-2 cursor-pointer hover:text-blue-400 w-min">
+          <span class="flex items-center gap-2 cursor-pointer hover:text-[#243B62] w-min">
             <nuxt-link to="/" aria-label="back">
               <Icon name="mdi:arrow-left" size="30" />
             </nuxt-link>
           </span>
 
           <div class="p-4">
-            <Title text="Portafolio" variant="h1" class="italic text-gray-800" />
-            <div class="py-4 pb-4 text-sm text-justify text-gray-500 sm:text-base">
+            <Title text="Portafolio" variant="h1" class="italic text-navy" />
+            <div class="py-4 pb-4 text-sm text-justify text-[#4D5868] sm:text-base">
               <p v-if="porfolioDetails?.portfolioType === 'Cliente'">
                 Resumen del problema, objetivos y solución técnica implementada. Descubre cómo se
                 transformó una necesidad en un proyecto funcional y bien estructurado.
@@ -90,20 +90,20 @@
             v-if="porfolioDetails?.title"
             class="flex flex-col justify-center text-center sm:text-left"
           >
-            <Title :text="porfolioDetails.title" variant="h2" class="italic text-gray-800" />
+            <Title :text="porfolioDetails.title" variant="h2" class="italic text-navy" />
           </div>
         </div>
 
         <!-- Descripción -->
         <article
           v-if="!porfolioDetails?.description || porfolioDetails?.description !== 'N/A'"
-          class="px-4 pb-4 text-sm text-justify text-gray-500 sm:text-base"
+          class="px-4 pb-4 text-sm text-justify text-[#4D5868] sm:text-base"
         >
           {{ porfolioDetails?.description }}
         </article>
 
         <!-- Ficha técnica -->
-        <Title text="Ficha Tecnica" variant="h3" class="p-6 italic text-gray-800" />
+        <Title text="Ficha Tecnica" variant="h3" class="p-6 italic text-navy" />
         <DynamicTable :headers="titlesTables" :rows="rows" :column-index="0" />
 
         <!-- Capturas de pantalla -->
@@ -111,7 +111,7 @@
           v-if="porfolioDetails?.images && porfolioDetails?.images.length > 0"
           class="flex flex-col gap-4 px-4 mt-8"
         >
-          <h3 class="text-base font-medium">Capturas de pantalla</h3>
+          <h3 class="text-base font-medium text-navy">Capturas de pantalla</h3>
           <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
             <NuxtImg
               v-for="(image, index) of porfolioDetails?.images"
