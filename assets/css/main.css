@@ -1,7 +1,5 @@
 @import 'tailwindcss';
 
-@custom-variant dark (&:where(.dark, .dark *));
-
 .layout {
   display: grid;
   min-height: 100dvh;
@@ -20,6 +18,7 @@
   --color-brand-navy: #121e30;
   --color-brand-mid: #1c2f4c;
   --color-brand-accent: #243b62;
+  --color-brand-accent-text: #243b62;
   /* azul real extraído del logo — reservado para acentos puntuales (iconos, estado activo, hover), no para fondos grandes ni texto de párrafo */
   --color-brand-blue: #3f6bad;
   --color-brand-blue-on-dark: #38bdf8;
@@ -32,6 +31,7 @@
   --color-brand-surface-soft: #eef2f7;
   --color-brand-border: #e9eef5;
   --color-brand-shadow: #c9d1dc;
+  --color-brand-shadow-card: #0f17272e;
 
   /* colores semánticos reutilizables para texto, paneles y estados */
   --color-brand-white: #ffffff;
@@ -39,6 +39,7 @@
   --color-brand-surface-panel: #1a2433;
   --color-brand-surface-panel-strong: #1e293b;
   --color-brand-surface-contrast: #0f1727;
+  --color-brand-project-overlay: #090909;
   --color-brand-text-strong: #f5f7fa;
   --color-brand-text-soft: #ddeafb;
   --color-brand-text-subtle: #c9d1dc;
@@ -61,43 +62,6 @@
   --font-sans: 'Inter', sans-serif;
   --font-display: 'Poppins', sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
-}
-
-.dark {
-  --color-brand-navy: #0b1220;
-  --color-brand-mid: #101b2d;
-  --color-brand-accent: #243b62;
-  --color-brand-blue: #6d93d9;
-  --color-brand-blue-on-dark: #38bdf8;
-  --color-brand-ink: #f5f7fa;
-  --color-brand-muted: #c9d1dc;
-  --color-brand-helper: #aab7cc;
-  --color-brand-surface: #0f1727;
-  --color-brand-surface-soft: #162336;
-  --color-brand-border: #21314a;
-  --color-brand-shadow: #0a1120;
-  --color-brand-surface-card: #0f1727;
-  --color-brand-surface-panel: #1a2433;
-  --color-brand-surface-panel-strong: #1e293b;
-  --color-brand-surface-contrast: #0f1727;
-  --color-brand-text-strong: #f5f7fa;
-  --color-brand-text-soft: #ddeafb;
-  --color-brand-text-subtle: #c9d1dc;
-  --color-brand-border-soft: #334155;
-  --color-brand-border-strong: #2f4469;
-  --color-brand-label: #eaf1ff;
-  --color-brand-success-bg: #eaf6ee;
-  --color-brand-success-text: #123b2a;
-  --color-brand-success-border: #b8dfc4;
-  --color-brand-warning-bg: #fff4d8;
-  --color-brand-warning-text: #5c4a1c;
-  --color-brand-warning-border: #f0d67a;
-  --color-brand-danger-bg: #fce9e9;
-  --color-brand-danger-text: #8e2e2e;
-  --color-brand-danger-border: #e9b4b4;
-  --color-brand-error-bg: #fff1f2;
-  --color-brand-error-text: #7a1f2a;
-  --color-brand-error-border: #fda4af;
 }
 
 @layer components {
@@ -143,8 +107,7 @@
   h3,
   h4,
   h5,
-  h6,
-  li {
+  h6 {
     font-family: 'Poppins', sans-serif;
     letter-spacing: -0.03em;
   }
