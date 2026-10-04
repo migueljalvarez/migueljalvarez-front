@@ -1,4 +1,5 @@
 import type { PortafolioType } from '~/components/templates/templates'
+import type { PortfolioCardProject } from '~/components/templates/Portfolio/portfolio.types'
 
 export const PORTFOLIO_PROJECTS: PortafolioType[] = [
   {
@@ -163,6 +164,66 @@ export const PORTFOLIO_PROJECTS: PortafolioType[] = [
     images: [],
     gallery: []
   }
+]
+
+const PORTFOLIO_PROJECT_CONTEXT: Record<
+  string,
+  Pick<PortfolioCardProject, 'projectKind' | 'sector' | 'audience'>
+> = {
+  'tu-radio-ar-stereo': {
+    projectKind: 'Plataforma digital',
+    sector: 'Medios y entretenimiento',
+    audience: 'radios y comunidades digitales'
+  },
+  'caja-de-ritmos': {
+    projectKind: 'Herramienta creativa',
+    sector: 'Música y creatividad',
+    audience: 'músicos y compositores'
+  },
+  'frases-aleatorias': {
+    projectKind: 'Microproducto',
+    sector: 'Creación de contenido',
+    audience: 'creadores digitales'
+  },
+  'agencia-ops': {
+    projectKind: 'Sitio corporativo',
+    sector: 'Servicios profesionales',
+    audience: 'agencias y negocios'
+  },
+  'crm-visual': {
+    projectKind: 'Sistema de gestión',
+    sector: 'Ventas y CRM',
+    audience: 'equipos comerciales'
+  }
+}
+
+const toPortfolioCardProject = (projectId: string, mock = false): PortfolioCardProject => {
+  const project = PORTFOLIO_PROJECTS.find(item => item.id === projectId)
+  const context = PORTFOLIO_PROJECT_CONTEXT[projectId]
+
+  if (!project || !context) {
+    throw new Error(`Portfolio project not found: ${projectId}`)
+  }
+
+  return {
+    id: project.id,
+    title: project.title,
+    description: project.description,
+    type: project.type === 'client' ? 'cliente' : 'propio',
+    ...context,
+    image: project.urlImage,
+    href: `/portafolio/${project.slug || project.id}`,
+    status: project.status,
+    mock
+  }
+}
+
+export const HOME_PORTFOLIO_PROJECTS: PortfolioCardProject[] = [
+  toPortfolioCardProject('tu-radio-ar-stereo'),
+  toPortfolioCardProject('caja-de-ritmos', true),
+  toPortfolioCardProject('frases-aleatorias', true),
+  toPortfolioCardProject('agencia-ops', true),
+  toPortfolioCardProject('crm-visual', true)
 ]
 
 export const PORTFOLIO_TYPE_OPTIONS = ['Todos', 'Clientes', 'Productos Propios'] as const

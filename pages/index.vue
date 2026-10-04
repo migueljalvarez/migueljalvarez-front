@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import { About, Contact, Main, Portfolio, Services } from '~/components/templates'
+  import { About, Contact, Main, PortfolioSection, Services } from '~/components/templates'
 
   import { META, WORK_ITEMS } from '~/constants/common'
-  import { PORTFOLIO_PROJECTS } from '~/constants/portfolio'
+  import { HOME_PORTFOLIO_PROJECTS } from '~/constants/portfolio'
 
   import { useRuntimeConfig } from '#imports'
   import { Section } from '~/components/organisms'
@@ -36,8 +36,6 @@
     profession: 'Desarrollador backend/full-stack independiente',
     jobDescription: ''
   }
-
-  const homeProjects = PORTFOLIO_PROJECTS.slice(0, 5)
 </script>
 
 <template>
@@ -90,9 +88,9 @@
       </div>
     </Section>
     <Services />
-    <Section id="portfolio" class="gap-4 bg-brand-surface px-4 py-8 pt-20">
+    <Section id="portfolio-background" class="gap-4 bg-brand-surface px-4 py-8 pt-20">
       <div class="w-full max-w-7xl mx-auto">
-        <Portfolio title="Portafolio" :projects="homeProjects" />
+        <PortfolioSection title="Portafolio" :projects="HOME_PORTFOLIO_PROJECTS" />
       </div>
     </Section>
 
