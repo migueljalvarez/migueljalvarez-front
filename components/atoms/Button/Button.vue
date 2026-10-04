@@ -20,10 +20,10 @@
       props.size === 'sm' && 'py-2 px-4 text-xs leading-none',
       props.size === 'md' && 'py-2 px-4 text-sm leading-none',
       props.size === 'lg' && 'py-3.5 px-7 text-sm leading-none',
-      props.theme === 'primary' && 'bg-brand-ink text-white hover:bg-brand-accent shadow-sm',
+      props.theme === 'primary' && 'bg-brand-navy text-white hover:bg-brand-mid shadow-sm',
       props.theme === 'secondary' &&
         'border border-brand-border bg-transparent text-brand-ink hover:bg-brand-surface-soft',
-      props.theme === 'tertiary' && 'bg-brand-blue text-white hover:bg-brand-accent',
+      props.theme === 'tertiary' && 'bg-brand-accent text-white hover:bg-brand-mid',
       typeof attrs.class === 'string' ? attrs.class : undefined
     )
   )

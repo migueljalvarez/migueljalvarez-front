@@ -1,13 +1,12 @@
 <script lang="ts" setup>
-  import { Title, Button, Input, Select } from '~/components/atoms'
+  import { Button, Input, Select } from '~/components/atoms'
   import Form from '~/components/Form/Form.vue'
   import { SocialMedia } from '~/components/molecules'
   import { Section } from '~/components/organisms'
 
-  import { CONTACT_INFO, REGEX_COMMON, REGEX_EMAIL, REGEX_LARGE_TEXT } from '~/constants/common'
+  import { REGEX_COMMON, REGEX_EMAIL, REGEX_LARGE_TEXT } from '~/constants/common'
   import type { SocialMediaType } from '~/types/common'
 
-  const { location } = CONTACT_INFO
   defineProps<{
     title: string
   }>()
@@ -64,10 +63,10 @@
 <template>
   <Section
     id="contact"
-    class="gap-4 px-4 bg-[linear-gradient(180deg,#F5F7FA_0%,#F5F7FA_22%,#0F1727_22%,#0F1727_100%)]"
+    class="gap-4 bg-[linear-gradient(180deg,var(--color-brand-surface)_0%,var(--color-brand-surface)_22%,var(--color-brand-surface-contrast)_22%,var(--color-brand-surface-contrast)_100%)] px-4"
   >
     <div
-      class="relative overflow-hidden rounded-2xl p-9 w-full max-w-7xl mx-auto mb-8 bg-[#0F1727] border border-[#243B62]/35 shadow-[0_18px_40px_rgba(18,30,48,0.22)]"
+      class="relative mx-auto mb-8 w-full max-w-7xl overflow-hidden rounded-2xl border border-brand-border-strong/50 bg-brand-surface-contrast p-9 shadow-[0_18px_40px_rgba(18,30,48,0.22)]"
     >
       <!-- Logo decorativo asomando desde la esquina — placeholder mientras subes el SVG real a public/ -->
       <NuxtImg
@@ -77,14 +76,14 @@
       />
 
       <div class="relative z-10">
-        <h5 class="text-[#DDEAFB] font-semibold mb-4 tracking-[0.08em] uppercase text-xs">
+        <h5 class="mb-4 text-xs font-semibold tracking-[0.08em] text-brand-text-soft uppercase">
           {{ title }}
         </h5>
 
         <div class="flex flex-col md:flex-row gap-8 items-stretch">
           <div class="flex flex-col gap-4 md:w-1/2">
-            <h3 class="font-bold text-[#F6F9FF]">¿Tienes algo en mente?</h3>
-            <p class="text-[#C9D1DC] text-sm leading-6">
+            <h3 class="font-bold text-brand-text-strong">¿Tienes algo en mente?</h3>
+            <p class="text-sm leading-6 text-brand-text-subtle">
               No necesitas tener un documento técnico ni todos los requisitos definidos. Cuéntame
               qué quieres hacer, qué problema tienes o qué quieres mejorar. Primero hablamos;
               después vemos si puedo ayudarte.
@@ -95,8 +94,8 @@
               </Button>
             </NuxtLink>
 
-            <div class="rounded-2xl bg-[#1A2433] border border-[#2B3E5A] p-4">
-              <ul class="text-[#C9D1DC] p-4 text-sm leading-6">
+            <div class="rounded-2xl border border-brand-border-strong bg-brand-surface-panel p-4">
+              <ul class="p-4 text-sm leading-6 text-brand-text-subtle">
                 <li class="list-disc">Respuesta en menos de 24 horas</li>
                 <li class="list-disc">Primera consulta sin Costo</li>
               </ul>
@@ -131,7 +130,7 @@
 
           <div class="flex flex-col gap-2 md:w-1/2">
             <div
-              class="rounded-2xl bg-[#1A2433] border border-[#2F4469]/70 p-4 shadow-[0_12px_28px_rgba(3,5,7,0.22)]"
+              class="rounded-2xl border border-brand-border-strong/70 bg-brand-surface-panel p-4 shadow-[0_12px_28px_rgba(3,5,7,0.22)]"
             >
               <Form
                 :successful="isSendedSuccessful"
@@ -188,9 +187,9 @@
             </div>
 
             <p
-              class="flex flex-col w-full text-[#C9D1DC] font-sans text-xs mt-auto pt-2 text-right"
+              class="mt-auto flex w-full flex-col pt-2 text-right font-sans text-xs text-brand-text-subtle"
             >
-              <span class="font-sans font-bold text-[#F6F9FF]">
+              <span class="font-sans font-bold text-brand-text-strong">
                 &copy; {{ new Date().getFullYear() }} Miguel Alvarez
               </span>
               <span class="font-sans">Servicios de consultoria y desarrollo de Software</span>

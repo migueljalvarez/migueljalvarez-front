@@ -23,7 +23,7 @@
     'resize-none': props.tag === 'textarea',
     'border-red-400 bg-brand-error-bg text-brand-error-text placeholder:text-brand-error-border focus:border-red-500 focus:ring-2 focus:ring-red-200 focus:outline-none':
       error.value,
-    'border-brand-border bg-white text-brand-ink placeholder:text-brand-helper focus:border-brand-accent focus:ring-2 focus:ring-brand-blue/20 focus:outline-none':
+    'border-brand-border bg-brand-surface-card text-brand-ink placeholder:text-brand-muted focus:border-brand-accent focus:ring-2 focus:ring-brand-blue/20 focus:outline-none':
       !error.value
   }))
   const rows = computed(() => {

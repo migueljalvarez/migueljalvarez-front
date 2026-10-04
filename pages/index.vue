@@ -1,9 +1,8 @@
 <script setup lang="ts">
-  import { About, Contact, Main, Portfolio, Services, Testimonial } from '~/components/templates'
+  import { About, Contact, Main, Portfolio, Services } from '~/components/templates'
 
   import { META, WORK_ITEMS } from '~/constants/common'
   import { PORTFOLIO_PROJECTS } from '~/constants/portfolio'
-  import { TESTIMONIALS_MOCK } from '~/constants/testimonials'
 
   import { useRuntimeConfig } from '#imports'
   import { Section } from '~/components/organisms'
@@ -39,7 +38,6 @@
   }
 
   const homeProjects = PORTFOLIO_PROJECTS.slice(0, 5)
-  const homeTestimonials = TESTIMONIALS_MOCK
 </script>
 
 <template>
@@ -50,7 +48,7 @@
     <Section id="before-work" class="gap-4 px-4 py-8 pt-20">
       <div class="w-full max-w-7xl mx-auto">
         <div
-          class="rounded-2xl border border-brand-border bg-white p-6 shadow-[0_10px_24px_rgba(18,30,48,0.05)] md:p-8"
+          class="rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-[0_10px_24px_rgba(18,30,48,0.05)] md:p-8"
         >
           <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
             <div class="flex flex-col gap-4">
@@ -58,7 +56,7 @@
                 Antes de construir
               </h5>
 
-              <h2 class="text-2xl font-semibold text-brand-navy md:text-3xl">
+              <h2 class="text-2xl font-semibold text-brand-ink md:text-3xl">
                 La tecnología es importante. Entender el problema, todavía más.
               </h2>
 
@@ -74,14 +72,14 @@
               </NuxtLink>
             </div>
 
-            <div class="rounded-2xl border border-brand-border bg-[#EEF2F7] p-5">
+            <div class="rounded-2xl border border-brand-border bg-brand-surface-soft p-5">
               <ol
                 class="custom-list grid grid-cols-1 gap-3 text-sm text-brand-muted sm:grid-cols-2"
               >
                 <li
                   v-for="(item, index) in WORK_ITEMS"
                   :key="index"
-                  class="custom-list-item rounded-xl bg-white px-3 py-3 shadow-sm"
+                  class="custom-list-item rounded-xl bg-brand-surface-card px-3 py-3 shadow-sm"
                 >
                   {{ item.step }}
                 </li>
@@ -98,7 +96,6 @@
       </div>
     </Section>
 
-    <!-- <Testimonial :testimonials="homeTestimonials" /> -->
     <Contact title="Hablemos" />
   </div>
 </template>
