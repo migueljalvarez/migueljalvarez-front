@@ -4,8 +4,8 @@
     color: { type: String, required: true }
   })
   const heroClass = computed(() => ({
-    'bg-gray-200': props.color === 'gray' ? true : false,
-    'bg-blue-400 text-slate-900': props.color === 'blue' ? true : false
+    'bg-[#F5F7FA] text-navy': props.color === 'gray' ? true : false,
+    'bg-[#243B62] text-white': props.color === 'blue' ? true : false
   }))
 </script>
 <template>

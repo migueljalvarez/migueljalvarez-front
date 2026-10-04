@@ -8,13 +8,13 @@
   const props = defineProps<PorfolioItemProps>()
 
   const portfolioTypeClass = computed(() => ({
-    'text-white bg-green-700': props.portfolioType === 'Cliente',
-    'text-white bg-gray-500': props.portfolioType === 'Practica'
+    'text-white bg-[#123B2A]': props.portfolioType === 'Cliente',
+    'text-navy bg-[#EEF2F7]': props.portfolioType === 'Practica'
   }))
 </script>
 <template>
   <div
-    class="relative flex flex-col h-full overflow-hidden border border-gray-300 hover:shadow-2xl w-70 2xl:w-80 rounded-xl hover:scale-110"
+    class="relative flex flex-col h-full overflow-hidden border border-[#E9EEF5] bg-white hover:shadow-[0_16px_35px_rgba(18,30,48,0.08)] w-70 2xl:w-80 rounded-xl hover:scale-105 transition-transform duration-200"
   >
     <NuxtLink :to="`/portafolio/${id}`" class="flex flex-col h-full">
       <div
@@ -23,7 +23,7 @@
       >
         {{ !portfolioType ? 'PROYECTO' : portfolioType.toUpperCase() }}
       </div>
-      <div class="flex items-center justify-center w-full bg-gray-100">
+      <div class="flex items-center justify-center w-full bg-[#F5F7FA]">
         <div class="w-full">
           <NuxtImg
             :src="image"
@@ -36,8 +36,8 @@
           />
         </div>
       </div>
-      <div class="flex items-center justify-between w-full p-4 rounded-b-lg bg-gray-50">
-        <span class="flex-col text-black">
+      <div class="flex items-center justify-between w-full p-4 rounded-b-lg bg-[#F5F7FA]">
+        <span class="flex-col text-navy">
           <p class="font-sans italic font-medium">{{ title }}</p>
           <span
             v-for="technology of technologies"

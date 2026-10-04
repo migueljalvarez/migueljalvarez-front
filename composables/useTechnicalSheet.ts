@@ -29,7 +29,7 @@ export const useTechnicalSheet = () => {
               component: 'a',
               props: {
                 href: data.url,
-                class: 'text-blue-600 hover:underline',
+                class: 'text-brand-accent hover:underline',
                 target: '_blank',
                 innerHTML: data.url
               }
@@ -41,12 +41,12 @@ export const useTechnicalSheet = () => {
       ['Solución', data.solutionDetails || NOT_APPLY],
       [
         'Estado',
-        data.state
+        data.status
           ? {
               component: markRaw(Badge),
               props: {
                 class: 'inline-block text-xs',
-                value: String(data.state),
+                value: String(data.status),
                 theme: 'success'
               }
             }

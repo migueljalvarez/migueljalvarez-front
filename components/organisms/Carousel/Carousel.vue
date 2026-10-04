@@ -78,14 +78,16 @@
     class="relative flex flex-col items-center justify-center w-full gap-2 px-2 mx-auto shadow-lg carousel-container max-w-8xl sm:px-6 bg-black/30 backdrop-blur-md"
   >
     <div>
-      <button
+      <Button
         v-if="showArrow"
+        type="button"
+        theme="secondary"
         aria-label="prev"
-        class="absolute z-10 items-center justify-center hidden text-white -translate-y-1/2 rounded-full cursor-pointer md:flex left-2 md:left-4 lg:left-30 2xl:left-42 top-1/2 size-10 md:size-12 bg-white/20 backdrop-blur-md hover:bg-white/40"
+        class="absolute z-10 left-2 top-1/2 hidden h-10 w-auto -translate-y-1/2 rounded-full border-0 bg-white/20 px-2 text-white backdrop-blur-md hover:bg-white/40 md:flex md:left-4 md:h-12 md:size-12 lg:left-30 2xl:left-42"
         @click="prev"
       >
         <Icon name="mdi:chevron-left" size="24" />
-      </button>
+      </Button>
       <div
         class="relative flex flex-col items-center justify-center w-full gap-2 overflow-hidden h-fit"
         @touchstart="handleTouchStart"
@@ -98,14 +100,16 @@
           </div>
         </Transition>
       </div>
-      <button
+      <Button
         v-if="showArrow"
+        type="button"
+        theme="secondary"
         aria-label="next"
-        class="absolute z-10 items-center justify-center hidden text-white -translate-y-1/2 rounded-full cursor-pointer md:flex right-2 md:right-4 lg:right-30 2xl:right-42 top-1/2 size-10 md:size-12 bg-white/20 backdrop-blur-md hover:bg-white/40"
+        class="absolute z-10 right-2 top-1/2 hidden h-10 w-auto -translate-y-1/2 rounded-full border-0 bg-white/20 px-2 text-white backdrop-blur-md hover:bg-white/40 md:flex md:right-4 md:h-12 md:size-12 lg:right-30 2xl:right-42"
         @click="next"
       >
         <Icon name="mdi:chevron-right" size="24" />
-      </button>
+      </Button>
     </div>
 
     <div class="flex items-center justify-center gap-2 my-6">

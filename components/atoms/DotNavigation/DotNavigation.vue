@@ -7,14 +7,16 @@
 </script>
 <template>
   <div>
-    <button
+    <Button
       v-for="i in visibleDots"
       :key="i"
-      class="w-3 h-3 mx-2 transition-all duration-200 rounded-full hover:cursor-pointer"
+      type="button"
+      theme="secondary"
+      class="mx-2 h-3 w-3 rounded-full border-0 bg-transparent p-0 shadow-none hover:bg-transparent"
       :class="
         i === currentIndex
-          ? 'bg-blue-500 scale-125 hover:scale-150'
-          : 'bg-gray-300/60 hover:scale-150'
+          ? 'scale-125 bg-brand-accent hover:scale-150'
+          : 'bg-[#D5DCE6] hover:scale-150'
       "
       aria-label="Go to slide"
       @click="emit('onclick', i)"

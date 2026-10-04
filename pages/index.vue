@@ -1,13 +1,13 @@
 <script setup lang="ts">
   import { About, Contact, Main, Portfolio, Services, Testimonial } from '~/components/templates'
-  import { Hero } from '~/components/atoms'
 
-  import { MAIN_HERO, META } from '~/constants/common'
-  import { API } from '~/constants/routes'
-  import type { Me, Testimonial as TestimonialType } from '~/types/common'
-  import type { PortafolioType } from '~/components/templates/templates'
-  import { InfiniteCarousel } from '~/components/molecules'
+  import { META, WORK_ITEMS } from '~/constants/common'
+  import { PORTFOLIO_PROJECTS } from '~/constants/portfolio'
+  import { TESTIMONIALS_MOCK } from '~/constants/testimonials'
+
   import { useRuntimeConfig } from '#imports'
+  import { Section } from '~/components/organisms'
+  import { Button } from '~/components/atoms'
   const aboutImage = 'og-image.jpg'
   definePageMeta({ layout: 'default', keepalive: true })
   const runtime = useRuntimeConfig()
@@ -31,51 +31,93 @@
     twitterDescription: META.DESCRIPTION,
     twitterImage: `${origin}/${aboutImage}`
   })
-  const { logos } = useLogos()
-  const loopingLogos = [...logos]
-
-  const fallbackProfile: Me = {
-    id: '',
-    name: '',
-    profession: '',
+  const profile = {
+    id: 'local-profile',
+    name: 'Miguel',
+    profession: 'Desarrollador backend/full-stack independiente',
     jobDescription: ''
   }
 
-  const fallbackTestimonials: TestimonialType[] = []
-  const fallbackProjects: PortafolioType[] = []
-
-  async function fetchWithFallback<T>(promise: Promise<T>, fallback: T): Promise<T> {
-    try {
-      return await promise
-    } catch (error) {
-      console.error('[Fetch error]:', (error as Error).message)
-      return fallback
-    }
-  }
-
-  const [profile, testimonials, projects] = await Promise.all([
-    fetchWithFallback($fetch<Me>(API.ME), fallbackProfile),
-    fetchWithFallback($fetch<TestimonialType[]>(API.TESTIMONIALS), fallbackTestimonials),
-    fetchWithFallback($fetch<PortafolioType[]>(API.PORTAFOLIO), fallbackProjects)
-  ])
+  const homeProjects = PORTFOLIO_PROJECTS.slice(0, 5)
+  const homeTestimonials = TESTIMONIALS_MOCK
 </script>
 
 <template>
   <div>
     <Main :me="profile" />
-    <!--  <Hero value="¿Qué puedo hacer por ti?" color="blue" class="w-full" /> -->
-
-    <Services />
-    <div class="box-border grid min-w-full">
-      <InfiniteCarousel :items="loopingLogos" />
-    </div>
-
-    <Portfolio title="Portafolio" :projects="projects" />
-    <Hero :value="MAIN_HERO" color="gray" />
-    <Testimonial :testimonials="testimonials" />
     <About title="Sobre mí" />
-    <Contact title="Contáctame" />
+
+    <Section id="before-work" class="gap-4 px-4 py-8 pt-20">
+      <div class="w-full max-w-7xl mx-auto">
+        <div
+          class="rounded-2xl border border-brand-border bg-white p-6 shadow-[0_10px_24px_rgba(18,30,48,0.05)] md:p-8"
+        >
+          <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+            <div class="flex flex-col gap-4">
+              <h5 class="text-brand-blue font-semibold text-sm tracking-[0.08em] uppercase">
+                Antes de construir
+              </h5>
+
+              <h2 class="text-2xl font-semibold text-brand-navy md:text-3xl">
+                La tecnología es importante. Entender el problema, todavía más.
+              </h2>
+
+              <p class="text-brand-muted text-base leading-7">
+                Mi trabajo no empieza escogiendo un framework. Empieza entendiendo qué quieres
+                lograr, qué tienes hoy, y qué es realmente
+                <span class="text-accent">viable con tu presupuesto y tus tiempos</span>
+                — no todo lo que suena bien técnicamente es lo correcto para tu negocio.
+              </p>
+
+              <NuxtLink to="#contact" class="w-fit">
+                <Button size="lg" theme="primary">Hablemos de tu caso</Button>
+              </NuxtLink>
+            </div>
+
+            <div class="rounded-2xl border border-brand-border bg-[#EEF2F7] p-5">
+              <ol
+                class="custom-list grid grid-cols-1 gap-3 text-sm text-brand-muted sm:grid-cols-2"
+              >
+                <li
+                  v-for="(item, index) in WORK_ITEMS"
+                  :key="index"
+                  class="custom-list-item rounded-xl bg-white px-3 py-3 shadow-sm"
+                >
+                  {{ item.step }}
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Section>
+    <Services />
+    <Section id="portfolio" class="gap-4 bg-brand-surface px-4 py-8 pt-20">
+      <div class="w-full max-w-7xl mx-auto">
+        <Portfolio title="Portafolio" :projects="homeProjects" />
+      </div>
+    </Section>
+
+    <!-- <Testimonial :testimonials="homeTestimonials" /> -->
+    <Contact title="Hablemos" />
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+  .custom-list {
+    counter-reset: step-counter; /* Inicializa el contador */
+  }
+
+  .custom-list-item {
+    counter-increment: step-counter; /* Incrementa en cada elemento */
+    position: relative;
+  }
+
+  /* El truco 'decimal-leading-zero' fuerza el formato 01, 02, 03... */
+  .custom-list-item::before {
+    content: counter(step-counter, decimal-leading-zero) '. ';
+    font-weight: 700;
+    color: var(--color-brand-blue);
+    margin-right: 0.5rem;
+  }
+</style>

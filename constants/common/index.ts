@@ -36,46 +36,49 @@ export const MAIN_HERO = 'Con mas de 9 años de experiencia como Desarrollador d
 export const CONTACT_INFO = {
   phone: '+57 320-318-7076',
   email: 'ing.migueljalvarez@gamil.com',
-  location: 'Medellin, Antioquia - Colombia'
+  location: 'Medellin, Antioquia, CO'
 }
 export const CONTACT_INFO_DESCRIPTION = `¿Buscas impulsar tus proyectos con soluciones creativas y efectivas? ¡Estoy listo para
           ayudarte! Ponte en contacto conmigo y descubre cómo juntos podemos llevar tus ideas al
           siguiente nivel. Tu mensaje es el primer paso para comenzar algo increíble.`
 
-/* Services */
-export const SERVICES = [
+export const WORK_ITEMS = [
+  { step: 'Tienes una idea y necesitas convertirla en algo concreto.' },
+  { step: 'Quieres un MVP sin invertir meses en cosas que todavía no necesitas.' },
+  { step: 'Tu sistema funciona, pero necesita nuevas capacidades.' },
+  { step: 'Hay un problema técnico que necesitas entender antes de tomar una decisión.' }
+]
+/* Phases of software development */
+export const DEVELOPMENT_PHASES = [
   {
-    title: 'Estrategia & Consultoría',
-    icon: 'fa-solid:users',
-    items: [
-      'Aterrizaje de ideas',
-      'Planificación tecnica del proyecto.',
-      'Diseño de roadmap para lanzamientos y crecimiento.'
-    ]
+    title: 'Descubrimiento y análisis',
+    description: 'Definimos el problema, los usuarios y el alcance del producto.',
+    icon: 'mdi:magnify'
   },
   {
-    title: 'Desarrollo de Software',
-    icon: 'fa-solid:code',
-    items: [
-      'Desarrollo web a la medida',
-      'Mantenimiento y optimización',
-      'Integraciones y APIs',
-      'Documentación técnica',
-      'Despliegue Automatizado',
-      'Certificado SSL',
-      'Posicionamiento SEO'
-    ]
+    title: 'Planificación y arquitectura',
+    description: 'Priorizamos el alcance y elegimos una solución técnica adecuada.',
+    icon: 'mdi:clipboard-text-outline'
   },
   {
-    title: 'Implementación & Soporte',
-    icon: 'fa6-solid:laptop-code',
-    items: [
-      'Creación de Landing Page',
-      'Desarrollo de MVPs funcionales y testeables',
-      'Implementación de nuevas funciones',
-      'Corrección de Bugs',
-      'Soporte y mantenimiento'
-    ]
+    title: 'Diseño de experiencia',
+    description: 'Organizamos los flujos y la interfaz para que el producto sea claro y usable.',
+    icon: 'mdi:palette-outline'
+  },
+  {
+    title: 'Desarrollo e integración',
+    description: 'Construimos el producto y conectamos sus componentes y servicios.',
+    icon: 'mdi:code-tags'
+  },
+  {
+    title: 'Pruebas y validación',
+    description: 'Comprobamos que la solución funcione y cumpla los objetivos acordados.',
+    icon: 'mdi:bug-check-outline'
+  },
+  {
+    title: 'Despliegue y evolución',
+    description: 'Publicamos el producto y lo mejoramos a partir de su uso real.',
+    icon: 'mdi:rocket-launch-outline'
   }
 ]
 

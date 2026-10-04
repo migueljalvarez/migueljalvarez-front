@@ -1,18 +1,23 @@
-type PortfolioType = 'Cliente' | 'Practica' | string
+export type ProjectType = 'client' | 'product' | 'practice'
 export type PortafolioType = {
   id: string
   title: string
-  type?: string
-  portfolioType: PortfolioType
+  type: ProjectType
+  portfolioType: string
+  slug?: string
+  problem?: string
+  decision?: string
+  result?: string
   technologies: string[]
   version: string
-  state: string
+  status?: string
   description: string
   urlImage: string
   url: string
   initialProblem: string
   solutionDetails: string
   images: Image[]
+  gallery?: string[]
 }
 export type PortfolioProps = {
   title: string
@@ -22,7 +27,7 @@ export type PortfolioProps = {
 export type PorfolioItemProps = {
   id: string
   title: string
-  portfolioType: PortfolioType
+  portfolioType: string
   image: string
   technologies: string[]
 }

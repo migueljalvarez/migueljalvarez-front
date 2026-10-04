@@ -18,11 +18,12 @@
     'after:content-["*"] after:text-red-500 after:ml-1': props.required
   }))
   const inputClass = computed(() => ({
-    'text-gray-700': !props.disabled,
-    'text-gray-400': props.disabled,
+    'text-brand-ink': !props.disabled,
+    'text-brand-helper': props.disabled,
     'resize-none': props.tag === 'textarea',
-    'border-red-500 focus:ring-0 focus:ring-red-500 focus:outline-none': error.value,
-    'focus:ring-0 focus:ring-blue-500 border-gray-300 focus:outline-1 outline-blue-400':
+    'border-red-400 bg-brand-error-bg text-brand-error-text placeholder:text-brand-error-border focus:border-red-500 focus:ring-2 focus:ring-red-200 focus:outline-none':
+      error.value,
+    'border-brand-border bg-white text-brand-ink placeholder:text-brand-helper focus:border-brand-accent focus:ring-2 focus:ring-brand-blue/20 focus:outline-none':
       !error.value
   }))
   const rows = computed(() => {
@@ -52,7 +53,7 @@
       v-if="name"
       :for="name"
       :class="requiredClass"
-      class="block mb-2 text-sm font-medium text-black"
+      class="block mb-2 text-sm font-medium text-[#EAF1FF] tracking-[0.01em]"
     >
       {{ label }}
     </label>
@@ -62,7 +63,7 @@
       :type="type"
       :name="name"
       :class="inputClass"
-      class="w-full p-2 text-sm font-normal rounded-lg border-1 placeholder:text-gray-400"
+      class="w-full p-2 text-sm font-normal rounded-lg border shadow-sm transition-colors duration-200"
       :placeholder="placeHolder"
       :required="required"
       :disabled="disabled"

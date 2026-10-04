@@ -17,7 +17,7 @@
       :alt="name"
       :class="avatarClass"
       format="webp"
-      class="self-center object-cover mb-2 border-4 border-blue-400 rounded-full cursor-pointer"
+      class="self-center object-cover mb-2 border-4 border-brand-accent rounded-full cursor-pointer"
       loading="lazy"
       :preload="true"
       sizes="lg:80px 80px"

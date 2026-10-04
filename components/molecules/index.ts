@@ -5,4 +5,5 @@ import Blockquote from './Blockquote/Blockquote.vue'
 import Card from './Card/Card.vue'
 import SocialMedia from './SocialMedia/SocialMedia.vue'
 import InfiniteCarousel from './InfiniteCarousel/InfiniteCarousel.vue'
-export { AvatarCard, Header, Footer, Blockquote, Card, SocialMedia, InfiniteCarousel }
+import HeroVisual from './HeroVisual/HeroVisual.vue'
+export { AvatarCard, Header, Footer, Blockquote, Card, SocialMedia, InfiniteCarousel, HeroVisual }

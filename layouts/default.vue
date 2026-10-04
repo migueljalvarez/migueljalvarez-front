@@ -1,12 +1,11 @@
 <script setup lang="ts">
-  import { Header, Footer } from '~/components/molecules'
+  import { Header } from '~/components/molecules'
 </script>
 <template>
-  <div class="layout">
+  <div class="layout overflow-x-hidden">
     <Header />
-    <main>
+    <main class="overflow-hidden pt-20 scrollbar-gutter:stable">
       <slot />
     </main>
-    <Footer />
   </div>
 </template>
