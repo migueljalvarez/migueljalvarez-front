@@ -1,5 +1,6 @@
 <script lang="ts" setup>
   import Button from '~/components/atoms/Button/Button.vue'
+  import HeroCurve from '~/components/atoms/Hero/HeroCurve.vue'
   import Title from '~/components/atoms/Title/Title.vue'
 
   import { MAIN_TITLE_PRESENTATION, MAIN_TITLE_PRESENTATION_COMPLEMENT } from '~/constants/common'
@@ -31,14 +32,14 @@
 </script>
 <template>
   <section
-    class="hero-section relative -mt-20 flex min-h-[620px] w-full items-center overflow-hidden border-b border-brand-border bg-cover bg-[position:58%_center] pt-32 pb-14 text-white md:min-h-[680px] md:pt-36 md:pb-16"
+    class="hero-section relative -mt-20 flex min-h-[620px] w-full items-center overflow-hidden bg-cover bg-[position:58%_center] pt-32 pb-[72px] text-brand-text-strong md:min-h-[680px] md:pt-36 md:pb-24"
   >
     <div class="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
       <div
-        class="main-content relative z-20 flex w-full max-w-2xl flex-col justify-center gap-2 text-white lg:w-1/2 lg:py-6"
+        class="main-content relative z-20 flex w-full max-w-2xl flex-col justify-center gap-2 text-brand-text-strong lg:w-1/2 lg:py-6"
       >
         <h1
-          class="mb-4 max-w-full text-[clamp(2.5rem,5vw,4.5rem)] font-bold leading-[0.95] tracking-[-0.05em] text-white"
+          class="mb-4 max-w-full text-[clamp(2.5rem,5vw,4.5rem)] font-bold leading-[0.95] tracking-[-0.05em] text-brand-text-strong"
         >
           <span class="block break-words">
             {{ MAIN_TITLE_PRESENTATION }}
@@ -67,7 +68,7 @@
           variant="h2"
           class="hero-subtitle justify-start p-1 leading-[1.15]"
         />
-        <p class="max-w-[60ch] text-base font-normal leading-7 text-white/85">
+        <p class="max-w-[60ch] text-base font-normal leading-7 text-brand-text-strong/85">
           Convierto ideas en sitios web, sistemas y MVPs que tu negocio puede sostener — no solo
           lanzar. Antes de escribir código, entiendo bien el problema que hay detrás.
         </p>
@@ -87,7 +88,7 @@
 
           <NuxtLink to="#portfolio" class="w-full">
             <Button
-              class="h-full w-full whitespace-nowrap border-white/60 text-white hover:bg-white/10 hover:text-white"
+              class="h-full w-full whitespace-nowrap border-brand-white/60 text-brand-text-strong hover:bg-brand-white/10 hover:text-brand-text-strong"
               size="lg"
               theme="secondary"
             >
@@ -96,24 +97,30 @@
           </NuxtLink>
         </div>
 
-        <div class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] sm:text-[12px]">
-          <span class="font-semibold text-white">9+ años de experiencia</span>
-          <span class="text-white/55">·</span>
-          <span class="text-white/80">Desarrollo full-stack: backend y frontend</span>
-          <span class="text-white/55">·</span>
-          <span class="text-white/80">Medellín, Colombia</span>
+        <div class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs sm:text-[13px]">
+          <span class="font-semibold text-brand-text-strong">9+ años de experiencia</span>
+          <span class="text-brand-text-strong/85">·</span>
+          <span class="text-brand-text-strong/85">Desarrollo full-stack: backend y frontend</span>
+          <span class="text-brand-text-strong/85">·</span>
+          <span class="text-brand-text-strong/85">Medellín, Colombia</span>
         </div>
       </div>
 
       <a
         href="#portfolio"
-        class="relative z-30 mt-2 inline-flex items-center gap-2 self-start rounded-full border border-white/25 bg-[#071523]/75 px-3 py-1.5 text-[11px] font-medium text-white shadow-lg backdrop-blur-sm transition-colors duration-200 hover:bg-[#071523] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue sm:absolute sm:bottom-5 sm:right-8 sm:mt-0 md:bottom-8 lg:right-[max(2rem,calc((100vw-80rem)/2))]"
+        class="relative z-30 mt-2 inline-flex items-center gap-2 self-start rounded-full
+        border border-brand-white/25 bg-brand-surface-contrast/75 px-3 py-1.5 text-xs
+        font-medium text-brand-text-strong shadow-lg backdrop-blur-sm transition-colors duration-200
+        hover:bg-brand-surface-contrast focus-visible:outline-2 focus-visible:outline-offset-4
+        focus-visible:outline-brand-blue sm:absolute sm:bottom-12 sm:right-8 sm:mt-0 md:bottom-16
+        lg:right-[max(2rem,calc((100vw-80rem)/2))]"
       >
         <span class="font-semibold">Caso real:</span>
         <span>Tu Radio AR Stereo</span>
         <span aria-hidden="true">→</span>
       </a>
     </div>
+    <HeroCurve />
   </section>
 </template>
 <style scoped>
@@ -121,15 +128,15 @@
     background-image:
       linear-gradient(
         90deg,
-        rgba(3, 7, 12, 0.94) 0%,
-        rgba(3, 7, 12, 0.8) 43%,
-        rgba(3, 7, 12, 0.25) 100%
+        color-mix(in srgb, var(--color-brand-surface-contrast) 94%, transparent) 0%,
+        color-mix(in srgb, var(--color-brand-surface-contrast) 80%, transparent) 43%,
+        color-mix(in srgb, var(--color-brand-surface-contrast) 25%, transparent) 100%
       ),
       url('/bg.webp');
   }
 
   .hero-subtitle :deep(h2) {
-    color: #fff;
+    color: var(--color-brand-text-strong);
   }
 
   .main-content {
@@ -219,7 +226,12 @@
     .hero-section {
       background-position: 63% center;
       background-image:
-        linear-gradient(90deg, rgba(3, 7, 12, 0.9) 0%, rgba(3, 7, 12, 0.72) 100%), url('/bg.webp');
+        linear-gradient(
+          90deg,
+          color-mix(in srgb, var(--color-brand-surface-contrast) 90%, transparent) 0%,
+          color-mix(in srgb, var(--color-brand-surface-contrast) 72%, transparent) 100%
+        ),
+        url('/bg.webp');
     }
   }
 </style>
