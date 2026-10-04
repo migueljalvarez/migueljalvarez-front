@@ -1,26 +1,176 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 .layout {
   display: grid;
-  min-height: 100vh;
+  min-height: 100dvh;
   grid-template-rows: auto 1fr auto;
   min-width: 100%;
 }
 
-@layer utilities {
+@theme {
+  --breakpoint-xxx-sm: 360px;
+  --breakpoint-xx-sm: 375px;
+  --breakpoint-xsm: 411px;
+  --breakpoint-laptop: 1366px;
+  --breakpoint-fullhd: 1920px;
+
+  /* text tones: ink = máxima prioridad, muted = texto secundario, helper = decorativo/no esencial */
+  --color-brand-navy: #121e30;
+  --color-brand-mid: #1c2f4c;
+  --color-brand-accent: #243b62;
+  /* azul real extraído del logo — reservado para acentos puntuales (iconos, estado activo, hover), no para fondos grandes ni texto de párrafo */
+  --color-brand-blue: #3f6bad;
+  --color-brand-ink: #030507;
+  --color-brand-muted: #4d5868;
+  --color-brand-helper: #7e8897;
+
+  /* surfaces: fondo principal y contenedores claros */
+  --color-brand-surface: #f5f7fa;
+  --color-brand-surface-soft: #eef2f7;
+  --color-brand-border: #e9eef5;
+  --color-brand-shadow: #c9d1dc;
+
+  /* colores semánticos reutilizables para texto, paneles y estados */
+  --color-brand-white: #ffffff;
+  --color-brand-surface-card: #ffffff;
+  --color-brand-surface-panel: #1a2433;
+  --color-brand-surface-panel-strong: #1e293b;
+  --color-brand-surface-contrast: #0f1727;
+  --color-brand-text-strong: #f5f7fa;
+  --color-brand-text-soft: #ddeafb;
+  --color-brand-text-subtle: #c9d1dc;
+  --color-brand-border-soft: #334155;
+  --color-brand-border-strong: #2f4469;
+  --color-brand-label: #eaf1ff;
+  --color-brand-success-bg: #eaf6ee;
+  --color-brand-success-text: #123b2a;
+  --color-brand-success-border: #b8dfc4;
+  --color-brand-warning-bg: #fff4d8;
+  --color-brand-warning-text: #5c4a1c;
+  --color-brand-warning-border: #f0d67a;
+  --color-brand-danger-bg: #fce9e9;
+  --color-brand-danger-text: #8e2e2e;
+  --color-brand-danger-border: #e9b4b4;
+  --color-brand-error-bg: #fff1f2;
+  --color-brand-error-text: #7a1f2a;
+  --color-brand-error-border: #fda4af;
+
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Poppins', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+.dark {
+  --color-brand-navy: #0b1220;
+  --color-brand-mid: #101b2d;
+  --color-brand-accent: #243b62;
+  --color-brand-blue: #6d93d9;
+  --color-brand-ink: #f5f7fa;
+  --color-brand-muted: #c9d1dc;
+  --color-brand-helper: #aab7cc;
+  --color-brand-surface: #0f1727;
+  --color-brand-surface-soft: #162336;
+  --color-brand-border: #21314a;
+  --color-brand-shadow: #0a1120;
+  --color-brand-surface-card: #0f1727;
+  --color-brand-surface-panel: #1a2433;
+  --color-brand-surface-panel-strong: #1e293b;
+  --color-brand-surface-contrast: #0f1727;
+  --color-brand-text-strong: #f5f7fa;
+  --color-brand-text-soft: #ddeafb;
+  --color-brand-text-subtle: #c9d1dc;
+  --color-brand-border-soft: #334155;
+  --color-brand-border-strong: #2f4469;
+  --color-brand-label: #eaf1ff;
+  --color-brand-success-bg: #eaf6ee;
+  --color-brand-success-text: #123b2a;
+  --color-brand-success-border: #b8dfc4;
+  --color-brand-warning-bg: #fff4d8;
+  --color-brand-warning-text: #5c4a1c;
+  --color-brand-warning-border: #f0d67a;
+  --color-brand-danger-bg: #fce9e9;
+  --color-brand-danger-text: #8e2e2e;
+  --color-brand-danger-border: #e9b4b4;
+  --color-brand-error-bg: #fff1f2;
+  --color-brand-error-text: #7a1f2a;
+  --color-brand-error-border: #fda4af;
+}
+
+@layer components {
+  /* Candidatos revisados: textos de hero, microcopy y chips de sección; por ahora mantengo la utilidad limitada a los dos puntos solicitados. */
+  .text-accent {
+    @apply font-semibold text-brand-blue;
+  }
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    color: var(--color-brand-ink);
+    background: var(--color-brand-surface);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--color-brand-surface);
+    color: var(--color-brand-ink);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  img,
+  svg,
+  video,
+  canvas {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  li {
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: -0.03em;
+  }
+
+  p,
+  label,
+  input,
+  textarea,
+  select,
+  button,
+  span,
+  small {
+    font-family: 'Inter', sans-serif;
+  }
+
   h1 {
-    font-size: theme('fontSize.6xl');
+    font-size: clamp(2.5rem, 4vw, 4rem);
   }
 
   h2 {
-    font-size: theme('fontSize.4xl');
+    font-size: clamp(2rem, 3vw, 3rem);
   }
 
   h3 {
-    font-size: theme('fontSize.3xl');
+    font-size: clamp(1.6rem, 2.2vw, 2.5rem);
   }
 
   h4 {
-    font-size: theme('fontSize.2xl');
+    font-size: clamp(1.25rem, 1.8vw, 1.75rem);
   }
 }
