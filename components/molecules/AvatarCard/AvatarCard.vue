@@ -8,8 +8,8 @@
   defineProps<AvatarCardProps>()
 
   const iconStyles = {
-    base: { color: 'gray' },
-    hover: { color: 'oklch(70.7% 0.165 254.624)' }
+    base: { color: '#7E8897' },
+    hover: { color: '#243B62' }
   }
   const hoverIcon = (item: SocialMediaType) => {
     item.isHovered = true
@@ -23,7 +23,7 @@
     <Avatar :image="image" :name="name" />
     <div class="flex flex-col items-center justify-start min-w-max">
       <div class="flex items-center">
-        <p class="text-lg font-black text-black uppercase">{{ name }}</p>
+        <p class="text-lg font-black text-navy uppercase">{{ name }}</p>
         <span v-for="social in socialMedia" :key="social.name" class="gap-2 px-2">
           <NuxtLink
             :href="social.link"
@@ -41,7 +41,7 @@
           </NuxtLink>
         </span>
       </div>
-      <p class="w-full text-xs font-normal text-gray-500 md:text-sm">
+      <p class="w-full text-xs font-normal text-[#4D5868] md:text-sm">
         {{ subTitle }}
       </p>
       <Badge

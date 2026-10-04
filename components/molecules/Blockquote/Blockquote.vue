@@ -6,13 +6,13 @@
     color: 'blue'
   })
   const blockquoteClass = computed(() => ({
-    'text-blue-500/80': props.color === 'blue'
+    'text-brand-accent': props.color === 'blue'
   }))
 </script>
 <template>
   <div>
     <blockquote
-      class="relative z-10 px-8 text-sm italic text-gray-800 md:p-8 md:text-lg md:text-left"
+      class="relative z-10 px-8 text-sm italic text-[#4D5868] md:p-8 md:text-lg md:text-left"
     >
       <span
         :class="blockquoteClass"

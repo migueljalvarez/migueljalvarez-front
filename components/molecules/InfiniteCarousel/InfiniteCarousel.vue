@@ -11,15 +11,15 @@
 </script>
 
 <template>
-  <section class="flex items-center justify-center w-full py-4 overflow-hidden bg-gray-100 lg:p-4">
-    <div class="relative w-full max-w-6xl overflow-hidden bg-gray-100 mx-s">
+  <section class="flex items-center justify-center w-full py-4 overflow-hidden bg-[#F5F7FA] lg:p-4">
+    <div class="relative w-full max-w-6xl overflow-hidden bg-[#F5F7FA] mx-s">
       <!-- Lado izquierdo difuminado -->
       <div
-        class="absolute top-0 left-0 z-10 w-16 h-full pointer-events-none bg-gradient-to-r from-gray-100 to-transparent"
+        class="absolute top-0 left-0 z-10 w-16 h-full pointer-events-none bg-gradient-to-r from-[#F5F7FA] to-transparent"
       />
       <!-- Lado derecho difuminado -->
       <div
-        class="absolute top-0 right-0 z-10 w-16 h-full pointer-events-none bg-gradient-to-l from-gray-100 to-transparent"
+        class="absolute top-0 right-0 z-10 w-16 h-full pointer-events-none bg-gradient-to-l from-[#F5F7FA] to-transparent"
       />
       <div
         class="flex items-center gap-6 sm:gap-10 md:gap-12 animate-marquee"

@@ -7,6 +7,11 @@ export type ButtonProps = {
   icon?: string
   iconPosition?: 'left' | 'right'
   disabled?: boolean
+  type?: 'button' | 'submit' | 'reset'
+  href?: string
+  target?: string
+  rel?: string
+  as?: 'button' | 'a'
 }
 
 export type InputProps = {
@@ -29,7 +34,7 @@ export type TitleProps = {
 
 export type BadgeProps = {
   value: string
-  theme: 'info' | 'success' | 'warning' | 'danger'
+  theme: 'info' | 'brand' | 'success' | 'warning' | 'danger'
 }
 
 export type AvatarProps = {

@@ -1,10 +1,13 @@
 <script lang="ts" setup>
+  import Button from '~/components/atoms/Button/Button.vue'
   import { useSocialMedia } from '~/composables/useSocialMedia'
   import { PUBLIC_ROUTES } from '~/constants/routes'
   import type { SocialMediaType } from '~/types/common'
   import SocialMedia from '../SocialMedia/SocialMedia.vue'
 
   const sidebarOpen = ref(false)
+  const isScrolled = ref(false)
+  const activeSection = ref('home')
 
   const toggleSidebar = () => {
     sidebarOpen.value = !sidebarOpen.value
@@ -18,55 +21,165 @@
   }
 
   const route = useRoute()
+  const { socials } = useSocialMedia()
+  let scrollHandler: (() => void) | null = null
+  let sectionObserver: IntersectionObserver | null = null
+
+  const initTheme = () => {
+    if (typeof window === 'undefined') return
+
+    const savedTheme = localStorage.getItem('theme')
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const nextTheme = savedTheme || (prefersDark ? 'dark' : 'light')
+
+    document.documentElement.classList.toggle('dark', nextTheme === 'dark')
+    isScrolled.value = window.scrollY > 10
+  }
+
+  const toggleTheme = () => {
+    if (typeof window === 'undefined') return
+
+    const isDark = document.documentElement.classList.toggle('dark')
+    localStorage.setItem('theme', isDark ? 'dark' : 'light')
+  }
+
+  const navLinks = PUBLIC_ROUTES.map(item => ({
+    ...item,
+    sectionId: item.link.split('#')[1] || 'home'
+  }))
+  const isHeroTop = computed(() => route.path === '/' && !isScrolled.value)
 
   const isActive = (link: string) => {
-    return route.fullPath === link
+    const sectionId = link.split('#')[1] || 'home'
+    return activeSection.value === sectionId
   }
+
   const isActiveClass = (link: string) => {
-    return isActive(link) ? 'text-blue-400' : 'text-white'
+    if (isHeroTop.value) {
+      return isActive(link) ? 'text-sky-400' : 'text-white'
+    }
+
+    return isActive(link) ? 'text-brand-blue' : 'text-brand-ink'
   }
-  const { socials } = useSocialMedia()
+
+  onMounted(() => {
+    initTheme()
+
+    scrollHandler = () => {
+      isScrolled.value = window.scrollY > 10
+    }
+
+    scrollHandler()
+    window.addEventListener('scroll', scrollHandler, { passive: true })
+
+    const targets = navLinks
+      .map(link => link.sectionId)
+      .filter(id => id !== 'home')
+      .map(id => document.getElementById(id))
+      .filter(Boolean) as HTMLElement[]
+
+    if (!targets.length) return
+
+    sectionObserver = new IntersectionObserver(
+      entries => {
+        const visible = entries
+          .filter(entry => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
+
+        if (visible.length > 0) {
+          activeSection.value = visible[0].target.id
+        }
+      },
+      {
+        root: null,
+        threshold: [0.2, 0.35, 0.6],
+        rootMargin: '-18% 0px -42% 0px'
+      }
+    )
+
+    targets.forEach(target => sectionObserver?.observe(target))
+  })
+
+  onBeforeUnmount(() => {
+    sectionObserver?.disconnect()
+    if (scrollHandler) {
+      window.removeEventListener('scroll', scrollHandler)
+    }
+  })
+
+  watch(
+    () => route.fullPath,
+    value => {
+      if (!value.includes('#') && value === '/') {
+        activeSection.value = 'home'
+      }
+    },
+    { immediate: true }
+  )
 </script>
 
 <template>
   <header
-    class="z-50 flex items-center w-full h-20 gap-4 px-2 overflow-hidden text-white bg-black shadow-md lg:justify-center"
+    :class="[
+      'fixed top-0 left-0 z-50 w-full backdrop-blur-md transition-all duration-200',
+      isHeroTop
+        ? 'bg-transparent text-white backdrop-blur-none'
+        : 'bg-brand-surface/95 text-brand-ink',
+      isScrolled
+        ? 'shadow-[0_10px_30px_rgba(18,30,48,0.08)] border-b border-brand-border/80'
+        : 'border-b border-transparent'
+    ]"
   >
-    <div class="flex items-center justify-between w-full max-w-[1440px] mx-auto px-0 lg:px-8">
-      <NuxtImg
-        src="brand_white_v2.svg"
-        width="250"
-        height="40"
-        alt="Miguel Alvarez"
-        format="webp"
-        class="flex object-contain px-2"
-      />
+    <div
+      class="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"
+    >
+      <Transition name="logo-fade" mode="out-in">
+        <NuxtImg
+          :key="isHeroTop ? 'contact-logo' : 'brand-logo'"
+          :src="isHeroTop ? 'brand_white_v2.svg' : 'brand.svg'"
+          width="250"
+          height="40"
+          alt="Miguel Alvarez"
+          format="webp"
+          :class="['flex object-contain px-2', isHeroTop ? '' : 'rounded-md bg-white/95']"
+        />
+      </Transition>
 
-      <!-- Menú tradicional para md+ -->
       <nav
-        class="items-center justify-end hidden w-full gap-4 font-semibold uppercase md:gap-8 lg:flex"
+        class="hidden w-auto shrink-0 items-center justify-end gap-4 font-semibold uppercase md:gap-5 xl:flex 2xl:flex"
       >
         <nuxt-link
-          v-for="item in PUBLIC_ROUTES"
+          v-for="item in navLinks"
           :key="item.name"
           :to="item.link"
           :class="isActiveClass(item.link)"
-          class="transition-colors duration-300 hover:text-blue-400"
+          class="inline-flex shrink-0 items-center justify-center whitespace-nowrap text-xs leading-none tracking-[0.12em] transition-colors duration-300 hover:text-brand-blue"
         >
           {{ item.name }}
         </nuxt-link>
+        <Button
+          as="a"
+          href="https://wa.link/bxjfgq"
+          target="_blank"
+          rel="noopener noreferrer"
+          theme="tertiary"
+          class="w-auto shrink-0 leading-none flex"
+        >
+          Hablemos
+        </Button>
       </nav>
 
-      <!-- Botón hamburguesa (solo móvil) -->
-      <div class="flex items-center justify-end w-full mx-auto max-w-7xl lg:hidden">
-        <button
+      <div class="flex items-center gap-2 xl:hidden">
+        <Button
+          type="button"
+          theme="secondary"
           aria-label="Toggle menu"
-          :class="sidebarOpen ? 'hidden' : 'block'"
-          class="p-2 ml-auto rounded lg:hidden focus:outline-none focus:transparent"
+          class="ml-auto w-auto rounded-lg border-0 bg-transparent p-2"
+          :class="[sidebarOpen ? 'hidden' : 'block', isHeroTop ? 'text-white' : 'text-brand-ink']"
           @click="toggleSidebar"
         >
           <svg
-            class="w-6 h-6 transition-transform duration-300 ease-in-out"
+            class="h-6 w-6 transition-transform duration-300 ease-in-out"
             :class="sidebarOpen ? 'rotate-90' : 'rotate-0'"
             fill="none"
             stroke="currentColor"
@@ -88,26 +201,36 @@
               d="M6 18L18 6M6 6l12 12"
             />
           </svg>
-        </button>
+        </Button>
       </div>
     </div>
   </header>
 
-  <!-- Sidebar móvil -->
   <aside
-    class="fixed top-0 left-0 z-50 flex flex-col justify-between w-full h-full max-w-xs p-6 overflow-y-auto text-white transition-transform duration-300 ease-in-out transform bg-black lg:hidden"
+    class="fixed left-0 top-0 z-50 flex h-full w-full max-w-xs flex-col justify-between overflow-y-auto border-r border-brand-border bg-brand-surface p-6 text-brand-ink transition-transform duration-300 ease-in-out lg:hidden"
     :class="{ 'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen }"
   >
     <div>
-      <!-- Contenedor para botón cerrar alineado a la derecha -->
-      <div class="flex justify-end mb-8">
+      <div class="mb-8 flex items-center justify-between gap-3">
         <button
+          type="button"
+          aria-label="Cambiar tema"
+          class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-brand-border bg-brand-surface text-brand-ink shadow-sm transition-colors duration-200 hover:bg-brand-surface-soft"
+          @click="toggleTheme"
+        >
+          <Icon name="mdi:weather-night" size="18" class="dark:hidden" />
+          <Icon name="mdi:weather-sunny" size="18" class="hidden dark:block" />
+        </button>
+
+        <Button
+          type="button"
+          theme="secondary"
           aria-label="Close menu"
-          class="p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+          class="w-auto rounded-lg border-0 bg-transparent p-2 text-brand-navy focus:ring-2 focus:ring-[#243B62]"
           @click="toggleSidebar"
         >
           <svg
-            class="w-6 h-6 transition-transform duration-300 ease-in-out hover:rotate-90"
+            class="h-6 w-6 transition-transform duration-300 ease-in-out hover:rotate-90"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -119,16 +242,15 @@
               d="M6 18L18 6M6 6l12 12"
             />
           </svg>
-        </button>
+        </Button>
       </div>
 
-      <!-- Menú sidebar -->
       <nav class="flex flex-col gap-6 text-lg font-semibold uppercase">
         <nuxt-link
-          v-for="item in PUBLIC_ROUTES"
+          v-for="item in navLinks"
           :key="item.name"
           :to="item.link"
-          class="transition-colors duration-300 hover:text-blue-400"
+          class="transition-colors duration-300 hover:text-brand-blue text-brand-navy"
           @click="toggleSidebar"
         >
           {{ item.name }}
@@ -136,7 +258,6 @@
       </nav>
     </div>
 
-    <!-- Social media abajo -->
     <div class="flex gap-6">
       <SocialMedia
         v-for="item in socials"
@@ -153,14 +274,28 @@
     </div>
   </aside>
 
-  <!-- Fondo oscuro al abrir sidebar -->
   <div
     v-if="sidebarOpen"
-    class="fixed inset-0 z-40 bg-black bg-opacity-50 md:hidden"
+    class="fixed inset-0 z-40 bg-brand-ink/30 md:hidden"
     @click="toggleSidebar"
   />
 </template>
 
 <style scoped>
-  /* Puedes agregar aquí estilos extra si quieres */
+  .logo-fade-enter-active,
+  .logo-fade-leave-active {
+    transition: opacity 180ms ease;
+  }
+
+  .logo-fade-enter-from,
+  .logo-fade-leave-to {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-fade-enter-active,
+    .logo-fade-leave-active {
+      transition: none;
+    }
+  }
 </style>

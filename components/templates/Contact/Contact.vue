@@ -1,21 +1,23 @@
 <script lang="ts" setup>
   import { Title, Button, Input, Select } from '~/components/atoms'
   import Form from '~/components/Form/Form.vue'
+  import { SocialMedia } from '~/components/molecules'
   import { Section } from '~/components/organisms'
 
-  import {
-    CONTACT_INFO,
-    CONTACT_INFO_DESCRIPTION,
-    REGEX_COMMON,
-    REGEX_EMAIL,
-    REGEX_LARGE_TEXT
-  } from '~/constants/common'
+  import { CONTACT_INFO, REGEX_COMMON, REGEX_EMAIL, REGEX_LARGE_TEXT } from '~/constants/common'
+  import type { SocialMediaType } from '~/types/common'
 
-  const { email, phone, location } = CONTACT_INFO
+  const { location } = CONTACT_INFO
   defineProps<{
     title: string
   }>()
-  const iconSize = 40
+  const { socials } = useSocialMedia()
+  const hoverIcon = (item: SocialMediaType) => {
+    item.isHovered = true
+  }
+  const leaveIcon = (item: SocialMediaType) => {
+    item.isHovered = false
+  }
   // Contact Form
   const subjectOptions = [
     { value: 'desarrollo', label: 'Desarrollo' },
@@ -34,31 +36,22 @@
   })
   const { sendEmail } = useEmail()
   const disabledButton = computed(() => {
-    return (
-      !form.name ||
-      !form.lastName ||
-      !form.email ||
-      !form.subject ||
-      !form.message ||
-      !form.email.includes('@')
-    )
+    return !form.name || !form.email || !form.subject || !form.message || !form.email.includes('@')
   })
   const isSendedSuccessful = ref(false)
   const errorMessage = ref('')
   const cleanForm = () => {
     form.name = ''
-    form.lastName = ''
+
     form.email = ''
     form.subject = ''
     form.message = ''
   }
   async function onSubmit() {
     const name = form.name.trim()
-    const lastName = form.lastName.trim()
-    const fullName = `${name} ${lastName}`.trim()
 
     try {
-      await sendEmail(fullName, form.email, form.subject, form.message)
+      await sendEmail(name, form.email, form.subject, form.message)
       isSendedSuccessful.value = true
       cleanForm()
     } catch (error) {
@@ -67,131 +60,143 @@
       cleanForm()
     }
   }
-  const backgroundStyle = ref({})
-  const hasLoaded = ref(false)
-  onMounted(() => {
-    const handleScroll = () => {
-      const scrollThreshold = window.innerHeight * 0.5 // 50% del viewport
-      const section = document.getElementById('contact')
-      if (!section || hasLoaded.value) return
-
-      const sectionTop = section.getBoundingClientRect().top
-
-      if (sectionTop <= scrollThreshold) {
-        backgroundStyle.value = {
-          backgroundImage: "url('/contact-bg.webp')"
-        }
-        hasLoaded.value = true
-        window.removeEventListener('scroll', handleScroll)
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-  })
 </script>
 <template>
   <Section
     id="contact"
-    class="relative flex justify-center h-auto bg-fixed bg-center bg-no-repeat bg-cover"
-    :style="backgroundStyle"
+    class="gap-4 px-4 bg-[linear-gradient(180deg,#F5F7FA_0%,#F5F7FA_22%,#0F1727_22%,#0F1727_100%)]"
   >
     <div
-      class="flex flex-col justify-center gap-4 shadow-lg lg:justify-around lg:gap-8 lg:flex-row lg:p-8 py-30 lg:pt-30 z-1 bg-black/60 backdrop-blur-md"
+      class="relative overflow-hidden rounded-2xl p-9 w-full max-w-7xl mx-auto mb-8 bg-[#0F1727] border border-[#243B62]/35 shadow-[0_18px_40px_rgba(18,30,48,0.22)]"
     >
-      <div class="flex flex-col flex-wrap w-full gap-4 p-4 lg:w-2/6 z-1">
-        <Title variant="h2" :text="title" class="text-white" />
+      <!-- Logo decorativo asomando desde la esquina — placeholder mientras subes el SVG real a public/ -->
+      <NuxtImg
+        src="only-brand.svg"
+        alt="Miguel Alvarez"
+        class="pointer-events-none select-none absolute -bottom-10 -right-20 w-64 h-64 opacity-[0.06] z-0"
+      />
 
-        <p class="flex mb-4 font-light text-white text-wrap lg:text-xl">
-          {{ CONTACT_INFO_DESCRIPTION }}
-        </p>
+      <div class="relative z-10">
+        <h5 class="text-[#DDEAFB] font-semibold mb-4 tracking-[0.08em] uppercase text-xs">
+          {{ title }}
+        </h5>
 
-        <div class="flex flex-col font-light lg:text-xl">
-          <span class="flex items-center gap-2 mb-4 text-lg text-white">
-            <Icon name="mdi:phone" :size="iconSize" />
-            <h3 class="flex text-lg text-wrap">{{ phone }}</h3>
-          </span>
-          <span class="flex items-center gap-2 mb-4 text-lg text-white">
-            <Icon name="mdi:email" :size="iconSize" />
-            <h3 class="flex text-lg text-wrap">{{ email }}</h3>
-          </span>
-          <span class="flex items-center gap-2 mb-4 text-lg text-white">
-            <Icon name="mdi:location" :size="iconSize" />
-            <h3 class="flex text-lg text-wrap">{{ location }}</h3>
-          </span>
-        </div>
-
-        <div class="flex flex-row gap-2 mt-4">
-          <div class="flex flex-col gap-4">
-            <p class="text-2xl italic text-white">Quiero ayudarte, contáctame ahora.</p>
-            <NuxtLink to="https://wa.link/bxjfgq" target="_blank">
-              <Button :uppercase="true" icon="mdi:whatsapp" theme="tertiary">Contactar</Button>
+        <div class="flex flex-col md:flex-row gap-8 items-stretch">
+          <div class="flex flex-col gap-4 md:w-1/2">
+            <h3 class="font-bold text-[#F6F9FF]">¿Tienes algo en mente?</h3>
+            <p class="text-[#C9D1DC] text-sm leading-6">
+              No necesitas tener un documento técnico ni todos los requisitos definidos. Cuéntame
+              qué quieres hacer, qué problema tienes o qué quieres mejorar. Primero hablamos;
+              después vemos si puedo ayudarte.
+            </p>
+            <NuxtLink to="https://wa.link/bxjfgq" target="_blank" class="w-fit">
+              <Button icon="mdi:whatsapp" theme="tertiary" icon-position="left">
+                Hablemos por Whatsapp
+              </Button>
             </NuxtLink>
-          </div>
-        </div>
-      </div>
-      <div class="p-8 bg-white rounded-lg shadow-lg lg:w-2/4 z-1 2xl:w-2/5 h-min">
-        <Form
-          title="Formulario de contacto"
-          description="Completa el formulario a continuación y me pondré en contacto contigo lo antes posible."
-          :successful="isSendedSuccessful"
-          :validation-message="isSendedSuccessful ? 'Mensaje enviado exitosamente' : errorMessage"
-          @submit="onSubmit"
-        >
-          <div class="flex flex-col gap-2 lg:grid-cols-2 lg:grid">
-            <Input
-              v-model="form.name"
-              type="text"
-              name="name"
-              place-holder="Nombre"
-              label="Nombre"
-              required
-              :pattern="REGEX_COMMON"
-              error-message="Nombre inválido"
-            />
-            <Input
-              v-model="form.lastName"
-              :pattern="REGEX_COMMON"
-              type="text"
-              name="lastName"
-              place-holder="Apellido"
-              label="Apellido"
-              required
-              error-message="Apellido inválido"
-            />
+
+            <div class="rounded-2xl bg-[#1A2433] border border-[#2B3E5A] p-4">
+              <ul class="text-[#C9D1DC] p-4 text-sm leading-6">
+                <li class="list-disc">Respuesta en menos de 24 horas</li>
+                <li class="list-disc">Primera consulta sin Costo</li>
+              </ul>
+            </div>
+            <div class="flex gap-3">
+              <SocialMedia
+                v-for="item in socials"
+                :key="item.name"
+                :link="item.link"
+                :name="item.name"
+                :icon="item.icon"
+                :is-hovered="item.isHovered"
+                orientation="horizontal"
+                :size="32"
+                @mouseover="hoverIcon(item)"
+                @mouseleave="leaveIcon(item)"
+              />
+            </div>
+            <!--             <p class="text-gray-400 font-sans text-xs mt-auto pt-2 text-right">
+              {{ location }}
+            </p> -->
+            <div class="mt-auto pt-4">
+              <NuxtImg
+                src="brand_white_v2.svg"
+                width="250"
+                height="40"
+                alt="Miguel Alvarez"
+                class="object-contain"
+              />
+            </div>
           </div>
 
-          <Input
-            v-model="form.email"
-            :pattern="REGEX_EMAIL"
-            type="email"
-            name="email"
-            place-holder="Correo electrónico"
-            label="Email"
-            required
-            error-message="Email inválido"
-          />
-          <Select
-            v-model="form.subject"
-            name="subject"
-            label="Asunto"
-            :options="subjectOptions"
-            placeholder="Selecciona un asunto"
-            required
-          />
-          <Input
-            v-model="form.message"
-            :pattern="REGEX_LARGE_TEXT"
-            type="text"
-            tag="textarea"
-            label="Mensaje"
-            name="message"
-            place-holder="Deja aqui tu mensaje"
-            :rows="4"
-            required
-            error-message="Se ha detectado uso de caracter inválido"
-          />
-          <Button :disabled="disabledButton">Enviar</Button>
-        </Form>
+          <div class="flex flex-col gap-2 md:w-1/2">
+            <div
+              class="rounded-2xl bg-[#1A2433] border border-[#2F4469]/70 p-4 shadow-[0_12px_28px_rgba(3,5,7,0.22)]"
+            >
+              <Form
+                :successful="isSendedSuccessful"
+                :validation-message="
+                  isSendedSuccessful ? 'Mensaje enviado exitosamente' : errorMessage
+                "
+                @submit="onSubmit"
+              >
+                <div class="flex flex-col gap-2 lg:grid-cols-2 lg:grid">
+                  <Input
+                    v-model="form.name"
+                    type="text"
+                    name="name"
+                    place-holder="Nombre"
+                    label="Nombre"
+                    required
+                    :pattern="REGEX_COMMON"
+                    error-message="Nombre inválido"
+                  />
+                  <Input
+                    v-model="form.email"
+                    :pattern="REGEX_EMAIL"
+                    type="email"
+                    name="email"
+                    place-holder="Correo electrónico"
+                    label="Email"
+                    required
+                    error-message="Email inválido"
+                  />
+                </div>
+
+                <Select
+                  v-model="form.subject"
+                  name="subject"
+                  label="Asunto"
+                  :options="subjectOptions"
+                  placeholder="Selecciona un asunto"
+                  required
+                />
+                <Input
+                  v-model="form.message"
+                  :pattern="REGEX_LARGE_TEXT"
+                  type="text"
+                  tag="textarea"
+                  label="Mensaje"
+                  name="message"
+                  place-holder="Deja aqui tu mensaje"
+                  :rows="4"
+                  required
+                  error-message="Se ha detectado uso de caracter inválido"
+                />
+                <Button :disabled="disabledButton" size="md" theme="tertiary">Enviar</Button>
+              </Form>
+            </div>
+
+            <p
+              class="flex flex-col w-full text-[#C9D1DC] font-sans text-xs mt-auto pt-2 text-right"
+            >
+              <span class="font-sans font-bold text-[#F6F9FF]">
+                &copy; {{ new Date().getFullYear() }} Miguel Alvarez
+              </span>
+              <span class="font-sans">Servicios de consultoria y desarrollo de Software</span>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </Section>

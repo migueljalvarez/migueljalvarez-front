@@ -10,10 +10,10 @@
 
   const iconStyles = {
     base: {
-      color: 'white'
+      color: '#C9D1DC'
     },
     hover: {
-      color: 'oklch(70.7% 0.165 254.624)'
+      color: '#F5F7FA'
     }
   }
 </script>
@@ -21,13 +21,17 @@
   <div>
     <div class="flex flex-col my-2">
       <ul class="flex flex-row gap-2">
-        <li :key="name" class="text-white cursor-pointer hover:text-gray-400">
-          <NuxtLink :to="link" target="_blank" :aria-label="name">
+        <li
+          :key="name"
+          class="text-[#C9D1DC] cursor-pointer hover:text-[#F5F7FA] transition-colors duration-200"
+        >
+          <NuxtLink :to="link" target="_blank" :aria-label="name" class="flex items-center gap-2">
             <Icon
               :name="icon"
               :size="size"
               :style="isHovered ? iconStyles.hover : iconStyles.base"
             />
+            {{ name }}
           </NuxtLink>
         </li>
       </ul>
