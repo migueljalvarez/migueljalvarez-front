@@ -22,6 +22,7 @@
   --color-brand-accent: #243b62;
   /* azul real extraído del logo — reservado para acentos puntuales (iconos, estado activo, hover), no para fondos grandes ni texto de párrafo */
   --color-brand-blue: #3f6bad;
+  --color-brand-blue-on-dark: #38bdf8;
   --color-brand-ink: #030507;
   --color-brand-muted: #4d5868;
   --color-brand-helper: #7e8897;
@@ -67,6 +68,7 @@
   --color-brand-mid: #101b2d;
   --color-brand-accent: #243b62;
   --color-brand-blue: #6d93d9;
+  --color-brand-blue-on-dark: #38bdf8;
   --color-brand-ink: #f5f7fa;
   --color-brand-muted: #c9d1dc;
   --color-brand-helper: #aab7cc;

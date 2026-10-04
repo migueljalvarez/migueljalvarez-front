@@ -32,7 +32,7 @@
   })
 
   const sectionClass = computed(() => ({
-    'text-navy': props.background === 'bg-white' && !props.backgroundImage,
+    'text-brand-ink': props.background === 'bg-white' && !props.backgroundImage,
     'text-white': !!props.backgroundImage,
     [props.background || '']: true
   }))

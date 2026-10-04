@@ -106,9 +106,6 @@
     return description
   }
 
-  const shouldShowReadMore = (description?: string) => {
-    return resolveDescription(description).length > 180
-  }
   const opciones = [...PORTFOLIO_TYPE_OPTIONS]
 </script>
 
@@ -122,10 +119,10 @@
           <h5 class="mb-2 text-sm font-semibold uppercase tracking-[0.08em] text-brand-blue">
             {{ title }}
           </h5>
-          <h2 class="text-2xl font-semibold text-brand-navy">Soluciones que generan Impacto</h2>
+          <h2 class="text-2xl font-semibold text-brand-ink">Soluciones que generan Impacto</h2>
         </div>
         <div
-          class="flex max-w-full items-center gap-1 overflow-x-auto rounded-full border border-brand-border bg-white/90 p-1 text-sm uppercase tracking-[0.08em] text-brand-muted"
+          class="flex max-w-full items-center gap-1 overflow-x-auto rounded-full border border-brand-border bg-brand-surface-card p-1 text-sm uppercase tracking-[0.08em] text-brand-muted"
         >
           <Button
             v-for="opcion in opciones"
@@ -135,7 +132,7 @@
               'rounded-full border-0 bg-transparent px-4 py-1.5 text-brand-muted transition-all duration-200',
               opcionSeleccionada === opcion
                 ? 'bg-brand-blue font-semibold text-white shadow-sm'
-                : 'hover:text-brand-navy'
+                : 'hover:text-brand-ink'
             ]"
             @click="opcionSeleccionada = opcion"
           >
@@ -257,7 +254,7 @@
 
           <button
             type="button"
-            class="mt-auto inline-flex items-center gap-2 pt-4 text-sm font-semibold text-brand-blue transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
+            class="mt-auto inline-flex items-center gap-2 pt-4 text-sm font-semibold text-brand-blue-on-dark transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue-on-dark"
             @click="openProject(project)"
           >
             Ver detalles
@@ -270,7 +267,7 @@
         class="flex min-h-64 flex-col justify-between rounded-2xl border border-brand-border-soft/60 bg-brand-surface-panel p-6 transition-colors duration-250 hover:border-brand-blue/50 hover:bg-brand-surface-panel-strong md:col-span-2 md:h-[260px] xl:col-span-6 xl:h-auto xl:min-h-0 xl:flex-row xl:items-center xl:gap-6"
       >
         <div
-          class="flex size-12 items-center justify-center rounded-xl bg-brand-blue/15 text-brand-blue"
+          class="flex size-12 items-center justify-center rounded-xl bg-brand-blue-on-dark/15 text-brand-blue-on-dark"
         >
           <Icon :name="showCaseCta ? 'mdi:radio' : 'mdi:chat-outline'" size="24" />
         </div>
@@ -331,7 +328,7 @@
             <button
               type="button"
               aria-label="Cerrar"
-              class="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-[#F5F7FA] text-navy border border-[#E9EEF5] transition hover:bg-[#EEF2F7]"
+              class="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-brand-border bg-brand-surface text-brand-ink transition hover:bg-brand-surface-soft"
               @click="closeProject"
             >
               <span class="text-xl leading-none">×</span>
@@ -376,7 +373,7 @@
               <!-- Title -->
               <h3
                 :id="`project-title-${selectedProject.id}`"
-                class="text-2xl font-semibold text-navy mb-4"
+                class="mb-4 text-2xl font-semibold text-brand-ink"
               >
                 {{ selectedProject.title }}
               </h3>
@@ -416,7 +413,7 @@
 
               <!-- Technologies -->
               <div v-if="selectedProject.technologies && selectedProject.technologies.length > 0">
-                <h4 class="text-sm font-semibold text-navy mb-3 uppercase tracking-[0.08em]">
+                <h4 class="mb-3 text-sm font-semibold text-brand-ink uppercase tracking-[0.08em]">
                   Tecnologías utilizadas
                 </h4>
 
@@ -431,7 +428,7 @@
                     <Icon
                       :name="getTechnologyIcon(tech)"
                       size="17"
-                      class="shrink-0 text-brand-blue"
+                      class="shrink-0 text-brand-blue-on-dark"
                     />
                     <span>{{ tech }}</span>
                   </div>

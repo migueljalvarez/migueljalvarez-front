@@ -5,7 +5,7 @@
     theme: 'info'
   })
   const bannerClass = computed(() => ({
-    'bg-brand-surface-soft text-navy border border-brand-border shadow-[0_2px_6px_rgba(18,30,48,0.04)]':
+    'bg-brand-surface-soft text-brand-ink border border-brand-border shadow-[0_2px_6px_rgba(18,30,48,0.04)]':
       props.theme === 'info',
     'bg-brand-blue/10 text-brand-blue border border-brand-blue/20 font-semibold shadow-[0_2px_6px_rgba(18,30,48,0.04)]':
       props.theme === 'brand',
