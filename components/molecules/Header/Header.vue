@@ -25,24 +25,6 @@
   let scrollHandler: (() => void) | null = null
   let sectionObserver: IntersectionObserver | null = null
 
-  const initTheme = () => {
-    if (typeof window === 'undefined') return
-
-    const savedTheme = localStorage.getItem('theme')
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    const nextTheme = savedTheme || (prefersDark ? 'dark' : 'light')
-
-    document.documentElement.classList.toggle('dark', nextTheme === 'dark')
-    isScrolled.value = window.scrollY > 10
-  }
-
-  const toggleTheme = () => {
-    if (typeof window === 'undefined') return
-
-    const isDark = document.documentElement.classList.toggle('dark')
-    localStorage.setItem('theme', isDark ? 'dark' : 'light')
-  }
-
   const navLinks = PUBLIC_ROUTES.map(item => ({
     ...item,
     sectionId: item.link.split('#')[1] || 'home'
@@ -63,7 +45,7 @@
   }
 
   onMounted(() => {
-    initTheme()
+    isScrolled.value = window.scrollY > 10
 
     scrollHandler = () => {
       isScrolled.value = window.scrollY > 10
@@ -141,7 +123,7 @@
           height="40"
           alt="Miguel Alvarez"
           format="webp"
-          :class="['flex object-contain px-2', isHeroTop ? '' : 'rounded-md bg-white/95']"
+          :class="['flex object-contain px-2', isHeroTop ? '' : '']"
         />
       </Transition>
 
@@ -211,17 +193,7 @@
     :class="{ 'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen }"
   >
     <div>
-      <div class="mb-8 flex items-center justify-between gap-3">
-        <button
-          type="button"
-          aria-label="Cambiar tema"
-          class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-brand-border bg-brand-surface text-brand-ink shadow-sm transition-colors duration-200 hover:bg-brand-surface-soft"
-          @click="toggleTheme"
-        >
-          <Icon name="mdi:weather-night" size="18" class="dark:hidden" />
-          <Icon name="mdi:weather-sunny" size="18" class="hidden dark:block" />
-        </button>
-
+      <div class="mb-8 flex items-center justify-end gap-3">
         <Button
           type="button"
           theme="secondary"

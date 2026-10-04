@@ -14,16 +14,16 @@
   const attrs = useAttrs()
   const classes = computed(() =>
     cn(
-      'flex flex-row items-center justify-center gap-2 font-semibold rounded-lg cursor-pointer transition-colors duration-200 disabled:text-brand-helper disabled:bg-brand-border disabled:cursor-not-allowed',
+      'flex flex-row items-center justify-center gap-2 font-semibold rounded-lg cursor-pointer transition-colors duration-200 motion-reduce:transition-none disabled:text-brand-helper disabled:bg-brand-border disabled:cursor-not-allowed',
       props.iconPosition !== 'left' && 'flex-row-reverse',
       props.uppercase && 'uppercase',
       props.size === 'sm' && 'py-2 px-4 text-xs leading-none',
       props.size === 'md' && 'py-2 px-4 text-sm leading-none',
       props.size === 'lg' && 'py-3.5 px-7 text-sm leading-none',
-      props.theme === 'primary' && 'bg-brand-navy text-white hover:bg-brand-mid shadow-sm',
+      props.theme === 'primary' && 'bg-brand-navy text-brand-white hover:bg-brand-mid shadow-sm',
       props.theme === 'secondary' &&
         'border border-brand-border bg-transparent text-brand-ink hover:bg-brand-surface-soft',
-      props.theme === 'tertiary' && 'bg-brand-accent text-white hover:bg-brand-mid',
+      props.theme === 'tertiary' && 'bg-brand-accent text-brand-white hover:bg-brand-mid',
       typeof attrs.class === 'string' ? attrs.class : undefined
     )
   )

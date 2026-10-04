@@ -76,14 +76,16 @@
       />
 
       <div class="relative z-10">
-        <h5 class="mb-4 text-xs font-semibold tracking-[0.08em] text-brand-text-soft uppercase">
+        <h5 class="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-brand-text-soft">
           {{ title }}
         </h5>
 
         <div class="flex flex-col md:flex-row gap-8 items-stretch">
           <div class="flex flex-col gap-4 md:w-1/2">
-            <h3 class="font-bold text-brand-text-strong">¿Tienes algo en mente?</h3>
-            <p class="text-sm leading-6 text-brand-text-subtle">
+            <h3 class="text-2xl font-semibold leading-tight text-brand-text-strong md:text-3xl">
+              ¿Tienes algo en mente?
+            </h3>
+            <p class="text-sm leading-6 text-brand-text-subtle md:text-base md:leading-7">
               No necesitas tener un documento técnico ni todos los requisitos definidos. Cuéntame
               qué quieres hacer, qué problema tienes o qué quieres mejorar. Primero hablamos;
               después vemos si puedo ayudarte.

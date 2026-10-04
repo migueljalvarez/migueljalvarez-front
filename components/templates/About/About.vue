@@ -26,13 +26,15 @@
 
       <div class="flex max-w-2xl flex-col items-start gap-4 text-left">
         <div>
-          <h5 class="text-brand-blue font-semibold text-sm mb-2 tracking-[0.08em] uppercase">
+          <h5 class="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-brand-accent-text">
             Sobre mí
           </h5>
-          <h3 class="text-2xl font-semibold text-brand-ink">Un poco más sobre mí</h3>
+          <h3 class="text-2xl font-semibold leading-tight text-brand-ink md:text-3xl">
+            Un poco más sobre mí
+          </h3>
         </div>
 
-        <p class="font-normal leading-7 text-brand-muted">
+        <p class="text-sm font-normal leading-6 text-brand-muted md:text-base md:leading-7">
           Soy
           <strong class="text-brand-ink">Ingeniero de Sistemas</strong>
           y me dedico al desarrollo de software desde hace más de
@@ -40,13 +42,13 @@
           Me apasiona ayudar a personas y empresas a alcanzar sus objetivos a través de la
           tecnología.
         </p>
-        <p class="font-normal leading-7 text-brand-muted">
+        <p class="text-sm font-normal leading-6 text-brand-muted md:text-base md:leading-7">
           Fui
           <strong class="text-brand-ink">Microsoft Student Partner (MSP)</strong>
           para Microsoft de Venezuela durante mi época de estudiante, lo que me permitió aprender,
           liderar y compartir conocimientos con otros estudiantes y profesionales del sector.
         </p>
-        <p class="font-normal leading-7 text-brand-muted">
+        <p class="text-sm font-normal leading-6 text-brand-muted md:text-base md:leading-7">
           Cuando no estoy programando, disfruto de la música, el cine, salir a caminar, ver videos y
           tutoriales, siempre estoy en constante aprendizaje.
         </p>

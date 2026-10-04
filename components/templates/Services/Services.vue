@@ -4,15 +4,15 @@
 </script>
 
 <template>
-  <Section id="services" class="services-section gap-8 px-4 py-12 text-white md:gap-10 md:py-16">
+  <Section id="services" class="services-section gap-8 px-4 py-12 md:gap-10 md:py-16">
     <div class="mx-auto w-full max-w-7xl">
-      <h5 class="mb-3 text-sm font-semibold uppercase tracking-[0.08em] text-brand-blue-on-dark">
+      <h5 class="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-brand-text-soft">
         Servicios
       </h5>
-      <h2 class="max-w-3xl text-2xl font-semibold leading-tight text-white md:text-3xl">
+      <h2 class="max-w-3xl text-2xl font-semibold leading-tight text-brand-text-strong md:text-3xl">
         Un proceso completo, en cada etapa
       </h2>
-      <p class="mt-3 max-w-3xl text-sm leading-6 text-white/80 md:text-base md:leading-7">
+      <p class="mt-3 max-w-3xl text-sm leading-6 text-brand-text-subtle md:text-base md:leading-7">
         Acompaño cada proyecto desde entender el problema hasta poner la solución en marcha y
         mejorarla con el uso real.
       </p>
@@ -35,7 +35,7 @@
               FASE {{ String(index + 1).padStart(2, '0') }}
             </span>
           </div>
-          <h3 class="mb-2 text-base font-semibold text-white">{{ phase.title }}</h3>
+          <h3 class="mb-2 text-base font-semibold text-brand-text-strong">{{ phase.title }}</h3>
           <p class="text-sm leading-6 text-brand-text-subtle">{{ phase.description }}</p>
         </article>
       </li>
