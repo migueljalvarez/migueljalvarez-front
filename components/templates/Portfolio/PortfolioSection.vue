@@ -71,7 +71,7 @@
         </p>
         <h2
           id="portfolio-heading"
-          class="max-w-[18ch] text-2xl font-semibold leading-tight text-brand-ink md:text-3xl"
+          class="text-2xl font-semibold leading-tight text-brand-ink md:text-3xl"
         >
           Soluciones que generan Impacto
         </h2>
