@@ -1,12 +1,6 @@
 <script setup lang="ts">
   import { Section } from '~/components/organisms'
-  import {
-    WORK_FAQ,
-    WORK_IDENTITY_NOTE,
-    WORK_NON_NEGOTIABLES,
-    WORK_POLICY_BLOCKS,
-    WORK_COMMITMENTS
-  } from '~/data/work'
+  import { WORK_FAQ, WORK_NON_NEGOTIABLES, WORK_POLICY_BLOCKS, WORK_COMMITMENTS } from '~/data/work'
 </script>
 
 <template>
@@ -42,28 +36,28 @@
         </ul>
       </article>
       <article
+        id="no-acepto"
         class="rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-[0_8px_22px_var(--color-brand-shadow-card)]"
       >
-        <h2 class="text-xl font-semibold text-brand-ink">No acepto</h2>
+        <h2 class="text-xl font-semibold text-brand-ink">Lo que no hago</h2>
         <ul class="mt-4 space-y-3 text-sm leading-6 text-brand-muted">
-          <li v-for="item in WORK_NON_NEGOTIABLES" :key="item" class="flex gap-3">
+          <li v-for="item in WORK_NON_NEGOTIABLES" :key="item.texto" class="flex gap-3">
             <Icon
               name="mdi:minus-circle-outline"
               size="19"
               class="mt-0.5 shrink-0 text-brand-accent-text"
               aria-hidden="true"
             />
-            <span>{{ item }}</span>
+            <span>
+              {{ item.texto }}
+              <span v-if="item.nota" class="block text-xs leading-5 text-brand-muted">
+                {{ item.nota }}
+              </span>
+            </span>
           </li>
         </ul>
       </article>
     </div>
-
-    <p
-      class="mx-auto w-full max-w-7xl rounded-xl border border-brand-border-strong bg-brand-surface-soft px-5 py-4 text-sm font-medium leading-6 text-brand-ink"
-    >
-      {{ WORK_IDENTITY_NOTE }}
-    </p>
 
     <div class="mx-auto grid w-full max-w-7xl gap-4 md:grid-cols-3">
       <article

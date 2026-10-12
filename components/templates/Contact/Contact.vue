@@ -192,11 +192,14 @@
                 <Button
                   :disabled="disabledButton"
                   size="md"
-                  class="whitespace-nowrap py-2"
-                  theme="tertiary"
+                  class="w-full whitespace-nowrap py-2"
+                  theme="primary"
                 >
                   Enviar
                 </Button>
+                <p class="text-xs leading-5 text-brand-text-subtle">
+                  Uso tus datos solo para responderte.
+                </p>
               </Form>
             </div>
 

@@ -14,7 +14,7 @@
   const attrs = useAttrs()
   const classes = computed(() =>
     cn(
-      'flex flex-row items-center justify-center gap-2 font-semibold rounded-lg cursor-pointer transition-colors duration-200 motion-reduce:transition-none disabled:text-brand-helper disabled:bg-brand-border disabled:cursor-not-allowed',
+      'flex flex-row items-center justify-center gap-2 font-semibold rounded-lg cursor-pointer transition-colors duration-200 motion-reduce:transition-none disabled:text-brand-muted disabled:bg-brand-surface-soft disabled:border-brand-border-strong disabled:shadow-none disabled:cursor-not-allowed disabled:hover:bg-brand-surface-soft',
       props.iconPosition !== 'left' && 'flex-row-reverse',
       props.uppercase && 'uppercase',
       props.size === 'sm' && 'min-h-8 py-2 px-4 text-xs leading-none',
@@ -45,6 +45,7 @@
     v-bind="componentAttrs"
     :class="classes"
     :disabled="isLink ? undefined : props.disabled"
+    :aria-disabled="!isLink && props.disabled ? 'true' : undefined"
   >
     <Icon
       v-if="props.icon"

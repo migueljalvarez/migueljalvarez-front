@@ -36,9 +36,9 @@
           class="hero-subtitle justify-start p-1 leading-[1.15]"
         />
         <p class="max-w-[60ch] text-base font-normal leading-7 text-brand-text-strong/85">
-          Soy Miguel, ingeniero de sistemas con más de 10 años de experiencia desarrollando
-          software. Ayudo a emprendedores y empresas a transformar sus ideas y necesidades en
-          soluciones digitales funcionales, escalables y pensadas para crecer.
+          Soy Miguel, ingeniero de sistemas con más de 9 años de experiencia desarrollando software.
+          Ayudo a emprendedores y empresas a transformar sus ideas y necesidades en soluciones
+          digitales funcionales, escalables y pensadas para crecer.
         </p>
 
         <div class="mt-4 flex w-full gap-2 items-center sm:mt-6 sm:gap-4">

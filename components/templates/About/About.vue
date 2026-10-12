@@ -37,8 +37,8 @@
         <p class="text-sm font-normal leading-6 text-brand-muted md:text-base md:leading-7">
           Soy
           <strong class="text-brand-ink">Ingeniero de Sistemas</strong>
-          y me dedico al desarrollo de software desde hace más de
-          <strong class="text-brand-ink">9 años.</strong>
+          y me dedico al desarrollo de software desde hace
+          <strong class="text-brand-ink">más de 9 años.</strong>
           Me apasiona ayudar a personas y empresas a alcanzar sus objetivos a través de la
           tecnología.
         </p>

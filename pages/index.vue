@@ -72,15 +72,16 @@
             </div>
 
             <div class="rounded-2xl border border-brand-border bg-brand-surface-soft p-5">
-              <ol
-                class="custom-list grid grid-cols-1 gap-3 text-sm text-brand-muted sm:grid-cols-2"
-              >
+              <ol class="grid grid-cols-1 gap-3 text-sm text-brand-muted sm:grid-cols-2">
                 <li
                   v-for="(item, index) in WORK_ITEMS"
                   :key="index"
-                  class="custom-list-item rounded-xl bg-brand-surface-card px-3 py-3 shadow-sm"
+                  class="flex items-start gap-2 rounded-xl bg-brand-surface-card px-3 py-3 shadow-sm"
                 >
-                  {{ item.step }}
+                  <span class="shrink-0 font-bold text-brand-blue">
+                    {{ String(index + 1).padStart(2, '0') }}.
+                  </span>
+                  <span>{{ item.step }}</span>
                 </li>
               </ol>
             </div>
@@ -99,22 +100,3 @@
     <About title="Sobre mí" />
   </div>
 </template>
-
-<style scoped>
-  .custom-list {
-    counter-reset: step-counter; /* Inicializa el contador */
-  }
-
-  .custom-list-item {
-    counter-increment: step-counter; /* Incrementa en cada elemento */
-    position: relative;
-  }
-
-  /* El truco 'decimal-leading-zero' fuerza el formato 01, 02, 03... */
-  .custom-list-item::before {
-    content: counter(step-counter, decimal-leading-zero) '. ';
-    font-weight: 700;
-    color: var(--color-brand-blue);
-    margin-right: 0.5rem;
-  }
-</style>

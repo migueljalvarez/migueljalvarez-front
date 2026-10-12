@@ -76,11 +76,8 @@
         <article
           class="h-full rounded-2xl border border-brand-border-strong/70 bg-brand-surface-panel/95 p-5 text-brand-text-strong shadow-[0_12px_32px_var(--color-brand-shadow-card)] backdrop-blur-sm transition duration-200 hover:border-brand-blue/70 hover:bg-brand-surface-panel-strong focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-blue motion-reduce:transition-none md:p-6"
         >
-          <div class="mb-5 flex items-center justify-between">
+          <div class="mb-5 flex items-center">
             <PhaseMarker :phase="index + 1" />
-            <span class="text-xs font-semibold tracking-[0.08em] text-brand-text-subtle">
-              FASE {{ String(index + 1).padStart(2, '0') }}
-            </span>
           </div>
           <h3 class="mb-2 text-base font-semibold text-brand-text-strong">{{ phase.title }}</h3>
           <p class="text-sm leading-6 text-brand-text-subtle">{{ phase.description }}</p>
