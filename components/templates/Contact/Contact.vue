@@ -108,11 +108,25 @@
             </Button>
 
             <div class="">
-              <ul
-                class="p-4 text-sm marker:text-brand-blue marker:text-lg leading-6 text-brand-text-subtle"
-              >
-                <li class="list-disc">Respuesta en menos de 24 horas</li>
-                <li class="list-disc">Primera consulta sin costo</li>
+              <ul class="space-y-3 p-4 text-sm leading-6 text-brand-text-subtle">
+                <li class="flex gap-3">
+                  <Icon
+                    name="mdi:check-circle-outline"
+                    size="19"
+                    class="mt-0.5 shrink-0 text-brand-blue"
+                    aria-hidden="true"
+                  />
+                  <span>Respuesta en menos de 24 horas</span>
+                </li>
+                <li class="flex gap-3">
+                  <Icon
+                    name="mdi:check-circle-outline"
+                    size="19"
+                    class="mt-0.5 shrink-0 text-brand-blue"
+                    aria-hidden="true"
+                  />
+                  <span>Primera consulta sin costo</span>
+                </li>
               </ul>
             </div>
             <div class="flex gap-3">
