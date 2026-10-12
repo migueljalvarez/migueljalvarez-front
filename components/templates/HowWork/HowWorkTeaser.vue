@@ -38,11 +38,14 @@
           </li>
         </ul>
       </div>
-      <NuxtLink to="/como-trabajo" class="relative z-10 w-fit self-end">
+      <NuxtLink v-slot="{ href, navigate }" to="/como-trabajo" custom>
         <Button
+          as="a"
+          :href="href"
           theme="primary"
           size="md"
-          class="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
+          class="relative z-10 w-fit self-end focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
+          @click="navigate"
         >
           Conoce cómo trabajo
         </Button>

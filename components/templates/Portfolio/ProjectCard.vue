@@ -1,13 +1,10 @@
 <script lang="ts" setup>
   import { NuxtLink } from '#components'
-  import type { PortfolioCardProject } from './portfolio.types'
+  import type { PortfolioCardProject, PortfolioCardVariant } from './portfolio.types'
 
   defineProps<{
     project: PortfolioCardProject
-    featured?: boolean
-    desktopFeatured?: boolean
-    desktopSecondary?: boolean
-    desktopBalanced?: boolean
+    variant: PortfolioCardVariant
   }>()
 </script>
 
@@ -17,22 +14,17 @@
     :to="project.href"
     class="project-card group relative isolate flex min-w-0 flex-col overflow-hidden border shadow-[0_8px_22px_var(--color-brand-shadow-card)] transition-[transform,box-shadow,border-color] duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_12px_28px_var(--color-brand-shadow-card)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-accent-text motion-reduce:transform-none motion-reduce:transition-none"
     :class="[
-      featured
-        ? 'rounded-2xl border-brand-border bg-brand-surface-card text-brand-ink hover:border-brand-border-strong'
-        : 'min-h-[200px] rounded-2xl border-brand-border bg-brand-surface-card text-brand-ink hover:border-brand-border-strong',
+      'rounded-2xl border-brand-border bg-brand-surface-card text-brand-ink hover:border-brand-border-strong',
       {
-        'md:h-[310px]': featured,
-        'md:h-[230px]': !featured,
-        'xl:col-span-3 xl:h-[320px]': desktopFeatured,
-        'xl:col-span-2 xl:h-[230px]': desktopSecondary,
-        'xl:col-span-3 xl:h-[310px]': desktopBalanced,
-        'xl:col-span-2': !desktopFeatured && !desktopSecondary && !desktopBalanced
+        'md:h-[310px] xl:col-span-3 xl:h-[320px]': variant === 'featured',
+        'min-h-[200px] md:h-[230px] xl:col-span-2 xl:h-[230px]': variant === 'secondary',
+        'md:h-[310px] xl:col-span-3 xl:h-[310px]': variant === 'balanced'
       }
     ]"
     :aria-label="project.href ? `${project.title}: ver proyecto` : undefined"
   >
     <div
-      v-if="featured"
+      v-if="variant !== 'secondary'"
       class="project-card__image relative aspect-[2.6/1] w-full overflow-hidden bg-brand-surface-panel"
     >
       <img
@@ -70,7 +62,7 @@
       </div>
     </div>
 
-    <div v-if="featured" class="flex flex-1 flex-col p-5">
+    <div v-if="variant !== 'secondary'" class="flex flex-1 flex-col p-5">
       <div class="flex items-center justify-between gap-4">
         <h3 class="text-lg font-semibold leading-tight sm:text-xl">
           {{ project.title }}
@@ -154,7 +146,9 @@
           {{ project.sector }}
         </span>
       </div>
-      <div class="mt-auto flex items-center justify-between gap-3 border-t border-brand-border pt-3">
+      <div
+        class="mt-auto flex items-center justify-between gap-3 border-t border-brand-border pt-3"
+      >
         <p class="line-clamp-1 text-xs text-brand-muted">
           {{ project.audience }}
         </p>

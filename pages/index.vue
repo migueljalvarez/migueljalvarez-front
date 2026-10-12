@@ -37,18 +37,12 @@
     twitterDescription: META.DESCRIPTION,
     twitterImage: `${origin}/${aboutImage}`
   })
-  const profile = {
-    id: 'local-profile',
-    name: 'Miguel',
-    profession: 'Desarrollador backend/full-stack independiente',
-    jobDescription: ''
-  }
   const featuredPortfolioProjects = HOME_PORTFOLIO_PROJECTS.slice(0, 4)
 </script>
 
 <template>
   <div>
-    <Main :me="profile" />
+    <Main />
 
     <Section id="before-work" class="gap-4 px-4 py-12 md:py-16">
       <div class="w-full max-w-7xl mx-auto">
@@ -72,9 +66,9 @@
                 — no todo lo que suena bien técnicamente es lo correcto para tu negocio.
               </p>
 
-              <NuxtLink to="#contact" class="w-fit">
-                <Button size="lg" theme="primary">Hablemos de tu caso</Button>
-              </NuxtLink>
+              <Button as="a" href="#contact" size="lg" theme="primary" class="w-fit">
+                Hablemos de tu caso
+              </Button>
             </div>
 
             <div class="rounded-2xl border border-brand-border bg-brand-surface-soft p-5">

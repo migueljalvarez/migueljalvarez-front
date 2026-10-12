@@ -13,3 +13,4 @@ export type PortfolioCardProject = {
 }
 
 export type PortfolioFilter = 'Todos' | 'Clientes' | 'Productos propios'
+export type PortfolioCardVariant = 'featured' | 'secondary' | 'balanced'

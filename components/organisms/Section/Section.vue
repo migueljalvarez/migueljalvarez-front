@@ -12,24 +12,7 @@
   })
 
   const sectionRef = ref<HTMLElement | null>(null)
-
-  onMounted(() => {
-    if (!sectionRef.value) return
-
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            sectionRef.value?.classList.add('is-visible')
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0.12 }
-    )
-
-    observer.observe(sectionRef.value)
-  })
+  useSectionReveal(sectionRef)
 
   const sectionClass = computed(() => ({
     'text-brand-ink': props.background === 'bg-white' && !props.backgroundImage,
@@ -64,7 +47,7 @@
 </template>
 
 <style scoped>
-  .reveal-section {
+  .reveal-section.is-reveal-pending {
     opacity: 0;
     transform: translateY(16px);
     transition:
@@ -78,6 +61,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .reveal-section.is-reveal-pending,
     .reveal-section {
       opacity: 1;
       transform: none;
