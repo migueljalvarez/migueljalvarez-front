@@ -18,7 +18,9 @@ export type WorkNonNegotiable = {
 export const WORK_COMMITMENTS = [
   'El código y los accesos son tuyos.',
   'Te digo cuándo algo no te conviene, aunque eso signifique construir menos.',
-  'Uso IA con transparencia y respondo por el resultado.'
+  'Uso IA con transparencia y respondo por el resultado.',
+  'Explico las decisiones técnicas importantes.',
+  'Acuerdo el alcance antes de implementar.'
 ]
 
 export const WORK_NON_NEGOTIABLES: WorkNonNegotiable[] = [
@@ -65,12 +67,12 @@ export const WORK_FAQ: WorkFaqItem[] = [
   {
     pregunta: '¿Necesito tener todos los requisitos definidos?',
     respuesta:
-      'No. Podemos aclararlos juntos, priorizar lo importante y construir un alcance inicial que se ajuste a tus necesidades.'
+      'No. Es posible aclarar los requisitos, priorizar lo importante y definir un alcance inicial que se ajuste a tus necesidades.'
   },
   {
     pregunta: '¿Aceptas trabajos puntuales?',
     respuesta:
-      'Sí. Una revisión de código, una refactorización o una consultoría se pueden contratar por separado, sin necesidad de un proyecto completo. Si después quieres seguir trabajando juntos, lo definimos en ese momento.'
+      'Sí. Una revisión de código, una refactorización o una consultoría se pueden contratar por separado, sin necesidad de un proyecto completo. Si después quieres continuar, el siguiente paso se acuerda en ese momento.'
   },
   {
     pregunta: '¿Cómo se estima el trabajo?',

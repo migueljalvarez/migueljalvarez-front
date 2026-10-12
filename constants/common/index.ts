@@ -4,6 +4,15 @@ export const REGEX_LARGE_TEXT = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9,.\-+¿¡?"'
 
 export const MAIN_TITLE_PRESENTATION = 'Hola'
 export const MAIN_TITLE_PRESENTATION_COMPLEMENT = 'soy'
+export const HOME_HERO_COPY = {
+  title: 'Antes de escribir código, entiendo tu problema.',
+  description:
+    'Ayudo a emprendedores y empresas a convertir ideas en sitios, sistemas y MVPs que puedan sostener.',
+  credentials:
+    '9+ años desarrollando software · Ingeniero de Sistemas · Microsoft Student Partner (Venezuela)'
+}
+export const PRIMARY_CTA_LABEL = 'Hablemos de tu proyecto'
+export const WHATSAPP_CTA_LABEL = 'Hablemos por WhatsApp'
 export const MY_SOCIAL_MEDIA = [
   {
     name: 'LinkedIn',
@@ -42,12 +51,6 @@ export const CONTACT_INFO_DESCRIPTION = `¿Buscas impulsar tus proyectos con sol
           ayudarte! Ponte en contacto conmigo y descubre cómo juntos podemos llevar tus ideas al
           siguiente nivel. Tu mensaje es el primer paso para comenzar algo increíble.`
 
-export const WORK_ITEMS = [
-  { step: 'Tienes una idea y necesitas convertirla en algo concreto.' },
-  { step: 'Quieres un MVP sin invertir meses en cosas que todavía no necesitas.' },
-  { step: 'Tu sistema funciona, pero necesita nuevas capacidades.' },
-  { step: 'Hay un problema técnico que necesitas entender antes de tomar una decisión.' }
-]
 /* Phases of software development */
 export const DEVELOPMENT_PHASES = [
   {
@@ -100,7 +103,7 @@ export const COMPLEMETARY_COURSE = [
 ]
 export const CANONICAL_URL = 'https://www.migueljalvarez.com/'
 export const META = {
-  TITLE: 'Miguel Alvarez ',
+  TITLE: 'Miguel Álvarez',
   DESCRIPTION:
-    'Desarrollo sitios web, sistemas y MVPs de alto rendimiento para startups, emprendedores y empresas. Con 9+ años de experiencia, transformo ideas en soluciones digitales eficientes, escalables y con alto rendimiento.'
+    'Desarrollo de Software y Soluciones Digitales. Ayudo a emprendedores y empresas a convertir ideas en sitios, sistemas y MVPs sostenibles. Con 9+ años de experiencia, construyo soluciones digitales eficientes y escalables.'
 }

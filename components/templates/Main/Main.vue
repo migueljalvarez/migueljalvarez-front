@@ -1,9 +1,7 @@
 <script lang="ts" setup>
   import Button from '~/components/atoms/Button/Button.vue'
   import HeroCurve from '~/components/atoms/Hero/HeroCurve.vue'
-  import Title from '~/components/atoms/Title/Title.vue'
-
-  const subtitle = 'Desarrollo de Software y Soluciones Digitales'
+  import { HOME_HERO_COPY, PRIMARY_CTA_LABEL } from '~/constants/common'
 </script>
 <template>
   <section
@@ -25,35 +23,26 @@
         <h1
           class="mb-4 max-w-full text-[clamp(2.5rem,5vw,4.5rem)] font-bold leading-[0.95] tracking-[-0.05em] text-brand-text-strong"
         >
-          <span class="block break-words">
-            Tus ideas merecen convertirse en grandes soluciones.
-          </span>
+          <span class="block break-words">{{ HOME_HERO_COPY.title }}</span>
         </h1>
 
-        <Title
-          :text="subtitle"
-          variant="h2"
-          class="hero-subtitle justify-start p-1 leading-[1.15]"
-        />
         <p class="max-w-[60ch] text-base font-normal leading-7 text-brand-text-strong/85">
-          Soy Miguel, ingeniero de sistemas con más de 9 años de experiencia desarrollando software.
-          Ayudo a emprendedores y empresas a transformar sus ideas y necesidades en soluciones
-          digitales funcionales, escalables y pensadas para crecer.
+          {{ HOME_HERO_COPY.description }}
         </p>
 
-        <div class="mt-4 flex w-full gap-2 items-center sm:mt-6 sm:gap-4">
+        <div class="mt-4 flex w-full flex-wrap items-center gap-2 sm:mt-6 sm:gap-4">
           <Button
             as="a"
             href="https://wa.link/bxjfgq"
             target="_blank"
             rel="noopener noreferrer"
-            class="whitespace-nowrap bg-brand-whatsapp text-brand-white hover:bg-brand-whatsapp/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
+            class="whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
             size="md"
             icon="mdi:whatsapp"
             icon-position="left"
-            theme="tertiary"
+            theme="primary"
           >
-            Hablemos de tu proyecto
+            {{ PRIMARY_CTA_LABEL }}
           </Button>
 
           <Button
@@ -66,6 +55,10 @@
             Ver portafolio
           </Button>
         </div>
+
+        <p class="mt-3 max-w-3xl text-xs font-medium leading-5 text-brand-text-soft sm:text-sm">
+          {{ HOME_HERO_COPY.credentials }}
+        </p>
       </div>
     </div>
     <HeroCurve />
@@ -81,10 +74,6 @@
         color-mix(in srgb, var(--color-brand-surface-contrast) 25%, transparent) 100%
       ),
       url('/bg.webp');
-  }
-
-  .hero-subtitle :deep(h2) {
-    color: var(--color-brand-text-strong);
   }
 
   .main-content {

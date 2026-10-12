@@ -7,9 +7,9 @@
     >
       <p class="flex justify-between w-full gap-8 px-4 mx-auto max-w-7xl text-sm">
         <span class="font-sans text-navy">
-          &copy; {{ new Date().getFullYear() }} Miguel Alvarez
+          &copy; {{ new Date().getFullYear() }} Miguel Álvarez
         </span>
-        <span class="font-sans">Servicios de consultoria y desarrollo de Software</span>
+        <span class="font-sans">Servicios de consultoría y desarrollo de software</span>
       </p>
     </div>
   </footer>
