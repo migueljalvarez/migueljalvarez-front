@@ -124,7 +124,12 @@
               ¿Tienes un proyecto similar en mente?
             </p>
             <NuxtLink to="https://wa.link/bxjfgq" target="_blank">
-              <Button icon="mdi:whatsapp" icon-position="left" theme="tertiary">
+              <Button
+                icon="mdi:whatsapp"
+                icon-position="left"
+                theme="tertiary"
+                class="bg-brand-whatsapp text-brand-white hover:bg-brand-whatsapp/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
+              >
                 Hablemos por WhatsApp
               </Button>
             </NuxtLink>

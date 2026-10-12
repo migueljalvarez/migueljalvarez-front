@@ -33,7 +33,7 @@
 
   const sectionClass = computed(() => ({
     'text-brand-ink': props.background === 'bg-white' && !props.backgroundImage,
-    'text-white': !!props.backgroundImage,
+    'text-brand-white': !!props.backgroundImage,
     [props.background || '']: true
   }))
 
@@ -75,5 +75,13 @@
   .reveal-section.is-visible {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-section {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
 </style>

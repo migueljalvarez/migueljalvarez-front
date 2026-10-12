@@ -1,5 +1,12 @@
 <script setup lang="ts">
-  import { About, Contact, Main, PortfolioSection, Services } from '~/components/templates'
+  import {
+    About,
+    HowWorkTeaser,
+    Main,
+    PortfolioSection,
+    ProcessSection,
+    Services
+  } from '~/components/templates'
 
   import { META, WORK_ITEMS } from '~/constants/common'
   import { HOME_PORTFOLIO_PROJECTS } from '~/constants/portfolio'
@@ -36,17 +43,17 @@
     profession: 'Desarrollador backend/full-stack independiente',
     jobDescription: ''
   }
+  const featuredPortfolioProjects = HOME_PORTFOLIO_PROJECTS.slice(0, 4)
 </script>
 
 <template>
   <div>
     <Main :me="profile" />
-    <About title="Sobre mí" />
 
-    <Section id="before-work" class="gap-4 px-4 py-8 pt-20">
+    <Section id="before-work" class="gap-4 px-4 py-12 md:py-16">
       <div class="w-full max-w-7xl mx-auto">
         <div
-          class="rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-[0_10px_24px_rgba(18,30,48,0.05)] md:p-8"
+          class="rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-[0_10px_24px_var(--color-brand-shadow-card)] md:p-8"
         >
           <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
             <div class="flex flex-col gap-4">
@@ -88,13 +95,14 @@
       </div>
     </Section>
     <Services />
-    <Section id="portfolio-background" class="gap-4 bg-brand-surface px-4 py-8 pt-20">
-      <div class="w-full max-w-7xl mx-auto">
-        <PortfolioSection title="Portafolio" :projects="HOME_PORTFOLIO_PROJECTS" />
+    <ProcessSection />
+    <HowWorkTeaser />
+    <Section id="portfolio-background" class="gap-4 bg-brand-surface px-4 py-12 md:py-16">
+      <div class="mx-auto w-full max-w-7xl">
+        <PortfolioSection title="Portafolio" :projects="featuredPortfolioProjects" />
       </div>
     </Section>
-
-    <Contact title="Hablemos" />
+    <About title="Sobre mí" />
   </div>
 </template>
 

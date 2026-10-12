@@ -3,11 +3,10 @@
   import HeroCurve from '~/components/atoms/Hero/HeroCurve.vue'
   import Title from '~/components/atoms/Title/Title.vue'
 
-  import { MAIN_TITLE_PRESENTATION, MAIN_TITLE_PRESENTATION_COMPLEMENT } from '~/constants/common'
   import type { Me } from '~/types/common'
 
   const name = ref('')
-  const subtitle = ref('Desarrollador backend/full-stack independiente')
+  const subtitle = ref('Desarrollo de Software y Soluciones Digitales')
 
   const showWave = ref(false)
   const props = defineProps<{ me: Me | null }>()
@@ -32,34 +31,26 @@
 </script>
 <template>
   <section
-    class="hero-section relative -mt-20 flex min-h-[620px] w-full items-center overflow-hidden bg-cover bg-[position:58%_center] pt-32 pb-[72px] text-brand-text-strong md:min-h-[680px] md:pt-36 md:pb-24"
+    class="hero-section relative -mt-20 flex min-h-[620px] w-full items-center overflow-hidden bg-cover bg-[position:58%_center] pt-24 pb-[72px] text-brand-text-strong sm:pt-20 md:min-h-[680px] md:pb-24"
   >
     <div class="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
       <div
         class="main-content relative z-20 flex w-full max-w-2xl flex-col justify-center gap-2 text-brand-text-strong lg:w-1/2 lg:py-6"
       >
+        <p
+          class="mb-3 inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-brand-surface-contrast/80 px-4 py-2 text-xs font-semibold text-brand-text-soft shadow-sm"
+        >
+          <span
+            class="availability-indicator size-2.5 rounded-full bg-emerald-500"
+            aria-hidden="true"
+          />
+          Disponible para nuevos proyectos &amp; consultoría técnica
+        </p>
         <h1
           class="mb-4 max-w-full text-[clamp(2.5rem,5vw,4.5rem)] font-bold leading-[0.95] tracking-[-0.05em] text-brand-text-strong"
         >
           <span class="block break-words">
-            {{ MAIN_TITLE_PRESENTATION }}
-            <Transition name="wave-fade">
-              <NuxtImg
-                v-if="showWave"
-                src="/waving.webp"
-                alt="👋"
-                width="32"
-                height="32"
-                aria-label="saludo"
-                class="wave-animation inline-flex h-7 w-7 translate-y-0.5 items-center justify-center sm:h-9 sm:w-9"
-                draggable="false"
-                loading="lazy"
-              />
-            </Transition>
-            ,
-          </span>
-          <span class="block break-words">
-            {{ `${MAIN_TITLE_PRESENTATION_COMPLEMENT} ${name}!` }}
+            Tus ideas merecen convertirse en grandes soluciones.
           </span>
         </h1>
 
@@ -69,15 +60,16 @@
           class="hero-subtitle justify-start p-1 leading-[1.15]"
         />
         <p class="max-w-[60ch] text-base font-normal leading-7 text-brand-text-strong/85">
-          Convierto ideas en sitios web, sistemas y MVPs que tu negocio puede sostener — no solo
-          lanzar. Antes de escribir código, entiendo bien el problema que hay detrás.
+          Soy Miguel, ingeniero de sistemas con más de 10 años de experiencia desarrollando
+          software. Ayudo a emprendedores y empresas a transformar sus ideas y necesidades en
+          soluciones digitales funcionales, escalables y pensadas para crecer.
         </p>
 
-        <div class="mt-4 grid w-full gap-2 sm:grid-cols-2">
-          <NuxtLink to="https://wa.link/bxjfgq" target="_blank" class="w-full">
+        <div class="mt-4 flex w-full gap-2 items-center sm:mt-6 sm:gap-4">
+          <NuxtLink to="https://wa.link/bxjfgq" target="_blank" class="w-fit">
             <Button
-              class="h-full w-full whitespace-nowrap"
-              size="lg"
+              class="whitespace-nowrap bg-brand-whatsapp text-brand-white hover:bg-brand-whatsapp/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
+              size="md"
               icon="mdi:whatsapp"
               icon-position="left"
               theme="tertiary"
@@ -86,39 +78,17 @@
             </Button>
           </NuxtLink>
 
-          <NuxtLink to="#portfolio" class="w-full">
+          <NuxtLink to="#portfolio" class="w-fit">
             <Button
-              class="h-full w-full whitespace-nowrap border-brand-white/60 text-brand-text-strong hover:bg-brand-white/10 hover:text-brand-text-strong"
-              size="lg"
+              class="whitespace-nowrap border-brand-white/60 text-brand-text-strong hover:bg-brand-white/10 hover:text-brand-text-strong"
+              size="md"
               theme="secondary"
             >
               Ver portafolio
             </Button>
           </NuxtLink>
         </div>
-
-        <div class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs sm:text-[13px]">
-          <span class="font-semibold text-brand-text-strong">9+ años de experiencia</span>
-          <span class="text-brand-text-strong/85">·</span>
-          <span class="text-brand-text-strong/85">Desarrollo full-stack: backend y frontend</span>
-          <span class="text-brand-text-strong/85">·</span>
-          <span class="text-brand-text-strong/85">Medellín, Colombia</span>
-        </div>
       </div>
-
-      <a
-        href="#portfolio"
-        class="relative z-30 mt-2 inline-flex items-center gap-2 self-start rounded-full
-        border border-brand-white/25 bg-brand-surface-contrast/75 px-3 py-1.5 text-xs
-        font-medium text-brand-text-strong shadow-lg backdrop-blur-sm transition-colors duration-200
-        hover:bg-brand-surface-contrast focus-visible:outline-2 focus-visible:outline-offset-4
-        focus-visible:outline-brand-blue sm:absolute sm:bottom-12 sm:right-8 sm:mt-0 md:bottom-16
-        lg:right-[max(2rem,calc((100vw-80rem)/2))]"
-      >
-        <span class="font-semibold">Caso real:</span>
-        <span>Tu Radio AR Stereo</span>
-        <span aria-hidden="true">→</span>
-      </a>
     </div>
     <HeroCurve />
   </section>
@@ -141,6 +111,20 @@
 
   .main-content {
     animation: slide-in-up 0.6s ease both;
+  }
+
+  .availability-indicator {
+    animation: availability-pulse 1.8s ease-out infinite;
+  }
+
+  @keyframes availability-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgb(16 185 129 / 55%);
+    }
+    55% {
+      box-shadow: 0 0 0 5px rgb(16 185 129 / 0%);
+    }
   }
 
   @keyframes slide-in-up {
@@ -212,7 +196,8 @@
 
   @media (prefers-reduced-motion: reduce) {
     .main-content,
-    .wave-animation {
+    .wave-animation,
+    .availability-indicator {
       animation: none;
     }
 

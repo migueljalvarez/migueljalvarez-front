@@ -66,7 +66,7 @@
     class="gap-4 bg-[linear-gradient(180deg,var(--color-brand-surface)_0%,var(--color-brand-surface)_22%,var(--color-brand-surface-contrast)_22%,var(--color-brand-surface-contrast)_100%)] px-4"
   >
     <div
-      class="relative mx-auto mb-8 w-full max-w-7xl overflow-hidden rounded-2xl border border-brand-border-strong/50 bg-brand-surface-contrast p-9 shadow-[0_18px_40px_rgba(18,30,48,0.22)]"
+      class="relative mx-auto mb-8 w-full max-w-7xl overflow-hidden rounded-2xl border border-brand-border-strong/50 bg-brand-surface-contrast p-9 shadow-[0_18px_40px_var(--color-brand-shadow-card)]"
     >
       <!-- Logo decorativo asomando desde la esquina — placeholder mientras subes el SVG real a public/ -->
       <NuxtImg
@@ -91,13 +91,20 @@
               después vemos si puedo ayudarte.
             </p>
             <NuxtLink to="https://wa.link/bxjfgq" target="_blank" class="w-fit">
-              <Button icon="mdi:whatsapp" theme="tertiary" icon-position="left">
+              <Button
+                icon="mdi:whatsapp"
+                class="whitespace-nowrap bg-brand-whatsapp text-brand-white hover:bg-brand-whatsapp/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
+                icon-position="left"
+                size="md"
+              >
                 Hablemos por Whatsapp
               </Button>
             </NuxtLink>
 
-            <div class="rounded-2xl border border-brand-border-strong bg-brand-surface-panel p-4">
-              <ul class="p-4 text-sm leading-6 text-brand-text-subtle">
+            <div class="">
+              <ul
+                class="p-4 text-sm marker:text-brand-blue marker:text-lg leading-6 text-brand-text-subtle"
+              >
                 <li class="list-disc">Respuesta en menos de 24 horas</li>
                 <li class="list-disc">Primera consulta sin Costo</li>
               </ul>
@@ -116,9 +123,7 @@
                 @mouseleave="leaveIcon(item)"
               />
             </div>
-            <!--             <p class="text-gray-400 font-sans text-xs mt-auto pt-2 text-right">
-              {{ location }}
-            </p> -->
+
             <div class="mt-auto pt-4">
               <NuxtImg
                 src="brand_white_v2.svg"
@@ -132,7 +137,7 @@
 
           <div class="flex flex-col gap-2 md:w-1/2">
             <div
-              class="rounded-2xl border border-brand-border-strong/70 bg-brand-surface-panel p-4 shadow-[0_12px_28px_rgba(3,5,7,0.22)]"
+              class="rounded-2xl border border-brand-border-strong/70 bg-brand-surface-panel p-4 shadow-[0_12px_28px_var(--color-brand-shadow-card)]"
             >
               <Form
                 :successful="isSendedSuccessful"
@@ -184,7 +189,14 @@
                   required
                   error-message="Se ha detectado uso de caracter inválido"
                 />
-                <Button :disabled="disabledButton" size="md" theme="tertiary">Enviar</Button>
+                <Button
+                  :disabled="disabledButton"
+                  size="md"
+                  class="whitespace-nowrap py-2"
+                  theme="tertiary"
+                >
+                  Enviar
+                </Button>
               </Form>
             </div>
 

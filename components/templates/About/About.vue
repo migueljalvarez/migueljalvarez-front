@@ -3,7 +3,7 @@
 <template>
   <section
     id="about"
-    class="relative box-border flex w-full flex-col items-center justify-center overflow-hidden bg-brand-surface px-4 py-8 pt-20"
+    class="relative box-border flex w-full flex-col items-center justify-center overflow-hidden bg-brand-surface px-4 py-12 md:py-16"
   >
     <div
       class="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14"

@@ -27,28 +27,33 @@
 
   const navLinks = PUBLIC_ROUTES.map(item => ({
     ...item,
-    sectionId: item.link.split('#')[1] || 'home'
+    sectionId: item.link.includes('#')
+      ? item.link.split('#')[1]
+      : item.link === '/'
+        ? 'home'
+        : item.link.slice(1)
   }))
+  const isContactNavLink = (name: string) => name === 'Hablemos'
   const isHeroTop = computed(() => route.path === '/' && !isScrolled.value)
 
   const isActive = (link: string) => {
-    const sectionId = link.split('#')[1] || 'home'
-    return activeSection.value === sectionId
-  }
-
-  const isActiveClass = (link: string) => {
-    if (isHeroTop.value) {
-      return isActive(link) ? 'text-sky-400' : 'text-white'
+    if (link === '/') return activeSection.value === 'home'
+    if (!link.includes('#')) {
+      return route.path === link || (route.path === '/' && activeSection.value === link.slice(1))
     }
-
-    return isActive(link) ? 'text-brand-blue' : 'text-brand-ink'
+    return activeSection.value === link.split('#')[1]
   }
 
   onMounted(() => {
     isScrolled.value = window.scrollY > 10
 
     scrollHandler = () => {
-      isScrolled.value = window.scrollY > 10
+      const scrollY = window.scrollY
+      isScrolled.value = scrollY > 10
+
+      if (scrollY <= 10) {
+        activeSection.value = 'home'
+      }
     }
 
     scrollHandler()
@@ -64,6 +69,11 @@
 
     sectionObserver = new IntersectionObserver(
       entries => {
+        if (window.scrollY <= 10) {
+          activeSection.value = 'home'
+          return
+        }
+
         const visible = entries
           .filter(entry => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
@@ -105,11 +115,11 @@
     :class="[
       'fixed top-0 left-0 z-50 w-full backdrop-blur-md transition-all duration-200',
       isHeroTop
-        ? 'bg-transparent text-white backdrop-blur-none'
+        ? 'header-top text-brand-white backdrop-blur-none'
         : 'bg-brand-surface/95 text-brand-ink',
       isScrolled
-        ? 'shadow-[0_10px_30px_rgba(18,30,48,0.08)] border-b border-brand-border/80'
-        : 'border-b border-transparent'
+        ? 'shadow-[0_10px_30px_var(--color-brand-shadow-card)] border-b border-brand-border/80'
+        : 'border-b-0 shadow-none'
     ]"
   >
     <div
@@ -128,27 +138,42 @@
       </Transition>
 
       <nav
-        class="hidden w-auto shrink-0 items-center justify-end gap-4 font-semibold uppercase md:gap-5 xl:flex 2xl:flex"
+        class="hidden w-auto shrink-0 items-center justify-end gap-4 font-bold uppercase md:gap-5 xl:flex 2xl:flex"
       >
         <nuxt-link
           v-for="item in navLinks"
           :key="item.name"
           :to="item.link"
-          :class="isActiveClass(item.link)"
-          class="inline-flex shrink-0 items-center justify-center whitespace-nowrap text-xs leading-none tracking-[0.12em] transition-colors duration-300 hover:text-brand-blue"
+          :class="[
+            isContactNavLink(item.name)
+              ? 'text-brand-white'
+              : isHeroTop
+                ? 'text-brand-white'
+                : 'text-brand-ink'
+          ]"
+          class="group inline-flex h-10 shrink-0 flex-col items-center justify-center gap-2 whitespace-nowrap text-xs font-bold leading-none tracking-[0.12em] transition-colors duration-300"
         >
-          {{ item.name }}
+          <span
+            :class="
+              isContactNavLink(item.name)
+                ? 'rounded-lg bg-brand-accent px-4 py-2 text-brand-white shadow-sm transition-colors hover:bg-brand-mid'
+                : ''
+            "
+          >
+            {{ item.name }}
+          </span>
+          <span
+            :class="[
+              'h-0.5 w-full origin-center rounded-full bg-brand-blue transition-transform duration-300 motion-reduce:transition-none',
+              isContactNavLink(item.name)
+                ? 'invisible'
+                : isActive(item.link)
+                  ? 'scale-x-100'
+                  : 'scale-x-0 group-hover:scale-x-100'
+            ]"
+            aria-hidden="true"
+          />
         </nuxt-link>
-        <Button
-          as="a"
-          href="https://wa.link/bxjfgq"
-          target="_blank"
-          rel="noopener noreferrer"
-          theme="tertiary"
-          class="w-auto shrink-0 leading-none flex"
-        >
-          Hablemos
-        </Button>
       </nav>
 
       <div class="flex items-center gap-2 xl:hidden">
@@ -157,7 +182,10 @@
           theme="secondary"
           aria-label="Toggle menu"
           class="ml-auto w-auto rounded-lg border-0 bg-transparent p-2"
-          :class="[sidebarOpen ? 'hidden' : 'block', isHeroTop ? 'text-white' : 'text-brand-ink']"
+          :class="[
+            sidebarOpen ? 'hidden' : 'block',
+            isHeroTop ? 'text-brand-white' : 'text-brand-ink'
+          ]"
           @click="toggleSidebar"
         >
           <svg
@@ -198,7 +226,7 @@
           type="button"
           theme="secondary"
           aria-label="Close menu"
-          class="w-auto rounded-lg border-0 bg-transparent p-2 text-brand-navy focus:ring-2 focus:ring-[#243B62]"
+          class="w-auto rounded-lg border-0 bg-transparent p-2 text-brand-navy focus:ring-2 focus:ring-brand-accent"
           @click="toggleSidebar"
         >
           <svg
@@ -222,10 +250,18 @@
           v-for="item in navLinks"
           :key="item.name"
           :to="item.link"
-          class="transition-colors duration-300 hover:text-brand-blue text-brand-navy"
+          class="group flex w-fit flex-col items-start gap-2 py-1 text-brand-navy"
           @click="toggleSidebar"
         >
-          {{ item.name }}
+          <span>{{ item.name }}</span>
+          <span
+            v-if="!isContactNavLink(item.name)"
+            :class="[
+              'h-0.5 w-full origin-left rounded-full bg-brand-blue transition-transform duration-300 motion-reduce:transition-none',
+              isActive(item.link) ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+            ]"
+            aria-hidden="true"
+          />
         </nuxt-link>
       </nav>
     </div>
@@ -254,6 +290,14 @@
 </template>
 
 <style scoped>
+  .header-top {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-brand-surface-contrast) 65%, transparent),
+      transparent
+    );
+  }
+
   .logo-fade-enter-active,
   .logo-fade-leave-active {
     transition: opacity 180ms ease;

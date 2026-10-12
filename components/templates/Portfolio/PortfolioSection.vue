@@ -1,7 +1,5 @@
 <script lang="ts" setup>
   import { computed, onMounted, ref } from 'vue'
-  import Button from '~/components/atoms/Button/Button.vue'
-  import { PORTFOLIO_CTA, PORTFOLIO_PROJECTS } from '~/constants/portfolio'
   import type { PortfolioCardProject, PortfolioFilter } from './portfolio.types'
   import PortfolioFilters from './PortfolioFilters.vue'
   import ProjectCard from './ProjectCard.vue'
@@ -10,12 +8,6 @@
 
   const sectionRef = ref<HTMLElement | null>(null)
   const selectedFilter = ref<PortfolioFilter>('Todos')
-  const featuredCtaProject = computed(() =>
-    PORTFOLIO_PROJECTS.find(project => project.id === PORTFOLIO_CTA.projectId)
-  )
-  const showCaseCta = computed(
-    () => PORTFOLIO_CTA.mode === 'case' && Boolean(featuredCtaProject.value)
-  )
 
   const filteredProjects = computed(() => {
     if (selectedFilter.value === 'Clientes') {
@@ -27,6 +19,23 @@
     }
 
     return props.projects
+  })
+
+  const portfolioCtaDesktopSpan = computed(() => {
+    const occupiedColumns =
+      Math.min(filteredProjects.value.length, 2) * 3 +
+      Math.max(filteredProjects.value.length - 2, 0) * 2
+    const remainingColumns = 6 - (occupiedColumns % 6)
+
+    return {
+      'xl:col-span-2': remainingColumns === 2,
+      'xl:col-span-3': remainingColumns === 3,
+      'xl:col-span-4': remainingColumns === 4,
+      'xl:col-span-5': remainingColumns === 5,
+      'xl:col-span-6': remainingColumns === 1 || remainingColumns === 6,
+      'xl:flex-col xl:items-start': remainingColumns <= 3,
+      'xl:flex-row xl:items-center': remainingColumns > 3
+    }
   })
 
   onMounted(() => {
@@ -55,7 +64,7 @@
     class="portfolio-reveal mx-auto w-full max-w-7xl"
     aria-labelledby="portfolio-heading"
   >
-    <header class="mb-8 md:mb-10">
+    <header class="mb-8 flex flex-col gap-5 md:mb-10 md:flex-row md:items-start md:justify-between">
       <div class="max-w-2xl">
         <p class="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-brand-accent-text">
           {{ title }}
@@ -71,18 +80,10 @@
           útiles.
         </p>
       </div>
+      <div class="md:shrink-0 md:pt-7">
+        <PortfolioFilters v-model="selectedFilter" />
+      </div>
     </header>
-
-    <div class="mb-5 flex flex-col gap-4 md:mb-6 md:flex-row md:items-center md:justify-between">
-      <PortfolioFilters v-model="selectedFilter" />
-      <NuxtLink
-        to="/portafolio"
-        class="inline-flex min-h-11 w-fit items-center gap-2 rounded-md py-2 text-sm font-semibold text-brand-accent-text transition-colors hover:text-brand-blue motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
-      >
-        Ver todos los proyectos
-        <Icon name="mdi:arrow-right" size="17" aria-hidden="true" />
-      </NuxtLink>
-    </div>
 
     <TransitionGroup
       name="project-list"
@@ -99,43 +100,25 @@
         :desktop-balanced="filteredProjects.length === 1"
       />
 
-      <div
-        key="portfolio-case-study"
-        class="flex min-h-[230px] flex-col justify-between gap-5 rounded-3xl border border-brand-border bg-brand-surface-card p-6 text-brand-ink shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:col-span-2 md:flex-row md:items-center md:p-8 xl:col-span-6"
+      <NuxtLink
+        key="portfolio-all-projects"
+        to="/portafolio"
+        :class="portfolioCtaDesktopSpan"
+        class="group flex min-h-[230px] flex-col justify-center gap-6 rounded-2xl border border-brand-border bg-brand-surface-card p-5 text-brand-ink shadow-[0_8px_22px_var(--color-brand-shadow-card)] transition-shadow hover:shadow-[0_12px_28px_var(--color-brand-shadow-card)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue motion-reduce:transition-none md:col-span-2 md:flex-row md:items-center md:p-6"
       >
         <div>
           <p class="mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-brand-accent-text">
-            {{ showCaseCta ? PORTFOLIO_CTA.caseLabel : PORTFOLIO_CTA.fallbackLabel }}
+            Portafolio
           </p>
-          <h3 class="text-xl font-semibold md:text-2xl">
-            {{ showCaseCta ? featuredCtaProject?.title : PORTFOLIO_CTA.fallbackTitle }}
-          </h3>
+          <h3 class="text-lg font-semibold leading-snug md:text-xl">¿Buscas algo más?</h3>
         </div>
-        <Button
-          v-if="showCaseCta && featuredCtaProject"
-          as="a"
-          :href="`/portafolio/${featuredCtaProject.slug || featuredCtaProject.id}`"
-          theme="tertiary"
-          size="sm"
-          icon="mdi:arrow-right"
-          icon-position="right"
-          class="w-fit shrink-0"
+        <span
+          class="inline-flex min-h-11 w-fit shrink-0 items-center gap-2 rounded-lg bg-brand-accent px-4 py-2 text-sm font-semibold text-brand-white transition-colors group-hover:bg-brand-mid"
         >
-          {{ PORTFOLIO_CTA.caseAction }}
-        </Button>
-        <Button
-          v-else
-          as="a"
-          :href="PORTFOLIO_CTA.fallbackHref"
-          theme="tertiary"
-          size="sm"
-          icon="mdi:arrow-right"
-          icon-position="right"
-          class="w-fit shrink-0"
-        >
-          {{ PORTFOLIO_CTA.fallbackAction }}
-        </Button>
-      </div>
+          Ver todos los proyectos
+          <Icon name="mdi:arrow-right" size="17" aria-hidden="true" />
+        </span>
+      </NuxtLink>
     </TransitionGroup>
   </section>
 </template>
