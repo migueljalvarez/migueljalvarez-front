@@ -44,7 +44,7 @@
     :is="isLink ? 'a' : 'button'"
     v-bind="componentAttrs"
     :class="classes"
-    :disabled="!isLink && props.disabled"
+    :disabled="isLink ? undefined : props.disabled"
   >
     <Icon
       v-if="props.icon"

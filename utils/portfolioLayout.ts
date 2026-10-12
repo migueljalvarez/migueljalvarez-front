@@ -6,7 +6,7 @@ const columnSpanClasses: Partial<Record<number, string>> = {
   6: 'xl:col-span-6'
 } as const
 
-export function getPortfolioCtaLayout(projectCount: number): string {
+export function getPortfolioCtaColumnClass(projectCount: number): string {
   if (!Number.isInteger(projectCount) || projectCount < 0) {
     throw new RangeError('Project count must be a non-negative integer')
   }
@@ -19,8 +19,5 @@ export function getPortfolioCtaLayout(projectCount: number): string {
     throw new RangeError(`No CTA layout exists for ${remainingColumns} remaining columns`)
   }
 
-  const alignmentClass =
-    remainingColumns <= 3 ? 'xl:flex-col xl:items-start' : 'xl:flex-row xl:items-center'
-
-  return `${spanClass} ${alignmentClass}`
+  return spanClass
 }

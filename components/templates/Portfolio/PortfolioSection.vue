@@ -5,9 +5,10 @@
     PortfolioCardVariant,
     PortfolioFilter
   } from './portfolio.types'
+  import Button from '~/components/atoms/Button/Button.vue'
   import PortfolioFilters from './PortfolioFilters.vue'
   import ProjectCard from './ProjectCard.vue'
-  import { getPortfolioCtaLayout } from '~/utils/portfolioLayout'
+  import { getPortfolioCtaColumnClass } from '~/utils/portfolioLayout'
 
   const props = defineProps<{ title: string; projects: PortfolioCardProject[] }>()
 
@@ -40,7 +41,7 @@
   }
 
   const portfolioCtaDesktopClass = computed(() =>
-    getPortfolioCtaLayout(filteredProjects.value.length)
+    getPortfolioCtaColumnClass(filteredProjects.value.length)
   )
 </script>
 
@@ -84,11 +85,10 @@
         :variant="card.variant"
       />
 
-      <NuxtLink
+      <article
         key="portfolio-all-projects"
-        to="/portafolio"
         :class="portfolioCtaDesktopClass"
-        class="group flex min-h-[230px] flex-col justify-center gap-6 rounded-2xl border border-brand-border bg-brand-surface-card p-5 text-brand-ink shadow-[0_8px_22px_var(--color-brand-shadow-card)] transition-shadow hover:shadow-[0_12px_28px_var(--color-brand-shadow-card)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue motion-reduce:transition-none md:col-span-2 md:flex-row md:items-center md:p-6"
+        class="flex min-h-[230px] flex-col gap-6 rounded-2xl border border-brand-border bg-brand-surface-card p-5 text-brand-ink shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:col-span-2 md:p-6"
       >
         <div>
           <p class="mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-brand-accent-text">
@@ -96,13 +96,19 @@
           </p>
           <h3 class="text-lg font-semibold leading-snug md:text-xl">¿Buscas algo más?</h3>
         </div>
-        <span
-          class="inline-flex min-h-11 w-fit shrink-0 items-center gap-2 rounded-lg bg-brand-accent px-4 py-2 text-sm font-semibold text-brand-white transition-colors group-hover:bg-brand-mid"
-        >
-          Ver todos los proyectos
-          <Icon name="mdi:arrow-right" size="17" aria-hidden="true" />
-        </span>
-      </NuxtLink>
+        <NuxtLink v-slot="{ href, navigate }" to="/portafolio" custom>
+          <Button
+            as="a"
+            :href="href"
+            theme="primary"
+            size="md"
+            class="mt-auto w-fit self-end focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
+            @click="navigate"
+          >
+            Ver todos los proyectos
+          </Button>
+        </NuxtLink>
+      </article>
     </TransitionGroup>
   </section>
 </template>
