@@ -5,7 +5,7 @@
 <template>
   <div class="layout overflow-x-hidden">
     <Header />
-    <main class="overflow-hidden pt-20 scrollbar-gutter:stable">
+    <main class="overflow-hidden pt-20 [scrollbar-gutter:stable]">
       <slot />
     </main>
     <Contact title="Hablemos" />

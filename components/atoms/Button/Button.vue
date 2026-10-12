@@ -54,5 +54,3 @@
     <slot />
   </component>
 </template>
-
-<style></style>

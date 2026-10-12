@@ -28,7 +28,6 @@
 
   const form = reactive({
     name: '',
-    lastName: '',
     email: '',
     subject: '',
     message: ''
@@ -56,7 +55,6 @@
     } catch (error) {
       console.error('Error sending email:', error)
       errorMessage.value = 'Error al enviar el mensaje. Por favor, inténtalo de nuevo más tarde.'
-      cleanForm()
     }
   }
 </script>
@@ -90,16 +88,18 @@
               qué quieres hacer, qué problema tienes o qué quieres mejorar. Primero hablamos;
               después vemos si puedo ayudarte.
             </p>
-            <NuxtLink to="https://wa.link/bxjfgq" target="_blank" class="w-fit">
-              <Button
-                icon="mdi:whatsapp"
-                class="whitespace-nowrap bg-brand-whatsapp text-brand-white hover:bg-brand-whatsapp/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
-                icon-position="left"
-                size="md"
-              >
-                Hablemos por Whatsapp
-              </Button>
-            </NuxtLink>
+            <Button
+              as="a"
+              href="https://wa.link/bxjfgq"
+              target="_blank"
+              rel="noopener noreferrer"
+              icon="mdi:whatsapp"
+              class="w-fit whitespace-nowrap bg-brand-whatsapp text-brand-white hover:bg-brand-whatsapp/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
+              icon-position="left"
+              size="md"
+            >
+              Hablemos por Whatsapp
+            </Button>
 
             <div class="">
               <ul

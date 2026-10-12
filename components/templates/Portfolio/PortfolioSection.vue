@@ -1,6 +1,10 @@
 <script lang="ts" setup>
-  import { computed, onMounted, ref } from 'vue'
-  import type { PortfolioCardProject, PortfolioFilter } from './portfolio.types'
+  import { computed, ref } from 'vue'
+  import type {
+    PortfolioCardProject,
+    PortfolioCardVariant,
+    PortfolioFilter
+  } from './portfolio.types'
   import PortfolioFilters from './PortfolioFilters.vue'
   import ProjectCard from './ProjectCard.vue'
 
@@ -8,6 +12,7 @@
 
   const sectionRef = ref<HTMLElement | null>(null)
   const selectedFilter = ref<PortfolioFilter>('Todos')
+  useSectionReveal(sectionRef, 0.14)
 
   const filteredProjects = computed(() => {
     if (selectedFilter.value === 'Clientes') {
@@ -20,6 +25,18 @@
 
     return props.projects
   })
+
+  const portfolioCards = computed(() =>
+    filteredProjects.value.map((project, index) => ({
+      project,
+      variant: getPortfolioCardVariant(index, filteredProjects.value.length)
+    }))
+  )
+
+  function getPortfolioCardVariant(index: number, projectCount: number): PortfolioCardVariant {
+    if (projectCount === 1) return 'balanced'
+    return index < 2 ? 'featured' : 'secondary'
+  }
 
   const portfolioCtaDesktopSpan = computed(() => {
     const occupiedColumns =
@@ -36,24 +53,6 @@
       'xl:flex-col xl:items-start': remainingColumns <= 3,
       'xl:flex-row xl:items-center': remainingColumns > 3
     }
-  })
-
-  onMounted(() => {
-    if (!sectionRef.value) return
-
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            sectionRef.value?.classList.add('is-visible')
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0.14 }
-    )
-
-    observer.observe(sectionRef.value)
   })
 </script>
 
@@ -91,13 +90,10 @@
       class="relative grid min-w-0 grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-6 xl:gap-5"
     >
       <ProjectCard
-        v-for="(project, index) in filteredProjects"
-        :key="project.id"
-        :project="project"
-        :featured="index < 2"
-        :desktop-featured="filteredProjects.length >= 2 && index < 2"
-        :desktop-secondary="index >= 2"
-        :desktop-balanced="filteredProjects.length === 1"
+        v-for="card in portfolioCards"
+        :key="card.project.id"
+        :project="card.project"
+        :variant="card.variant"
       />
 
       <NuxtLink
@@ -124,7 +120,7 @@
 </template>
 
 <style scoped>
-  .portfolio-reveal {
+  .portfolio-reveal.is-reveal-pending {
     opacity: 0;
     transform: translateY(16px);
     transition:
@@ -163,6 +159,7 @@
       transition: none;
     }
 
+    .portfolio-reveal.is-reveal-pending,
     .portfolio-reveal {
       opacity: 1;
       transform: none;

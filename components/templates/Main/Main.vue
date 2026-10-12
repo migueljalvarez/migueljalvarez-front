@@ -3,31 +3,7 @@
   import HeroCurve from '~/components/atoms/Hero/HeroCurve.vue'
   import Title from '~/components/atoms/Title/Title.vue'
 
-  import type { Me } from '~/types/common'
-
-  const name = ref('')
-  const subtitle = ref('Desarrollo de Software y Soluciones Digitales')
-
-  const showWave = ref(false)
-  const props = defineProps<{ me: Me | null }>()
-  let waveTimeout: ReturnType<typeof setTimeout> | null = null
-
-  onMounted(async () => {
-    if (props.me) {
-      name.value = props.me.name
-      // TODO: volver a conectar a datos reales cuando se migre a Supabase — por ahora hardcodeado
-      // fullDescription.value = props.me.jobDescription || ''
-      waveTimeout = setTimeout(() => {
-        showWave.value = true
-      }, 500)
-    }
-  })
-
-  onUnmounted(() => {
-    if (waveTimeout) {
-      clearTimeout(waveTimeout)
-    }
-  })
+  const subtitle = 'Desarrollo de Software y Soluciones Digitales'
 </script>
 <template>
   <section
@@ -66,27 +42,29 @@
         </p>
 
         <div class="mt-4 flex w-full gap-2 items-center sm:mt-6 sm:gap-4">
-          <NuxtLink to="https://wa.link/bxjfgq" target="_blank" class="w-fit">
-            <Button
-              class="whitespace-nowrap bg-brand-whatsapp text-brand-white hover:bg-brand-whatsapp/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
-              size="md"
-              icon="mdi:whatsapp"
-              icon-position="left"
-              theme="tertiary"
-            >
-              Hablemos de tu proyecto
-            </Button>
-          </NuxtLink>
+          <Button
+            as="a"
+            href="https://wa.link/bxjfgq"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="whitespace-nowrap bg-brand-whatsapp text-brand-white hover:bg-brand-whatsapp/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
+            size="md"
+            icon="mdi:whatsapp"
+            icon-position="left"
+            theme="tertiary"
+          >
+            Hablemos de tu proyecto
+          </Button>
 
-          <NuxtLink to="#portfolio" class="w-fit">
-            <Button
-              class="whitespace-nowrap border-brand-white/60 text-brand-text-strong hover:bg-brand-white/10 hover:text-brand-text-strong"
-              size="md"
-              theme="secondary"
-            >
-              Ver portafolio
-            </Button>
-          </NuxtLink>
+          <Button
+            as="a"
+            href="#portfolio"
+            class="whitespace-nowrap border-brand-white/60 text-brand-text-strong hover:bg-brand-white/10 hover:text-brand-text-strong"
+            size="md"
+            theme="secondary"
+          >
+            Ver portafolio
+          </Button>
         </div>
       </div>
     </div>
@@ -138,72 +116,10 @@
     }
   }
 
-  /* Saludo animado */
-  @keyframes wave {
-    0% {
-      transform: rotate(0deg);
-    }
-    10% {
-      transform: rotate(14deg);
-    }
-    20% {
-      transform: rotate(-8deg);
-    }
-    30% {
-      transform: rotate(14deg);
-    }
-    40% {
-      transform: rotate(-4deg);
-    }
-    50% {
-      transform: rotate(10deg);
-    }
-    60% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(0deg);
-    }
-  }
-
-  .wave-animation {
-    display: inline-block;
-    transform-origin: 70% 70%;
-    animation: wave 2s ease-in-out infinite;
-  }
-
-  /* Transición opcional */
-  .wave-fade-enter-active {
-    transition: opacity 0.4s ease;
-  }
-  .wave-fade-enter-from {
-    opacity: 0;
-  }
-
-  .fade-up-enter-active {
-    transition:
-      opacity 0.5s ease,
-      transform 0.5s ease;
-  }
-  .fade-up-enter-from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  .fade-up-enter-to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .main-content,
-    .wave-animation,
     .availability-indicator {
       animation: none;
-    }
-
-    .wave-fade-enter-active,
-    .fade-up-enter-active {
-      transition: none;
     }
   }
 
