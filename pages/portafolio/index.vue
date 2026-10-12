@@ -6,9 +6,7 @@
     title: 'Portafolio'
   })
 
-  const projects = PORTFOLIO_PROJECTS.filter(
-    project => project.type === 'client' || project.type === 'product'
-  )
+  const projects = PORTFOLIO_PROJECTS
 </script>
 
 <template>

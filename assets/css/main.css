@@ -21,7 +21,6 @@
   --color-brand-accent-text: #243b62;
   /* azul real extraído del logo — reservado para acentos puntuales (iconos, estado activo, hover), no para fondos grandes ni texto de párrafo */
   --color-brand-blue: #3f6bad;
-  --color-brand-blue-on-dark: #38bdf8;
   --color-brand-ink: #030507;
   --color-brand-muted: #4d5868;
   --color-brand-helper: #7e8897;
@@ -49,6 +48,7 @@
   --color-brand-success-bg: #eaf6ee;
   --color-brand-success-text: #123b2a;
   --color-brand-success-border: #b8dfc4;
+  --color-brand-whatsapp: #008069;
   --color-brand-warning-bg: #fff4d8;
   --color-brand-warning-text: #5c4a1c;
   --color-brand-warning-border: #f0d67a;
