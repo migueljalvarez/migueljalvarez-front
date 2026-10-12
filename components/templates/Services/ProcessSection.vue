@@ -58,19 +58,23 @@
       <p class="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-brand-text-soft">
         Proceso
       </p>
-      <h2
-        id="process-heading"
-        class="max-w-3xl text-2xl font-semibold leading-tight text-brand-text-strong md:text-3xl"
-      >
-        Un proceso completo, en cada etapa
-      </h2>
-      <p class="mt-3 max-w-3xl text-sm font-semibold leading-6 text-brand-text-strong md:text-base">
-        Según lo que necesites, entro en una o varias de estas etapas.
-      </p>
-      <p class="mt-3 max-w-3xl text-sm leading-6 text-brand-text-subtle md:text-base md:leading-7">
-        Acompaño cada proyecto desde entender el problema hasta poner la solución en marcha y
-        mejorarla con el uso real.
-      </p>
+      <div class="flex flex-col gap-4">
+        <h2
+          id="process-heading"
+          class="max-w-5xl text-2xl font-semibold leading-tight text-brand-text-strong md:text-3xl"
+        >
+          Un proceso completo, en cada etapa
+        </h2>
+        <div class="max-w-6xl">
+          <p class="text-sm font-semibold leading-6 text-brand-text-strong md:text-base">
+            Según lo que necesites, entro en una o varias de estas etapas.
+          </p>
+          <p class="mt-3 text-sm leading-6 text-brand-text-subtle md:text-base md:leading-7">
+            Acompaño cada proyecto desde entender el problema hasta poner la solución en marcha y
+            mejorarla con el uso real.
+          </p>
+        </div>
+      </div>
     </div>
 
     <ol
@@ -80,10 +84,11 @@
         <article
           class="h-full rounded-2xl border border-brand-border-strong/70 bg-brand-surface-panel/95 p-5 text-brand-text-strong shadow-[0_12px_32px_var(--color-brand-shadow-card)] backdrop-blur-sm transition duration-200 hover:border-brand-blue/70 hover:bg-brand-surface-panel-strong focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-blue motion-reduce:transition-none md:p-6"
         >
-          <div class="mb-5 flex items-center">
+          <div class="mb-4 flex items-center gap-3">
             <PhaseMarker :phase="index + 1" />
+            <h3 class="text-base font-semibold text-brand-text-strong">{{ phase.title }}</h3>
           </div>
-          <h3 class="mb-2 text-base font-semibold text-brand-text-strong">{{ phase.title }}</h3>
+
           <p class="text-sm leading-6 text-brand-text-subtle">{{ phase.description }}</p>
         </article>
       </li>

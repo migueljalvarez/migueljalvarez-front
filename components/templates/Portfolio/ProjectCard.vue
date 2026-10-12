@@ -17,7 +17,7 @@
       'rounded-2xl border-brand-border bg-brand-surface-card text-brand-ink hover:border-brand-border-strong',
       {
         'md:h-[310px] xl:col-span-3 xl:h-[320px]': variant === 'featured',
-        'min-h-[200px] md:h-[230px] xl:col-span-2 xl:h-[230px]': variant === 'secondary',
+        'min-h-[200px] md:min-h-[230px] xl:col-span-2': variant === 'secondary',
         'md:h-[310px] xl:col-span-3 xl:h-[310px]': variant === 'balanced'
       }
     ]"
@@ -131,7 +131,7 @@
       <h3 class="mb-1 text-base font-semibold leading-tight">
         {{ project.title }}
       </h3>
-      <p class="line-clamp-2 text-xs leading-5 text-brand-muted">
+      <p class="text-xs leading-5 text-brand-muted">
         {{ project.description }}
       </p>
       <div class="mt-3 flex flex-wrap gap-1.5">
@@ -149,7 +149,7 @@
       <div
         class="mt-auto flex items-center justify-between gap-3 border-t border-brand-border pt-3"
       >
-        <p class="line-clamp-1 text-xs text-brand-muted">
+        <p class="min-w-0 flex-1 text-xs text-brand-muted">
           {{ project.audience }}
         </p>
         <Icon
