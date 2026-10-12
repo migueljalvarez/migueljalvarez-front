@@ -3,9 +3,9 @@
   import { Header } from '~/components/molecules'
 </script>
 <template>
-  <div class="layout overflow-x-hidden">
+  <div class="layout">
     <Header />
-    <main class="overflow-hidden pt-20 [scrollbar-gutter:stable]">
+    <main class="overflow-hidden pt-20">
       <slot />
     </main>
     <Contact title="Hablemos" />

@@ -90,7 +90,6 @@
     background: var(--color-brand-surface);
     color: var(--color-brand-ink);
     font-family: 'Inter', sans-serif;
-    overflow-x: hidden;
   }
 
   img,
