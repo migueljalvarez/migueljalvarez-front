@@ -7,6 +7,7 @@
   } from './portfolio.types'
   import PortfolioFilters from './PortfolioFilters.vue'
   import ProjectCard from './ProjectCard.vue'
+  import { getPortfolioCtaLayout } from '~/utils/portfolioLayout'
 
   const props = defineProps<{ title: string; projects: PortfolioCardProject[] }>()
 
@@ -38,22 +39,9 @@
     return index < 2 ? 'featured' : 'secondary'
   }
 
-  const portfolioCtaDesktopSpan = computed(() => {
-    const occupiedColumns =
-      Math.min(filteredProjects.value.length, 2) * 3 +
-      Math.max(filteredProjects.value.length - 2, 0) * 2
-    const remainingColumns = 6 - (occupiedColumns % 6)
-
-    return {
-      'xl:col-span-2': remainingColumns === 2,
-      'xl:col-span-3': remainingColumns === 3,
-      'xl:col-span-4': remainingColumns === 4,
-      'xl:col-span-5': remainingColumns === 5,
-      'xl:col-span-6': remainingColumns === 1 || remainingColumns === 6,
-      'xl:flex-col xl:items-start': remainingColumns <= 3,
-      'xl:flex-row xl:items-center': remainingColumns > 3
-    }
-  })
+  const portfolioCtaDesktopClass = computed(() =>
+    getPortfolioCtaLayout(filteredProjects.value.length)
+  )
 </script>
 
 <template>
@@ -99,7 +87,7 @@
       <NuxtLink
         key="portfolio-all-projects"
         to="/portafolio"
-        :class="portfolioCtaDesktopSpan"
+        :class="portfolioCtaDesktopClass"
         class="group flex min-h-[230px] flex-col justify-center gap-6 rounded-2xl border border-brand-border bg-brand-surface-card p-5 text-brand-ink shadow-[0_8px_22px_var(--color-brand-shadow-card)] transition-shadow hover:shadow-[0_12px_28px_var(--color-brand-shadow-card)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue motion-reduce:transition-none md:col-span-2 md:flex-row md:items-center md:p-6"
       >
         <div>
