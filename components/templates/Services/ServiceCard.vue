@@ -23,17 +23,7 @@
     :id="offering.id"
     class="flex h-full flex-col rounded-2xl border border-brand-border bg-brand-surface-card p-5 text-brand-ink shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:p-6"
   >
-    <div class="mb-4 flex flex-wrap gap-2">
-      <span
-        v-for="tag in offering.etiquetas"
-        :key="tag"
-        class="rounded-md border border-brand-border bg-brand-surface-soft px-2.5 py-1 text-xs font-medium text-brand-muted"
-      >
-        {{ tag }}
-      </span>
-    </div>
-
-    <p class="text-xs font-semibold uppercase tracking-[0.12em] text-brand-accent-text">
+    <p class="min-h-10 text-sm font-medium leading-5 text-brand-muted">
       {{ offering.situacion }}
     </p>
     <h3 class="mt-2 text-lg font-semibold leading-snug text-brand-ink md:text-xl">
@@ -45,6 +35,15 @@
     </p>
 
     <div class="mt-auto border-t border-brand-border pt-3">
+      <div class="mb-2 flex flex-wrap gap-2">
+        <span
+          v-for="tag in offering.etiquetas"
+          :key="tag"
+          class="rounded-md border border-brand-border bg-brand-surface-soft px-2.5 py-1 text-xs font-medium text-brand-muted"
+        >
+          {{ tag }}
+        </span>
+      </div>
       <button
         type="button"
         aria-haspopup="dialog"
@@ -70,9 +69,7 @@
         <div class="p-5 sm:p-7 md:p-8">
           <div class="flex items-start justify-between gap-5">
             <div class="min-w-0">
-              <p
-                class="mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-brand-accent-text"
-              >
+              <p class="mb-2 text-sm font-medium text-brand-muted">
                 {{ offering.situacion }}
               </p>
               <h2
@@ -108,9 +105,7 @@
           </div>
 
           <section class="mt-6 border-t border-brand-border pt-5">
-            <h3 class="mb-3 text-xs font-semibold uppercase tracking-[0.1em] text-brand-muted">
-              Fases aplicables
-            </h3>
+            <h3 class="mb-3 text-sm font-semibold text-brand-muted">Fases aplicables</h3>
             <ol
               class="flex flex-wrap gap-2"
               :aria-label="`Fases aplicables: ${offering.situacion}`"

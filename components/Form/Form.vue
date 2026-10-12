@@ -8,7 +8,8 @@
   const emit = defineEmits(['submit'])
   const validationClass = computed(() => ({
     hidden: !props.successful,
-    'flex text-[#123B2A] bg-[#EAF6EE] border border-[#B8DFC4]': props.successful
+    'flex text-brand-success-text bg-brand-success-bg border border-brand-success-border':
+      props.successful
   }))
 </script>
 <template>
@@ -24,5 +25,3 @@
     </form>
   </section>
 </template>
-
-<style></style>

@@ -7,7 +7,7 @@
 <template>
   <Section id="como-trabajo" class="gap-8 px-4 py-12 md:py-16">
     <div
-      class="relative mx-auto flex w-full max-w-7xl flex-col gap-6 overflow-hidden rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:p-8"
+      class="relative mx-auto flex w-full max-w-7xl flex-col gap-5 overflow-hidden rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:p-8"
     >
       <NuxtImg
         src="only-brand-color.svg"
@@ -24,9 +24,7 @@
         <h2 class="text-2xl font-semibold leading-tight text-brand-ink md:text-3xl">
           Acuerdos claros para construir con confianza
         </h2>
-        <ul
-          class="mt-5 grid gap-3 text-sm leading-6 text-brand-muted sm:grid-cols-1 lg:grid-cols-1"
-        >
+        <ul class="mt-5 flex flex-col gap-3 text-sm leading-6 text-brand-muted">
           <li v-for="commitment in WORK_COMMITMENTS" :key="commitment" class="flex gap-2">
             <Icon
               name="mdi:check-circle-outline"
@@ -37,19 +35,21 @@
             <span>{{ commitment }}</span>
           </li>
         </ul>
+        <div class="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+          <NuxtLink v-slot="{ href, navigate }" to="/como-trabajo" custom>
+            <Button
+              as="a"
+              :href="href!"
+              theme="primary"
+              size="md"
+              class="w-fit focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
+              @click="navigate"
+            >
+              Conoce cómo trabajo
+            </Button>
+          </NuxtLink>
+        </div>
       </div>
-      <NuxtLink v-slot="{ href, navigate }" to="/como-trabajo" custom>
-        <Button
-          as="a"
-          :href="href"
-          theme="primary"
-          size="md"
-          class="relative z-10 w-fit self-end focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
-          @click="navigate"
-        >
-          Conoce cómo trabajo
-        </Button>
-      </NuxtLink>
     </div>
   </Section>
 </template>
