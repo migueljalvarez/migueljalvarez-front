@@ -1,6 +1,7 @@
 <script lang="ts" setup>
   import { Section } from '~/components/organisms'
   import { DEVELOPMENT_PHASES } from '~/constants/common'
+  import HowWorkTeaser from '~/components/templates/HowWork/HowWorkTeaser.vue'
   import PhaseMarker from './PhaseMarker.vue'
 
   const backgroundRef = ref<HTMLElement | null>(null)
@@ -63,6 +64,9 @@
       >
         Un proceso completo, en cada etapa
       </h2>
+      <p class="mt-3 max-w-3xl text-sm font-semibold leading-6 text-brand-text-strong md:text-base">
+        Según lo que necesites, entro en una o varias de estas etapas.
+      </p>
       <p class="mt-3 max-w-3xl text-sm leading-6 text-brand-text-subtle md:text-base md:leading-7">
         Acompaño cada proyecto desde entender el problema hasta poner la solución en marcha y
         mejorarla con el uso real.
@@ -84,6 +88,8 @@
         </article>
       </li>
     </ol>
+
+    <HowWorkTeaser />
   </Section>
 </template>
 

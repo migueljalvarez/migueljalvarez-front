@@ -8,6 +8,7 @@
   const sidebarOpen = ref(false)
   const isScrolled = ref(false)
   const activeSection = ref('home')
+  let isMounted = false
 
   const toggleSidebar = () => {
     sidebarOpen.value = !sidebarOpen.value
@@ -37,15 +38,33 @@
   const isHeroTop = computed(() => route.path === '/' && !isScrolled.value)
 
   const isActive = (link: string) => {
+    if (route.path !== '/') return !link.includes('#') && route.path === link
     if (link === '/') return activeSection.value === 'home'
-    if (!link.includes('#')) {
-      return route.path === link || (route.path === '/' && activeSection.value === link.slice(1))
-    }
-    return activeSection.value === link.split('#')[1]
+    return link.includes('#') && activeSection.value === link.split('#')[1]
   }
 
-  onMounted(() => {
+  const stopScrollSpy = () => {
+    sectionObserver?.disconnect()
+    sectionObserver = null
+
+    if (scrollHandler) {
+      window.removeEventListener('scroll', scrollHandler)
+      scrollHandler = null
+    }
+  }
+
+  const startScrollSpy = async () => {
+    stopScrollSpy()
     isScrolled.value = window.scrollY > 10
+
+    if (route.path !== '/') {
+      activeSection.value = ''
+      return
+    }
+
+    activeSection.value = 'home'
+    await nextTick()
+    if (route.path !== '/') return
 
     scrollHandler = () => {
       const scrollY = window.scrollY
@@ -69,6 +88,7 @@
 
     sectionObserver = new IntersectionObserver(
       entries => {
+        if (route.path !== '/') return
         if (window.scrollY <= 10) {
           activeSection.value = 'home'
           return
@@ -90,20 +110,32 @@
     )
 
     targets.forEach(target => sectionObserver?.observe(target))
+  }
+
+  onMounted(() => {
+    isMounted = true
+    void startScrollSpy()
   })
 
-  onBeforeUnmount(() => {
-    sectionObserver?.disconnect()
-    if (scrollHandler) {
-      window.removeEventListener('scroll', scrollHandler)
+  watch(
+    () => route.path,
+    () => {
+      if (isMounted) void startScrollSpy()
     }
+  )
+
+  onBeforeUnmount(() => {
+    isMounted = false
+    stopScrollSpy()
   })
 
   watch(
     () => route.fullPath,
     value => {
-      if (!value.includes('#') && value === '/') {
+      if (route.path === '/' && !value.includes('#') && value === '/') {
         activeSection.value = 'home'
+      } else if (route.path !== '/') {
+        activeSection.value = ''
       }
     },
     { immediate: true }
@@ -131,7 +163,7 @@
           :src="isHeroTop ? 'brand_white_v2.svg' : 'brand.svg'"
           width="250"
           height="40"
-          alt="Miguel Alvarez"
+          alt="Miguel Álvarez"
           format="webp"
           :class="['flex object-contain px-2', isHeroTop ? '' : '']"
         />
@@ -151,7 +183,8 @@
                 ? 'text-brand-white'
                 : 'text-brand-ink'
           ]"
-          class="group inline-flex h-10 shrink-0 flex-col items-center justify-center gap-2 whitespace-nowrap text-xs font-bold leading-none tracking-[0.12em] transition-colors duration-300"
+          :aria-current="isActive(item.link) ? 'page' : undefined"
+          class="nav-link group inline-flex h-10 shrink-0 flex-col items-center justify-center gap-2 whitespace-nowrap text-xs font-bold leading-none tracking-[0.12em] transition-colors duration-300"
         >
           <span
             :class="
@@ -164,12 +197,8 @@
           </span>
           <span
             :class="[
-              'h-0.5 w-full origin-center rounded-full bg-brand-blue transition-transform duration-300 motion-reduce:transition-none',
-              isContactNavLink(item.name)
-                ? 'invisible'
-                : isActive(item.link)
-                  ? 'scale-x-100'
-                  : 'scale-x-0 group-hover:scale-x-100'
+              'nav-indicator h-0.5 w-full origin-center rounded-full bg-brand-blue transition-transform duration-300 motion-reduce:transition-none',
+              isContactNavLink(item.name) ? 'invisible' : ''
             ]"
             aria-hidden="true"
           />
@@ -250,15 +279,15 @@
           v-for="item in navLinks"
           :key="item.name"
           :to="item.link"
-          class="group flex w-fit flex-col items-start gap-2 py-1 text-brand-navy"
+          :aria-current="isActive(item.link) ? 'page' : undefined"
+          class="nav-link group flex w-fit flex-col items-start gap-2 py-1 text-brand-navy"
           @click="toggleSidebar"
         >
           <span>{{ item.name }}</span>
           <span
             v-if="!isContactNavLink(item.name)"
             :class="[
-              'h-0.5 w-full origin-left rounded-full bg-brand-blue transition-transform duration-300 motion-reduce:transition-none',
-              isActive(item.link) ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+              'nav-indicator h-0.5 w-full origin-left rounded-full bg-brand-blue transition-transform duration-300 motion-reduce:transition-none'
             ]"
             aria-hidden="true"
           />
@@ -290,6 +319,15 @@
 </template>
 
 <style scoped>
+  .nav-indicator {
+    transform: scaleX(0);
+  }
+
+  .nav-link:hover .nav-indicator,
+  .nav-link[aria-current='page'] .nav-indicator {
+    transform: scaleX(1);
+  }
+
   .header-top {
     background: linear-gradient(
       to bottom,

@@ -4,7 +4,13 @@
   import { SocialMedia } from '~/components/molecules'
   import { Section } from '~/components/organisms'
 
-  import { REGEX_COMMON, REGEX_EMAIL, REGEX_LARGE_TEXT } from '~/constants/common'
+  import {
+    PRIMARY_CTA_LABEL,
+    REGEX_COMMON,
+    REGEX_EMAIL,
+    REGEX_LARGE_TEXT,
+    WHATSAPP_CTA_LABEL
+  } from '~/constants/common'
   import type { SocialMediaType } from '~/types/common'
 
   defineProps<{
@@ -69,7 +75,7 @@
       <!-- Logo decorativo asomando desde la esquina — placeholder mientras subes el SVG real a public/ -->
       <NuxtImg
         src="only-brand.svg"
-        alt="Miguel Alvarez"
+        alt="Miguel Álvarez"
         class="pointer-events-none select-none absolute -bottom-10 -right-20 w-64 h-64 opacity-[0.06] z-0"
       />
 
@@ -98,7 +104,7 @@
               icon-position="left"
               size="md"
             >
-              Hablemos por Whatsapp
+              {{ WHATSAPP_CTA_LABEL }}
             </Button>
 
             <div class="">
@@ -106,7 +112,7 @@
                 class="p-4 text-sm marker:text-brand-blue marker:text-lg leading-6 text-brand-text-subtle"
               >
                 <li class="list-disc">Respuesta en menos de 24 horas</li>
-                <li class="list-disc">Primera consulta sin Costo</li>
+                <li class="list-disc">Primera consulta sin costo</li>
               </ul>
             </div>
             <div class="flex gap-3">
@@ -129,7 +135,7 @@
                 src="brand_white_v2.svg"
                 width="250"
                 height="40"
-                alt="Miguel Alvarez"
+                alt="Miguel Álvarez"
                 class="object-contain"
               />
             </div>
@@ -163,9 +169,9 @@
                     type="email"
                     name="email"
                     place-holder="Correo electrónico"
-                    label="Email"
+                    label="Correo electrónico"
                     required
-                    error-message="Email inválido"
+                    error-message="Correo electrónico inválido"
                   />
                 </div>
 
@@ -184,15 +190,15 @@
                   tag="textarea"
                   label="Mensaje"
                   name="message"
-                  place-holder="Deja aqui tu mensaje"
+                  place-holder="Deja aquí tu mensaje"
                   :rows="4"
                   required
-                  error-message="Se ha detectado uso de caracter inválido"
+                  error-message="Se ha detectado uso de carácter inválido"
                 />
                 <Button
                   :disabled="disabledButton"
                   size="md"
-                  class="w-full whitespace-nowrap py-2"
+                  class="w-full whitespace-nowrap py-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
                   theme="primary"
                 >
                   Enviar
@@ -207,9 +213,9 @@
               class="mt-auto flex w-full flex-col pt-2 text-right font-sans text-xs text-brand-text-subtle"
             >
               <span class="font-sans font-bold text-brand-text-strong">
-                &copy; {{ new Date().getFullYear() }} Miguel Alvarez
+                &copy; {{ new Date().getFullYear() }} Miguel Álvarez
               </span>
-              <span class="font-sans">Servicios de consultoria y desarrollo de Software</span>
+              <span class="font-sans">Servicios de consultoría y desarrollo de software</span>
             </p>
           </div>
         </div>

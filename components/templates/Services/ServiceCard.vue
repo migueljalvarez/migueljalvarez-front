@@ -23,14 +23,14 @@
     :id="offering.id"
     class="flex h-full flex-col rounded-2xl border border-brand-border bg-brand-surface-card p-5 text-brand-ink shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:p-6"
   >
-    <p class="min-h-10 text-sm font-medium leading-5 text-brand-muted">
+    <p class="min-h-10 text-sm font-normal leading-5 text-brand-muted">
       {{ offering.situacion }}
     </p>
-    <h3 class="mt-2 text-lg font-semibold leading-snug text-brand-ink md:text-xl">
+    <h4 class="mt-2 text-lg font-semibold leading-snug text-brand-ink md:text-xl">
       {{ offering.titulo }}
-    </h3>
+    </h4>
 
-    <p class="mt-3 line-clamp-3 text-sm leading-6 text-brand-muted">
+    <p class="mt-3 text-sm leading-6 text-brand-muted">
       {{ offering.paraQuien }}
     </p>
 

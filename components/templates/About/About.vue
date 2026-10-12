@@ -14,7 +14,7 @@
         >
           <NuxtImg
             src="ma.webp"
-            alt="Miguel Alvarez"
+            alt="Miguel Álvarez"
             width="600"
             sizes="100vw sm:544px lg:600px"
             format="webp"

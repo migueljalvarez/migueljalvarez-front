@@ -1,13 +1,15 @@
 <script setup lang="ts">
   import Button from '~/components/atoms/Button/Button.vue'
-  import { Section } from '~/components/organisms'
   import { WORK_COMMITMENTS } from '~/data/work'
 </script>
 
 <template>
-  <Section id="como-trabajo" class="gap-8 px-4 py-12 md:py-16">
+  <section
+    aria-labelledby="work-teaser-heading"
+    class="relative z-10 mx-auto w-full max-w-7xl border-t border-brand-border-strong/70 pt-8"
+  >
     <div
-      class="relative mx-auto flex w-full max-w-7xl flex-col gap-5 overflow-hidden rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:p-8"
+      class="relative flex flex-col gap-5 overflow-hidden rounded-2xl border border-brand-border-strong/70 bg-brand-surface-panel/95 p-6 text-brand-text-strong shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:p-8"
     >
       <NuxtImg
         src="only-brand-color.svg"
@@ -15,17 +17,24 @@
         height="256"
         alt=""
         aria-hidden="true"
-        class="pointer-events-none absolute -right-20 -top-10 z-0 size-64 select-none opacity-[0.10]"
+        class="pointer-events-none absolute -right-20 -bottom-10 z-0 size-64 select-none opacity-[0.08]"
       />
       <div class="relative z-10">
-        <p class="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-brand-accent-text">
+        <p class="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-brand-text-soft">
           Cómo trabajo
         </p>
-        <h2 class="text-2xl font-semibold leading-tight text-brand-ink md:text-3xl">
+        <h3
+          id="work-teaser-heading"
+          class="text-2xl font-semibold leading-tight text-brand-text-strong md:text-3xl"
+        >
           Acuerdos claros para construir con confianza
-        </h2>
-        <ul class="mt-5 flex flex-col gap-3 text-sm leading-6 text-brand-muted">
-          <li v-for="commitment in WORK_COMMITMENTS" :key="commitment" class="flex gap-2">
+        </h3>
+        <ul class="mt-5 flex flex-col gap-3 text-sm leading-6 text-brand-text-subtle">
+          <li
+            v-for="commitment in WORK_COMMITMENTS.slice(0, 3)"
+            :key="commitment"
+            class="flex gap-2"
+          >
             <Icon
               name="mdi:check-circle-outline"
               size="19"
@@ -42,14 +51,14 @@
               :href="href!"
               theme="primary"
               size="md"
-              class="w-fit focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
+              class="w-fit focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
               @click="navigate"
             >
-              Conoce cómo trabajo
+              Ver cómo trabajo
             </Button>
           </NuxtLink>
         </div>
       </div>
     </div>
-  </Section>
+  </section>
 </template>
