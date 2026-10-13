@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import Button from '~/components/atoms/Button/Button.vue'
   import { WORK_COMMITMENTS } from '~/data/work'
+  import { HOME_COPY } from '~/constants/common'
 </script>
 
 <template>
@@ -9,7 +10,7 @@
     class="relative z-10 mx-auto w-full max-w-7xl border-t border-brand-border-strong/70 pt-8"
   >
     <div
-      class="relative flex flex-col gap-5 overflow-hidden rounded-2xl border border-brand-border-strong/70 bg-brand-surface-panel/95 p-6 text-brand-text-strong shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:p-8"
+      class="relative flex flex-col gap-5 overflow-hidden rounded-2xl border border-brand-border-strong/70 bg-brand-surface-panel/95 p-6 text-brand-text-strong md:p-8"
     >
       <NuxtImg
         src="only-brand-color.svg"
@@ -21,13 +22,13 @@
       />
       <div class="relative z-10">
         <p class="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-brand-text-soft">
-          Cómo trabajo
+          {{ HOME_COPY.work.eyebrow }}
         </p>
         <h3
           id="work-teaser-heading"
           class="text-2xl font-semibold leading-tight text-brand-text-strong md:text-3xl"
         >
-          Acuerdos claros para construir con confianza
+          {{ HOME_COPY.work.heading }}
         </h3>
         <ul class="mt-5 flex flex-col gap-3 text-sm leading-6 text-brand-text-subtle">
           <li
@@ -54,7 +55,7 @@
               class="w-fit focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
               @click="navigate"
             >
-              Ver cómo trabajo
+              {{ HOME_COPY.work.cta }}
             </Button>
           </NuxtLink>
         </div>

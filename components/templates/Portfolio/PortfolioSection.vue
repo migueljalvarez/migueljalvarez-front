@@ -9,12 +9,32 @@
   import PortfolioFilters from './PortfolioFilters.vue'
   import ProjectCard from './ProjectCard.vue'
   import { getPortfolioCtaColumnClass } from '~/utils/portfolioLayout'
+  import { HOME_COPY } from '~/constants/common'
 
-  const props = defineProps<{ title: string; projects: PortfolioCardProject[] }>()
+  const props = withDefaults(
+    defineProps<{
+      title: string
+      projects: PortfolioCardProject[]
+      heading?: string
+      description?: string
+      headingLevel?: 'h1' | 'h2'
+      sectionId?: string
+      showViewAll?: boolean
+      reveal?: boolean
+    }>(),
+    {
+      heading: HOME_COPY.portfolio.heading,
+      description: HOME_COPY.portfolio.description,
+      headingLevel: 'h2',
+      sectionId: 'portfolio',
+      showViewAll: true,
+      reveal: true
+    }
+  )
 
   const sectionRef = ref<HTMLElement | null>(null)
   const selectedFilter = ref<PortfolioFilter>('Todos')
-  useSectionReveal(sectionRef, 0.14)
+  if (props.reveal) useSectionReveal(sectionRef, 0.14)
 
   const filteredProjects = computed(() => {
     if (selectedFilter.value === 'Clientes') {
@@ -47,25 +67,25 @@
 
 <template>
   <section
-    id="portfolio"
+    :id="sectionId"
     ref="sectionRef"
     class="portfolio-reveal mx-auto w-full max-w-7xl"
-    aria-labelledby="portfolio-heading"
+    :aria-labelledby="`${sectionId}-heading`"
   >
     <header class="mb-8 flex flex-col gap-5 md:mb-10 md:flex-row md:items-start md:justify-between">
       <div class="max-w-2xl">
         <p class="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-brand-accent-text">
           {{ title }}
         </p>
-        <h2
-          id="portfolio-heading"
+        <component
+          :is="headingLevel"
+          :id="`${sectionId}-heading`"
           class="text-2xl font-semibold leading-tight text-brand-ink md:text-3xl"
         >
-          Soluciones que generan Impacto
-        </h2>
+          {{ heading }}
+        </component>
         <p class="mt-3 max-w-2xl text-sm leading-6 text-brand-muted md:text-base md:leading-7">
-          Proyectos que integran tecnología y necesidades concretas para construir soluciones
-          útiles.
+          {{ description }}
         </p>
       </div>
       <div class="md:shrink-0 md:pt-7">
@@ -74,40 +94,54 @@
     </header>
 
     <TransitionGroup
+      :css="showViewAll"
       name="project-list"
       tag="div"
       class="relative grid min-w-0 grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-6 xl:gap-5"
     >
       <ProjectCard
-        v-for="card in portfolioCards"
+        v-for="(card, index) in portfolioCards"
         :key="card.project.id"
         :project="card.project"
         :variant="card.variant"
+        :class="index < 2 ? 'xl:col-span-3' : 'xl:col-span-2'"
       />
 
       <article
+        v-if="showViewAll"
         key="portfolio-all-projects"
         :class="portfolioCtaDesktopClass"
-        class="flex min-h-[230px] flex-col gap-6 rounded-2xl border border-brand-border bg-brand-surface-card p-5 text-brand-ink shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:col-span-2 md:p-6"
+        class="flex min-h-[230px] flex-col overflow-hidden rounded-2xl border border-brand-border bg-brand-surface-card text-brand-ink shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:col-span-2"
       >
-        <div>
-          <p class="mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-brand-accent-text">
-            Portafolio
-          </p>
-          <h3 class="text-lg font-semibold leading-snug md:text-xl">¿Buscas algo más?</h3>
+        <div
+          class="flex h-36 items-center justify-center bg-brand-surface-panel md:h-40"
+          aria-hidden="true"
+        >
+          <Icon name="mdi:folder-multiple-outline" size="52" class="text-brand-blue/70" />
         </div>
-        <NuxtLink v-slot="{ href, navigate }" to="/portafolio" custom>
-          <Button
-            as="a"
-            :href="href"
-            theme="primary"
-            size="md"
-            class="mt-auto w-fit self-end focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
-            @click="navigate"
-          >
-            Ver todos los proyectos
-          </Button>
-        </NuxtLink>
+        <div class="flex flex-1 flex-col p-4 md:p-5">
+          <p class="mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-brand-accent-text">
+            {{ HOME_COPY.portfolio.allLabel }}
+          </p>
+          <h3 class="text-lg font-semibold leading-snug md:text-xl">
+            {{ HOME_COPY.portfolio.allHeading }}
+          </h3>
+          <p class="mt-2 text-sm leading-5 text-brand-muted">
+            {{ HOME_COPY.portfolio.allDescription }}
+          </p>
+          <NuxtLink v-slot="{ href, navigate }" to="/portafolio" custom>
+            <Button
+              as="a"
+              :href="href"
+              theme="primary"
+              size="md"
+              class="mt-auto w-fit self-end focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
+              @click="navigate"
+            >
+              {{ HOME_COPY.portfolio.allCta }}
+            </Button>
+          </NuxtLink>
+        </div>
       </article>
     </TransitionGroup>
   </section>

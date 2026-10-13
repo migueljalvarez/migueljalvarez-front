@@ -7,9 +7,80 @@ export const MAIN_TITLE_PRESENTATION_COMPLEMENT = 'soy'
 export const HOME_HERO_COPY = {
   title: 'Antes de escribir código, entiendo tu problema.',
   description:
-    'Ayudo a emprendedores y empresas a convertir ideas en sitios, sistemas y MVPs que puedan sostener.',
-  credentials:
-    '9+ años desarrollando software · Ingeniero de Sistemas · Microsoft Student Partner (Venezuela)'
+    'Ayudo a emprendedores y empresas a convertir ideas en software que puede crecer con su negocio. Cuéntame qué necesitas y lo vemos juntos.'
+}
+export const HOME_COPY = {
+  hero: {
+    availability: 'Disponible para nuevos proyectos y consultoría técnica'
+  },
+  services: {
+    eyebrow: 'Antes de construir',
+    heading: 'La tecnología es importante. Entender el problema, todavía más.',
+    descriptionStart:
+      'Mi trabajo no empieza escogiendo un framework. Empieza entendiendo qué quieres lograr, qué tienes hoy, y qué es realmente',
+    viable: 'viable con tu presupuesto y tus tiempos',
+    descriptionEnd: '— no todo lo que suena bien técnicamente es lo correcto para tu negocio.',
+    prompt: '¿En qué punto estás?',
+    detailsCta: 'Ver detalle',
+    detailLabels: {
+      audience: 'Para quién',
+      approach: 'Cómo ayudo',
+      deliverables: 'Qué recibes',
+      phases: 'Fases aplicables'
+    }
+  },
+  process: {
+    eyebrow: 'Proceso',
+    heading: 'Un proceso completo, en cada etapa',
+    description: 'Según lo que necesites, entro en una o varias de estas etapas.'
+  },
+  portfolio: {
+    heading: 'Soluciones que generan Impacto',
+    description:
+      'Proyectos que integran tecnología y necesidades concretas para construir soluciones útiles.',
+    allLabel: 'Portafolio completo',
+    allHeading: '¿Buscas algo más?',
+    allDescription: 'Explora más proyectos y conoce el contexto detrás de cada solución.',
+    allCta: 'Ver todos los proyectos'
+  },
+  about: {
+    eyebrow: 'Sobre mí',
+    heading: 'Un poco más sobre mí',
+    location: 'Medellín, Colombia',
+    remote: 'Trabajo en remoto',
+    highlights: [
+      { value: '10+', label: 'años haciendo software' },
+      { value: '4', label: 'sectores distintos' },
+      { value: 'Internacional', label: 'equipos de habla hispana' }
+    ]
+  },
+  contact: {
+    eyebrow: 'Hablemos',
+    heading: '¿Tienes algo en mente?',
+    description:
+      'No necesitas tener un documento técnico ni todos los requisitos definidos. Cuéntame qué quieres hacer, qué problema tienes o qué quieres mejorar. Primero hablamos; después vemos si puedo ayudarte.',
+    benefits: ['Respuesta en menos de 24 horas', 'Primera consulta sin costo'],
+    privacy: 'Uso tus datos solo para responderte.',
+    serviceDescription: 'Servicios de consultoría y desarrollo de software',
+    sendError: 'Error al enviar el mensaje. Por favor, inténtalo de nuevo más tarde.',
+    form: {
+      success: 'Mensaje enviado exitosamente',
+      submit: 'Enviar',
+      subjectPlaceholder: 'Selecciona un asunto',
+      subjects: [
+        { value: 'desarrollo', label: 'Desarrollo' },
+        { value: 'oferta', label: 'Oferta' },
+        { value: 'consulta', label: 'Consulta' },
+        { value: 'soporte', label: 'Soporte' },
+        { value: 'otro', label: 'Otro' }
+      ]
+    }
+  },
+  work: {
+    eyebrow: 'Cómo trabajo',
+    heading: 'Acuerdos claros para construir con confianza',
+    cta: 'Ver cómo trabajo'
+  }
 }
 export const PRIMARY_CTA_LABEL = 'Hablemos de tu proyecto'
 export const WHATSAPP_CTA_LABEL = 'Hablemos por WhatsApp'

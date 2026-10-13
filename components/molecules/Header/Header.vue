@@ -24,7 +24,6 @@
   const route = useRoute()
   const { socials } = useSocialMedia()
   let scrollHandler: (() => void) | null = null
-  let sectionObserver: IntersectionObserver | null = null
 
   const navLinks = PUBLIC_ROUTES.map(item => ({
     ...item,
@@ -44,11 +43,9 @@
   }
 
   const stopScrollSpy = () => {
-    sectionObserver?.disconnect()
-    sectionObserver = null
-
     if (scrollHandler) {
       window.removeEventListener('scroll', scrollHandler)
+      window.removeEventListener('resize', scrollHandler)
       scrollHandler = null
     }
   }
@@ -62,9 +59,13 @@
       return
     }
 
-    activeSection.value = 'home'
     await nextTick()
     if (route.path !== '/') return
+
+    const targets = navLinks
+      .filter(link => link.link.includes('#'))
+      .map(link => document.getElementById(link.sectionId))
+      .filter(Boolean) as HTMLElement[]
 
     scrollHandler = () => {
       const scrollY = window.scrollY
@@ -72,44 +73,25 @@
 
       if (scrollY <= 10) {
         activeSection.value = 'home'
+        return
       }
+
+      const activationPoint = scrollY + window.innerHeight * 0.3
+      const currentTarget = targets
+        .map(target => ({
+          target,
+          top: target.getBoundingClientRect().top + scrollY
+        }))
+        .filter(({ top }) => top <= activationPoint)
+        .sort((a, b) => a.top - b.top)
+        .at(-1)
+
+      activeSection.value = currentTarget?.target.id || 'home'
     }
 
     scrollHandler()
     window.addEventListener('scroll', scrollHandler, { passive: true })
-
-    const targets = navLinks
-      .map(link => link.sectionId)
-      .filter(id => id !== 'home')
-      .map(id => document.getElementById(id))
-      .filter(Boolean) as HTMLElement[]
-
-    if (!targets.length) return
-
-    sectionObserver = new IntersectionObserver(
-      entries => {
-        if (route.path !== '/') return
-        if (window.scrollY <= 10) {
-          activeSection.value = 'home'
-          return
-        }
-
-        const visible = entries
-          .filter(entry => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
-
-        if (visible.length > 0) {
-          activeSection.value = visible[0].target.id
-        }
-      },
-      {
-        root: null,
-        threshold: [0.2, 0.35, 0.6],
-        rootMargin: '-18% 0px -42% 0px'
-      }
-    )
-
-    targets.forEach(target => sectionObserver?.observe(target))
+    window.addEventListener('resize', scrollHandler, { passive: true })
   }
 
   onMounted(() => {

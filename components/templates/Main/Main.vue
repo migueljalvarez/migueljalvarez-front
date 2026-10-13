@@ -1,42 +1,65 @@
 <script lang="ts" setup>
   import Button from '~/components/atoms/Button/Button.vue'
   import HeroCurve from '~/components/atoms/Hero/HeroCurve.vue'
-  import { HOME_HERO_COPY, PRIMARY_CTA_LABEL } from '~/constants/common'
+  import { HOME_COPY, HOME_HERO_COPY, PRIMARY_CTA_LABEL } from '~/constants/common'
 </script>
+
 <template>
   <section
-    class="hero-section relative -mt-20 flex min-h-[620px] w-full items-center overflow-hidden bg-cover bg-[position:58%_center] pt-24 pb-[72px] text-brand-text-strong sm:pt-20 md:min-h-[680px] md:pb-24"
+    class="hero-section relative -mt-20 flex min-h-[680px] w-full items-center overflow-hidden px-4 pt-24 pb-24 text-brand-text-strong sm:px-6 sm:pt-28 md:min-h-[720px] md:pb-28 lg:px-8"
   >
-    <div class="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
-      <div
-        class="main-content relative z-20 flex w-full max-w-2xl flex-col justify-center gap-2 text-brand-text-strong lg:w-1/2 lg:py-6"
-      >
+    <svg
+      class="hero-hexagons pointer-events-none absolute right-[-18%] top-1/2 z-0 w-[78vw] max-w-[760px] -translate-y-1/2 sm:right-[-8%] md:right-[2%] md:w-[54vw]"
+      viewBox="0 0 600 600"
+      fill="none"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <polygon
+        class="hero-hexagon hero-hexagon-outer"
+        points="150,40 450,40 585,300 450,560 150,560 15,300"
+        pathLength="1000"
+      />
+      <polygon
+        class="hero-hexagon hero-hexagon-middle"
+        points="170,95 430,95 545,300 430,505 170,505 55,300"
+        pathLength="1000"
+      />
+      <polygon
+        class="hero-hexagon hero-hexagon-inner"
+        points="190,150 410,150 505,300 410,450 190,450 95,300"
+        pathLength="1000"
+      />
+    </svg>
+
+    <div class="relative z-10 mx-auto flex w-full max-w-7xl">
+      <div class="flex w-full max-w-[40rem] flex-col items-start gap-5 text-brand-text-strong md:gap-6">
         <p
-          class="mb-3 inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-brand-surface-contrast/80 px-4 py-2 text-xs font-semibold text-brand-text-soft shadow-sm"
+          class="inline-flex w-fit items-center gap-2 rounded-full border border-brand-border-strong bg-brand-surface-contrast/90 px-4 py-2 text-xs font-semibold text-brand-text-soft"
         >
-          <span
-            class="availability-indicator size-2.5 rounded-full bg-emerald-500"
-            aria-hidden="true"
-          />
-          Disponible para nuevos proyectos &amp; consultoría técnica
+          <span class="size-2.5 rounded-full bg-emerald-500" aria-hidden="true" />
+          {{ HOME_COPY.hero.availability }}
         </p>
+
         <h1
-          class="mb-4 max-w-full text-[clamp(2.5rem,5vw,4.5rem)] font-bold leading-[0.95] tracking-[-0.05em] text-brand-text-strong"
+          class="max-w-full text-[clamp(2.5rem,5vw,4.5rem)] font-bold leading-[0.95] tracking-[-0.05em] text-brand-text-strong"
         >
           <span class="block break-words">{{ HOME_HERO_COPY.title }}</span>
         </h1>
 
-        <p class="max-w-[60ch] text-base font-normal leading-7 text-brand-text-strong/85">
+        <p class="max-w-[58ch] text-base font-normal leading-7 text-brand-text-strong">
           {{ HOME_HERO_COPY.description }}
         </p>
 
-        <div class="mt-4 flex w-full flex-wrap items-center gap-2 sm:mt-6 sm:gap-4">
+        <div
+          class="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-4"
+        >
           <Button
             as="a"
             href="https://wa.link/bxjfgq"
             target="_blank"
             rel="noopener noreferrer"
-            class="whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
+            class="w-full whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white sm:w-auto"
             size="md"
             icon="mdi:whatsapp"
             icon-position="left"
@@ -47,81 +70,104 @@
 
           <Button
             as="a"
-            href="#portfolio"
-            class="whitespace-nowrap border-brand-white/60 text-brand-text-strong hover:bg-brand-white/10 hover:text-brand-text-strong"
+            href="/como-trabajo"
+            class="w-full whitespace-nowrap border-brand-text-soft text-brand-text-strong hover:bg-brand-white/10 hover:text-brand-text-strong focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white sm:w-auto"
             size="md"
             theme="secondary"
           >
-            Ver portafolio
+            {{ HOME_COPY.work.cta }}
           </Button>
         </div>
 
-        <p class="mt-3 max-w-3xl text-xs font-medium leading-5 text-brand-text-soft sm:text-sm">
-          {{ HOME_HERO_COPY.credentials }}
-        </p>
+        <ul
+          class="flex flex-col gap-2 text-sm leading-6 text-brand-text-soft sm:flex-row sm:flex-wrap sm:gap-x-5 sm:gap-y-2"
+        >
+          <li
+            v-for="benefit in HOME_COPY.contact.benefits"
+            :key="benefit"
+            class="flex items-center gap-2"
+          >
+            <Icon
+              name="mdi:check-circle-outline"
+              size="19"
+              class="shrink-0 text-brand-text-soft"
+              aria-hidden="true"
+            />
+            <span>{{ benefit }}</span>
+          </li>
+        </ul>
+
+        <div
+          class="flex w-full items-center gap-4 border-t border-brand-text-soft/30 pt-4 sm:pt-5"
+        >
+          <NuxtImg
+            src="ma.webp"
+            alt="Miguel Álvarez"
+            width="56"
+            height="56"
+            format="webp"
+            loading="lazy"
+            class="size-14 shrink-0 rounded-full border border-brand-text-soft/40 object-cover object-center"
+          />
+          <div class="min-w-0">
+            <p class="text-sm font-semibold leading-6 text-brand-text-strong">
+              Miguel Álvarez, ingeniero de sistemas
+            </p>
+            <p class="text-sm leading-6 text-brand-text-soft">
+              10+ años haciendo software · Medellín, Colombia
+            </p>
+          </div>
+        </div>
       </div>
     </div>
+
     <HeroCurve />
   </section>
 </template>
+
 <style scoped>
   .hero-section {
-    background-image:
-      linear-gradient(
-        90deg,
-        color-mix(in srgb, var(--color-brand-surface-contrast) 94%, transparent) 0%,
-        color-mix(in srgb, var(--color-brand-surface-contrast) 80%, transparent) 43%,
-        color-mix(in srgb, var(--color-brand-surface-contrast) 25%, transparent) 100%
-      ),
-      url('/bg.webp');
+    background-color: var(--color-brand-surface-contrast);
+    background-image: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-brand-surface-contrast) 94%, transparent) 0%,
+      color-mix(in srgb, var(--color-brand-surface-contrast) 80%, transparent) 43%,
+      color-mix(in srgb, var(--color-brand-surface-contrast) 25%, transparent) 100%
+    );
   }
 
-  .main-content {
-    animation: slide-in-up 0.6s ease both;
+  .hero-hexagon {
+    fill: none;
+    stroke: var(--color-brand-blue);
+    stroke-width: 1.5;
+    opacity: 0.24;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: draw-hexagon 1.8s ease-out forwards;
   }
 
-  .availability-indicator {
-    animation: availability-pulse 1.8s ease-out infinite;
+  .hero-hexagon-middle {
+    opacity: 0.2;
+    animation-delay: 180ms;
   }
 
-  @keyframes availability-pulse {
-    0%,
-    100% {
-      box-shadow: 0 0 0 0 rgb(16 185 129 / 55%);
-    }
-    55% {
-      box-shadow: 0 0 0 5px rgb(16 185 129 / 0%);
-    }
+  .hero-hexagon-inner {
+    fill: var(--color-brand-blue);
+    fill-opacity: 0.035;
+    opacity: 0.17;
+    animation-delay: 360ms;
   }
 
-  @keyframes slide-in-up {
-    from {
-      opacity: 0;
-      transform: translateX(-24px);
-    }
+  @keyframes draw-hexagon {
     to {
-      opacity: 1;
-      transform: translateX(0);
+      stroke-dashoffset: 0;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .main-content,
-    .availability-indicator {
+    .hero-hexagon {
       animation: none;
-    }
-  }
-
-  @media (max-width: 639px) {
-    .hero-section {
-      background-position: 63% center;
-      background-image:
-        linear-gradient(
-          90deg,
-          color-mix(in srgb, var(--color-brand-surface-contrast) 90%, transparent) 0%,
-          color-mix(in srgb, var(--color-brand-surface-contrast) 72%, transparent) 100%
-        ),
-        url('/bg.webp');
+      stroke-dashoffset: 0;
     }
   }
 </style>

@@ -1,5 +1,12 @@
 <script setup lang="ts">
-  import { About, Main, PortfolioSection, ProcessSection, Services } from '~/components/templates'
+  import {
+    About,
+    Contact,
+    Main,
+    PortfolioSection,
+    ProcessSection,
+    Services
+  } from '~/components/templates'
 
   import { META } from '~/constants/common'
   import { HOME_PORTFOLIO_PROJECTS } from '~/constants/portfolio'
@@ -50,5 +57,6 @@
       </div>
     </Section>
     <About title="Sobre mí" />
+    <Contact title="Hablemos" />
   </div>
 </template>

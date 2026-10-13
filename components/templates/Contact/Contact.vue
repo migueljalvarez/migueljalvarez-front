@@ -5,7 +5,7 @@
   import { Section } from '~/components/organisms'
 
   import {
-    PRIMARY_CTA_LABEL,
+    HOME_COPY,
     REGEX_COMMON,
     REGEX_EMAIL,
     REGEX_LARGE_TEXT,
@@ -14,7 +14,7 @@
   import type { SocialMediaType } from '~/types/common'
 
   defineProps<{
-    title: string
+    title?: string
   }>()
   const { socials } = useSocialMedia()
   const hoverIcon = (item: SocialMediaType) => {
@@ -24,13 +24,7 @@
     item.isHovered = false
   }
   // Contact Form
-  const subjectOptions = [
-    { value: 'desarrollo', label: 'Desarrollo' },
-    { value: 'oferta', label: 'Oferta' },
-    { value: 'consulta', label: 'Consulta' },
-    { value: 'soporte', label: 'Soporte' },
-    { value: 'otro', label: 'Otro' }
-  ]
+  const subjectOptions = HOME_COPY.contact.form.subjects
 
   const form = reactive({
     name: '',
@@ -60,7 +54,7 @@
       cleanForm()
     } catch (error) {
       console.error('Error sending email:', error)
-      errorMessage.value = 'Error al enviar el mensaje. Por favor, inténtalo de nuevo más tarde.'
+      errorMessage.value = HOME_COPY.contact.sendError
     }
   }
 </script>
@@ -81,18 +75,16 @@
 
       <div class="relative z-10">
         <h5 class="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-brand-text-soft">
-          {{ title }}
+          {{ title || HOME_COPY.contact.eyebrow }}
         </h5>
 
         <div class="flex flex-col md:flex-row gap-8 items-stretch">
           <div class="flex flex-col gap-4 md:w-1/2">
             <h3 class="text-2xl font-semibold leading-tight text-brand-text-strong md:text-3xl">
-              ¿Tienes algo en mente?
+              {{ HOME_COPY.contact.heading }}
             </h3>
             <p class="text-sm leading-6 text-brand-text-subtle md:text-base md:leading-7">
-              No necesitas tener un documento técnico ni todos los requisitos definidos. Cuéntame
-              qué quieres hacer, qué problema tienes o qué quieres mejorar. Primero hablamos;
-              después vemos si puedo ayudarte.
+              {{ HOME_COPY.contact.description }}
             </p>
             <Button
               as="a"
@@ -109,23 +101,18 @@
 
             <div class="">
               <ul class="space-y-3 p-4 text-sm leading-6 text-brand-text-subtle">
-                <li class="flex gap-3">
+                <li
+                  v-for="benefit in HOME_COPY.contact.benefits"
+                  :key="benefit"
+                  class="flex gap-3"
+                >
                   <Icon
                     name="mdi:check-circle-outline"
                     size="19"
                     class="mt-0.5 shrink-0 text-brand-blue"
                     aria-hidden="true"
                   />
-                  <span>Respuesta en menos de 24 horas</span>
-                </li>
-                <li class="flex gap-3">
-                  <Icon
-                    name="mdi:check-circle-outline"
-                    size="19"
-                    class="mt-0.5 shrink-0 text-brand-blue"
-                    aria-hidden="true"
-                  />
-                  <span>Primera consulta sin costo</span>
+                  <span>{{ benefit }}</span>
                 </li>
               </ul>
             </div>
@@ -157,12 +144,12 @@
 
           <div class="flex flex-col gap-2 md:w-1/2">
             <div
-              class="rounded-2xl border border-brand-border-strong/70 bg-brand-surface-panel p-4 shadow-[0_12px_28px_var(--color-brand-shadow-card)]"
+              class="rounded-2xl border border-brand-border-strong/70 bg-brand-surface-panel p-4 shadow-[0_8px_22px_var(--color-brand-shadow-card)]"
             >
               <Form
                 :successful="isSendedSuccessful"
                 :validation-message="
-                  isSendedSuccessful ? 'Mensaje enviado exitosamente' : errorMessage
+                  isSendedSuccessful ? HOME_COPY.contact.form.success : errorMessage
                 "
                 @submit="onSubmit"
               >
@@ -194,7 +181,7 @@
                   name="subject"
                   label="Asunto"
                   :options="subjectOptions"
-                  placeholder="Selecciona un asunto"
+                  :placeholder="HOME_COPY.contact.form.subjectPlaceholder"
                   required
                 />
                 <Input
@@ -215,10 +202,10 @@
                   class="w-full whitespace-nowrap py-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
                   theme="primary"
                 >
-                  Enviar
+                  {{ HOME_COPY.contact.form.submit }}
                 </Button>
                 <p class="text-xs leading-5 text-brand-text-subtle">
-                  Uso tus datos solo para responderte.
+                  {{ HOME_COPY.contact.privacy }}
                 </p>
               </Form>
             </div>
@@ -229,7 +216,7 @@
               <span class="font-sans font-bold text-brand-text-strong">
                 &copy; {{ new Date().getFullYear() }} Miguel Álvarez
               </span>
-              <span class="font-sans">Servicios de consultoría y desarrollo de software</span>
+              <span class="font-sans">{{ HOME_COPY.contact.serviceDescription }}</span>
             </p>
           </div>
         </div>
