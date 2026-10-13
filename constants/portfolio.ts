@@ -170,6 +170,11 @@ const PORTFOLIO_PROJECT_CONTEXT: Record<
   string,
   Pick<PortfolioCardProject, 'projectKind' | 'sector' | 'audience'>
 > = {
+  'mi-comodoro': {
+    projectKind: 'Aplicación financiera',
+    sector: 'Finanzas personales',
+    audience: 'personas que organizan sus finanzas'
+  },
   'tu-radio-ar-stereo': {
     projectKind: 'Plataforma digital',
     sector: 'Medios y entretenimiento',
@@ -194,6 +199,11 @@ const PORTFOLIO_PROJECT_CONTEXT: Record<
     projectKind: 'Sistema de gestión',
     sector: 'Ventas y CRM',
     audience: 'equipos comerciales'
+  },
+  'intranet-lab': {
+    projectKind: 'Intranet',
+    sector: 'Operaciones internas',
+    audience: 'equipos de trabajo'
   }
 }
 
@@ -225,6 +235,9 @@ export const HOME_PORTFOLIO_PROJECTS: PortfolioCardProject[] = [
   toPortfolioCardProject('agencia-ops', true),
   toPortfolioCardProject('crm-visual', true)
 ]
+
+export const ALL_PORTFOLIO_CARD_PROJECTS: PortfolioCardProject[] =
+  PORTFOLIO_PROJECTS.map(project => toPortfolioCardProject(project.id))
 
 export const PORTFOLIO_TYPE_OPTIONS = ['Todos', 'Clientes', 'Productos Propios'] as const
 

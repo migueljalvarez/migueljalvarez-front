@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from 'vue'
-  import { DEVELOPMENT_PHASES } from '~/constants/common'
+  import { DEVELOPMENT_PHASES, HOME_COPY } from '~/constants/common'
   import type { ServiceOffering } from '~/data/services'
   import PhaseMarker from './PhaseMarker.vue'
 
@@ -21,7 +21,7 @@
 <template>
   <article
     :id="offering.id"
-    class="flex h-full flex-col rounded-2xl border border-brand-border bg-brand-surface-card p-5 text-brand-ink shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:p-6"
+    class="flex h-full flex-col rounded-2xl border border-brand-border bg-brand-surface-card p-5 text-brand-ink transition-shadow hover:shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:p-6"
   >
     <p class="min-h-10 text-sm font-normal leading-5 text-brand-muted">
       {{ offering.situacion }}
@@ -51,7 +51,7 @@
         class="flex min-h-11 w-full cursor-pointer items-center justify-between gap-3 text-left font-semibold text-brand-accent-text focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
         @click="openDetails"
       >
-        <span>Ver detalle</span>
+        <span>{{ HOME_COPY.services.detailsCta }}</span>
         <Icon name="mdi:chevron-down" size="19" class="shrink-0 -rotate-90" aria-hidden="true" />
       </button>
     </div>
@@ -92,9 +92,9 @@
           <div class="mt-6 grid gap-4 md:grid-cols-3">
             <section
               v-for="detail in [
-                { title: 'Para quién', text: offering.paraQuien },
-                { title: 'Cómo ayudo', text: offering.comoAyudo },
-                { title: 'Qué recibes', text: offering.queRecibes }
+                { title: HOME_COPY.services.detailLabels.audience, text: offering.paraQuien },
+                { title: HOME_COPY.services.detailLabels.approach, text: offering.comoAyudo },
+                { title: HOME_COPY.services.detailLabels.deliverables, text: offering.queRecibes }
               ]"
               :key="detail.title"
               class="rounded-xl border border-brand-border bg-brand-surface-soft p-4 sm:p-5"
@@ -105,7 +105,9 @@
           </div>
 
           <section class="mt-6 border-t border-brand-border pt-5">
-            <h3 class="mb-3 text-sm font-semibold text-brand-muted">Fases aplicables</h3>
+            <h3 class="mb-3 text-sm font-semibold text-brand-muted">
+              {{ HOME_COPY.services.detailLabels.phases }}
+            </h3>
             <ol
               class="flex flex-wrap gap-2"
               :aria-label="`Fases aplicables: ${offering.situacion}`"
