@@ -40,7 +40,6 @@
   const errorMessage = ref('')
   const cleanForm = () => {
     form.name = ''
-
     form.email = ''
     form.subject = ''
     form.message = ''
@@ -99,23 +98,17 @@
               {{ WHATSAPP_CTA_LABEL }}
             </Button>
 
-            <div class="">
-              <ul class="space-y-3 p-4 text-sm leading-6 text-brand-text-subtle">
-                <li
-                  v-for="benefit in HOME_COPY.contact.benefits"
-                  :key="benefit"
-                  class="flex gap-3"
-                >
-                  <Icon
-                    name="mdi:check-circle-outline"
-                    size="19"
-                    class="mt-0.5 shrink-0 text-brand-blue"
-                    aria-hidden="true"
-                  />
-                  <span>{{ benefit }}</span>
-                </li>
-              </ul>
-            </div>
+            <ul class="space-y-3 p-4 text-sm leading-6 text-brand-text-subtle">
+              <li v-for="benefit in HOME_COPY.contact.benefits" :key="benefit" class="flex gap-3">
+                <Icon
+                  name="mdi:check-circle-outline"
+                  size="19"
+                  class="mt-0.5 shrink-0 text-brand-blue"
+                  aria-hidden="true"
+                />
+                <span>{{ benefit }}</span>
+              </li>
+            </ul>
             <div class="flex gap-3">
               <SocialMedia
                 v-for="item in socials"

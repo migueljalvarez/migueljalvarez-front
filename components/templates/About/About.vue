@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-  import Button from '~/components/atoms/Button/Button.vue'
-  import { HOME_COPY, PRIMARY_CTA_LABEL } from '~/constants/common'
+  import { HOME_COPY } from '~/constants/common'
 
   const sectionRef = ref<HTMLElement | null>(null)
   const highlights = HOME_COPY.about.highlights
@@ -65,10 +64,10 @@
     class="w-full bg-brand-surface px-4 py-12 text-brand-ink dark:bg-brand-surface-contrast dark:text-brand-text-strong md:py-16"
   >
     <div class="mx-auto flex w-full max-w-7xl flex-col gap-8 md:gap-10">
-      <div class="about-intro-layout grid min-w-0 items-stretch">
-        <div class="about-photo group/photo relative min-w-0">
+      <div class="grid min-w-0 grid-cols-1 items-stretch gap-8 lg:grid-cols-5 lg:gap-12">
+        <div class="relative min-w-0 min-h-80 lg:col-span-2 lg:min-h-0">
           <div
-            class="about-photo-frame absolute overflow-hidden rounded-2xl border border-brand-border bg-brand-surface-card p-2 shadow-[0_8px_22px_var(--color-brand-shadow-card)] dark:border-brand-border-strong dark:bg-brand-surface-panel"
+            class="absolute inset-2 overflow-hidden rounded-2xl border border-brand-border bg-brand-surface-card p-2 shadow-[0_8px_22px_var(--color-brand-shadow-card)] dark:border-brand-border-strong dark:bg-brand-surface-panel"
           >
             <NuxtImg
               src="ma.webp"
@@ -82,7 +81,7 @@
           </div>
 
           <div
-            class="absolute bottom-0 right-0 z-20 flex translate-x-2 translate-y-2 items-center gap-3 rounded-full border border-brand-blue/30 bg-brand-surface-card/95 px-4 py-2 shadow-[0_8px_22px_var(--color-brand-shadow-card)] dark:border-brand-blue/40 dark:bg-brand-surface-panel/95"
+            class="absolute right-3 bottom-3 z-20 flex translate-y-1/2 items-center gap-3 rounded-full border border-brand-blue/30 bg-brand-surface-card/95 px-4 py-2 shadow-[0_8px_22px_var(--color-brand-shadow-card)] dark:border-brand-blue/40 dark:bg-brand-surface-panel/95 sm:right-0 sm:bottom-0 sm:translate-x-2 sm:translate-y-2"
           >
             <span
               class="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-blue/10 dark:bg-brand-blue/20"
@@ -105,7 +104,9 @@
           </div>
         </div>
 
-        <div class="relative z-10 flex min-w-0 flex-col justify-center gap-5 py-2 md:gap-6">
+        <div
+          class="relative z-10 flex min-w-0 flex-col justify-center gap-5 py-2 md:gap-6 lg:col-span-3"
+        >
           <div>
             <p
               class="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-brand-accent-text dark:text-brand-text-soft"
@@ -121,13 +122,13 @@
             class="text-sm leading-6 text-brand-muted dark:text-brand-text-subtle md:text-base md:leading-7"
           >
             Hola, soy
-            <strong class="text-brand-ink dark:text-brand-text-strong">Miguel</strong>
-            , ingeniero de sistemas. Me dedico al desarrollo de software, partiendo de la necesidad
+            <strong class="text-brand-ink dark:text-brand-text-strong">Miguel,</strong>
+            ingeniero de sistemas. Me dedico al desarrollo de software, partiendo de la necesidad
             inicial y preparando el camino para crecer en el futuro. Trabajo con pasión por lo que
             hago.
           </p>
 
-          <div class="about-highlights-grid grid w-full gap-3">
+          <div class="grid w-full grid-cols-1 gap-3 sm:grid-cols-3">
             <article
               v-for="(item, index) in highlights"
               :key="item.label"
@@ -148,9 +149,9 @@
         </div>
       </div>
 
-      <div class="about-story-layout grid">
+      <div class="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-6">
         <article
-          class="rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-[0_8px_22px_var(--color-brand-shadow-card)] dark:border-brand-border-strong dark:bg-brand-surface-panel md:p-8"
+          class="rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-[0_8px_22px_var(--color-brand-shadow-card)] dark:border-brand-border-strong dark:bg-brand-surface-panel md:p-8 lg:col-span-7"
         >
           <span
             class="mb-4 flex size-10 items-center justify-center rounded-xl border border-brand-border bg-brand-surface-soft dark:border-brand-border-strong dark:bg-brand-surface-contrast"
@@ -171,9 +172,8 @@
             <strong
               class="rounded-sm bg-brand-blue/10 px-1 text-brand-accent-text dark:bg-brand-blue/20 dark:text-brand-text-soft"
             >
-              los errores que casi nadie nota hasta que ya duelen
+              los errores que casi nadie nota hasta que ya duelen.
             </strong>
-            .
           </p>
           <blockquote
             class="mt-5 border-l-2 border-brand-border-strong bg-brand-surface-soft px-4 py-3 text-sm leading-6 text-brand-muted dark:border-brand-blue dark:bg-brand-surface-contrast dark:text-brand-text-subtle md:px-5 md:py-4 md:text-base md:leading-7"
@@ -184,7 +184,7 @@
         </article>
 
         <article
-          class="rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-[0_8px_22px_var(--color-brand-shadow-card)] dark:border-brand-border-strong dark:bg-brand-surface-panel md:p-8"
+          class="rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-[0_8px_22px_var(--color-brand-shadow-card)] dark:border-brand-border-strong dark:bg-brand-surface-panel md:p-8 lg:col-span-5"
         >
           <span
             class="mb-4 flex size-10 items-center justify-center rounded-xl border border-brand-border bg-brand-surface-soft dark:border-brand-border-strong dark:bg-brand-surface-contrast"
@@ -200,8 +200,10 @@
             class="text-sm leading-6 text-brand-muted dark:text-brand-text-subtle md:text-base md:leading-7"
           >
             Soy una persona
-            <strong class="text-brand-ink dark:text-brand-text-strong">relajada y tranquila</strong>
-            , apasionado de la tecnología y la cultura geek. Me gusta salir a caminar y olvidarme un
+            <strong class="text-brand-ink dark:text-brand-text-strong">
+              relajada y tranquila,
+            </strong>
+            apasionado de la tecnología y la cultura geek. Me gusta salir a caminar y olvidarme un
             poco de las cosas, los días de pizza, las salidas con amigos y compartir siempre un buen
             café. También relajarme viendo películas y series, y estar siempre buscando algo nuevo
             que aprender.
@@ -211,88 +213,3 @@
     </div>
   </section>
 </template>
-
-<style scoped>
-  .about-intro-layout,
-  .about-story-layout {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 2rem;
-  }
-
-  .about-photo {
-    min-height: 20rem;
-  }
-
-  .about-photo-frame {
-    inset: 0.5rem;
-    overflow: hidden;
-  }
-
-  .about-highlights-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .about-life-label {
-    transition: transform 200ms ease;
-  }
-
-  .about-life-label--coffee {
-    transform: rotate(-6deg);
-  }
-
-  .about-life-label--pizza {
-    transform: translateY(-50%) rotate(3deg);
-  }
-
-  .about-life-label--walk {
-    transform: rotate(3deg);
-  }
-
-  @media (max-width: 39.999rem) {
-    .about-photo > .absolute.z-20 {
-      right: 0.75rem;
-      bottom: 0.75rem;
-      transform: translateY(50%);
-    }
-  }
-
-  .about-photo:hover .about-life-label {
-    transform: rotate(0);
-  }
-
-  .about-photo:hover .about-life-label--pizza {
-    transform: translateY(-50%) rotate(0);
-  }
-
-  .about-story-layout {
-    gap: 1rem;
-  }
-
-  @media (min-width: 40rem) {
-    .about-highlights-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-
-  @media (min-width: 64rem) {
-    .about-intro-layout {
-      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-      gap: 3rem;
-    }
-
-    .about-photo {
-      min-height: 0;
-    }
-
-    .about-story-layout {
-      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-      gap: 1.5rem;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .about-life-label {
-      transition: none;
-    }
-  }
-</style>

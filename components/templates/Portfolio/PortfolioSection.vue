@@ -95,9 +95,15 @@
 
     <TransitionGroup
       :css="showViewAll"
-      name="project-list"
       tag="div"
       class="relative grid min-w-0 grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-6 xl:gap-5"
+      enter-active-class="transition duration-200 ease-out motion-reduce:transition-none"
+      enter-from-class="translate-y-2 opacity-0"
+      enter-to-class="translate-y-0 opacity-100"
+      leave-active-class="absolute transition duration-200 ease-out motion-reduce:transition-none"
+      leave-from-class="translate-y-0 opacity-100"
+      leave-to-class="translate-y-2 opacity-0"
+      move-class="transition duration-200 ease-out motion-reduce:transition-none"
     >
       <ProjectCard
         v-for="(card, index) in portfolioCards"
@@ -161,29 +167,8 @@
     transform: translateY(0);
   }
 
-  .project-list-enter-active,
-  .project-list-leave-active,
-  .project-list-move {
-    transition:
-      opacity 0.24s ease,
-      transform 0.24s ease;
-  }
-
-  .project-list-enter-from,
-  .project-list-leave-to {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  .project-list-leave-active {
-    position: absolute;
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .portfolio-reveal,
-    .project-list-enter-active,
-    .project-list-leave-active,
-    .project-list-move {
+    .portfolio-reveal {
       transition: none;
     }
 

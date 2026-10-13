@@ -33,7 +33,9 @@
     </svg>
 
     <div class="relative z-10 mx-auto flex w-full max-w-7xl">
-      <div class="flex w-full max-w-[40rem] flex-col items-start gap-5 text-brand-text-strong md:gap-6">
+      <div
+        class="flex w-full max-w-[40rem] flex-col items-start gap-5 text-brand-text-strong md:gap-6"
+      >
         <p
           class="inline-flex w-fit items-center gap-2 rounded-full border border-brand-border-strong bg-brand-surface-contrast/90 px-4 py-2 text-xs font-semibold text-brand-text-soft"
         >
@@ -42,7 +44,7 @@
         </p>
 
         <h1
-          class="max-w-full text-[clamp(2.5rem,5vw,4.5rem)] font-bold leading-[0.95] tracking-[-0.05em] text-brand-text-strong"
+          class="max-w-full text-[clamp(2.5rem,5vw,4.5rem)] font-bold leading-[1.05] tracking-[-0.05em] text-brand-text-strong"
         >
           <span class="block break-words">{{ HOME_HERO_COPY.title }}</span>
         </h1>
@@ -97,9 +99,7 @@
           </li>
         </ul>
 
-        <div
-          class="flex w-full items-center gap-4 border-t border-brand-text-soft/30 pt-4 sm:pt-5"
-        >
+        <div class="flex w-full items-center gap-4 border-t border-brand-text-soft/30 pt-4 sm:pt-5">
           <NuxtImg
             src="ma.webp"
             alt="Miguel Álvarez"
