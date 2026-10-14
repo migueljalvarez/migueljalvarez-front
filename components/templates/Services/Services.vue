@@ -8,11 +8,11 @@
 <template>
   <Section
     id="services"
-    class="gap-8 bg-brand-surface px-4 py-12 md:gap-10 md:py-16"
+    class="gap-8 bg-brand-surface px-4 pt-12 pb-20 md:gap-10 md:pt-12 md:pb-24"
     aria-labelledby="services-heading"
   >
     <div
-      class="mx-auto w-full max-w-7xl rounded-2xl border border-brand-border bg-brand-surface-card p-6 md:p-8"
+      class="relative z-10 -mt-25 mx-auto w-full max-w-7xl rounded-2xl border border-brand-border bg-brand-surface-card p-6 md:p-8"
     >
       <p class="text-sm font-semibold uppercase tracking-[0.08em] text-brand-accent-text">
         {{ HOME_COPY.services.eyebrow }}

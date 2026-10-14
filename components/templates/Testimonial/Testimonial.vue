@@ -40,7 +40,7 @@
 
     if (length > 220) return 'text-base md:text-lg xl:text-xl'
     if (length > 150) return 'text-lg md:text-xl xl:text-2xl'
-    return 'text-xl md:text-2xl xl:text-[2rem]'
+    return 'text-xl md:text-2xl'
   }
 
   const goToSlide = (index: number) => {
@@ -159,7 +159,7 @@
           >
             <article v-for="slide in slides" :key="slide.id" class="min-w-full px-1 md:px-3">
               <div
-                class="flex min-h-[260px] flex-col justify-between rounded-2xl border border-brand-border-strong/60 bg-brand-surface-panel-strong p-6 shadow-[0_16px_36px_rgba(3,5,7,0.18)] md:p-10"
+                class="flex min-h-65 flex-col justify-between rounded-2xl border border-brand-border-strong/60 bg-brand-surface-panel-strong p-6 shadow-[0_16px_36px_rgba(3,5,7,0.18)] md:p-10"
               >
                 <div class="space-y-4">
                   <span

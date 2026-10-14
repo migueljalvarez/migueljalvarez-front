@@ -1,24 +1,29 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { getPortfolioCtaColumnClass } from '../utils/portfolioLayout.ts'
+import { getPortfolioCardVariant, getPortfolioCtaColumnClass } from '../utils/portfolioLayout.ts'
 
-test('CTA spans the remaining columns based on the visible portfolio item count', () => {
-  const layouts = new Map([
-    [0, 'xl:col-span-6'],
-    [1, 'xl:col-span-3'],
-    [2, 'xl:col-span-6'],
-    [3, 'xl:col-span-4'],
-    [4, 'xl:col-span-2'],
-    [5, 'xl:col-span-6'],
-    [6, 'xl:col-span-4']
-  ])
+test('marked primary projects receive the larger card variant', () => {
+  assert.equal(getPortfolioCardVariant({ primary: true }, 3), 'primary')
+  assert.equal(getPortfolioCardVariant({}, 3), 'secondary')
+  assert.equal(getPortfolioCardVariant({}, 1), 'balanced')
+})
 
-  for (const [projectCount, expectedLayout] of layouts) {
-    assert.equal(getPortfolioCtaColumnClass(projectCount), expectedLayout)
+test('CTA spans remaining columns for the rendered project variants', () => {
+  const layouts = [
+    [[], 'xl:col-span-6'],
+    [['balanced'], 'xl:col-span-3'],
+    [['secondary', 'secondary'], 'xl:col-span-2'],
+    [['secondary', 'secondary', 'secondary'], 'xl:col-span-6'],
+    [['primary'], 'xl:col-span-2'],
+    [['primary', 'secondary'], 'xl:col-span-6'],
+    [['primary', 'secondary', 'secondary'], 'xl:col-span-4']
+  ]
+
+  for (const [cardVariants, expectedLayout] of layouts) {
+    assert.equal(getPortfolioCtaColumnClass(cardVariants), expectedLayout)
   }
 })
 
-test('CTA layout rejects invalid project counts', () => {
-  assert.throws(() => getPortfolioCtaColumnClass(-1), RangeError)
-  assert.throws(() => getPortfolioCtaColumnClass(1.5), RangeError)
+test('CTA layout rejects unknown card variants', () => {
+  assert.throws(() => getPortfolioCtaColumnClass(['unknown']), RangeError)
 })

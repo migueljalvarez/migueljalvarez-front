@@ -79,7 +79,7 @@
       <h1 class="mt-2 text-3xl font-semibold text-navy">CV / ATS</h1>
     </div>
 
-    <div class="grid gap-6 xl:grid-cols-[1fr_1fr]">
+    <div class="grid gap-6 xl:grid-cols-2">
       <div class="rounded-2xl border border-[#E9EEF5] bg-white p-5 shadow-sm">
         <h2 class="text-xl font-semibold text-navy">Datos del perfil</h2>
 

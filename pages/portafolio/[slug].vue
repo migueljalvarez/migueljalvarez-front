@@ -64,7 +64,7 @@
             :src="project.urlImage"
             :alt="project.title"
             format="webp"
-            class="h-[260px] w-full rounded-2xl object-cover md:h-[420px]"
+            class="h-65 w-full rounded-2xl object-cover md:h-105"
           />
         </div>
 

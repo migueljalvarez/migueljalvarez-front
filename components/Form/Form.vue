@@ -7,9 +7,11 @@
   }>()
   const emit = defineEmits(['submit'])
   const validationClass = computed(() => ({
-    hidden: !props.successful,
+    hidden: !props.successful && !props.validationMessage,
     'flex text-brand-success-text bg-brand-success-bg border border-brand-success-border':
-      props.successful
+      props.successful,
+    'flex text-brand-error-text bg-brand-error-bg border border-brand-error-border':
+      !props.successful && !!props.validationMessage
   }))
 </script>
 <template>

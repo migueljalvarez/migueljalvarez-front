@@ -10,7 +10,8 @@ export type PortfolioCardProject = {
   href?: string
   status?: string
   mock?: boolean
+  primary?: boolean
 }
 
 export type PortfolioFilter = 'Todos' | 'Clientes' | 'Productos propios'
-export type PortfolioCardVariant = 'featured' | 'secondary' | 'balanced'
+export type PortfolioCardVariant = 'primary' | 'secondary' | 'balanced'

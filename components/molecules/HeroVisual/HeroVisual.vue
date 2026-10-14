@@ -23,7 +23,7 @@
 </script>
 
 <template>
-  <div aria-hidden="true" class="hero-visual hidden w-full max-w-[260px] md:flex lg:max-w-[430px]">
+  <div aria-hidden="true" class="hero-visual hidden w-full max-w-65 md:flex lg:max-w-107.5">
     <svg viewBox="0 0 420 420" class="h-full w-full" role="img" aria-hidden="true">
       <defs>
         <linearGradient id="hero-visual-glow" x1="0%" x2="100%" y1="0%" y2="100%">

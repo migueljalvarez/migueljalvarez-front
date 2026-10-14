@@ -95,7 +95,7 @@
       >
         <Title :text="title" variant="h2" class="pt-10 text-center md:py-18" />
         <Transition :name="transitionName" mode="out-in">
-          <div :key="index" class="slide min-h-[500px]">
+          <div :key="index" class="slide min-h-125">
             <slot name="card" :item="items[index]" />
           </div>
         </Transition>
