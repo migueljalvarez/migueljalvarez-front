@@ -16,7 +16,7 @@
     >
       <span
         :class="blockquoteClass"
-        class="absolute text-5xl left-[6px] top-[-20px] md:top-2.5 lg:left-[-30px] lg:top-[0px] lg:text-8xl font-mono leading-none select-none"
+        class="absolute text-5xl left-1.5 -top-5 md:top-2.5 lg:left-[-30px] lg:top-0 lg:text-8xl font-mono leading-none select-none"
       >
         “
       </span>

@@ -1,3 +1,5 @@
+import type { PortfolioCardVariant } from '../components/templates/Portfolio/portfolio.types'
+
 const columnSpanClasses: Partial<Record<number, string>> = {
   2: 'xl:col-span-2',
   3: 'xl:col-span-3',
@@ -6,12 +8,31 @@ const columnSpanClasses: Partial<Record<number, string>> = {
   6: 'xl:col-span-6'
 } as const
 
-export function getPortfolioCtaColumnClass(projectCount: number): string {
-  if (!Number.isInteger(projectCount) || projectCount < 0) {
-    throw new RangeError('Project count must be a non-negative integer')
-  }
+const cardColumnSpans: Record<PortfolioCardVariant, number> = {
+  primary: 4,
+  secondary: 2,
+  balanced: 3
+}
 
-  const occupiedColumns = Math.min(projectCount, 2) * 3 + Math.max(projectCount - 2, 0) * 2
+export function getPortfolioCardVariant(
+  project: { primary?: boolean },
+  projectCount: number
+): PortfolioCardVariant {
+  if (project.primary) return 'primary'
+  if (projectCount === 1) return 'balanced'
+  return 'secondary'
+}
+
+export function getPortfolioCtaColumnClass(cardVariants: PortfolioCardVariant[]): string {
+  const occupiedColumns = cardVariants.reduce((total, variant) => {
+    const columns = cardColumnSpans[variant]
+
+    if (!columns) {
+      throw new RangeError(`Unknown portfolio card variant: ${variant}`)
+    }
+
+    return total + columns
+  }, 0)
   const remainingColumns = 6 - (occupiedColumns % 6) || 6
   const spanClass = columnSpanClasses[remainingColumns]
 

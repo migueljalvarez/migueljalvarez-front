@@ -9,6 +9,12 @@
   const emit = defineEmits(['update:modelValue'])
   const error = ref(false)
   const modelValue = ref(props.modelValue ?? '')
+  watch(
+    () => props.modelValue,
+    value => {
+      modelValue.value = value ?? ''
+    }
+  )
   const handleInput = (event: Event) => {
     modelValue.value = (event.target as HTMLInputElement).value
     validate(modelValue.value)

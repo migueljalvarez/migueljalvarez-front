@@ -1,15 +1,14 @@
 <script lang="ts" setup>
   import Button from '~/components/atoms/Button/Button.vue'
-  import HeroCurve from '~/components/atoms/Hero/HeroCurve.vue'
   import { HOME_COPY, HOME_HERO_COPY, PRIMARY_CTA_LABEL } from '~/constants/common'
 </script>
 
 <template>
   <section
-    class="hero-section relative -mt-20 flex min-h-[680px] w-full items-center overflow-hidden px-4 pt-24 pb-24 text-brand-text-strong sm:px-6 sm:pt-28 md:min-h-[720px] md:pb-28 lg:px-8"
+    class="hero-section relative -mt-20 flex min-h-170 w-full items-center overflow-hidden px-4 pt-24 pb-24 text-brand-text-strong sm:px-6 sm:pt-28 md:min-h-180 md:pb-28 lg:px-8"
   >
     <svg
-      class="hero-hexagons pointer-events-none absolute right-[-18%] top-1/2 z-0 w-[78vw] max-w-[760px] -translate-y-1/2 sm:right-[-8%] md:right-[2%] md:w-[54vw]"
+      class="hero-hexagons pointer-events-none absolute right-[-18%] top-1/2 z-0 w-[78vw] max-w-190 -translate-y-1/2 sm:right-[-8%] md:right-[2%] md:w-[54vw]"
       viewBox="0 0 600 600"
       fill="none"
       aria-hidden="true"
@@ -34,7 +33,7 @@
 
     <div class="relative z-10 mx-auto flex w-full max-w-7xl">
       <div
-        class="flex w-full max-w-[40rem] flex-col items-start gap-5 text-brand-text-strong md:gap-6"
+        class="flex w-full max-w-160 flex-col items-start gap-5 text-brand-text-strong md:gap-6"
       >
         <p
           class="inline-flex w-fit items-center gap-2 rounded-full border border-brand-border-strong bg-brand-surface-contrast/90 px-4 py-2 text-xs font-semibold text-brand-text-soft"
@@ -120,8 +119,6 @@
         </div>
       </div>
     </div>
-
-    <HeroCurve />
   </section>
 </template>
 

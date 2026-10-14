@@ -51,7 +51,7 @@
   >
     <div
       ref="backgroundRef"
-      class="process-background pointer-events-none absolute inset-x-0 -top-[10%] -bottom-[10%] z-0"
+      class="process-background pointer-events-none absolute inset-x-0 top-[-10%] bottom-[-10%] z-0"
       aria-hidden="true"
     />
     <div class="relative z-10 mx-auto w-full max-w-7xl">

@@ -1,14 +1,10 @@
 <script lang="ts" setup>
   import { computed, ref } from 'vue'
-  import type {
-    PortfolioCardProject,
-    PortfolioCardVariant,
-    PortfolioFilter
-  } from './portfolio.types'
+  import type { PortfolioCardProject, PortfolioFilter } from './portfolio.types'
   import Button from '~/components/atoms/Button/Button.vue'
   import PortfolioFilters from './PortfolioFilters.vue'
   import ProjectCard from './ProjectCard.vue'
-  import { getPortfolioCtaColumnClass } from '~/utils/portfolioLayout'
+  import { getPortfolioCardVariant, getPortfolioCtaColumnClass } from '~/utils/portfolioLayout'
   import { HOME_COPY } from '~/constants/common'
 
   const props = withDefaults(
@@ -48,20 +44,17 @@
     return props.projects
   })
 
-  const portfolioCards = computed(() =>
-    filteredProjects.value.map((project, index) => ({
-      project,
-      variant: getPortfolioCardVariant(index, filteredProjects.value.length)
-    }))
-  )
+  const portfolioCards = computed(() => {
+    const projectCount = filteredProjects.value.length
 
-  function getPortfolioCardVariant(index: number, projectCount: number): PortfolioCardVariant {
-    if (projectCount === 1) return 'balanced'
-    return index < 2 ? 'featured' : 'secondary'
-  }
+    return filteredProjects.value.map(project => ({
+      project,
+      variant: getPortfolioCardVariant(project, projectCount)
+    }))
+  })
 
   const portfolioCtaDesktopClass = computed(() =>
-    getPortfolioCtaColumnClass(filteredProjects.value.length)
+    getPortfolioCtaColumnClass(portfolioCards.value.map(card => card.variant))
   )
 </script>
 
@@ -106,48 +99,48 @@
       move-class="transition duration-200 ease-out motion-reduce:transition-none"
     >
       <ProjectCard
-        v-for="(card, index) in portfolioCards"
+        v-for="card in portfolioCards"
         :key="card.project.id"
         :project="card.project"
         :variant="card.variant"
-        :class="index < 2 ? 'xl:col-span-3' : 'xl:col-span-2'"
       />
 
       <article
         v-if="showViewAll"
         key="portfolio-all-projects"
         :class="portfolioCtaDesktopClass"
-        class="flex min-h-[230px] flex-col overflow-hidden rounded-2xl border border-brand-border bg-brand-surface-card text-brand-ink shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:col-span-2"
+        class="flex min-h-80 flex-col items-center justify-between gap-8 overflow-hidden rounded-2xl border border-brand-border-strong bg-brand-surface-contrast p-5 text-center text-brand-text-strong shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:col-span-2 md:p-6"
       >
-        <div
-          class="flex h-36 items-center justify-center bg-brand-surface-panel md:h-40"
-          aria-hidden="true"
-        >
-          <Icon name="mdi:folder-multiple-outline" size="52" class="text-brand-blue/70" />
-        </div>
-        <div class="flex flex-1 flex-col p-4 md:p-5">
-          <p class="mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-brand-accent-text">
+        <div class="flex flex-col items-center">
+          <span
+            class="flex size-14 items-center justify-center rounded-xl bg-brand-surface-panel"
+            aria-hidden="true"
+          >
+            <Icon name="mdi:folder-multiple-outline" size="28" class="text-brand-text-soft" />
+          </span>
+          <p class="mt-5 text-xs font-semibold uppercase tracking-[0.12em] text-brand-text-soft">
             {{ HOME_COPY.portfolio.allLabel }}
           </p>
-          <h3 class="text-lg font-semibold leading-snug md:text-xl">
+          <h3 class="mt-2 text-lg font-semibold leading-snug text-brand-text-strong md:text-xl">
             {{ HOME_COPY.portfolio.allHeading }}
           </h3>
-          <p class="mt-2 text-sm leading-5 text-brand-muted">
+          <p class="mt-3 max-w-[34ch] text-sm leading-6 text-brand-text-subtle">
             {{ HOME_COPY.portfolio.allDescription }}
           </p>
-          <NuxtLink v-slot="{ href, navigate }" to="/portafolio" custom>
-            <Button
-              as="a"
-              :href="href"
-              theme="primary"
-              size="md"
-              class="mt-auto w-fit self-end focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
-              @click="navigate"
-            >
-              {{ HOME_COPY.portfolio.allCta }}
-            </Button>
-          </NuxtLink>
         </div>
+        <NuxtLink v-slot="{ href, navigate }" to="/portafolio" custom>
+          <Button
+            as="a"
+            :href="href ?? undefined"
+            theme="primary"
+            size="md"
+            uppercase
+            class="mt-auto w-full border border-brand-border-strong bg-brand-surface-panel text-brand-text-strong shadow-none hover:bg-brand-mid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
+            @click="navigate"
+          >
+            {{ HOME_COPY.portfolio.allCta }}
+          </Button>
+        </NuxtLink>
       </article>
     </TransitionGroup>
   </section>

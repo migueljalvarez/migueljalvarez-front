@@ -19,7 +19,7 @@
       props.uppercase && 'uppercase',
       props.size === 'sm' && 'min-h-8 py-2 px-4 text-xs leading-none',
       props.size === 'md' && 'min-h-9 py-2 px-4 text-sm leading-none',
-      props.size === 'lg' && 'min-h-[50px] py-3.5 px-7 text-sm leading-none',
+      props.size === 'lg' && 'min-h-12.5 py-3.5 px-7 text-sm leading-none',
       props.theme === 'primary' && 'bg-brand-accent text-brand-white hover:bg-brand-mid shadow-sm',
       props.theme === 'secondary' &&
         'border border-brand-border bg-transparent text-brand-ink hover:bg-brand-surface-soft',

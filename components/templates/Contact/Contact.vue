@@ -33,8 +33,16 @@
     message: ''
   })
   const { sendEmail } = useEmail()
+  const isSubmitting = ref(false)
   const disabledButton = computed(() => {
-    return !form.name || !form.email || !form.subject || !form.message || !form.email.includes('@')
+    return (
+      isSubmitting.value ||
+      !form.name.trim() ||
+      !form.email.trim() ||
+      !form.subject ||
+      !form.message.trim() ||
+      !form.email.includes('@')
+    )
   })
   const isSendedSuccessful = ref(false)
   const errorMessage = ref('')
@@ -46,6 +54,9 @@
   }
   async function onSubmit() {
     const name = form.name.trim()
+    isSubmitting.value = true
+    isSendedSuccessful.value = false
+    errorMessage.value = ''
 
     try {
       await sendEmail(name, form.email, form.subject, form.message)
@@ -54,16 +65,18 @@
     } catch (error) {
       console.error('Error sending email:', error)
       errorMessage.value = HOME_COPY.contact.sendError
+    } finally {
+      isSubmitting.value = false
     }
   }
 </script>
 <template>
   <Section
     id="contact"
-    class="gap-4 bg-[linear-gradient(180deg,var(--color-brand-surface)_0%,var(--color-brand-surface)_22%,var(--color-brand-surface-contrast)_22%,var(--color-brand-surface-contrast)_100%)] px-4"
+    class="gap-4 bg-[linear-gradient(180deg,var(--color-brand-surface)_0%,var(--color-brand-surface)_22%,var(--color-brand-surface-contrast)_22%,var(--color-brand-surface-contrast)_100%)] px-0 sm:px-4"
   >
     <div
-      class="relative mx-auto mb-8 w-full max-w-7xl overflow-hidden rounded-2xl border border-brand-border-strong/50 bg-brand-surface-contrast p-9 shadow-[0_18px_40px_var(--color-brand-shadow-card)]"
+      class="relative mx-auto mb-0 w-full max-w-none overflow-hidden rounded-none border-y border-brand-border-strong/50 bg-brand-surface-contrast p-5 shadow-none sm:mb-8 sm:max-w-7xl sm:rounded-2xl sm:border sm:p-9 sm:shadow-[0_18px_40px_var(--color-brand-shadow-card)]"
     >
       <!-- Logo decorativo asomando desde la esquina — placeholder mientras subes el SVG real a public/ -->
       <NuxtImg
@@ -190,6 +203,7 @@
                   error-message="Se ha detectado uso de carácter inválido"
                 />
                 <Button
+                  type="submit"
                   :disabled="disabledButton"
                   size="md"
                   class="w-full whitespace-nowrap py-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
