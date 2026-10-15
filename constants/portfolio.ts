@@ -16,10 +16,9 @@ export const PORTFOLIO_PROJECTS: PortafolioType[] = [
       'Se consolidó una herramienta útil para seguimiento personal con una base que permite escalar nuevas métricas y reportes sin romper la experiencia.',
     technologies: ['Nuxt', 'TypeScript', 'Tailwind', 'PostgreSQL'],
     version: '1.0.0',
-    status: 'En desarrollo',
     description:
       'Aplicación para la gestión de finanzas personales: seguimiento de ingresos, gastos y presupuesto en un solo lugar.',
-    urlImage: '',
+    urlImage: '/mi-comodoro.webp',
     url: '',
     initialProblem: '',
     solutionDetails: '',
@@ -168,7 +167,7 @@ export const PORTFOLIO_PROJECTS: PortafolioType[] = [
 
 const PORTFOLIO_PROJECT_CONTEXT: Record<
   string,
-  Pick<PortfolioCardProject, 'projectKind' | 'sector' | 'audience'>
+  Pick<PortfolioCardProject, 'audience'> & { projectKind: string; sector: string }
 > = {
   'mi-comodoro': {
     projectKind: 'Aplicación financiera',
@@ -209,7 +208,7 @@ const PORTFOLIO_PROJECT_CONTEXT: Record<
 
 const toPortfolioCardProject = (
   projectId: string,
-  options: { mock?: boolean; primary?: boolean } = {}
+  options: { primary?: boolean } = {}
 ): PortfolioCardProject => {
   const project = PORTFOLIO_PROJECTS.find(item => item.id === projectId)
   const context = PORTFOLIO_PROJECT_CONTEXT[projectId]
@@ -220,24 +219,24 @@ const toPortfolioCardProject = (
 
   return {
     id: project.id,
+    slug: project.slug || project.id,
     title: project.title,
     description: project.description,
     type: project.type === 'client' ? 'cliente' : 'propio',
-    ...context,
+    tags: [context.projectKind, context.sector],
+    audience: context.audience,
     image: project.urlImage,
     href: `/portafolio/${project.slug || project.id}`,
-    status: project.status,
-    mock: options.mock,
     primary: options.primary
   }
 }
 
 export const HOME_PORTFOLIO_PROJECTS: PortfolioCardProject[] = [
-  toPortfolioCardProject('tu-radio-ar-stereo', { primary: true }),
-  toPortfolioCardProject('caja-de-ritmos', { mock: true }),
-  toPortfolioCardProject('frases-aleatorias', { mock: true }),
-  toPortfolioCardProject('agencia-ops', { mock: true }),
-  toPortfolioCardProject('crm-visual', { mock: true })
+  toPortfolioCardProject('mi-comodoro', { primary: true }),
+  toPortfolioCardProject('caja-de-ritmos'),
+  toPortfolioCardProject('frases-aleatorias'),
+  toPortfolioCardProject('agencia-ops'),
+  toPortfolioCardProject('crm-visual')
 ]
 
 export const ALL_PORTFOLIO_CARD_PROJECTS: PortfolioCardProject[] = PORTFOLIO_PROJECTS.map(project =>

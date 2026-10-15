@@ -10,7 +10,6 @@ export type PortafolioType = {
   result?: string
   technologies: string[]
   version: string
-  status?: string
   description: string
   urlImage: string
   url: string
