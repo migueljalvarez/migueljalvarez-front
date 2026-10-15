@@ -42,7 +42,7 @@
         ? `${titleChunk} | Desarrollo de Software y Soluciones Digitales`
         : 'Desarrollo de Software y Soluciones Digitales'
   })
-  const featuredPortfolioProjects = HOME_PORTFOLIO_PROJECTS.slice(0, 4)
+  const portfolioProjects = HOME_PORTFOLIO_PROJECTS
 </script>
 
 <template>
@@ -53,7 +53,7 @@
     <ProcessSection />
     <Section id="portfolio-background" class="gap-4 bg-brand-surface px-4 py-12 md:py-16">
       <div class="mx-auto w-full max-w-7xl">
-        <PortfolioSection title="Portafolio" :projects="featuredPortfolioProjects" />
+        <PortfolioSection title="Portafolio" :projects="portfolioProjects" />
       </div>
     </Section>
     <About title="Sobre mí" />

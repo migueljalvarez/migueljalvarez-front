@@ -1,17 +1,16 @@
 export type PortfolioCardProject = {
   id: string
+  slug: string
   title: string
   description: string
   type: 'cliente' | 'propio'
-  projectKind: string
-  sector: string
+  tags: string[]
   audience: string
   image: string
-  href?: string
-  status?: string
-  mock?: boolean
+  href: string
   primary?: boolean
 }
 
 export type PortfolioFilter = 'Todos' | 'Clientes' | 'Productos propios'
-export type PortfolioCardVariant = 'primary' | 'secondary' | 'balanced'
+export type PortfolioCardVariant = 'horizontal' | 'featured' | 'default'
+export type PortfolioLayoutMode = 'empty' | 'horizontal' | 'two' | 'three' | 'bento'
