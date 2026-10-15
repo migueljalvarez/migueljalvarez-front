@@ -51,7 +51,7 @@
 
     <Services />
     <ProcessSection />
-    <Section id="portfolio-background" class="gap-4 bg-brand-surface px-4 py-12 md:py-16">
+    <Section id="portfolio-background" class="gap-4 bg-brand-surface px-4 py-8 md:py-12">
       <div class="mx-auto w-full max-w-7xl">
         <PortfolioSection title="Portafolio" :projects="portfolioProjects" />
       </div>

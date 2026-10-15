@@ -8,7 +8,7 @@
 <template>
   <Section
     id="services"
-    class="gap-8 bg-brand-surface px-4 pt-12 pb-20 md:gap-10 md:pt-12 md:pb-24"
+    class="gap-8 bg-brand-surface px-4 pt-12 pb-12 md:gap-10 md:pt-12 md:pb-16"
     aria-labelledby="services-heading"
   >
     <div

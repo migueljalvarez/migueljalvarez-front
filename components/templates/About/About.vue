@@ -61,7 +61,7 @@
   <section
     id="about"
     ref="sectionRef"
-    class="w-full bg-brand-surface px-4 py-12 text-brand-ink md:py-16"
+    class="w-full bg-brand-surface px-4 py-8 text-brand-ink md:py-12"
   >
     <div class="mx-auto flex w-full max-w-7xl flex-col gap-8 md:gap-10">
       <div class="grid min-w-0 grid-cols-1 items-stretch gap-8 lg:grid-cols-5 lg:gap-12">
