@@ -35,7 +35,7 @@ export const HOME_COPY = {
     description: 'Según lo que necesites, entro en una o varias de estas etapas.'
   },
   portfolio: {
-    heading: 'Soluciones que generan Impacto',
+    heading: 'Soluciones que generan impacto',
     description:
       'Proyectos que integran tecnología y necesidades concretas para construir soluciones útiles.',
     allLabel: 'Portafolio completo',
