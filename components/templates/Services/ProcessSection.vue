@@ -47,7 +47,7 @@
   <Section
     id="proceso"
     aria-labelledby="process-heading"
-    class="process-section relative isolate gap-8 overflow-hidden px-4 py-12 md:gap-10 md:py-16"
+    class="process-section relative isolate gap-8 overflow-hidden px-4 py-8 md:gap-10 md:py-12"
   >
     <div
       ref="backgroundRef"
