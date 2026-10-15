@@ -1,10 +1,8 @@
 <script lang="ts" setup>
   import type { PortfolioFilter } from './portfolio.types'
 
-  defineProps<{ modelValue: PortfolioFilter }>()
+  defineProps<{ modelValue: PortfolioFilter; filters: PortfolioFilter[] }>()
   const emit = defineEmits<{ 'update:modelValue': [value: PortfolioFilter] }>()
-
-  const filters: PortfolioFilter[] = ['Todos', 'Clientes', 'Productos propios']
 </script>
 
 <template>

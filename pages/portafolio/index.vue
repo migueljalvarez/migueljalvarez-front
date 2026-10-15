@@ -27,7 +27,7 @@
 
       <PortfolioSection
         title="Portafolio"
-        heading="Proyectos y soluciones"
+        heading="Soluciones que generan impacto"
         description="Una selección de productos, plataformas y sistemas construidos para resolver problemas concretos."
         heading-level="h1"
         section-id="portfolio-page"
