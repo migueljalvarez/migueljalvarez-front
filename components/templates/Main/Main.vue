@@ -32,9 +32,7 @@
     </svg>
 
     <div class="relative z-10 mx-auto flex w-full max-w-7xl">
-      <div
-        class="flex w-full max-w-160 flex-col items-start gap-5 text-brand-text-strong md:gap-6"
-      >
+      <div class="flex w-full max-w-160 flex-col items-start gap-5 text-brand-text-strong md:gap-6">
         <p
           class="inline-flex w-fit items-center gap-2 rounded-full border border-brand-border-strong bg-brand-surface-contrast/90 px-4 py-2 text-xs font-semibold text-brand-text-soft"
         >

@@ -22,11 +22,7 @@
     :class="[
       { 'cursor-pointer': project.href },
       layoutMode === 'horizontal' ? 'md:flex-row' : '',
-      layoutMode === 'two'
-        ? variant === 'featured'
-          ? 'md:col-span-2'
-          : 'md:col-span-1'
-        : '',
+      layoutMode === 'two' ? (variant === 'featured' ? 'md:col-span-2' : 'md:col-span-1') : '',
       layoutMode === 'three'
         ? variant === 'featured'
           ? 'md:col-span-2 md:row-span-2'
@@ -67,7 +63,9 @@
           focusable="false"
         >
           <g stroke="currentColor" stroke-width="1.5">
-            <path d="M80 8h40l20 35-20 35H80L60 43 80 8Zm120 0h40l20 35-20 35h-40l-20-35 20-35ZM20 78h40l20 35-20 35H20L0 113l20-35Zm120 0h40l20 35-20 35h-40l-20-35 20-35Zm120 0h40l20 35-20 35h-40l-20-35 20-35Z" />
+            <path
+              d="M80 8h40l20 35-20 35H80L60 43 80 8Zm120 0h40l20 35-20 35h-40l-20-35 20-35ZM20 78h40l20 35-20 35H20L0 113l20-35Zm120 0h40l20 35-20 35h-40l-20-35 20-35Zm120 0h40l20 35-20 35h-40l-20-35 20-35Z"
+            />
           </g>
         </svg>
         <p

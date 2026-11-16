@@ -1,4 +1,7 @@
-import type { PortfolioCardProject, PortfolioFilter } from '~/components/templates/Portfolio/portfolio.types'
+import type {
+  PortfolioCardProject,
+  PortfolioFilter
+} from '~/components/templates/Portfolio/portfolio.types'
 
 export function getAvailablePortfolioFilters(
   projects: Pick<PortfolioCardProject, 'type'>[]

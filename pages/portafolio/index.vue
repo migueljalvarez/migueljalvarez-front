@@ -9,8 +9,7 @@
 
   useSeoMeta({
     title: 'Portafolio',
-    description:
-      'Proyectos y soluciones digitales desarrollados para resolver problemas concretos.'
+    description: 'Proyectos y soluciones digitales desarrollados para resolver problemas concretos.'
   })
 </script>
 
