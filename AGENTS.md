@@ -71,6 +71,12 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 - Imágenes en `public/` (webp) o Cloudinary; usar `NuxtImg`.
 - Commits en español, descriptivos y cortos (ver `git log`).
 
+## Flujo de ramas y publicación
+
+- **NO se publica nada hasta que la base de datos (Supabase) esté OK.** No hacer push, PR a `main`, merge a `main` ni deploy sin que el autor lo pida explícitamente.
+- Se trabaja en ramas `feat/*` / `fix/*` creadas desde `v2/landing` y se integran de vuelta en `v2/landing` con merge local (`--no-ff`).
+- Commits y PRs sin líneas de atribución de Claude (ni `Co-Authored-By` ni "Generated with Claude Code").
+
 ## Reglas para agentes
 
 1. No modificar nada fuera del alcance pedido; el árbol de trabajo tiene muchos cambios sin commitear de la v2 — **no revertirlos ni formatearlos en masa**.
