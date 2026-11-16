@@ -1,5 +1,5 @@
 import type { Testimonial } from '~/types/common'
-import { model } from '~/server/utils/firebase-admin.ts'
+import { model } from '~/server/utils/firebase-admin'
 import { CACHE_EXP } from '~/constants/common'
 
 type SnapshotType = {

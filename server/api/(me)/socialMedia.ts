@@ -1,5 +1,5 @@
 import { CACHE_EXP } from '~/constants/common/index.js'
-import { model } from '../../utils/firebase-admin.ts'
+import { model } from '../../utils/firebase-admin'
 type SocialMediaType = {
   id: string
   name: string

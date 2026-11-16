@@ -112,9 +112,9 @@ Módulos previstos en `/admin` (privado, noindex, Supabase Auth, un solo admin):
 
 - **Auth del dashboard es provisional** (rama `feat/security-hardening`): login con `ADMIN_EMAIL` / `ADMIN_PASSWORD`, cookie `admin_session` firmada (HMAC con `ADMIN_SESSION_SECRET`), httpOnly, 8 h, validada en servidor (`server/utils/adminSession.ts`, `/api/admin/session`, `middleware/auth.ts`). Sin esas variables el acceso queda cerrado (503). Limitaciones: un solo usuario, contador de intentos en memoria, y las páginas del dashboard aún escriben en Firestore desde el cliente (reglas de Firestore no revisadas). Se reemplaza por Supabase Auth (S7).
 - `server/api/(contact)/contact.ts` ya está endurecido (escape de HTML, límites, honeypot, 5 intentos/10 min por IP en memoria, `runtimeConfig`). Pendiente: rate limit del proveedor y prueba de envío real en preview.
-- `server/utils/firebase-admin.ts.ts` (doble extensión) — nombre erróneo.
+- (Resuelto) `server/utils/firebase-admin.ts` ya sin doble extensión y sin el `DotNavigation` duplicado de Hero.
 - Páginas duplicadas de detalle de portafolio: `portafolio/[id].vue` (legacy, usa `useTechnicalSheet`/DynamicTable) y `[slug].vue` (nueva).
 - Dos fuentes de verdad para portafolio: `constants/portfolio.ts` vs. dashboard `/dashboard/portfolio` (Firestore) — sin sincronizar. Lo mismo con servicios y testimonios.
 - `README.md` es el de la plantilla de Nuxt; `netlify.toml` publica `dist` pero Nuxt SSR genera `.output`; `useSeoMeta` en `index.vue` calcula `origin` con `window` (riesgo de hydration mismatch), sin sitemap/robots/canonical.
-- Cobertura de tests mínima (1 archivo); `components/atoms/Hero/DotNavigation.vue` duplica `atoms/DotNavigation`.
+- Cobertura de tests mínima (1 archivo); 
 - `constants/portfolio.ts` `PORTFOLIO_TYPE_OPTIONS` ('Productos Propios') difiere en capitalización de `PortfolioFilter` ('Productos propios').
