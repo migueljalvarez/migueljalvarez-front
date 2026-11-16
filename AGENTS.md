@@ -110,8 +110,8 @@ Módulos previstos en `/admin` (privado, noindex, Supabase Auth, un solo admin):
 
 ## Deuda técnica conocida (a priorizar en el plan)
 
-- **Auth del dashboard es un mock**: `server/api/admin/login.post.ts` acepta cualquier credencial y fija la cookie `admin_session=mock-admin` (no `httpOnly`); `middleware/auth.ts` solo compara esa cookie. Cualquiera puede entrar a `/dashboard`.
-- `server/api/(contact)/contact.ts`: valida con Zod pero devuelve `createError` (con `return`) en vez de lanzarlo; el HTML del correo interpola `name/subject/message` sin escapar; sin rate limit/antispam; cliente `Resend` creado con `process.env` en vez de `runtimeConfig`.
+- **Auth del dashboard es provisional** (rama `feat/security-hardening`): login con `ADMIN_EMAIL` / `ADMIN_PASSWORD`, cookie `admin_session` firmada (HMAC con `ADMIN_SESSION_SECRET`), httpOnly, 8 h, validada en servidor (`server/utils/adminSession.ts`, `/api/admin/session`, `middleware/auth.ts`). Sin esas variables el acceso queda cerrado (503). Limitaciones: un solo usuario, contador de intentos en memoria, y las páginas del dashboard aún escriben en Firestore desde el cliente (reglas de Firestore no revisadas). Se reemplaza por Supabase Auth (S7).
+- `server/api/(contact)/contact.ts` ya está endurecido (escape de HTML, límites, honeypot, 5 intentos/10 min por IP en memoria, `runtimeConfig`). Pendiente: rate limit del proveedor y prueba de envío real en preview.
 - `server/utils/firebase-admin.ts.ts` (doble extensión) — nombre erróneo.
 - Páginas duplicadas de detalle de portafolio: `portafolio/[id].vue` (legacy, usa `useTechnicalSheet`/DynamicTable) y `[slug].vue` (nueva).
 - Dos fuentes de verdad para portafolio: `constants/portfolio.ts` vs. dashboard `/dashboard/portfolio` (Firestore) — sin sincronizar. Lo mismo con servicios y testimonios.

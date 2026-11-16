@@ -34,6 +34,7 @@ export default defineNuxtConfig({
     mailTo: process.env.MAIL_TO,
     adminEmail: process.env.ADMIN_EMAIL,
     adminPassword: process.env.ADMIN_PASSWORD,
+    adminSessionSecret: process.env.ADMIN_SESSION_SECRET,
     firebaseProjectId: process.env.FIREBASE_PROJECT_ID,
     firebaseClientEmail: process.env.FIREBASE_CLIENT_EMAIL,
     firebasePrivateKey: process.env.FIREBASE_PRIVATE_KEY,

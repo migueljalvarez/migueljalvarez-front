@@ -1,18 +1,11 @@
 <script setup lang="ts">
-  const session = useCookie('admin_session', {
-    default: () => '',
-    sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production'
-  })
+  const { data: sessionData } = await useFetch<{ email: string }>('/api/admin/session')
 
-  const user = computed(() =>
-    session.value === 'mock-admin' ? { email: 'admin@mock.local' } : { email: 'Admin mock' }
-  )
+  const user = computed(() => ({ email: sessionData.value?.email ?? 'Admin' }))
 
   const logout = async () => {
     try {
       await $fetch('/api/admin/logout', { method: 'POST' })
-      session.value = ''
       await navigateTo('/login')
     } catch (error) {
       console.error('Error al cerrar sesión:', error)

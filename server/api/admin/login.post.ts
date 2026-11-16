@@ -1,22 +1,55 @@
-export default defineEventHandler(async event => {
-  const body = await readBody(event)
-  const email = String(body?.email || '').trim()
-  const password = String(body?.password || '')
+// Login provisional con credenciales de entorno (ADMIN_EMAIL / ADMIN_PASSWORD).
+// Se reemplazará por Supabase Auth. Si falta configuración, el acceso queda cerrado.
+const MAX_ATTEMPTS = 5
+const WINDOW_MS = 15 * 60 * 1000
+const failures = new Map<string, number[]>()
 
-  if (!email || !password) {
+const recentFailures = (ip: string) => {
+  const now = Date.now()
+  const recent = (failures.get(ip) ?? []).filter(time => now - time < WINDOW_MS)
+  failures.set(ip, recent)
+  return recent
+}
+
+export default defineEventHandler(async event => {
+  const config = useRuntimeConfig(event)
+  const ip = getRequestIP(event, { xForwardedFor: true }) ?? 'desconocida'
+
+  if (!config.adminEmail || !config.adminPassword || !config.adminSessionSecret) {
+    console.error('Login admin: faltan ADMIN_EMAIL, ADMIN_PASSWORD o ADMIN_SESSION_SECRET')
+    throw createError({ statusCode: 503, statusMessage: 'Acceso no disponible.' })
+  }
+
+  if (recentFailures(ip).length >= MAX_ATTEMPTS) {
     throw createError({
-      statusCode: 400,
-      statusMessage: 'Faltan credenciales.'
+      statusCode: 429,
+      statusMessage: 'Demasiados intentos. Inténtalo más tarde.'
     })
   }
 
-  setCookie(event, 'admin_session', 'mock-admin', {
-    httpOnly: false,
-    sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production',
-    path: '/',
-    maxAge: 60 * 60 * 24 * 7
+  const body = await readBody(event)
+  const email = String(body?.email || '')
+    .trim()
+    .toLowerCase()
+  const password = String(body?.password || '')
+
+  if (!email || !password) {
+    throw createError({ statusCode: 400, statusMessage: 'Faltan credenciales.' })
+  }
+
+  const validEmail = safeEqual(email, String(config.adminEmail).trim().toLowerCase())
+  const validPassword = safeEqual(password, String(config.adminPassword))
+
+  if (!validEmail || !validPassword) {
+    recentFailures(ip).push(Date.now())
+    throw createError({ statusCode: 401, statusMessage: 'Credenciales inválidas.' })
+  }
+
+  failures.delete(ip)
+  setCookie(event, ADMIN_COOKIE, createSessionToken(email, config.adminSessionSecret), {
+    ...adminCookieOptions,
+    maxAge: ADMIN_SESSION_MAX_AGE
   })
 
-  return { ok: true, mode: 'mock' }
+  return { ok: true }
 })
