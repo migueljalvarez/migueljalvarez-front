@@ -11,6 +11,7 @@
   import ProjectCard from './ProjectCard.vue'
   import { HOME_COPY } from '~/constants/common'
   import { getAvailablePortfolioFilters } from '~/utils/portfolioFilters'
+  import { USE_PORTFOLIO_MOCKS } from '~/constants/portfolio'
 
   const props = withDefaults(
     defineProps<{
@@ -109,6 +110,12 @@
       <div class="max-w-3xl">
         <p class="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-brand-accent-text">
           {{ title }}
+          <span
+            v-if="USE_PORTFOLIO_MOCKS"
+            class="ml-2 rounded-full border border-brand-warning-border bg-brand-warning-bg px-2 py-0.5 text-[10px] normal-case tracking-normal text-brand-warning-text"
+          >
+            Datos de ejemplo (solo desarrollo)
+          </span>
         </p>
         <component
           :is="headingLevel"
