@@ -9,6 +9,7 @@ export type PortfolioCardProject = {
   image: string
   href: string
   primary?: boolean
+  status?: 'published' | 'in-development'
 }
 
 export type PortfolioFilter = 'Todos' | 'Clientes' | 'Productos propios'

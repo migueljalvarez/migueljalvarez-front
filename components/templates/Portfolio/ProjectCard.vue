@@ -34,7 +34,7 @@
           : 'md:col-span-1 xl:col-span-2'
         : ''
     ]"
-    :aria-label="`${project.title}: ver proyecto`"
+    :aria-label="project.href ? `${project.title}: ver proyecto` : project.title"
   >
     <div
       class="relative aspect-16/10 w-full shrink-0 overflow-hidden bg-brand-surface-panel"
@@ -87,6 +87,12 @@
           {{ project.type === 'cliente' ? 'Cliente' : 'Producto propio' }}
         </span>
         <span
+          v-if="project.status === 'in-development'"
+          class="rounded-md border border-brand-warning-border bg-brand-warning-bg px-2.5 py-1 text-[11px] font-semibold text-brand-warning-text"
+        >
+          En desarrollo
+        </span>
+        <span
           v-if="project.tags[0]"
           class="rounded-md border border-brand-border bg-brand-surface-soft px-2.5 py-1 text-[11px] text-brand-muted"
         >
@@ -108,9 +114,10 @@
       <p class="mt-2 text-sm leading-5 text-brand-muted">
         {{ project.description }}
       </p>
-      <div v-if="project.href" class="mt-auto flex items-center justify-between gap-3 pt-4">
+      <div class="mt-auto flex items-center justify-between gap-3 pt-4">
         <p class="min-w-0 flex-1 text-xs text-brand-muted">Dirigido a {{ project.audience }}</p>
         <Icon
+          v-if="project.href"
           name="mdi:arrow-right"
           size="16"
           class="shrink-0 text-brand-blue"
