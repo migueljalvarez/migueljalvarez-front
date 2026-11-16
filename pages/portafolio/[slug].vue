@@ -19,11 +19,19 @@
     () => slug.value,
     value => {
       if (!value) return
-      const found = (projects.value as PortafolioType[]).find(item => item.slug === value)
+      const found = (projects.value as PortafolioType[]).find(
+        item => item.slug === value && item.status !== 'in-development'
+      )
       project.value = found ?? null
     },
     { immediate: true }
   )
+
+  // Respuesta 404 real (no un "soft 404") cuando el proyecto no existe o no tiene ficha pública.
+  if (!project.value && import.meta.server) {
+    const event = useRequestEvent()
+    if (event) setResponseStatus(event, 404)
+  }
 
   const hasProblem = computed(() => !!project.value?.problem?.trim())
   const hasDecision = computed(() => !!project.value?.decision?.trim())

@@ -14,7 +14,8 @@ export default defineEventHandler(event => {
     item => item.id === portfolioId || item.slug === portfolioId
   )
 
-  if (!project) {
+  // Los productos en desarrollo no tienen ficha de detalle pública.
+  if (!project || project.status === 'in-development') {
     throw createError({
       statusCode: 404,
       statusMessage: `Portfolio item with ID '${portfolioId}' not found`

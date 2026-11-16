@@ -4,6 +4,7 @@ export type PortafolioType = {
   title: string
   type: ProjectType
   portfolioType: string
+  status?: 'published' | 'in-development'
   slug?: string
   problem?: string
   decision?: string

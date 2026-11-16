@@ -32,6 +32,23 @@ const REAL_PORTFOLIO_PROJECTS: PortafolioType[] = [
     solutionDetails: '',
     images: [],
     gallery: []
+  },
+  {
+    id: 'mi-despensa',
+    type: 'product',
+    status: 'in-development',
+    title: 'Mi Despensa',
+    portfolioType: 'Producto propio',
+    slug: 'mi-despensa',
+    technologies: [],
+    version: '',
+    description: 'Aplicación móvil en desarrollo que se conectará con Mi Comodoro.',
+    urlImage: '',
+    url: '',
+    initialProblem: '',
+    solutionDetails: '',
+    images: [],
+    gallery: []
   }
 ]
 
@@ -47,6 +64,11 @@ const PORTFOLIO_PROJECT_CONTEXT: Record<
     projectKind: 'Aplicación financiera',
     sector: 'Finanzas personales',
     audience: 'personas que organizan sus finanzas'
+  },
+  'mi-despensa': {
+    projectKind: 'Aplicación móvil',
+    sector: 'En desarrollo',
+    audience: 'usuarios de Mi Comodoro'
   },
   ...(USE_PORTFOLIO_MOCKS ? MOCK_PORTFOLIO_CONTEXT : {})
 }
@@ -71,8 +93,10 @@ const toPortfolioCardProject = (
     tags: [context.projectKind, context.sector],
     audience: context.audience,
     image: project.urlImage,
-    href: `/portafolio/${project.slug || project.id}`,
-    primary: options.primary
+    // Sin ficha de detalle mientras el producto está en desarrollo (no hay contenido real que mostrar).
+    href: project.status === 'in-development' ? '' : `/portafolio/${project.slug || project.id}`,
+    primary: options.primary,
+    status: project.status
   }
 }
 

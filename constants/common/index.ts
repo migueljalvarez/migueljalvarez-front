@@ -111,17 +111,6 @@ export const MY_SOCIAL_MEDIA = [
   } */
 ]
 
-export const MAIN_HERO = 'Con mas de 9 años de experiencia como Desarrollador de Software'
-//Contact Information
-export const CONTACT_INFO = {
-  phone: '[telefono retirado]',
-  email: 'ing.migueljalvarez@gamil.com',
-  location: 'Medellin, Antioquia, CO'
-}
-export const CONTACT_INFO_DESCRIPTION = `¿Buscas impulsar tus proyectos con soluciones creativas y efectivas? ¡Estoy listo para
-          ayudarte! Ponte en contacto conmigo y descubre cómo juntos podemos llevar tus ideas al
-          siguiente nivel. Tu mensaje es el primer paso para comenzar algo increíble.`
-
 /* Phases of software development */
 export const DEVELOPMENT_PHASES = [
   {

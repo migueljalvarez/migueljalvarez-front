@@ -57,7 +57,7 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 ## Fuentes de datos (importante)
 
 - **Copy y contenido de la landing**: mayormente estático en `constants/` y `data/`.
-- **Portafolio**: hoy vive en `constants/portfolio.ts` y se sirve por `/api/portafolio` (no desde Firestore). Campos clave: `slug`, `type` (`client` | `product` | `propio`…), `problem` / `decision` / `result`.
+- **Portafolio**: hoy vive en `constants/portfolio.ts` (solo Mi Comodoro y Mi Despensa) y se sirve por `/api/portafolio` (no desde Firestore). Campos clave: `slug`, `type` (`client` | `product` | `practice`), `status` (`published` | `in-development`; en desarrollo no tiene ficha de detalle), `problem` / `decision` / `result`. El detalle público es `pages/portafolio/[slug].vue` (la página legacy `[id].vue` se eliminó porque tapaba a `[slug]`).
 - **Perfil ("me")**: Firestore vía `/api/me` (cacheado, `swr`). Edición manual documentada en `docs/firebase-me-update.md`.
 - **Redes sociales / testimonios**: `/api/socialMedia`, `/api/testimonials`.
 - **Contacto**: `POST /api/contact` → Resend (`RESEND_API_KEY`, `MAIL_FROM`, `MAIL_TO`).
@@ -119,8 +119,12 @@ Módulos previstos en `/admin` (privado, noindex, Supabase Auth, un solo admin):
 - **Auth del dashboard es provisional** (rama `feat/security-hardening`): login con `ADMIN_EMAIL` / `ADMIN_PASSWORD`, cookie `admin_session` firmada (HMAC con `ADMIN_SESSION_SECRET`), httpOnly, 8 h, validada en servidor (`server/utils/adminSession.ts`, `/api/admin/session`, `middleware/auth.ts`). Sin esas variables el acceso queda cerrado (503). Limitaciones: un solo usuario, contador de intentos en memoria, y las páginas del dashboard aún escriben en Firestore desde el cliente (reglas de Firestore no revisadas). Se reemplaza por Supabase Auth (S7).
 - `server/api/(contact)/contact.ts` ya está endurecido (escape de HTML, límites, honeypot, 5 intentos/10 min por IP en memoria, `runtimeConfig`). Pendiente: rate limit del proveedor y prueba de envío real en preview.
 - (Resuelto) `server/utils/firebase-admin.ts` ya sin doble extensión y sin el `DotNavigation` duplicado de Hero.
-- Páginas duplicadas de detalle de portafolio: `portafolio/[id].vue` (legacy, usa `useTechnicalSheet`/DynamicTable) y `[slug].vue` (nueva).
 - Dos fuentes de verdad para portafolio: `constants/portfolio.ts` vs. dashboard `/dashboard/portfolio` (Firestore) — sin sincronizar. Lo mismo con servicios y testimonios.
 - `README.md` es el de la plantilla de Nuxt; `netlify.toml` publica `dist` pero Nuxt SSR genera `.output`; `useSeoMeta` en `index.vue` calcula `origin` con `window` (riesgo de hydration mismatch), sin sitemap/robots/canonical.
 - Cobertura de tests mínima (1 archivo); 
 - `constants/portfolio.ts` `PORTFOLIO_TYPE_OPTIONS` ('Productos Propios') difiere en capitalización de `PortfolioFilter` ('Productos propios').
+
+## Problemas conocidos de entorno
+
+- `@nuxt/image` se fija en `~2.1.0`: la 2.2.x requiere `nuxt/server` (Nuxt 4) y rompe el servidor con Nuxt 3.21. Subirla solo junto con la migración a Nuxt 4.
+- `npm run build` + `node .output/server/index.mjs` en local falla con 500 (`ERR_PACKAGE_PATH_NOT_EXPORTED` de `estree-walker`: no se copia a `.output`). No lo causa `npm audit fix`. Pendiente verificar si ocurre con el preset de Netlify antes de publicar.
