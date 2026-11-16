@@ -1,11 +1,12 @@
-export default defineNuxtRouteMiddleware(to => {
-  if (process.server) {
-    return
-  }
+// Valida la sesión en el servidor (cookie httpOnly firmada) tanto en SSR como en navegación.
+export default defineNuxtRouteMiddleware(async to => {
+  if (!to.path.startsWith('/dashboard')) return
 
-  const session = useCookie('admin_session')
+  const fetcher = useRequestFetch()
 
-  if (to.path.startsWith('/dashboard') && session.value !== 'mock-admin') {
+  try {
+    await fetcher('/api/admin/session')
+  } catch {
     return navigateTo('/login')
   }
 })

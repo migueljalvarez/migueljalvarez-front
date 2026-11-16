@@ -1,5 +1,11 @@
 export function useEmail() {
-  const sendEmail = async (fullName: string, email: string, subject: string, message: string) => {
+  const sendEmail = async (
+    fullName: string,
+    email: string,
+    subject: string,
+    message: string,
+    website = ''
+  ) => {
     try {
       await $fetch('/api/contact', {
         method: 'POST',
@@ -7,7 +13,8 @@ export function useEmail() {
           name: fullName,
           email,
           subject,
-          message
+          message,
+          website
         }
       })
 

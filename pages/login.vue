@@ -1,14 +1,11 @@
 <script setup lang="ts">
-  const email = ref('admin@mock.local')
-  const password = ref('admin123')
+  definePageMeta({ layout: 'default' })
+  useSeoMeta({ title: 'Acceso', robots: 'noindex, nofollow' })
+
+  const email = ref('')
+  const password = ref('')
   const errorMessage = ref('')
   const isSubmitting = ref(false)
-
-  const session = useCookie('admin_session', {
-    default: () => '',
-    sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production'
-  })
 
   const login = async () => {
     if (!email.value || !password.value) {
@@ -28,11 +25,15 @@
         }
       })
 
-      session.value = 'mock-admin'
       await navigateTo('/dashboard')
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'No se pudo iniciar sesión.'
-      errorMessage.value = message
+      const status = (error as { statusCode?: number }).statusCode
+      errorMessage.value =
+        status === 429
+          ? 'Demasiados intentos. Inténtalo más tarde.'
+          : status === 503
+            ? 'Acceso no disponible por configuración.'
+            : 'Credenciales inválidas.'
     } finally {
       isSubmitting.value = false
     }
