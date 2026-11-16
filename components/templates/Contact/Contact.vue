@@ -30,7 +30,8 @@
     name: '',
     email: '',
     subject: '',
-    message: ''
+    message: '',
+    website: '' // honeypot: oculto para personas
   })
   const { sendEmail } = useEmail()
   const isSubmitting = ref(false)
@@ -59,7 +60,7 @@
     errorMessage.value = ''
 
     try {
-      await sendEmail(name, form.email, form.subject, form.message)
+      await sendEmail(name, form.email, form.subject, form.message, form.website)
       isSendedSuccessful.value = true
       cleanForm()
     } catch (error) {
@@ -201,6 +202,15 @@
                   :rows="4"
                   required
                   error-message="Se ha detectado uso de carácter inválido"
+                />
+                <input
+                  v-model="form.website"
+                  type="text"
+                  name="website"
+                  tabindex="-1"
+                  autocomplete="off"
+                  aria-hidden="true"
+                  class="absolute -left-[9999px] size-px opacity-0"
                 />
                 <Button
                   type="submit"
