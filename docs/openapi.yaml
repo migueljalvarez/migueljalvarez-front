@@ -71,33 +71,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /api/socialMedia:
-    get:
-      tags: [Público]
-      summary: Redes sociales
-      description: Hoy se lee de Firestore (colección `socialMedia`). Cacheado.
-      operationId: listSocialMedia
-      responses:
-        '200':
-          description: Lista de redes
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/SocialLink'
-        '404':
-          description: No hay redes cargadas
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Error al cargar las redes
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
   /api/contact:
     post:
       tags: [Contacto]
@@ -347,23 +320,6 @@ components:
           type: array
           items:
             type: string
-    SocialLink:
-      type: object
-      required: [name, link, icon]
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        link:
-          type: string
-          format: uri
-        icon:
-          type: string
-          description: Nombre de icono de Iconify (p. ej. `mdi:github`)
-        isHovered:
-          type: boolean
-          description: Estado de UI heredado; no debería formar parte del contrato (TODO eliminar).
     ContactRequest:
       type: object
       required: [name, email, subject, message]

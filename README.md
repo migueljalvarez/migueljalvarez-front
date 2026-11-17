@@ -10,7 +10,7 @@ un panel privado en `/admin` para gestionar leads, testimonios, proyectos, equip
 ## Stack
 
 Nuxt 4 (SSR) · Vue 3 · TypeScript · Nuxt UI 4 · Tailwind CSS 4 · Nitro (`server/api`) ·
-Firebase Admin / Firestore (se migrará a Supabase y luego a un backend propio) · Resend · Zod ·
+Resend · Zod · (sin base de datos por ahora; llegará con Supabase y luego un backend propio) ·
 Netlify.
 
 ## Requisitos
@@ -54,7 +54,7 @@ dentro del build): puedes usar el nombre clásico (`RESEND_API_KEY`) o su versi�
 pages/         rutas (landing, cómo trabajo, portafolio, privacidad, login, dashboard)
 components/    atoms · molecules · organisms · templates (diseño atómico)
 server/api/    endpoints /api/* (contrato en docs/openapi.yaml)
-server/utils/  sesión admin, secretos, Firebase Admin
+server/utils/  sesión admin, secretos, IP del cliente
 constants/     copy y datos del sitio (portafolio real + mock solo en dev)
 data/          servicios, "cómo trabajo", política de privacidad
 docs/          openapi.yaml, sistema de marca

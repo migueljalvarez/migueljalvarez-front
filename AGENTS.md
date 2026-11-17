@@ -14,7 +14,7 @@ Sitio personal/portafolio de **Miguel Alvarez** (Medellín, Colombia; trabajo re
 
 - Nuxt 4.6 (SSR activo; estructura de carpetas en la raíz, sin `app/`), Vue 3 `<script setup lang="ts">`, TypeScript.
 - Nuxt UI 4 + Tailwind CSS 4 (tokens de marca `brand-*` en `assets/css/main.css`), `@nuxt/icon` (mdi / simple-icons), `@nuxt/image` (ipx / proveedor de Netlify), `@nuxt/fonts` (Poppins, Inter).
-- Backend en Nitro (`server/api`): Firebase Admin/Firestore, Resend (correo de contacto), Zod (validación).
+- Backend en Nitro (`server/api`): Resend (correo de contacto) y Zod (validación). **Sin base de datos por ahora**: Firebase se retiró por completo (nov-2026); la base llegará con Supabase y luego un backend propio.
 - Despliegue: Netlify (`netlify.toml`, preset `netlify` de Nitro: estáticos en `dist`, SSR como función). Node 22.22.3 (`.nvmrc` y `netlify.toml`). CI en `.github/workflows/ci.yml` y Dependabot.
 
 ## Comandos
@@ -42,7 +42,7 @@ components/
 composables/      useEmail, useSectionReveal, useSiteSeo, useSocialMedia
 constants/        common (copy HOME_COPY/HOME_HERO_COPY/META), portfolio (+ mock solo dev), routes (PUBLIC_ROUTES, API)
 data/             services.ts, work.ts (contenido estático de servicios y "cómo trabajo")
-server/api/       (contact), (me), admin/{login,logout,session}, portafolio
+server/api/       (contact), admin/{login,logout,session}, portafolio
 utils/            cn.ts, portfolioFilters.ts
 docs/             brand-system.md (tipografía/paleta), openapi.yaml (contrato de API)
 tests/            portfolioFilters.test.mjs
@@ -58,7 +58,7 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 
 - **Copy y contenido de la landing**: mayormente estático en `constants/` y `data/`.
 - **Portafolio**: hoy vive en `constants/portfolio.ts` (solo Mi Comodoro y Mi Despensa) y se sirve por `/api/portafolio` (no desde Firestore). Campos clave: `slug`, `type` (`client` | `product` | `practice`), `status` (`published` | `in-development`; en desarrollo no tiene ficha de detalle), `problem` / `decision` / `result`. El detalle público es `pages/portafolio/[slug].vue` (la página legacy `[id].vue` se eliminó porque tapaba a `[slug]`).
-- **Redes sociales**: `/api/socialMedia` (Firestore). Los testimonios no tienen endpoint hasta que exista uno real aprobado.
+- **Redes sociales**: constantes (`MY_SOCIAL_MEDIA` en `constants/common`, vía `useSocialMedia()`); se renderizan en el servidor sin petición. Más adelante se gestionarán desde el panel. Los testimonios no tienen endpoint hasta que exista uno real aprobado.
 - **Contacto**: `POST /api/contact` → Resend (`RESEND_API_KEY`, `MAIL_FROM`, `MAIL_TO`).
 
 ## Convenciones
@@ -72,7 +72,7 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 
 ## Seguridad de cabeceras
 
-- `routeRules` en `nuxt.config.ts` añade `X-Content-Type-Options`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`, HSTS y un CSP mínimo (`frame-ancestors`, `base-uri`, `form-action`, `object-src`). Zonas privadas llevan `no-store` y `X-Robots-Tag`. El CSP completo (script/connect-src) queda pendiente hasta retirar el SDK de Firebase del navegador.
+- `routeRules` en `nuxt.config.ts` añade `X-Content-Type-Options`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`, HSTS y un CSP mínimo (`frame-ancestors`, `base-uri`, `form-action`, `object-src`). Zonas privadas llevan `no-store` y `X-Robots-Tag`. El CSP completo (script/connect-src) queda pendiente.
 - El servidor de desarrollo escucha solo en `localhost` (no en toda la red).
 
 ## Calidad antes de integrar
@@ -92,7 +92,7 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 
 ## Código retirado a propósito
 
-- Se eliminó todo lo que ninguna página usaba (nov-2026): componentes (Hero, Avatar, Badge, Footer, Card, AvatarCard, Blockquote, carruseles, HeroVisual, HeroCurve, Testimonial, PortfolioItem), `DynamicTable`, composables sin uso, los endpoints `/api/testimonials` y `/api/me`, las 6 páginas del dashboard viejo, la configuración de Cloudinary, la fuente IBM Plex Mono y los logos/cursos de `public/`. Quedan en el historial de git si se necesitan.
+- Se eliminó todo lo que ninguna página usaba (nov-2026): componentes (Hero, Avatar, Badge, Footer, Card, AvatarCard, Blockquote, carruseles, HeroVisual, HeroCurve, Testimonial, PortfolioItem), `DynamicTable`, composables sin uso, los endpoints `/api/testimonials`, `/api/me` y `/api/socialMedia`, `firebase-admin` y todo el código/variables de Firebase, las 6 páginas del dashboard viejo, la configuración de Cloudinary, la fuente IBM Plex Mono y los logos/cursos de `public/`. Quedan en el historial de git si se necesitan.
 - **Testimonios**: no hay sección pública ni endpoint hasta que exista un testimonio real aprobado (módulo planeado en S9-S10 del plan). Entonces se reconstruyen desde cero.
 
 ## Archivos privados
@@ -109,7 +109,7 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 ## Reglas para agentes
 
 1. No modificar nada fuera del alcance pedido; el árbol de trabajo tiene muchos cambios sin commitear de la v2 — **no revertirlos ni formatearlos en masa**.
-2. Nunca leer, imprimir ni commitear valores de `.env` (Firebase, Resend). Solo nombres de variables.
+2. Nunca leer, imprimir ni commitear valores de `.env` (Resend, sesión admin). Solo nombres de variables.
 3. Antes de dar una tarea por cerrada: `npm run lint` y `npm test`; para cambios visuales, verificar en `npm run dev`.
 4. No crear `CLAUDE.md`. Las instrucciones para agentes se mantienen aquí.
 5. Los pendientes y el plan de trabajo se gestionan en **Notion** (ver sección siguiente).
@@ -147,8 +147,7 @@ Módulos previstos en `/admin` (privado, noindex, Supabase Auth, un solo admin):
 
 - **Auth del dashboard es provisional** (rama `feat/security-hardening`): login con `ADMIN_EMAIL` / `ADMIN_PASSWORD`, cookie `admin_session` firmada (HMAC con `ADMIN_SESSION_SECRET`), httpOnly, 8 h, validada en servidor (`server/utils/adminSession.ts`, `/api/admin/session`, `middleware/auth.ts`). Sin esas variables el acceso queda cerrado (503). Limitaciones: un solo usuario, contador de intentos en memoria. El panel viejo (6 páginas con datos de ejemplo en localStorage) se eliminó en nov-2026; `/dashboard` solo muestra la sesión activa hasta que exista `/admin`. Se reemplaza por Supabase Auth (S7).
 - `server/api/(contact)/contact.ts` ya está endurecido (escape de HTML, límites, honeypot, 5 intentos/10 min por IP en memoria, `runtimeConfig`). Pendiente: rate limit del proveedor y prueba de envío real en preview.
-- (Resuelto) `server/utils/firebase-admin.ts` ya sin doble extensión y sin el `DotNavigation` duplicado de Hero.
-- Firestore solo se usa hoy para `/api/socialMedia` (Header y Contacto); existe `MY_SOCIAL_MEDIA` en `constants/common` como alternativa sin base de datos.
+- La web pública ya no depende de ninguna base de datos: puede desplegarse sin esperar a Supabase (la compuerta de publicación sigue siendo decisión del autor).
 - Netlify: el build con el preset `netlify` funciona en local (`NITRO_PRESET=netlify npm run build`); pesa 45 MB la función por los iconos de `@nuxt/icon` en modo local (valorar modo `remote` o recorte de colecciones). Falta medir en un deploy preview real.
 - Cobertura de tests básica (filtros, mocks, contrato OpenAPI, secretos).
 - `constants/portfolio.ts` `PORTFOLIO_TYPE_OPTIONS` ('Productos Propios') difiere en capitalización de `PortfolioFilter` ('Productos propios').

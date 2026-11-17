@@ -1,3 +1,5 @@
+import type { SocialMediaType } from '~/types/common'
+
 export const REGEX_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 export const REGEX_COMMON = /^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?: [A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$/
 export const REGEX_LARGE_TEXT = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9,.\-+¿¡?"'()!\s]+$/
@@ -83,7 +85,7 @@ export const HOME_COPY = {
 }
 export const PRIMARY_CTA_LABEL = 'Hablemos de tu proyecto'
 export const WHATSAPP_CTA_LABEL = 'Hablemos por WhatsApp'
-export const MY_SOCIAL_MEDIA = [
+export const MY_SOCIAL_MEDIA: SocialMediaType[] = [
   {
     name: 'LinkedIn',
     link: 'https://www.linkedin.com/in/ingmiguelalvarez/',
@@ -96,18 +98,6 @@ export const MY_SOCIAL_MEDIA = [
     icon: 'mdi:github',
     isHovered: false
   }
-  /*   {
-    name: 'Instagram',
-    link: 'https://www.instagram.com/migueljalvarez/',
-    icon: 'mdi:instagram',
-    isHovered: false
-  },
-  {
-    name: 'WhatsApp',
-    link: 'https://wa.link/xd5n3c',
-    icon: 'mdi:whatsapp',
-    isHovered: false
-  } */
 ]
 
 /* Phases of software development */
@@ -143,8 +133,6 @@ export const DEVELOPMENT_PHASES = [
     icon: 'mdi:rocket-launch-outline'
   }
 ]
-
-export const CACHE_EXP = 1800
 
 export const META = {
   TITLE: 'Miguel Álvarez',
