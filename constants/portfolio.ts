@@ -42,7 +42,8 @@ const REAL_PORTFOLIO_PROJECTS: PortafolioType[] = [
     slug: 'mi-despensa',
     technologies: [],
     version: '',
-    description: 'Aplicación móvil en desarrollo que se conectará con Mi Comodoro.',
+    description:
+      'Aplicación móvil en desarrollo para gestionar los recursos de la despensa según un presupuesto. Forma parte del ecosistema de Mi Comodoro, pero puede usarse de forma independiente.',
     urlImage: '',
     url: '',
     initialProblem: '',
@@ -68,7 +69,7 @@ const PORTFOLIO_PROJECT_CONTEXT: Record<
   'mi-despensa': {
     projectKind: 'Aplicación móvil',
     sector: 'En desarrollo',
-    audience: 'usuarios de Mi Comodoro'
+    audience: 'personas que gestionan su despensa con un presupuesto'
   },
   ...(USE_PORTFOLIO_MOCKS ? MOCK_PORTFOLIO_CONTEXT : {})
 }
