@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import Button from '~/components/atoms/Button/Button.vue'
 
-  definePageMeta({ layout: 'default' })
+  definePageMeta({ layout: 'auth' })
   useSeoMeta({ title: 'Acceso', robots: 'noindex, nofollow' })
 
   const email = ref('')
@@ -27,7 +27,7 @@
         }
       })
 
-      await navigateTo('/dashboard')
+      await navigateTo('/admin')
     } catch (error) {
       const status = (error as { statusCode?: number }).statusCode
       errorMessage.value =
