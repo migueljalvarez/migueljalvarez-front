@@ -4,15 +4,7 @@ import type { H3Event } from 'h3'
 // build (.output). Aquí se leen en ejecución: primero la variable estándar de Nuxt (NUXT_<CLAVE>, que
 // sobrescribe runtimeConfig) y, como respaldo, el nombre clásico (p. ej. RESEND_API_KEY del .env).
 export type ServerSecretKey =
-  | 'resendApiKey'
-  | 'mailFrom'
-  | 'mailTo'
-  | 'adminEmail'
-  | 'adminPassword'
-  | 'adminSessionSecret'
-  | 'firebaseProjectId'
-  | 'firebaseClientEmail'
-  | 'firebasePrivateKey'
+  'resendApiKey' | 'mailFrom' | 'mailTo' | 'adminEmail' | 'adminPassword' | 'adminSessionSecret'
 
 const LEGACY_ENV: Record<ServerSecretKey, string> = {
   resendApiKey: 'RESEND_API_KEY',
@@ -20,10 +12,7 @@ const LEGACY_ENV: Record<ServerSecretKey, string> = {
   mailTo: 'MAIL_TO',
   adminEmail: 'ADMIN_EMAIL',
   adminPassword: 'ADMIN_PASSWORD',
-  adminSessionSecret: 'ADMIN_SESSION_SECRET',
-  firebaseProjectId: 'FIREBASE_PROJECT_ID',
-  firebaseClientEmail: 'FIREBASE_CLIENT_EMAIL',
-  firebasePrivateKey: 'FIREBASE_PRIVATE_KEY'
+  adminSessionSecret: 'ADMIN_SESSION_SECRET'
 }
 
 export const getServerSecret = (key: ServerSecretKey, event?: H3Event): string => {

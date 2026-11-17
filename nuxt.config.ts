@@ -33,9 +33,6 @@ export default defineNuxtConfig({
     adminEmail: '',
     adminPassword: '',
     adminSessionSecret: '',
-    firebaseProjectId: '',
-    firebaseClientEmail: '',
-    firebasePrivateKey: '',
     public: {
       baseUrl: process.env.NUXT_PUBLIC_BASE_URL || 'http://localhost:3000'
     }
@@ -67,7 +64,7 @@ export default defineNuxtConfig({
   },
   routeRules: {
     // Cabeceras de seguridad para todo el sitio. El CSP completo (script-src, connect-src...) se
-    // activará cuando se retire el SDK de Firebase del navegador; por ahora solo directivas que no
+    // activará más adelante; por ahora solo directivas que no
     // pueden romper la hidratación de Nuxt.
     '/**': {
       headers: {
