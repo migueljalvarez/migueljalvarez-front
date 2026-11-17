@@ -127,14 +127,13 @@ paths:
       tags: [Público]
       summary: Testimonios aprobados
       description: |
-        Hoy se leen de Firestore (máx. 4, orden inverso). **Contrato objetivo**: solo testimonios
-        aprobados por el autor; si no hay ninguno, `200` con lista vacía (la landing oculta la sección).
-        Nota de deuda: el handler actual responde 404 cuando está vacío y, durante `generate`,
-        devuelve un testimonio de ejemplo; ambos comportamientos deben eliminarse al migrar.
+        Hoy se leen de Firestore (máx. 4, orden inverso). Contrato: solo testimonios aprobados por el autor;
+        si no hay ninguno responde `200` con lista vacía (la landing oculta la sección). Nunca devuelve
+        datos de ejemplo.
       operationId: listTestimonials
       responses:
         '200':
-          description: Lista de testimonios
+          description: Lista de testimonios (puede estar vacía)
           content:
             application/json:
               schema:
