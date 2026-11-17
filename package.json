@@ -25,7 +25,6 @@
     "@nuxt/ui": "^4.12.2",
     "@unhead/vue": "^2.0.8",
     "estree-walker": "^2.0.2",
-    "firebase": "^12.19.0",
     "firebase-admin": "^13.4.0",
     "nuxt": "^4.6.4",
     "resend": "^4.5.2",
