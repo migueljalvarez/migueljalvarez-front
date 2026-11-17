@@ -15,7 +15,7 @@ export default defineEventHandler(async event => {
   const adminEmail = getServerSecret('adminEmail', event)
   const adminPassword = getServerSecret('adminPassword', event)
   const sessionSecret = getServerSecret('adminSessionSecret', event)
-  const ip = getRequestIP(event, { xForwardedFor: true }) ?? 'desconocida'
+  const ip = getClientIp(event)
 
   if (!adminEmail || !adminPassword || !sessionSecret) {
     console.error('Login admin: faltan ADMIN_EMAIL, ADMIN_PASSWORD o ADMIN_SESSION_SECRET')

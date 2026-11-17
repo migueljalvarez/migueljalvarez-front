@@ -55,7 +55,7 @@ const isRateLimited = (key: string) => {
 }
 
 export default defineEventHandler(async event => {
-  const ip = getRequestIP(event, { xForwardedFor: true }) ?? 'desconocida'
+  const ip = getClientIp(event)
 
   if (isRateLimited(ip)) {
     throw createError({
