@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import Button from '~/components/atoms/Button/Button.vue'
+
   definePageMeta({ layout: 'default' })
   useSeoMeta({ title: 'Acceso', robots: 'noindex, nofollow' })
 
@@ -41,41 +43,45 @@
 </script>
 
 <template>
-  <section class="flex min-h-[70vh] items-center justify-center bg-[#F5F7FA] px-4 py-12">
+  <section class="flex min-h-[70vh] items-center justify-center bg-brand-surface px-4 py-12">
     <div
-      class="w-full max-w-md rounded-2xl border border-[#E9EEF5] bg-white p-6 shadow-[0_10px_24px_rgba(18,30,48,0.05)]"
+      class="w-full max-w-md rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-[0_10px_24px_var(--color-brand-shadow-card)]"
     >
       <div class="mb-6">
-        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#1C2F4C]">Dashboard</p>
-        <h1 class="mt-2 text-3xl font-semibold text-navy">Iniciar sesión</h1>
+        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-brand-accent-text">
+          Panel privado
+        </p>
+        <h1 class="mt-2 text-3xl font-semibold text-brand-ink">Iniciar sesión</h1>
       </div>
 
       <form class="space-y-4" @submit.prevent="login">
         <div>
-          <label class="mb-1 block text-sm font-medium text-navy" for="email">Email</label>
+          <label class="mb-1 block text-sm font-medium text-brand-ink" for="email">Email</label>
           <input
             id="email"
             v-model="email"
             type="email"
             autocomplete="email"
-            class="w-full rounded-xl border border-[#E9EEF5] bg-[#F5F7FA] px-3 py-2.5 text-navy outline-none transition focus:border-[#243B62]"
+            class="w-full rounded-xl border border-brand-border bg-brand-surface px-3 py-2.5 text-brand-ink outline-none transition focus:border-brand-accent"
             placeholder="admin@ejemplo.com"
           />
         </div>
 
         <div>
-          <label class="mb-1 block text-sm font-medium text-navy" for="password">Contraseña</label>
+          <label class="mb-1 block text-sm font-medium text-brand-ink" for="password">
+            Contraseña
+          </label>
           <input
             id="password"
             v-model="password"
             type="password"
             autocomplete="current-password"
-            class="w-full rounded-xl border border-[#E9EEF5] bg-[#F5F7FA] px-3 py-2.5 text-navy outline-none transition focus:border-[#243B62]"
+            class="w-full rounded-xl border border-brand-border bg-brand-surface px-3 py-2.5 text-brand-ink outline-none transition focus:border-brand-accent"
             placeholder="••••••••"
           />
         </div>
 
-        <p v-if="errorMessage" class="text-sm text-red-600">{{ errorMessage }}</p>
+        <p v-if="errorMessage" class="text-sm text-brand-error-text">{{ errorMessage }}</p>
 
         <Button type="submit" size="md" :disabled="isSubmitting" class="w-full">
           {{ isSubmitting ? 'Ingresando...' : 'Entrar' }}

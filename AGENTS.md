@@ -13,7 +13,7 @@ Sitio personal/portafolio de **Miguel Alvarez** (Medellín, Colombia; trabajo re
 ## Stack
 
 - Nuxt 4.6 (SSR activo; estructura de carpetas en la raíz, sin `app/`), Vue 3 `<script setup lang="ts">`, TypeScript.
-- Nuxt UI 4 + Tailwind CSS 4 (tokens de marca `brand-*` en `assets/css/main.css`), `@nuxt/icon` (mdi / simple-icons), `@nuxt/image` (ipx + Cloudinary `res.cloudinary.com/m2a`), `@nuxt/fonts` (Poppins, Inter, IBM Plex Mono).
+- Nuxt UI 4 + Tailwind CSS 4 (tokens de marca `brand-*` en `assets/css/main.css`), `@nuxt/icon` (mdi / simple-icons), `@nuxt/image` (ipx / proveedor de Netlify), `@nuxt/fonts` (Poppins, Inter).
 - Backend en Nitro (`server/api`): Firebase Admin/Firestore, Resend (correo de contacto), Zod (validación).
 - Despliegue: Netlify (`netlify.toml`, preset `netlify` de Nitro: estáticos en `dist`, SSR como función). Node 22.22.3 (`.nvmrc` y `netlify.toml`). CI en `.github/workflows/ci.yml` y Dependabot.
 
@@ -31,7 +31,7 @@ npm test           # node --test (tests/*.mjs)
 ## Estructura
 
 ```
-pages/            index (landing), como-trabajo, login, portafolio/{index,[slug],[id]}, dashboard/*
+pages/            index (landing), como-trabajo, privacidad, login, portafolio/{index,[slug]}, dashboard/index (sesión activa; módulos futuros en /admin)
 layouts/          default, dashboard, error
 components/
   atoms/          Button, Input, Select, Title
@@ -44,7 +44,7 @@ constants/        common (copy HOME_COPY/HOME_HERO_COPY/META), portfolio (+ mock
 data/             services.ts, work.ts (contenido estático de servicios y "cómo trabajo")
 server/api/       (contact), (me), admin/{login,logout,session}, portafolio
 utils/            cn.ts, portfolioFilters.ts
-docs/             brand-system.md (tipografía/paleta), firebase-me-update.md
+docs/             brand-system.md (tipografía/paleta), openapi.yaml (contrato de API)
 tests/            portfolioFilters.test.mjs
 ```
 
@@ -58,7 +58,6 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 
 - **Copy y contenido de la landing**: mayormente estático en `constants/` y `data/`.
 - **Portafolio**: hoy vive en `constants/portfolio.ts` (solo Mi Comodoro y Mi Despensa) y se sirve por `/api/portafolio` (no desde Firestore). Campos clave: `slug`, `type` (`client` | `product` | `practice`), `status` (`published` | `in-development`; en desarrollo no tiene ficha de detalle), `problem` / `decision` / `result`. El detalle público es `pages/portafolio/[slug].vue` (la página legacy `[id].vue` se eliminó porque tapaba a `[slug]`).
-- **Perfil ("me")**: Firestore vía `/api/me` (cacheado, `swr`). Edición manual documentada en `docs/firebase-me-update.md`.
 - **Redes sociales**: `/api/socialMedia` (Firestore). Los testimonios no tienen endpoint hasta que exista uno real aprobado.
 - **Contacto**: `POST /api/contact` → Resend (`RESEND_API_KEY`, `MAIL_FROM`, `MAIL_TO`).
 
@@ -68,7 +67,7 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 - Clases Tailwind canónicas v4 y tokens `brand-*`; seguir `docs/brand-system.md` para jerarquía tipográfica y contraste.
 - Accesibilidad: `min-h-11` en objetivos táctiles, `focus-visible`, `aria-hidden` en iconos decorativos.
 - Texto de UI en español, tono cercano y orientado al negocio (no jerga técnica en el copy).
-- Imágenes en `public/` (webp) o Cloudinary; usar `NuxtImg`.
+- Imágenes en `public/` (webp, ≤ ~100 KB); usar `NuxtImg`.
 - Commits en español, descriptivos y cortos (ver `git log`).
 
 ## Seguridad de cabeceras
@@ -93,7 +92,7 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 
 ## Código retirado a propósito
 
-- Se eliminó todo lo que ninguna página usaba (nov-2026): componentes (Hero, Avatar, Badge, Footer, Card, AvatarCard, Blockquote, carruseles, HeroVisual, HeroCurve, Testimonial, PortfolioItem), `DynamicTable`, composables sin uso y el endpoint `/api/testimonials`. Quedan en el historial de git si se necesitan.
+- Se eliminó todo lo que ninguna página usaba (nov-2026): componentes (Hero, Avatar, Badge, Footer, Card, AvatarCard, Blockquote, carruseles, HeroVisual, HeroCurve, Testimonial, PortfolioItem), `DynamicTable`, composables sin uso, los endpoints `/api/testimonials` y `/api/me`, las 6 páginas del dashboard viejo, la configuración de Cloudinary, la fuente IBM Plex Mono y los logos/cursos de `public/`. Quedan en el historial de git si se necesitan.
 - **Testimonios**: no hay sección pública ni endpoint hasta que exista un testimonio real aprobado (módulo planeado en S9-S10 del plan). Entonces se reconstruyen desde cero.
 
 ## Archivos privados
@@ -119,7 +118,7 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 
 - **Tono**: profesional sereno, consultivo y confiable; "entiendo tu problema" antes que "construyo tu app". Cercano (tuteo, primera persona), sin jerga ni tono de búsqueda de empleo.
 - **Paleta**: azul marino profundo (`brand-navy` #121e30 / `brand-mid` / `brand-accent`) como protagonista; superficies casi blancas (`brand-surface` #f5f7fa) para lectura; azul de logo (`brand-blue` #3f6bad) solo en acentos puntuales; verde solo para estados/WhatsApp. Alternancia de bandas oscuras (hero, proceso, contacto) y claras (servicios, portafolio, sobre mí).
-- **Tipografía**: Poppins (títulos, peso fuerte, tracking ajustado), Inter (cuerpo), IBM Plex Mono (acentos técnicos). Eyebrows en mayúsculas con tracking amplio antes de cada título.
+- **Tipografía**: Poppins (títulos, peso fuerte, tracking ajustado), Inter (cuerpo). Eyebrows en mayúsculas con tracking amplio antes de cada título.
 - **Motivo gráfico**: hexágonos (logo, fondo del hero, marcadores numerados 01–06, placeholders de proyectos).
 - **Componentes**: tarjetas blancas con esquinas muy redondeadas y sombra suave sobre fondo claro; paneles oscuros con borde sutil; botones primario (azul oscuro) y secundario (contorno); chips pequeños para etiquetas; checks para beneficios.
 - **Estructura narrativa**: hero (promesa + CTA + prueba de disponibilidad) → ¿en qué punto estás? (3 servicios por situación del cliente) → proceso → acuerdos de trabajo → portafolio → sobre mí (personal y cálido) → contacto.
@@ -146,10 +145,10 @@ Módulos previstos en `/admin` (privado, noindex, Supabase Auth, un solo admin):
 
 ## Deuda técnica conocida (a priorizar en el plan)
 
-- **Auth del dashboard es provisional** (rama `feat/security-hardening`): login con `ADMIN_EMAIL` / `ADMIN_PASSWORD`, cookie `admin_session` firmada (HMAC con `ADMIN_SESSION_SECRET`), httpOnly, 8 h, validada en servidor (`server/utils/adminSession.ts`, `/api/admin/session`, `middleware/auth.ts`). Sin esas variables el acceso queda cerrado (503). Limitaciones: un solo usuario, contador de intentos en memoria, y las páginas del dashboard aún escriben en Firestore desde el cliente (reglas de Firestore no revisadas). Se reemplaza por Supabase Auth (S7).
+- **Auth del dashboard es provisional** (rama `feat/security-hardening`): login con `ADMIN_EMAIL` / `ADMIN_PASSWORD`, cookie `admin_session` firmada (HMAC con `ADMIN_SESSION_SECRET`), httpOnly, 8 h, validada en servidor (`server/utils/adminSession.ts`, `/api/admin/session`, `middleware/auth.ts`). Sin esas variables el acceso queda cerrado (503). Limitaciones: un solo usuario, contador de intentos en memoria. El panel viejo (6 páginas con datos de ejemplo en localStorage) se eliminó en nov-2026; `/dashboard` solo muestra la sesión activa hasta que exista `/admin`. Se reemplaza por Supabase Auth (S7).
 - `server/api/(contact)/contact.ts` ya está endurecido (escape de HTML, límites, honeypot, 5 intentos/10 min por IP en memoria, `runtimeConfig`). Pendiente: rate limit del proveedor y prueba de envío real en preview.
 - (Resuelto) `server/utils/firebase-admin.ts` ya sin doble extensión y sin el `DotNavigation` duplicado de Hero.
-- Dos fuentes de verdad para portafolio: `constants/portfolio.ts` vs. dashboard `/dashboard/portfolio` (Firestore) — sin sincronizar. Lo mismo con servicios y testimonios.
+- Firestore solo se usa hoy para `/api/socialMedia` (Header y Contacto); existe `MY_SOCIAL_MEDIA` en `constants/common` como alternativa sin base de datos.
 - Netlify: el build con el preset `netlify` funciona en local (`NITRO_PRESET=netlify npm run build`); pesa 45 MB la función por los iconos de `@nuxt/icon` en modo local (valorar modo `remote` o recorte de colecciones). Falta medir en un deploy preview real.
 - Cobertura de tests básica (filtros, mocks, contrato OpenAPI, secretos).
 - `constants/portfolio.ts` `PORTFOLIO_TYPE_OPTIONS` ('Productos Propios') difiere en capitalización de `PortfolioFilter` ('Productos propios').

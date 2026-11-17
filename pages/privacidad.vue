@@ -42,7 +42,7 @@
           <li v-for="section in PRIVACY_SECTIONS" :key="section.id">
             <a
               :href="`#${section.id}`"
-              class="text-brand-accent-text underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
+              class="inline-flex min-h-11 items-center text-brand-accent-text underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
             >
               {{ section.title }}
             </a>
