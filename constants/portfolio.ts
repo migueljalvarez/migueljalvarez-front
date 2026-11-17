@@ -1,4 +1,4 @@
-import type { PortafolioType } from '~/components/templates/templates'
+import type { PortafolioType } from '~/types/common'
 import type { PortfolioCardProject } from '~/components/templates/Portfolio/portfolio.types'
 import { MOCK_PORTFOLIO_CONTEXT, MOCK_PORTFOLIO_PROJECTS } from './portfolio.mock'
 
@@ -23,15 +23,10 @@ const REAL_PORTFOLIO_PROJECTS: PortafolioType[] = [
     result:
       'Se consolidó una herramienta útil para seguimiento personal con una base que permite escalar nuevas métricas y reportes sin romper la experiencia.',
     technologies: ['Nuxt', 'TypeScript', 'Tailwind', 'PostgreSQL'],
-    version: '1.0.0',
     description:
       'Aplicación para la gestión de finanzas personales: seguimiento de ingresos, gastos y presupuesto en un solo lugar.',
-    urlImage: '/mi-comodoro.webp',
-    url: '',
-    initialProblem: '',
-    solutionDetails: '',
-    images: [],
-    gallery: []
+    urlImage: '/projects/mi-comodoro/cover.webp',
+    ogImage: '/projects/mi-comodoro/og.jpg'
   },
   {
     id: 'mi-despensa',
@@ -41,15 +36,9 @@ const REAL_PORTFOLIO_PROJECTS: PortafolioType[] = [
     portfolioType: 'Producto propio',
     slug: 'mi-despensa',
     technologies: [],
-    version: '',
     description:
       'Aplicación móvil en desarrollo para gestionar los recursos de la despensa según un presupuesto. Forma parte del ecosistema de Mi Comodoro, pero puede usarse de forma independiente.',
-    urlImage: '',
-    url: '',
-    initialProblem: '',
-    solutionDetails: '',
-    images: [],
-    gallery: []
+    urlImage: ''
   }
 ]
 

@@ -1,4 +1,4 @@
-import type { PortafolioType } from '~/components/templates/templates'
+import type { PortafolioType } from '~/types/common'
 
 /**
  * DATOS DE EJEMPLO — SOLO DESARROLLO.
@@ -20,15 +20,47 @@ export const MOCK_PORTFOLIO_PROJECTS: PortafolioType[] = [
     result:
       'La web pasó a funcionar como un centro de contenido y comunidad, con una presentación más sólida, moderna y fácil de mantener en el tiempo.',
     technologies: ['Nuxt', 'Tailwind', 'Firebase'],
-    version: '1.0.0',
     description:
       'Plataforma editorial y sonora para conectar comunidad, contenido y radio en una sola experiencia.',
-    urlImage: '/ar-stereo.webp',
-    url: '',
-    initialProblem: '',
-    solutionDetails: '',
-    images: [],
-    gallery: []
+    // Campos de ejemplo para ver la ficha completa en desarrollo (NO son datos reales).
+    role: 'Diseño y desarrollo web completo (EJEMPLO)',
+    year: '2024',
+    duration: '6 semanas',
+    highlights: [
+      { value: '4', label: 'secciones editoriales (ejemplo)' },
+      { value: '-40 %', label: 'tiempo de publicación (ejemplo)' },
+      { value: '98', label: 'puntaje de rendimiento (ejemplo)' }
+    ],
+    scope: [
+      'Diseño de la experiencia y de la identidad visual (ejemplo)',
+      'Desarrollo del sitio y de la navegación (ejemplo)',
+      'Optimización de rendimiento y SEO (ejemplo)',
+      'Capacitación para actualizar el contenido (ejemplo)'
+    ],
+    urlImage: '/projects/mi-comodoro/cover.webp',
+    gallery: [
+      {
+        src: '/projects/mi-comodoro/cover.webp',
+        alt: 'Pantalla principal del proyecto de ejemplo',
+        caption: 'Pantalla principal (imagen de ejemplo)'
+      },
+      {
+        src: '/ar-stereo.webp',
+        alt: 'Vista de la programación del proyecto de ejemplo',
+        caption: 'Programación sonora (imagen de ejemplo)'
+      },
+      {
+        src: '/projects/mi-comodoro/cover.webp',
+        alt: 'Vista móvil del proyecto de ejemplo',
+        caption: 'Versión móvil (imagen de ejemplo)'
+      },
+      {
+        src: '/ar-stereo.webp',
+        alt: 'Detalle de contenido editorial del proyecto de ejemplo',
+        caption: 'Contenido editorial (imagen de ejemplo)'
+      }
+    ],
+    url: 'https://example.com'
   },
   {
     id: 'caja-de-ritmos',
@@ -43,15 +75,9 @@ export const MOCK_PORTFOLIO_PROJECTS: PortafolioType[] = [
     result:
       'Se logró un prototipo útil para exploración creativa con un formato cómodo para idear, combinar y guardar referencias del proceso musical.',
     technologies: ['Vue', 'TypeScript', 'Tailwind', 'Firebase'],
-    version: '0.9.0',
     description:
       'Herramienta para ideación musical y experimentación creativa con una experiencia simple y visual.',
-    urlImage: '/caja-de-ritmos.webp',
-    url: '',
-    initialProblem: '',
-    solutionDetails: '',
-    images: [],
-    gallery: []
+    urlImage: '/caja-de-ritmos.webp'
   },
   {
     id: 'frases-aleatorias',
@@ -66,15 +92,9 @@ export const MOCK_PORTFOLIO_PROJECTS: PortafolioType[] = [
     result:
       'Se obtuvo un recurso útil para contenido visual y referencias rápidas, con una experiencia ágil y fácil de replicar.',
     technologies: ['JavaScript', 'Tailwind', 'CSS'],
-    version: '1.1.0',
     description:
       'Microproducto para generar frases motivacionales y contenido inspirador con una interfaz clara y rápida.',
-    urlImage: '/frases-aleatorias.webp',
-    url: '',
-    initialProblem: '',
-    solutionDetails: '',
-    images: [],
-    gallery: []
+    urlImage: '/frases-aleatorias.webp'
   },
   {
     id: 'agencia-ops',
@@ -89,15 +109,9 @@ export const MOCK_PORTFOLIO_PROJECTS: PortafolioType[] = [
     result:
       'Se mejoró la percepción de marca y la navegación para que los leads entendieran mejor los servicios ofrecidos.',
     technologies: ['Nuxt', 'Tailwind', 'SEO', 'Analytics'],
-    version: '1.2.0',
     description:
       'Sitio corporativo para agencia con enfoque en posicionamiento, servicio y presentación de procesos.',
-    urlImage: '',
-    url: '',
-    initialProblem: '',
-    solutionDetails: '',
-    images: [],
-    gallery: []
+    urlImage: ''
   },
   {
     id: 'crm-visual',
@@ -112,15 +126,9 @@ export const MOCK_PORTFOLIO_PROJECTS: PortafolioType[] = [
     result:
       'Se redujo la fricción en la operación comercial y se mejoró la trazabilidad del pipeline de ventas.',
     technologies: ['Vue', 'Node.js', 'PostgreSQL', 'Docker'],
-    version: '2.0.0',
     description:
       'Sistema de gestión visual para seguimiento de clientes, oportunidades y pipeline comercial.',
-    urlImage: '',
-    url: '',
-    initialProblem: '',
-    solutionDetails: '',
-    images: [],
-    gallery: []
+    urlImage: ''
   },
   {
     id: 'intranet-lab',
@@ -135,15 +143,9 @@ export const MOCK_PORTFOLIO_PROJECTS: PortafolioType[] = [
     result:
       'Se consolidó una base más ordenada y un punto único de acceso para la información y las actividades internas.',
     technologies: ['Nuxt', 'TypeScript', 'PostgreSQL', 'Docker'],
-    version: '1.4.0',
     description:
       'Intranet para centralizar documentación, tareas y procesos operativos del equipo.',
-    urlImage: '',
-    url: '',
-    initialProblem: '',
-    solutionDetails: '',
-    images: [],
-    gallery: []
+    urlImage: ''
   }
 ]
 
