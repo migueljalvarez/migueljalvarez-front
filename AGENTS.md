@@ -71,6 +71,10 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 - Imágenes en `public/` (webp) o Cloudinary; usar `NuxtImg`.
 - Commits en español, descriptivos y cortos (ver `git log`).
 
+## Contrato de API
+
+- `docs/openapi.yaml` (OpenAPI 3.1) documenta todos los endpoints `/api/*` y es el contrato que debe cumplir el futuro backend Nest. Al agregar o cambiar un endpoint hay que actualizarlo: `tests/openapiContract.test.mjs` falla si un archivo de `server/api` no está documentado (o al revés).
+
 ## SEO
 
 - Metadatos por página con `usePageSeo()` (`composables/useSiteSeo.ts`): título, descripción, canonical, Open Graph y Twitter. La URL base sale de `NUXT_PUBLIC_BASE_URL` (obligatoria en producción: `https://migueljalvarez.com`); nunca usar `window` para calcularla.

@@ -1,0 +1,479 @@
+openapi: 3.1.0
+info:
+  title: API de migueljalvarez.com
+  version: 0.1.0
+  description: |
+    Contrato actual de los endpoints `/api/*` implementados en Nitro (Nuxt). Es la referencia que
+    debe cumplir el futuro backend Nest + Postgres: mientras el contrato no cambie, el frontend solo
+    necesita cambiar la URL base.
+
+    Estado: **documenta lo que existe hoy** (nov-2026). Los módulos del panel (leads, testimonios por
+    enlace, proyectos, equipo, pagos) se agregarán en este archivo cuando se diseñen.
+
+    Convenciones:
+    - Errores: JSON de Nitro/H3 `{ statusCode, statusMessage, message }` (ver `Error`).
+    - Textos de error y de interfaz en español.
+    - Los endpoints públicos de lectura usan caché (`maxAge` 1800 s con stale-while-revalidate).
+    - Montos futuros: siempre USD; la TRM se guarda por transacción.
+servers:
+  - url: http://localhost:3000
+    description: Desarrollo local (el puerto puede cambiar con PORT)
+  - url: https://migueljalvarez.com
+    description: Producción (aún no publicada)
+tags:
+  - name: Público
+    description: Lectura de contenido del sitio
+  - name: Contacto
+  - name: Admin
+    description: Sesión provisional del panel (se reemplazará por Supabase Auth y luego por auth propia en Nest)
+  - name: SEO
+paths:
+  /api/portafolio:
+    get:
+      tags: [Público]
+      summary: Lista los proyectos del portafolio
+      description: |
+        Devuelve los proyectos reales (productos propios y trabajos de clientes) con Mi Comodoro primero.
+        En desarrollo también incluye proyectos de ejemplo (mocks); nunca en producción.
+      operationId: listPortfolio
+      responses:
+        '200':
+          description: Lista de proyectos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PortfolioProject'
+  /api/portafolio/{id}:
+    get:
+      tags: [Público]
+      summary: Detalle de un proyecto por id o slug
+      operationId: getPortfolioProject
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id o slug del proyecto
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Proyecto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortfolioProject'
+        '404':
+          description: No existe o es un producto en desarrollo (sin ficha pública)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/me:
+    get:
+      tags: [Público]
+      summary: Perfil público
+      description: Hoy se lee de Firestore (colección `me`, primer documento). Cacheado.
+      operationId: getProfile
+      responses:
+        '200':
+          description: Perfil
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '404':
+          description: No hay perfil cargado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error al cargar el perfil
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/socialMedia:
+    get:
+      tags: [Público]
+      summary: Redes sociales
+      description: Hoy se lee de Firestore (colección `socialMedia`). Cacheado.
+      operationId: listSocialMedia
+      responses:
+        '200':
+          description: Lista de redes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SocialLink'
+        '404':
+          description: No hay redes cargadas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error al cargar las redes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/testimonials:
+    get:
+      tags: [Público]
+      summary: Testimonios aprobados
+      description: |
+        Hoy se leen de Firestore (máx. 4, orden inverso). **Contrato objetivo**: solo testimonios
+        aprobados por el autor; si no hay ninguno, `200` con lista vacía (la landing oculta la sección).
+        Nota de deuda: el handler actual responde 404 cuando está vacío y, durante `generate`,
+        devuelve un testimonio de ejemplo; ambos comportamientos deben eliminarse al migrar.
+      operationId: listTestimonials
+      responses:
+        '200':
+          description: Lista de testimonios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Testimonial'
+        '500':
+          description: Error al obtener testimonios
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/contact:
+    post:
+      tags: [Contacto]
+      summary: Envía un mensaje desde el formulario de contacto
+      description: |
+        Valida, aplica límite de 5 intentos por IP cada 10 minutos y envía un correo (Resend).
+        Si el campo trampa `website` viene con texto, responde 200 sin enviar (bot).
+        Objetivo en S8: además guardar el lead en base de datos.
+      operationId: sendContact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactRequest'
+      responses:
+        '200':
+          description: Mensaje enviado (o descartado silenciosamente si es un bot)
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success]
+                properties:
+                  success:
+                    type: boolean
+                    const: true
+        '400':
+          description: Datos inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Demasiados intentos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: No se pudo enviar el correo o falta configuración
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/admin/login:
+    post:
+      tags: [Admin]
+      summary: Inicia sesión del panel (provisional)
+      description: |
+        Compara con `ADMIN_EMAIL` / `ADMIN_PASSWORD`. Crea la cookie `admin_session` (HttpOnly,
+        SameSite=Lax, Secure en producción, 8 h, firmada con HMAC). 5 fallos por IP cada 15 minutos
+        bloquean con 429. Sin variables de entorno responde 503.
+      operationId: adminLogin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        '200':
+          description: Sesión creada (cookie `admin_session`)
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+        '400':
+          description: Faltan credenciales
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Credenciales inválidas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Demasiados intentos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Acceso no disponible por falta de configuración
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/admin/logout:
+    post:
+      tags: [Admin]
+      summary: Cierra la sesión (borra la cookie)
+      operationId: adminLogout
+      responses:
+        '200':
+          description: Sesión cerrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+  /api/admin/session:
+    get:
+      tags: [Admin]
+      summary: Estado de la sesión
+      operationId: adminSession
+      security:
+        - adminCookie: []
+      responses:
+        '200':
+          description: Sesión válida
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [authenticated, email]
+                properties:
+                  authenticated:
+                    type: boolean
+                    const: true
+                  email:
+                    type: string
+        '401':
+          description: Sin sesión o cookie inválida o vencida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /robots.txt:
+    get:
+      tags: [SEO]
+      summary: robots.txt dinámico
+      description: Bloquea todo si la URL base es local; si no, bloquea rutas privadas y enlaza el sitemap.
+      operationId: robots
+      responses:
+        '200':
+          description: Texto plano
+          content:
+            text/plain:
+              schema:
+                type: string
+  /sitemap.xml:
+    get:
+      tags: [SEO]
+      summary: Sitemap dinámico
+      description: Home, cómo trabajo, portafolio y fichas publicadas (excluye proyectos en desarrollo).
+      operationId: sitemap
+      responses:
+        '200':
+          description: XML
+          content:
+            application/xml:
+              schema:
+                type: string
+components:
+  securitySchemes:
+    adminCookie:
+      type: apiKey
+      in: cookie
+      name: admin_session
+      description: Cookie firmada HttpOnly emitida por `/api/admin/login`.
+  schemas:
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        statusMessage:
+          type: string
+        message:
+          type: string
+    Image:
+      type: object
+      required: [title, url]
+      properties:
+        title:
+          type: string
+        url:
+          type: string
+    PortfolioProject:
+      type: object
+      required: [id, title, type, portfolioType, technologies, version, description, urlImage, url, initialProblem, solutionDetails, images]
+      properties:
+        id:
+          type: string
+        slug:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+          enum: [client, product, practice]
+        status:
+          type: string
+          enum: [published, in-development]
+          description: Los `in-development` no tienen ficha de detalle.
+        portfolioType:
+          type: string
+          description: Etiqueta de presentación (p. ej. "Producto propio", "Cliente")
+        problem:
+          type: string
+        decision:
+          type: string
+        result:
+          type: string
+        technologies:
+          type: array
+          items:
+            type: string
+        version:
+          type: string
+        description:
+          type: string
+        urlImage:
+          type: string
+        url:
+          type: string
+        initialProblem:
+          type: string
+        solutionDetails:
+          type: string
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+        gallery:
+          type: array
+          items:
+            type: string
+    Profile:
+      type: object
+      description: Documento `me`. Pueden existir campos adicionales (p. ej. `aboutText`).
+      required: [id, name, profession, jobDescription]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        profession:
+          type: string
+        jobDescription:
+          type: string
+      additionalProperties: true
+    SocialLink:
+      type: object
+      required: [name, link, icon]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        link:
+          type: string
+          format: uri
+        icon:
+          type: string
+          description: Nombre de icono de Iconify (p. ej. `mdi:github`)
+        isHovered:
+          type: boolean
+          description: Estado de UI heredado; no debería formar parte del contrato (TODO eliminar).
+    Testimonial:
+      type: object
+      required: [name, position, testimonial, image, type, socialMedia]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        position:
+          type: string
+        testimonial:
+          type: string
+        image:
+          type: string
+        type:
+          type: string
+          description: Tipo de relación (p. ej. Cliente, Trabajo)
+        company:
+          type: string
+        context:
+          type: string
+        result:
+          type: string
+        socialMedia:
+          type: array
+          items:
+            $ref: '#/components/schemas/SocialLink'
+    ContactRequest:
+      type: object
+      required: [name, email, subject, message]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        subject:
+          type: string
+          enum: [desarrollo, oferta, consulta, soporte, otro]
+        message:
+          type: string
+          minLength: 1
+          maxLength: 5000
+        website:
+          type: string
+          maxLength: 200
+          description: Campo trampa (honeypot). Debe enviarse vacío.
