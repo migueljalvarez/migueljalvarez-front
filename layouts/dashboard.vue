@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  useSeoMeta({ title: 'Panel', robots: 'noindex, nofollow' })
+
   const { data: sessionData } = await useFetch<{ email: string }>('/api/admin/session')
 
   const user = computed(() => ({ email: sessionData.value?.email ?? 'Admin' }))

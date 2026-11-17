@@ -2,9 +2,11 @@
   import Contact from '~/components/templates/Contact/Contact.vue'
   import HowWorkContent from '~/components/templates/HowWork/HowWorkContent.vue'
 
-  useSeoMeta({
+  usePageSeo({
     title: 'Cómo trabajo',
-    description: 'Conoce mis compromisos, políticas de trabajo y respuestas a preguntas frecuentes.'
+    description:
+      'Conoce mis compromisos, políticas de trabajo y respuestas a preguntas frecuentes.',
+    path: '/como-trabajo'
   })
 </script>
 
