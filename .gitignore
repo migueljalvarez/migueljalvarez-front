@@ -22,3 +22,6 @@ logs
 .env
 .env.*
 !.env.example
+
+# Archivos privados locales (CV, documentos). Nunca se versionan ni se sirven publicamente.
+.private
