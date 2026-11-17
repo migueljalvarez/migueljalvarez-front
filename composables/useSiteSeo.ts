@@ -2,7 +2,7 @@ const DEFAULT_OG_IMAGE = '/og-image.jpg'
 
 /** URL base del sitio sin barra final. Viene de NUXT_PUBLIC_BASE_URL (igual en servidor y cliente). */
 export const useSiteUrl = () => {
-  const baseUrl = String(useRuntimeConfig().public.baseUrl || 'http://localhost:3333')
+  const baseUrl = String(useRuntimeConfig().public.baseUrl || 'http://localhost:3000')
   return baseUrl.replace(/\/+$/, '')
 }
 
