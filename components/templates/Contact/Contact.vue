@@ -87,9 +87,9 @@
       />
 
       <div class="relative z-10">
-        <h5 class="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-brand-text-soft">
+        <p class="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-brand-text-soft">
           {{ title || HOME_COPY.contact.eyebrow }}
-        </h5>
+        </p>
 
         <div class="flex flex-col md:flex-row gap-8 items-stretch">
           <div class="flex flex-col gap-4 md:w-1/2">
