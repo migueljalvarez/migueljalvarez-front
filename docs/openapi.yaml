@@ -71,31 +71,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /api/me:
-    get:
-      tags: [Público]
-      summary: Perfil público
-      description: Hoy se lee de Firestore (colección `me`, primer documento). Cacheado.
-      operationId: getProfile
-      responses:
-        '200':
-          description: Perfil
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Profile'
-        '404':
-          description: No hay perfil cargado
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Error al cargar el perfil
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
   /api/socialMedia:
     get:
       tags: [Público]
@@ -372,20 +347,6 @@ components:
           type: array
           items:
             type: string
-    Profile:
-      type: object
-      description: Documento `me`. Pueden existir campos adicionales (p. ej. `aboutText`).
-      required: [id, name, profession, jobDescription]
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        profession:
-          type: string
-        jobDescription:
-          type: string
-      additionalProperties: true
     SocialLink:
       type: object
       required: [name, link, icon]

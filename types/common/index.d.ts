@@ -31,9 +31,3 @@ export type PortafolioType = {
   gallery?: string[]
 }
 
-export type Me = {
-  id: string
-  name: string
-  profession: string
-  jobDescription: string
-}

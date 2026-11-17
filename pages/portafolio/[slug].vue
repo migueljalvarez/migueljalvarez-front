@@ -103,7 +103,7 @@
             :src="project.urlImage"
             :alt="project.title"
             format="webp"
-            class="h-65 w-full rounded-2xl object-cover md:h-105"
+            class="aspect-video w-full rounded-2xl object-cover md:aspect-auto md:h-105"
           />
         </div>
 

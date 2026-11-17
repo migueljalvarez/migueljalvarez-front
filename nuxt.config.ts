@@ -48,8 +48,7 @@ export default defineNuxtConfig({
     provider: 'google',
     families: [
       { name: 'Poppins', provider: 'google', display: 'swap', preload: true, subsets: ['latin'] },
-      { name: 'Inter', provider: 'google', display: 'swap', preload: true, subsets: ['latin'] },
-      { name: 'IBM Plex Mono', provider: 'google', display: 'swap', subsets: ['latin'] }
+      { name: 'Inter', provider: 'google', display: 'swap', preload: true, subsets: ['latin'] }
     ]
   },
   imports: {
@@ -59,17 +58,7 @@ export default defineNuxtConfig({
     dir: 'public',
     format: ['webp', 'avif', 'svg'],
     sizes: [300, 480, 600, 768, 1024, 1280],
-    screens: { sm: 320, md: 640, lg: 1024, xl: 1280 },
-    domains: ['res.cloudinary.com'],
-    providers: {
-      ipx: {},
-      cloudinary: {
-        provider: 'cloudinary',
-        options: {
-          baseURL: 'https://res.cloudinary.com/m2a/image/upload/'
-        }
-      }
-    }
+    screens: { sm: 320, md: 640, lg: 1024, xl: 1280 }
   },
   devServer: {
     // Solo local: no expone el servidor de desarrollo a toda la red.

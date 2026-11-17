@@ -61,7 +61,6 @@
 
   --font-sans: 'Inter', sans-serif;
   --font-display: 'Poppins', sans-serif;
-  --font-mono: 'IBM Plex Mono', monospace;
 }
 
 @layer components {

@@ -37,7 +37,7 @@
     :aria-label="project.href ? `${project.title}: ver proyecto` : project.title"
   >
     <div
-      class="relative aspect-16/10 w-full shrink-0 overflow-hidden bg-brand-surface-panel"
+      class="relative aspect-video w-full shrink-0 md:aspect-16/10 overflow-hidden bg-brand-surface-panel"
       :class="layoutMode === 'horizontal' ? 'md:w-1/2' : ''"
     >
       <NuxtImg

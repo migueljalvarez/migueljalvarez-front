@@ -15,5 +15,3 @@
   # Nuxt 4.6 exige Node ^22.22.3 || ^24.15 || >=26. Mantener igual que .nvmrc.
   NODE_VERSION = "22.22.3"
 
-[images]
-  remote_images = ["https://res.cloudinary.com/m2a/.*"]

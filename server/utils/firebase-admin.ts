@@ -30,7 +30,5 @@ if (!getApps().length) {
 db = getFirestore()
 // ✅ Colecciones tipadas y reutilizables
 export const model = {
-  me: db.collection('Me'),
-  portfolio: db.collection('Portfolio'),
   socialMedia: db.collection('SocialMedia')
 }
