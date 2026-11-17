@@ -18,12 +18,13 @@ Cadena de conexión local: `postgres://dev:dev@127.0.0.1:5433/migueljalvarez`. E
 
 ## Migraciones
 
-| Archivo          | Contenido                                                                                                                                              |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `0001_core.sql`  | clients, leads, lead_notes, testimonial_requests, projects, team_members, assignments, time_entries, trm_rates, payments, rates, policies, experiences |
-| `0002_auth.sql`  | admin_users (hash de contraseña), admin_sessions (hash del token, vencimiento, revocación), login_attempts                                             |
-| `0004_cv.sql`    | profile, skills, education, certifications, languages (+ kind/location en experiences): hechos del CV, privados                                        |
-| `0003_views.sql` | project_hours, member_balances, assignment_hours                                                                                                       |
+| Archivo                   | Contenido                                                                                                                                              |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `0001_core.sql`           | clients, leads, lead_notes, testimonial_requests, projects, team_members, assignments, time_entries, trm_rates, payments, rates, policies, experiences |
+| `0002_auth.sql`           | admin_users (hash de contraseña), admin_sessions (hash del token, vencimiento, revocación), login_attempts                                             |
+| `0005_public_content.sql` | social_links, portfolio_entries, portfolio_media y vistas `public_*` (lo único que lee la API pública)                                                 |
+| `0004_cv.sql`             | profile, skills, education, certifications, languages (+ kind/location en experiences): hechos del CV, privados                                        |
+| `0003_views.sql`          | project_hours, member_balances, assignment_hours                                                                                                       |
 
 Las migraciones son de solo avance: un cambio nuevo es un archivo nuevo (`0004_...sql`), nunca se edita uno aplicado.
 

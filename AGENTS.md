@@ -84,6 +84,7 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 
 ## Contrato de API
 
+- Alcance público/privado del panel: `docs/dashboard-scope.md`; contrato planeado de la API del panel: `docs/openapi-panel.yaml` (se mueve a `openapi.yaml` cuando se implemente). La API pública solo lee vistas `public_*`.
 - `docs/openapi.yaml` (OpenAPI 3.1) documenta todos los endpoints `/api/*` y es el contrato que debe cumplir el futuro backend Nest. Al agregar o cambiar un endpoint hay que actualizarlo: `tests/openapiContract.test.mjs` falla si un archivo de `server/api` no está documentado (o al revés).
 
 ## SEO
