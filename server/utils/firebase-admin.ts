@@ -7,9 +7,9 @@ let db: Firestore
 
 // ✅ Inicializa solo una vez
 if (!getApps().length) {
-  const config = useRuntimeConfig()
-
-  const { firebaseClientEmail, firebasePrivateKey, firebaseProjectId } = config
+  const firebaseClientEmail = getServerSecret('firebaseClientEmail')
+  const firebasePrivateKey = getServerSecret('firebasePrivateKey')
+  const firebaseProjectId = getServerSecret('firebaseProjectId')
 
   // ✅ Validación segura de las variables
   if (!firebaseClientEmail || !firebasePrivateKey || !firebaseProjectId) {

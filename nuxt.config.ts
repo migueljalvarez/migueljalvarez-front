@@ -29,15 +29,17 @@ export default defineNuxtConfig({
     }
   },
   runtimeConfig: {
-    resendApiKey: process.env.RESEND_API_KEY,
-    mailFrom: process.env.MAIL_FROM,
-    mailTo: process.env.MAIL_TO,
-    adminEmail: process.env.ADMIN_EMAIL,
-    adminPassword: process.env.ADMIN_PASSWORD,
-    adminSessionSecret: process.env.ADMIN_SESSION_SECRET,
-    firebaseProjectId: process.env.FIREBASE_PROJECT_ID,
-    firebaseClientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    firebasePrivateKey: process.env.FIREBASE_PRIVATE_KEY,
+    // Secretos privados: vacíos a propósito (no se hornean en el build). Se proveen en ejecución con
+    // NUXT_<CLAVE> (p. ej. NUXT_RESEND_API_KEY) o con el nombre clásico leído en server/utils/secrets.ts.
+    resendApiKey: '',
+    mailFrom: '',
+    mailTo: '',
+    adminEmail: '',
+    adminPassword: '',
+    adminSessionSecret: '',
+    firebaseProjectId: '',
+    firebaseClientEmail: '',
+    firebasePrivateKey: '',
     public: {
       baseUrl: process.env.NUXT_PUBLIC_BASE_URL || 'http://localhost:3000',
       firebaseApiKey: process.env.NUXT_PUBLIC_FIREBASE_API_KEY,

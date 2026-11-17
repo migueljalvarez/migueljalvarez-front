@@ -39,8 +39,10 @@ export const verifySessionToken = (token: string | undefined, secret: string | u
 }
 
 export const getAdminSession = (event: H3Event) => {
-  const config = useRuntimeConfig(event)
-  return verifySessionToken(getCookie(event, ADMIN_COOKIE), config.adminSessionSecret)
+  return verifySessionToken(
+    getCookie(event, ADMIN_COOKIE),
+    getServerSecret('adminSessionSecret', event)
+  )
 }
 
 export const adminCookieOptions = {

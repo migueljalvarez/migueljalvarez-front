@@ -12,10 +12,12 @@ const recentFailures = (ip: string) => {
 }
 
 export default defineEventHandler(async event => {
-  const config = useRuntimeConfig(event)
+  const adminEmail = getServerSecret('adminEmail', event)
+  const adminPassword = getServerSecret('adminPassword', event)
+  const sessionSecret = getServerSecret('adminSessionSecret', event)
   const ip = getRequestIP(event, { xForwardedFor: true }) ?? 'desconocida'
 
-  if (!config.adminEmail || !config.adminPassword || !config.adminSessionSecret) {
+  if (!adminEmail || !adminPassword || !sessionSecret) {
     console.error('Login admin: faltan ADMIN_EMAIL, ADMIN_PASSWORD o ADMIN_SESSION_SECRET')
     throw createError({ statusCode: 503, statusMessage: 'Acceso no disponible.' })
   }
@@ -37,8 +39,8 @@ export default defineEventHandler(async event => {
     throw createError({ statusCode: 400, statusMessage: 'Faltan credenciales.' })
   }
 
-  const validEmail = safeEqual(email, String(config.adminEmail).trim().toLowerCase())
-  const validPassword = safeEqual(password, String(config.adminPassword))
+  const validEmail = safeEqual(email, adminEmail.trim().toLowerCase())
+  const validPassword = safeEqual(password, adminPassword)
 
   if (!validEmail || !validPassword) {
     recentFailures(ip).push(Date.now())
@@ -46,7 +48,7 @@ export default defineEventHandler(async event => {
   }
 
   failures.delete(ip)
-  setCookie(event, ADMIN_COOKIE, createSessionToken(email, config.adminSessionSecret), {
+  setCookie(event, ADMIN_COOKIE, createSessionToken(email, sessionSecret), {
     ...adminCookieOptions,
     maxAge: ADMIN_SESSION_MAX_AGE
   })

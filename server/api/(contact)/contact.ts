@@ -81,9 +81,11 @@ export default defineEventHandler(async event => {
     return { success: true }
   }
 
-  const config = useRuntimeConfig(event)
+  const resendApiKey = getServerSecret('resendApiKey', event)
+  const mailFrom = getServerSecret('mailFrom', event)
+  const mailTo = getServerSecret('mailTo', event)
 
-  if (!config.resendApiKey || !config.mailFrom || !config.mailTo) {
+  if (!resendApiKey || !mailFrom || !mailTo) {
     console.error('Contacto: faltan RESEND_API_KEY, MAIL_FROM o MAIL_TO en la configuración')
     throw createError({
       statusCode: 500,
@@ -97,10 +99,10 @@ export default defineEventHandler(async event => {
   const safeMessage = escapeHtml(message).replace(/\r?\n/g, '<br>')
 
   try {
-    const resend = new Resend(config.resendApiKey)
+    const resend = new Resend(resendApiKey)
     const { error } = await resend.emails.send({
-      from: config.mailFrom,
-      to: [config.mailTo],
+      from: mailFrom,
+      to: [mailTo],
       replyTo: email,
       subject: `Contacto web: ${subjectLabel}`,
       html: `
