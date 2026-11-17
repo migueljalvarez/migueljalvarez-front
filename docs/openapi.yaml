@@ -8,7 +8,8 @@ info:
     necesita cambiar la URL base.
 
     Estado: **documenta lo que existe hoy** (nov-2026). Los módulos del panel (leads, testimonios por
-    enlace, proyectos, equipo, pagos) se agregarán en este archivo cuando se diseñen.
+    enlace, proyectos, equipo, pagos) se agregarán en este archivo cuando se diseñen. Los testimonios
+    públicos se incorporarán cuando exista el primer testimonio real aprobado.
 
     Convenciones:
     - Errores: JSON de Nitro/H3 `{ statusCode, statusMessage, message }` (ver `Error`).
@@ -118,30 +119,6 @@ paths:
                 $ref: '#/components/schemas/Error'
         '500':
           description: Error al cargar las redes
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /api/testimonials:
-    get:
-      tags: [Público]
-      summary: Testimonios aprobados
-      description: |
-        Hoy se leen de Firestore (máx. 4, orden inverso). Contrato: solo testimonios aprobados por el autor;
-        si no hay ninguno responde `200` con lista vacía (la landing oculta la sección). Nunca devuelve
-        datos de ejemplo.
-      operationId: listTestimonials
-      responses:
-        '200':
-          description: Lista de testimonios (puede estar vacía)
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Testimonial'
-        '500':
-          description: Error al obtener testimonios
           content:
             application/json:
               schema:
@@ -426,33 +403,6 @@ components:
         isHovered:
           type: boolean
           description: Estado de UI heredado; no debería formar parte del contrato (TODO eliminar).
-    Testimonial:
-      type: object
-      required: [name, position, testimonial, image, type, socialMedia]
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        position:
-          type: string
-        testimonial:
-          type: string
-        image:
-          type: string
-        type:
-          type: string
-          description: Tipo de relación (p. ej. Cliente, Trabajo)
-        company:
-          type: string
-        context:
-          type: string
-        result:
-          type: string
-        socialMedia:
-          type: array
-          items:
-            $ref: '#/components/schemas/SocialLink'
     ContactRequest:
       type: object
       required: [name, email, subject, message]

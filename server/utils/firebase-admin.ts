@@ -32,6 +32,5 @@ db = getFirestore()
 export const model = {
   me: db.collection('Me'),
   portfolio: db.collection('Portfolio'),
-  socialMedia: db.collection('SocialMedia'),
-  testimonial: db.collection('Testimonial')
+  socialMedia: db.collection('SocialMedia')
 }
