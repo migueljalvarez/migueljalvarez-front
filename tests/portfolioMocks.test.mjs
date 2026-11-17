@@ -12,7 +12,12 @@ const MOCK_TITLES = [
   'Frases Aleatorias',
   'Agencia Ops',
   'CRM Visual',
-  'Intranet Lab'
+  'Intranet Lab',
+  // Datos de ejemplo del panel (constants/admin.samples.ts)
+  'Ana Ejemplo',
+  'Carlos Muestra',
+  'Tienda Demo S.A.S.',
+  'Diseñadora Ejemplo'
 ]
 
 // Evita node_modules y enlaces simbólicos de .output (provocan bucles).

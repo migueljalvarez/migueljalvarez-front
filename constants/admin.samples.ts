@@ -1,82 +1,242 @@
-import type { LeadStatus } from './admin'
+import type { AdminData } from '~/types/admin'
 
 /**
  * DATOS DE EJEMPLO DEL PANEL — SOLO DESARROLLO.
- * Permiten ver cómo se comporta la interfaz antes de tener base de datos. Se activan únicamente con
- * `import.meta.dev` y no deben llegar a producción (ver tests/portfolioMocks.test.mjs). Los nombres,
- * correos y mensajes son inventados.
+ * Permiten ver y probar la interfaz antes de tener API. Se activan únicamente con `import.meta.dev` y
+ * no deben llegar a producción (ver tests/portfolioMocks.test.mjs). Nombres, correos y mensajes son
+ * inventados.
  */
 export const USE_ADMIN_SAMPLES: boolean = import.meta.dev
 
-export type SampleLead = {
-  id: string
-  name: string
-  email: string
-  subject: string
-  origin: string
-  status: LeadStatus
-  date: string
-  nextAction?: string
-}
+const empty = (): AdminData => ({
+  leads: [],
+  testimonials: [],
+  clients: [],
+  projects: [],
+  team: [],
+  assignments: [],
+  timeEntries: [],
+  payments: [],
+  rates: [],
+  policies: [],
+  experiences: []
+})
 
-export const SAMPLE_LEADS: SampleLead[] = USE_ADMIN_SAMPLES
-  ? [
+const lead = (
+  id: string,
+  name: string,
+  email: string,
+  subject: string,
+  origin: string,
+  status: AdminData['leads'][number]['status'],
+  createdAt: string,
+  extra: Partial<AdminData['leads'][number]> = {}
+): AdminData['leads'][number] => ({
+  id,
+  name,
+  email,
+  phone: '',
+  subject,
+  origin,
+  status,
+  message: '',
+  lostReason: '',
+  nextAction: '',
+  nextActionDate: '',
+  createdAt,
+  notes: [],
+  ...extra
+})
+
+export const buildSampleData = (): AdminData => {
+  if (!USE_ADMIN_SAMPLES) return empty()
+
+  return {
+    leads: [
+      lead(
+        'l1',
+        'Ana Ejemplo',
+        'ana@ejemplo.test',
+        'desarrollo',
+        'formulario',
+        'nuevo',
+        '2026-11-16',
+        {
+          message: 'Hola, necesito una web para mi negocio de repostería (mensaje de ejemplo).'
+        }
+      ),
+      lead(
+        'l2',
+        'Carlos Muestra',
+        'carlos@ejemplo.test',
+        'consulta',
+        'whatsapp',
+        'contactado',
+        '2026-11-14',
+        {
+          nextAction: 'Llamada de descubrimiento',
+          nextActionDate: '2026-11-20',
+          notes: [{ id: 'n1', text: 'Prefiere hablar por la tarde (ejemplo).', at: '2026-11-14' }]
+        }
+      ),
+      lead(
+        'l3',
+        'Laura Prueba',
+        'laura@ejemplo.test',
+        'oferta',
+        'referido',
+        'reunion',
+        '2026-11-10',
+        {
+          nextAction: 'Enviar resumen de la reunión',
+          nextActionDate: '2026-11-18'
+        }
+      ),
+      lead(
+        'l4',
+        'Tienda Demo S.A.S.',
+        'compras@demo.test',
+        'desarrollo',
+        'formulario',
+        'propuesta',
+        '2026-11-05',
+        {
+          nextAction: 'Seguimiento de la propuesta',
+          nextActionDate: '2026-11-19'
+        }
+      ),
+      lead(
+        'l5',
+        'Pedro Ficticio',
+        'pedro@ejemplo.test',
+        'soporte',
+        'linkedin',
+        'ganado',
+        '2026-10-28'
+      ),
+      lead(
+        'l6',
+        'Marta Inventada',
+        'marta@ejemplo.test',
+        'consulta',
+        'formulario',
+        'perdido',
+        '2026-10-20',
+        {
+          lostReason: 'Presupuesto fuera de alcance (ejemplo)'
+        }
+      )
+    ],
+    testimonials: [
       {
-        id: 's1',
-        name: 'Ana Ejemplo',
-        email: 'ana@ejemplo.test',
-        subject: 'Desarrollo',
-        origin: 'Formulario',
-        status: 'nuevo',
-        date: '2026-11-16'
+        id: 't1',
+        clientName: 'Cliente de Ejemplo',
+        email: 'cliente@ejemplo.test',
+        projectName: 'Proyecto de ejemplo',
+        message: '',
+        status: 'respondida',
+        createdAt: '2026-11-10',
+        answer: 'Trabajar con Miguel fue claro y ordenado (testimonio de ejemplo).'
       },
       {
-        id: 's2',
-        name: 'Carlos Muestra',
-        email: 'carlos@ejemplo.test',
-        subject: 'Consulta',
-        origin: 'WhatsApp',
-        status: 'contactado',
-        date: '2026-11-14',
-        nextAction: 'Llamada el 20-nov'
-      },
+        id: 't2',
+        clientName: 'Otra Persona',
+        email: 'otra@ejemplo.test',
+        projectName: '',
+        message: '',
+        status: 'enviada',
+        createdAt: '2026-11-15'
+      }
+    ],
+    clients: [
       {
-        id: 's3',
-        name: 'Laura Prueba',
-        email: 'laura@ejemplo.test',
-        subject: 'Oferta',
-        origin: 'Referido',
-        status: 'reunion',
-        date: '2026-11-10',
-        nextAction: 'Enviar resumen de la reunión'
-      },
-      {
-        id: 's4',
+        id: 'c1',
         name: 'Tienda Demo S.A.S.',
         email: 'compras@demo.test',
-        subject: 'Desarrollo',
-        origin: 'Formulario',
-        status: 'propuesta',
-        date: '2026-11-05',
-        nextAction: 'Seguimiento de la propuesta'
+        company: 'Tienda Demo',
+        notes: ''
+      },
+      { id: 'c2', name: 'Pedro Ficticio', email: 'pedro@ejemplo.test', company: '', notes: '' }
+    ],
+    projects: [
+      {
+        id: 'p1',
+        name: 'Tienda en línea (ejemplo)',
+        clientId: 'c1',
+        status: 'en-curso',
+        rateUsd: 30,
+        budgetHours: 80,
+        startDate: '2026-10-15',
+        deadline: '2026-12-10',
+        publishable: false
       },
       {
-        id: 's5',
-        name: 'Pedro Ficticio',
-        email: 'pedro@ejemplo.test',
-        subject: 'Soporte',
-        origin: 'LinkedIn',
-        status: 'ganado',
-        date: '2026-10-28'
-      },
-      {
-        id: 's6',
-        name: 'Marta Inventada',
-        email: 'marta@ejemplo.test',
-        subject: 'Consulta',
-        origin: 'Formulario',
-        status: 'perdido',
-        date: '2026-10-20'
+        id: 'p2',
+        name: 'Sitio informativo (ejemplo)',
+        clientId: 'c2',
+        status: 'planificado',
+        rateUsd: 25,
+        budgetHours: 40,
+        startDate: '2026-12-01',
+        deadline: '2027-01-15',
+        publishable: true
       }
-    ]
-  : []
+    ],
+    team: [
+      {
+        id: 'm1',
+        name: 'Diseñadora Ejemplo',
+        email: 'diseno@ejemplo.test',
+        role: 'Diseñadora UI',
+        responsibilities: 'Interfaz y sistema de diseño (ejemplo).',
+        rateUsd: 18
+      },
+      {
+        id: 'm2',
+        name: 'Dev Ejemplo',
+        email: 'dev@ejemplo.test',
+        role: 'Desarrollador frontend',
+        responsibilities: 'Maquetación y componentes (ejemplo).',
+        rateUsd: 22
+      }
+    ],
+    assignments: [
+      { id: 'a1', memberId: 'm1', projectId: 'p1', agreedHours: 20 },
+      { id: 'a2', memberId: 'm2', projectId: 'p1', agreedHours: 30 }
+    ],
+    timeEntries: [
+      {
+        id: 'h1',
+        memberId: 'm1',
+        projectId: 'p1',
+        hours: 12,
+        date: '2026-11-05',
+        note: 'Diseño de pantallas'
+      },
+      {
+        id: 'h2',
+        memberId: 'm2',
+        projectId: 'p1',
+        hours: 18,
+        date: '2026-11-12',
+        note: 'Componentes base'
+      }
+    ],
+    payments: [
+      { id: 'y1', memberId: 'm1', amountUsd: 100, trm: 4100, date: '2026-11-08', note: 'Anticipo' }
+    ],
+    rates: [
+      { id: 'r1', service: 'Desarrollo web a la medida', rateUsd: 30, isPublic: false },
+      { id: 'r2', service: 'Consultoría técnica', rateUsd: 40, isPublic: false }
+    ],
+    policies: [
+      {
+        id: 'po1',
+        title: 'El código y los accesos son tuyos',
+        body: 'Al completar el pago, los derechos del código desarrollado para ti pasan a ser tuyos (ejemplo).',
+        isPublic: true
+      }
+    ],
+    experiences: []
+  }
+}
