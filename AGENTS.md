@@ -143,4 +143,5 @@ Módulos previstos en `/admin` (privado, noindex, Supabase Auth, un solo admin):
 
 - **Node**: Nuxt 4.6 exige Node `^22.22.3 || ^24.15.0 || >=26`. Con 22.12 compila pero avisa "unsupported". Actualizar con `nvm install 22.22.3` (Netlify usa `.nvmrc`).
 - `estree-walker@^2.0.2` es dependencia directa a propósito: sin ella `node .output/server/index.mjs` falla con `ERR_PACKAGE_PATH_NOT_EXPORTED` (Nitro no copiaba la v2 anidada de `@vue/compiler-core`). No quitarla.
-- Los secretos de `runtimeConfig` se leen de `process.env` **al compilar** y quedan dentro de `.output/server` (verificado). Para sobrescribirlos en ejecución usar variables `NUXT_*` (p. ej. `NUXT_ADMIN_EMAIL`). Pendiente: dejar los valores privados vacíos en `nuxt.config.ts` y proveerlos solo en runtime.
+- **Secretos**: nunca se leen de `process.env` en `nuxt.config.ts` (quedarían escritos en `.output`). Los valores privados de `runtimeConfig` van vacíos y se resuelven en ejecución con `getServerSecret()` (`server/utils/secrets.ts`): primero `NUXT_<CLAVE>` (p. ej. `NUXT_RESEND_API_KEY`) y como respaldo el nombre clásico del `.env` (`RESEND_API_KEY`). `tests/noSecretsInBuild.test.mjs` falla si un secreto del `.env` aparece en `.output`.
+- El correo y teléfono de `pages/dashboard/cv.vue` viajan en un chunk JS público aunque la página esté protegida; se retirarán al reconstruir el módulo de CV.
