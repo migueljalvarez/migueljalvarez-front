@@ -2,8 +2,6 @@ export const REGEX_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 export const REGEX_COMMON = /^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?: [A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$/
 export const REGEX_LARGE_TEXT = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9,.\-+¿¡?"'()!\s]+$/
 
-export const MAIN_TITLE_PRESENTATION = 'Hola'
-export const MAIN_TITLE_PRESENTATION_COMPLEMENT = 'soy'
 export const HOME_HERO_COPY = {
   title: 'Antes de escribir código, entiendo tu problema.',
   description:
@@ -147,21 +145,6 @@ export const DEVELOPMENT_PHASES = [
 
 export const CACHE_EXP = 1800
 
-export const COMPLEMETARY_COURSE = [
-  {
-    name: 'Academia Geek',
-    logo: 'academia-geek.jpeg'
-  },
-  {
-    name: 'Free Code Camp',
-    logo: 'FreeCodeCamp.svg'
-  },
-  {
-    name: 'Platzi',
-    logo: 'Platzi.svg'
-  }
-]
-export const CANONICAL_URL = 'https://www.migueljalvarez.com/'
 export const META = {
   TITLE: 'Miguel Álvarez',
   DESCRIPTION:

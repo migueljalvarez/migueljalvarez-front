@@ -38,9 +38,9 @@ components/
   molecules/      AvatarCard, Blockquote, Card, Footer, Header, HeroVisual, InfiniteCarousel, SocialMedia
   organisms/      Carousel, Section
   templates/      Main, Services, ProcessSection, Portfolio*, About, Contact, HowWork*, Testimonial
-  DynamicTable/, Form/
-composables/      useEmail, useLogos, useSectionReveal, useSocialMedia, useTechnicalSheet, useTypeContent, useTypeText
-constants/        common (copy HOME_COPY/HOME_HERO_COPY/META), portfolio, routes (PUBLIC_ROUTES, API), testimonials
+  Form/
+composables/      useEmail, useSectionReveal, useSiteSeo, useSocialMedia
+constants/        common (copy HOME_COPY/HOME_HERO_COPY/META), portfolio (+ mock solo dev), routes (PUBLIC_ROUTES, API)
 data/             services.ts, work.ts (contenido estático de servicios y "cómo trabajo")
 server/api/       (contact), (me), admin/{login,logout}, portafolio, testimonials
 utils/            cn.ts, portfolioFilters.ts
@@ -136,7 +136,7 @@ Módulos previstos en `/admin` (privado, noindex, Supabase Auth, un solo admin):
 - (Resuelto) `server/utils/firebase-admin.ts` ya sin doble extensión y sin el `DotNavigation` duplicado de Hero.
 - Dos fuentes de verdad para portafolio: `constants/portfolio.ts` vs. dashboard `/dashboard/portfolio` (Firestore) — sin sincronizar. Lo mismo con servicios y testimonios.
 - `README.md` es el de la plantilla de Nuxt; `netlify.toml` publica `dist` pero Nuxt SSR genera `.output`; `useSeoMeta` en `index.vue` calcula `origin` con `window` (riesgo de hydration mismatch), sin sitemap/robots/canonical.
-- Cobertura de tests mínima (1 archivo); 
+- Cobertura de tests básica (filtros, mocks, contrato OpenAPI, secretos).
 - `constants/portfolio.ts` `PORTFOLIO_TYPE_OPTIONS` ('Productos Propios') difiere en capitalización de `PortfolioFilter` ('Productos propios').
 
 ## Problemas conocidos de entorno
