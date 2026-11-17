@@ -71,6 +71,11 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 - Imágenes en `public/` (webp) o Cloudinary; usar `NuxtImg`.
 - Commits en español, descriptivos y cortos (ver `git log`).
 
+## Seguridad de cabeceras
+
+- `routeRules` en `nuxt.config.ts` añade `X-Content-Type-Options`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`, HSTS y un CSP mínimo (`frame-ancestors`, `base-uri`, `form-action`, `object-src`). Zonas privadas llevan `no-store` y `X-Robots-Tag`. El CSP completo (script/connect-src) queda pendiente hasta retirar el SDK de Firebase del navegador.
+- El servidor de desarrollo escucha solo en `localhost` (no en toda la red).
+
 ## Contrato de API
 
 - `docs/openapi.yaml` (OpenAPI 3.1) documenta todos los endpoints `/api/*` y es el contrato que debe cumplir el futuro backend Nest. Al agregar o cambiar un endpoint hay que actualizarlo: `tests/openapiContract.test.mjs` falla si un archivo de `server/api` no está documentado (o al revés).
