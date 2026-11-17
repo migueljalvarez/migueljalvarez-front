@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main, v2/landing]
+    branches: [main, v2/landing, v2/landing-clean]
 
 permissions:
   contents: read

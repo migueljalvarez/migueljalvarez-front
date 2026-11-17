@@ -8,7 +8,7 @@ Sitio personal/portafolio de **Miguel Alvarez** (Medellín, Colombia; trabajo re
 
 - Público objetivo: emprendedores y empresas hispanohablantes que necesitan sitios web, sistemas y MVPs.
 - Idioma del contenido y de la UI: **español** (`lang="es"`). Código, nombres de variables y commits: mezcla; el copy siempre en español.
-- Rama de trabajo actual: `v2/landing` (rediseño v2 de la landing). `main` es la rama principal.
+- Rama de trabajo actual: `v2/landing-clean` (rediseño v2, historial limpio). **No mezclar con `origin/v2/landing`, `main` ni `develop`**: conservan un historial anterior distinto (con datos personales ya retirados aquí). `main` se reemplazará por esta rama cuando se publique. Se permite hacer push normal de `v2/landing-clean`; no usar `git pull` desde las otras ramas.
 
 ## Stack
 
@@ -104,7 +104,7 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 ## Flujo de ramas y publicación
 
 - **NO se publica nada hasta que la base de datos (Supabase) esté OK.** No hacer push, PR a `main`, merge a `main` ni deploy sin que el autor lo pida explícitamente.
-- Se trabaja en ramas `feat/*` / `fix/*` creadas desde `v2/landing` y se integran de vuelta en `v2/landing` con merge local (`--no-ff`).
+- Se trabaja en ramas `feat/*` / `fix/*` creadas desde `v2/landing-clean` y se integran de vuelta en ella con merge local (`--no-ff`). El push de `v2/landing-clean` está permitido (no afecta al despliegue); `main`, push forzado y deploy requieren petición explícita.
 - Commits y PRs sin líneas de atribución de Claude (ni `Co-Authored-By` ni "Generated with Claude Code").
 
 ## Reglas para agentes
