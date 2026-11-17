@@ -223,6 +223,12 @@
                 </Button>
                 <p class="text-xs leading-5 text-brand-text-subtle">
                   {{ HOME_COPY.contact.privacy }}
+                  <NuxtLink
+                    to="/privacidad"
+                    class="underline underline-offset-4 hover:text-brand-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
+                  >
+                    {{ HOME_COPY.contact.privacyLink }}
+                  </NuxtLink>
                 </p>
               </Form>
             </div>
