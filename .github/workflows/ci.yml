@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, v2/landing]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Compilar
+        run: npm run build
+        env:
+          NUXT_PUBLIC_BASE_URL: https://migueljalvarez.com
+
+      - name: Tests (incluye contrato OpenAPI y comprobaciones del build)
+        run: npm test
+
+      - name: Auditoría de dependencias (falla con severidad alta o crítica)
+        run: npm audit --audit-level=high

@@ -1,76 +1,74 @@
-# Nuxt Minimal Starter
+# migueljalvarez.com
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/7bef7dfa-7ee8-420f-a044-ab8feea86837/deploy-status)](https://app.netlify.com/projects/migueljalvarez/deploys)
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Sitio web de **Miguel Álvarez**, ingeniero de sistemas y desarrollador de software independiente.
+Es una página de captación de clientes (landing, portafolio, cómo trabajo y contacto) y, más adelante,
+un panel privado en `/admin` para gestionar leads, testimonios, proyectos, equipo y pagos.
 
-## Setup
+> **Estado:** en desarrollo (`v2/landing`). No se publica hasta que la base de datos esté lista.
+> Contexto completo para personas y agentes de IA: [AGENTS.md](AGENTS.md).
 
-Make sure to install dependencies:
+## Stack
 
-```bash
-# npm
-npm install
+Nuxt 4 (SSR) · Vue 3 · TypeScript · Nuxt UI 4 · Tailwind CSS 4 · Nitro (`server/api`) ·
+Firebase Admin / Firestore (se migrará a Supabase y luego a un backend propio) · Resend · Zod ·
+Netlify.
 
-# pnpm
-pnpm install
+## Requisitos
 
-# yarn
-yarn install
+- Node `^22.22.3 || ^24.15.0 || >=26` (ver `.nvmrc`; con `nvm install 22.22.3`).
+- npm 10 o superior.
 
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+## Primeros pasos
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+npm ci                      # instala dependencias
+cp .env.example .env        # completa los valores (nunca subas .env)
+npm run dev                 # http://localhost:3000
 ```
 
-## Production
+Si el puerto 3000 está ocupado, usa uno temporal: `PORT=3333 npm run dev` (ajusta
+`NUXT_PUBLIC_BASE_URL` si lo necesitas).
 
-Build the application for production:
+## Scripts
 
-```bash
-# npm
-npm run build
+| Comando          | Qué hace                                          |
+| ---------------- | ------------------------------------------------- |
+| `npm run dev`    | Servidor de desarrollo (con proyectos de ejemplo) |
+| `npm run build`  | Compila para producción                           |
+| `npm run lint`   | ESLint                                            |
+| `npm run format` | Prettier                                          |
+| `npm test`       | Tests (`node --test`)                             |
 
-# pnpm
-pnpm build
+Para probar el build de producción en local:
+`npm run build && node --env-file=.env .output/server/index.mjs`.
 
-# yarn
-yarn build
+## Variables de entorno
 
-# bun
-bun run build
+Los nombres están en [.env.example](.env.example). Los secretos se leen **en ejecución** (no quedan
+dentro del build): puedes usar el nombre clásico (`RESEND_API_KEY`) o su versión con prefijo `NUXT_`
+(`NUXT_RESEND_API_KEY`), que tiene prioridad.
+
+## Estructura
+
+```
+pages/         rutas (landing, cómo trabajo, portafolio, privacidad, login, dashboard)
+components/    atoms · molecules · organisms · templates (diseño atómico)
+server/api/    endpoints /api/* (contrato en docs/openapi.yaml)
+server/utils/  sesión admin, secretos, Firebase Admin
+constants/     copy y datos del sitio (portafolio real + mock solo en dev)
+data/          servicios, "cómo trabajo", política de privacidad
+docs/          openapi.yaml, sistema de marca
+tests/         tests de filtros, mocks, contrato de API y secretos en el build
 ```
 
-Locally preview production build:
+## Calidad
 
-```bash
-# npm
-npm run preview
+- `npm run lint`, `npm run build` y `npm test` deben pasar antes de integrar cambios.
+- La consola del navegador no debe mostrar avisos de Vue ni errores de hidratación.
+- CI (GitHub Actions) ejecuta lint, build, tests y `npm audit --audit-level=high`.
 
-# pnpm
-pnpm preview
+## Despliegue (Netlify)
 
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+`netlify.toml` está preparado (preset `netlify` de Nitro, `publish = "dist"`, Node 22.22.3). Antes de
+publicar: definir las variables de entorno en Netlify, completar la revisión legal de `/privacidad`
+y tener lista la base de datos. Ver [AGENTS.md](AGENTS.md) para el flujo de ramas.
