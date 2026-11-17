@@ -14,7 +14,7 @@ Sitio personal/portafolio de **Miguel Alvarez** (Medellín, Colombia; trabajo re
 
 - Nuxt 4.6 (SSR activo; estructura de carpetas en la raíz, sin `app/`), Vue 3 `<script setup lang="ts">`, TypeScript.
 - Nuxt UI 4 + Tailwind CSS 4 (tokens de marca `brand-*` en `assets/css/main.css`), `@nuxt/icon` (mdi / simple-icons), `@nuxt/image` (ipx / proveedor de Netlify), `@nuxt/fonts` (Poppins, Inter).
-- Backend en Nitro (`server/api`): Resend (correo de contacto) y Zod (validación). **Sin base de datos por ahora**: Firebase se retiró por completo (nov-2026); la base llegará con Supabase y luego un backend propio.
+- Backend en Nitro (`server/api`): Resend (correo de contacto) y Zod (validación). **Sin base de datos por ahora**: Firebase se retiró por completo (nov-2026); la base y la API serán un backend propio (NestJS + PostgreSQL en el repositorio `../migueljalvarez-api`, en tu servidor tras Cloudflare Tunnel); Supabase queda solo como alternativa descartada por ahora.
 - Despliegue: Netlify (`netlify.toml`, preset `netlify` de Nitro: estáticos en `dist`, SSR como función). Node 22.22.3 (`.nvmrc` y `netlify.toml`). CI en `.github/workflows/ci.yml` y Dependabot.
 
 ## Comandos
@@ -26,7 +26,6 @@ npm run generate   # prerender estático
 npm run lint       # eslint
 npm run format     # prettier
 npm test           # node --test (tests/*.mjs)
-npm run db:up      # Postgres de desarrollo en Docker (127.0.0.1:5433); luego db:migrate / db:reset
 ```
 
 ## Estructura
@@ -45,8 +44,7 @@ constants/        common (copy HOME_COPY/HOME_HERO_COPY/META), portfolio (+ mock
 data/             services.ts, work.ts (contenido estático de servicios y "cómo trabajo")
 server/api/       (contact), admin/{login,logout,session}, portafolio
 utils/            cn.ts, portfolioFilters.ts
-db/               migrations/*.sql (esquema Postgres) y migrate.mjs; ver docs/database.md
-docs/             database.md, brand-system.md (tipografía/paleta), openapi.yaml (contrato de API), portfolio-guide.md (qué mostrar y medidas de imágenes)
+docs/             brand-system.md (tipografía/paleta), openapi.yaml (contrato de API), portfolio-guide.md (qué mostrar y medidas de imágenes)
 tests/            filtros del portafolio, mocks fuera del build, secretos fuera del build y contrato OpenAPI
 ```
 
@@ -84,7 +82,7 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 
 ## Contrato de API
 
-- Alcance público/privado del panel: `docs/dashboard-scope.md`; contrato planeado de la API del panel: `docs/openapi-panel.yaml` (se mueve a `openapi.yaml` cuando se implemente). La API pública solo lee vistas `public_*`.
+- La API del panel y el esquema de datos viven en el repositorio hermano **`../migueljalvarez-api`** (NestJS + PostgreSQL; ver su `AGENTS.md`, `docs/dashboard-scope.md` y `docs/openapi-panel.yaml`). Este sitio la consumirá desde el servidor (Nitro), nunca desde el navegador. El contrato de este archivo (`openapi.yaml`) sigue cubriendo solo los endpoints de `server/api`.
 - `docs/openapi.yaml` (OpenAPI 3.1) documenta todos los endpoints `/api/*` y es el contrato que debe cumplir el futuro backend Nest. Al agregar o cambiar un endpoint hay que actualizarlo: `tests/openapiContract.test.mjs` falla si un archivo de `server/api` no está documentado (o al revés).
 
 ## SEO
@@ -142,7 +140,7 @@ El checklist completo vive en Notion (página "Checklist antes de reemplazar mai
 
 Plan de trabajo y backlog en Notion (workspace del autor). Base "migueljalvarez.com – Backlog": https://app.notion.com/p/41a3dd9397f681c9ba0fd839c2e4786b (sprints semanales S1–S15 desde el 16-nov-2026, ~5 h/semana; vistas Tablero, Roadmap y Por sprint).
 
-Dirección estratégica: cerrar y publicar v2/landing → endurecer seguridad → SEO/contenido → migrar Firestore a Supabase (DB + Auth + Storage) → panel privado `/admin` en el mismo proyecto Nuxt → más adelante backend propio.
+Dirección estratégica: cerrar y publicar v2/landing → endurecer seguridad → SEO/contenido → API propia NestJS + PostgreSQL (repositorio `../migueljalvarez-api`: auth, lecturas públicas, módulos del panel) → conectar el panel `/admin` de este proyecto Nuxt a esa API.
 
 ## Panel administrativo (estructura hecha, sin datos reales)
 
