@@ -146,6 +146,8 @@ Dirección estratégica: cerrar y publicar v2/landing → endurecer seguridad �
 - `/admin/*` (layout `admin`, guarda global `middleware/auth.global.ts`): Resumen, Leads, Testimonios, Proyectos, Equipo y pagos, Políticas y tarifas, Experiencia. El menú y los módulos se definen en `constants/admin.ts`. `/dashboard/**` redirige a `/admin`. `/login` usa el layout mínimo `auth`.
 - Los datos de ejemplo del panel (`constants/admin.samples.ts`) existen solo en desarrollo, con la etiqueta "Datos de ejemplo"; en producción el panel muestra estados vacíos hasta conectar la API.
 - Toda página nueva de `/admin` queda protegida automáticamente por la guarda global.
+- **Formularios y acciones ya construidos** (leads con pipeline y notas, testimonios, clientes y proyectos con horas y deadline, equipo con horas y pagos en USD con TRM, tarifas y políticas, experiencia). Validan con Zod (`utils/admin/schemas.ts`, mismos campos que validará la API) y hablan con una sola capa de datos: `composables/useAdminData.ts`. **Hoy esa capa guarda en memoria y solo en desarrollo**; en producción los módulos muestran "Sin API conectada" y las acciones quedan deshabilitadas (`ADMIN_API_CONNECTED` en `constants/admin.ts`). Al conectar la API solo cambia el interior de `useAdminData`.
+- Primitivas de UI del panel en `components/admin/` (`AdminInput`, `AdminField`, `AdminDialog` con `<dialog>` nativo, `AdminButton`, `AdminPageHeader`). Importar siempre los componentes de forma explícita.
 
 ## Panel administrativo (visión)
 

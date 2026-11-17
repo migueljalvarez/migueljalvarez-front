@@ -2,27 +2,54 @@
   import AdminPageHeader from '~/components/admin/AdminPageHeader.vue'
   import AdminSampleBanner from '~/components/admin/AdminSampleBanner.vue'
   import { ADMIN_NAV } from '~/constants/admin'
-  import { SAMPLE_LEADS, USE_ADMIN_SAMPLES } from '~/constants/admin.samples'
 
   definePageMeta({ layout: 'admin' })
 
-  const openLeads = computed(
-    () => SAMPLE_LEADS.filter(lead => !['ganado', 'perdido'].includes(lead.status)).length
-  )
+  const { data, persistence, hoursByProject } = useAdminData()
+  const hasData = persistence !== 'ninguna'
+
+  const soon = (iso: string, days: number) => {
+    const diff = (new Date(`${iso}T12:00:00`).getTime() - Date.now()) / 86_400_000
+    return diff >= -1 && diff <= days
+  }
+
   const stats = computed(() => [
     {
       label: 'Leads abiertos',
-      value: USE_ADMIN_SAMPLES ? String(openLeads.value) : '—',
+      value: hasData
+        ? String(
+            data.value.leads.filter(lead => !['ganado', 'perdido'].includes(lead.status)).length
+          )
+        : '—',
       to: '/admin/leads'
     },
-    { label: 'Proyectos activos', value: USE_ADMIN_SAMPLES ? '2' : '—', to: '/admin/proyectos' },
-    { label: 'Pagos por vencer', value: USE_ADMIN_SAMPLES ? '1' : '—', to: '/admin/equipo' },
+    {
+      label: 'Proyectos activos',
+      value: hasData
+        ? String(data.value.projects.filter(item => item.status === 'en-curso').length)
+        : '—',
+      to: '/admin/proyectos'
+    },
+    {
+      label: 'Deadlines en 14 días',
+      value: hasData
+        ? String(
+            data.value.projects.filter(
+              item => item.status !== 'entregado' && soon(item.deadline, 14)
+            ).length
+          )
+        : '—',
+      to: '/admin/proyectos'
+    },
     {
       label: 'Testimonios por aprobar',
-      value: USE_ADMIN_SAMPLES ? '0' : '—',
+      value: hasData
+        ? String(data.value.testimonials.filter(item => item.status === 'respondida').length)
+        : '—',
       to: '/admin/testimonios'
     }
   ])
+  void hoursByProject
 
   const modules = ADMIN_NAV.filter(item => item.to !== '/admin')
 </script>
