@@ -31,8 +31,8 @@ npm test           # node --test (tests/*.mjs)
 ## Estructura
 
 ```
-pages/            index (landing), como-trabajo, privacidad, login, portafolio/{index,[slug]}, dashboard/index (sesión activa; módulos futuros en /admin)
-layouts/          default, dashboard (el error global está en error.vue, en la raíz)
+pages/            index (landing), como-trabajo, privacidad, login, portafolio/{index,[slug]}, admin/* (panel privado)
+layouts/          default, admin (panel), auth (login); el error global está en error.vue (raíz)
 components/
   atoms/          Button, Input, Select, Title
   molecules/      Header, SocialMedia
@@ -140,6 +140,12 @@ El checklist completo vive en Notion (página "Checklist antes de reemplazar mai
 Plan de trabajo y backlog en Notion (workspace del autor). Base "migueljalvarez.com – Backlog": https://app.notion.com/p/41a3dd9397f681c9ba0fd839c2e4786b (sprints semanales S1–S15 desde el 16-nov-2026, ~5 h/semana; vistas Tablero, Roadmap y Por sprint).
 
 Dirección estratégica: cerrar y publicar v2/landing → endurecer seguridad → SEO/contenido → migrar Firestore a Supabase (DB + Auth + Storage) → panel privado `/admin` en el mismo proyecto Nuxt → más adelante backend propio.
+
+## Panel administrativo (estructura hecha, sin datos reales)
+
+- `/admin/*` (layout `admin`, guarda global `middleware/auth.global.ts`): Resumen, Leads, Testimonios, Proyectos, Equipo y pagos, Políticas y tarifas, Experiencia. El menú y los módulos se definen en `constants/admin.ts`. `/dashboard/**` redirige a `/admin`. `/login` usa el layout mínimo `auth`.
+- Los datos de ejemplo del panel (`constants/admin.samples.ts`) existen solo en desarrollo, con la etiqueta "Datos de ejemplo"; en producción el panel muestra estados vacíos hasta conectar la API.
+- Toda página nueva de `/admin` queda protegida automáticamente por la guarda global.
 
 ## Panel administrativo (visión)
 

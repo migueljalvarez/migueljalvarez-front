@@ -78,9 +78,11 @@ export default defineNuxtConfig({
       }
     },
     // Zonas privadas: sin caché compartida y fuera de buscadores.
-    '/dashboard/**': {
+    '/admin/**': {
       headers: { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' }
     },
+    // Enlaces antiguos del panel viejo.
+    '/dashboard/**': { redirect: '/admin' },
     '/login': {
       headers: { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' }
     },
