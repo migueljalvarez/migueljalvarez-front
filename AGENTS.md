@@ -59,7 +59,7 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 - **Copy y contenido de la landing**: mayormente estático en `constants/` y `data/`.
 - **Portafolio**: hoy vive en `constants/portfolio.ts` (solo Mi Comodoro y Mi Despensa) y se sirve por `/api/portafolio` (no desde Firestore). Campos clave: `slug`, `type` (`client` | `product` | `practice`), `status` (`published` | `in-development`; en desarrollo no tiene ficha de detalle), `problem` / `decision` / `result`. El detalle público es `pages/portafolio/[slug].vue` (la página legacy `[id].vue` se eliminó porque tapaba a `[slug]`).
 - **Perfil ("me")**: Firestore vía `/api/me` (cacheado, `swr`). Edición manual documentada en `docs/firebase-me-update.md`.
-- **Redes sociales / testimonios**: `/api/socialMedia`, `/api/testimonials`.
+- **Redes sociales**: `/api/socialMedia` (Firestore). Los testimonios no tienen endpoint hasta que exista uno real aprobado.
 - **Contacto**: `POST /api/contact` → Resend (`RESEND_API_KEY`, `MAIL_FROM`, `MAIL_TO`).
 
 ## Convenciones
