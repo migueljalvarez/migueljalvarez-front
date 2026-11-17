@@ -20,7 +20,7 @@ Sitio personal/portafolio de **Miguel Alvarez** (Medellín, Colombia; trabajo re
 ## Comandos
 
 ```bash
-npm run dev        # http://localhost:3000
+npm run dev        # http://localhost:3333
 npm run build      # build de producción
 npm run generate   # prerender estático
 npm run lint       # eslint
