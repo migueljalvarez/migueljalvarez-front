@@ -1,0 +1,23 @@
+# Postgres SOLO para desarrollo local. No se despliega ni se expone a Internet.
+# Uso: npm run db:up  (puerto 5433 porque 5432 suele estar ocupado en el equipo)
+# Credenciales de desarrollo, sin valor real; en el servidor se usan secretos propios.
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: mjalvarez-db-dev
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: migueljalvarez
+    ports:
+      - '127.0.0.1:5433:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U dev -d migueljalvarez']
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  db-data:
