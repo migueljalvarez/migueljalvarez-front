@@ -1,0 +1,202 @@
+openapi: 3.1.0
+info:
+  title: API del panel y contenido público (PLANEADA)
+  version: 0.1.0-draft
+  description: |
+    Contrato **planeado** (aún no implementado) de las dos superficies de la API:
+
+    - **Pública** (`/api/*`): solo lectura de contenido publicado, desde las vistas `public_*`.
+    - **Admin** (`/api/admin/*`): requiere sesión, siempre `Cache-Control: no-store`.
+
+    Cuando un endpoint se implemente en `server/api`, se mueve a `docs/openapi.yaml` (el test
+    `tests/openapiContract.test.mjs` exige que ese archivo refleje solo lo implementado).
+    Alcance y reglas: `docs/dashboard-scope.md`. Esquema: `docs/database.md`.
+
+    Convenciones: errores `{ statusCode, statusMessage, message }`; montos en USD (`numeric` como
+    número con 2 decimales) y TRM por pago; fechas ISO 8601; textos en español; las validaciones
+    repiten las de `utils/admin/schemas.ts` (Zod) y los `CHECK` de la base.
+
+    Los recursos del panel siguen un patrón CRUD común: `GET /api/admin/{recurso}` (lista, con
+    `?limit&cursor`), `POST` (crear), `GET/PATCH/DELETE /api/admin/{recurso}/{id}`.
+servers:
+  - url: https://api.migueljalvarez.com
+    description: Backend propio (Cloudflare Tunnel); mientras tanto, mismo origen que el sitio
+tags:
+  - name: Público
+  - name: Auth
+  - name: Leads
+  - name: Testimonios
+  - name: Clientes y proyectos
+  - name: Equipo y pagos
+  - name: Portafolio
+  - name: Sitio
+  - name: Experiencia
+paths:
+  # ------------------------------ Pública ------------------------------
+  /api/portafolio:
+    get:
+      tags: [Público]
+      summary: Portafolio publicado (vista public_portfolio)
+      responses:
+        '200': { description: Lista de proyectos publicados, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/PublicPortfolioEntry' } } } } }
+  /api/portafolio/{slug}:
+    get:
+      tags: [Público]
+      summary: Ficha pública de un proyecto publicado
+      parameters: [{ name: slug, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: Proyecto, content: { application/json: { schema: { $ref: '#/components/schemas/PublicPortfolioEntry' } } } }
+        '404': { description: No existe o no está publicado }
+  /api/social-media:
+    get:
+      tags: [Público]
+      summary: Redes sociales visibles (public_social_links)
+      responses:
+        '200': { description: Lista ordenada }
+  /api/politicas:
+    get:
+      tags: [Público]
+      summary: Políticas públicas (public_policies), para /como-trabajo
+      responses:
+        '200': { description: Lista ordenada }
+  /api/testimonios:
+    get:
+      tags: [Público]
+      summary: Testimonios aprobados (public_testimonials)
+      description: Lista vacía mientras no haya uno real aprobado; el sitio oculta la sección.
+      responses:
+        '200': { description: Lista (puede ser vacía) }
+  /api/testimonios/solicitud/{token}:
+    get:
+      tags: [Público]
+      summary: Abre el formulario de testimonio con el enlace único del correo
+      description: Busca por sha-256 del token; marca la solicitud como abierta. 404 si no existe; 410 si expiró.
+      parameters: [{ name: token, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: Datos mínimos para mostrar el formulario (nombre y proyecto) }
+        '410': { description: Enlace expirado }
+    post:
+      tags: [Público]
+      summary: El cliente envía su testimonio (texto, cargo, empresa, foto/logo opcionales, consentimiento)
+      parameters: [{ name: token, in: path, required: true, schema: { type: string } }]
+      responses:
+        '204': { description: Recibido; queda "respondida" pendiente de aprobación }
+        '422': { description: Validación (consentimiento obligatorio) }
+  # ------------------------------ Auth ------------------------------
+  /api/admin/login:
+    post:
+      tags: [Auth]
+      summary: Inicia sesión (hash de contraseña, límite de intentos por IP en login_attempts)
+      responses:
+        '204': { description: Cookie de sesión HttpOnly emitida (hash del token en admin_sessions) }
+        '401': { description: Credenciales inválidas }
+        '429': { description: Demasiados intentos }
+  /api/admin/logout:
+    post:
+      tags: [Auth]
+      summary: Revoca la sesión (revoked_at)
+      responses:
+        '204': { description: Sesión cerrada }
+  /api/admin/session:
+    get:
+      tags: [Auth]
+      summary: Estado de la sesión actual
+      responses:
+        '200': { description: Sesión válida }
+        '401': { description: Sin sesión }
+  # ------------------------------ Panel (CRUD) ------------------------------
+  /api/admin/leads:
+    get: { tags: [Leads], summary: Lista de leads (filtro ?status), security: [{ adminCookie: [] }], responses: { '200': { description: OK } } }
+    post: { tags: [Leads], summary: Alta manual de lead, security: [{ adminCookie: [] }], responses: { '201': { description: Creado } } }
+  /api/admin/leads/{id}:
+    get: { tags: [Leads], summary: Detalle con notas, security: [{ adminCookie: [] }], responses: { '200': { description: OK } } }
+    patch: { tags: [Leads], summary: Cambia estado, próxima acción o datos (perdido exige lost_reason), security: [{ adminCookie: [] }], responses: { '200': { description: OK }, '422': { description: Validación } } }
+    delete: { tags: [Leads], summary: Elimina el lead y sus notas, security: [{ adminCookie: [] }], responses: { '204': { description: Eliminado } } }
+  /api/admin/leads/{id}/notes:
+    post: { tags: [Leads], summary: Añade una nota, security: [{ adminCookie: [] }], responses: { '201': { description: Creada } } }
+  /api/admin/leads/{id}/convert:
+    post: { tags: [Leads], summary: Convierte el lead ganado en cliente (client_id), security: [{ adminCookie: [] }], responses: { '201': { description: Cliente creado } } }
+  /api/admin/testimonials:
+    get: { tags: [Testimonios], summary: Solicitudes y respuestas, security: [{ adminCookie: [] }], responses: { '200': { description: OK } } }
+    post: { tags: [Testimonios], summary: Crea la solicitud y envía el correo con enlace único (solo se guarda el hash del token), security: [{ adminCookie: [] }], responses: { '201': { description: Enviada } } }
+  /api/admin/testimonials/{id}/review:
+    post: { tags: [Testimonios], summary: Aprueba (con published_text opcional) o rechaza; aprobar exige consentimiento y respuesta, security: [{ adminCookie: [] }], responses: { '200': { description: OK }, '422': { description: Validación } } }
+  /api/admin/clients:
+    get: { tags: [Clientes y proyectos], summary: Lista, security: [{ adminCookie: [] }], responses: { '200': { description: OK } } }
+    post: { tags: [Clientes y proyectos], summary: Crea, security: [{ adminCookie: [] }], responses: { '201': { description: Creado } } }
+  /api/admin/clients/{id}:
+    patch: { tags: [Clientes y proyectos], summary: Edita, security: [{ adminCookie: [] }], responses: { '200': { description: OK } } }
+    delete: { tags: [Clientes y proyectos], summary: Elimina (409 si tiene proyectos), security: [{ adminCookie: [] }], responses: { '204': { description: Eliminado }, '409': { description: Tiene proyectos } } }
+  /api/admin/projects:
+    get: { tags: [Clientes y proyectos], summary: Lista con horas usadas (vista project_hours), security: [{ adminCookie: [] }], responses: { '200': { description: OK } } }
+    post: { tags: [Clientes y proyectos], summary: Crea (deadline ≥ inicio), security: [{ adminCookie: [] }], responses: { '201': { description: Creado } } }
+  /api/admin/projects/{id}:
+    patch: { tags: [Clientes y proyectos], summary: Edita, security: [{ adminCookie: [] }], responses: { '200': { description: OK } } }
+  /api/admin/team:
+    get: { tags: [Equipo y pagos], summary: Colaboradores con saldo (vista member_balances), security: [{ adminCookie: [] }], responses: { '200': { description: OK } } }
+    post: { tags: [Equipo y pagos], summary: Crea colaborador, security: [{ adminCookie: [] }], responses: { '201': { description: Creado } } }
+  /api/admin/team/{id}:
+    patch: { tags: [Equipo y pagos], summary: Edita o desactiva, security: [{ adminCookie: [] }], responses: { '200': { description: OK } } }
+  /api/admin/assignments:
+    post: { tags: [Equipo y pagos], summary: Asigna colaborador a proyecto con horas pactadas, security: [{ adminCookie: [] }], responses: { '201': { description: Creada } } }
+  /api/admin/time-entries:
+    get: { tags: [Equipo y pagos], summary: Horas registradas (?memberId&projectId), security: [{ adminCookie: [] }], responses: { '200': { description: OK } } }
+    post: { tags: [Equipo y pagos], summary: Registra horas (≤ 24 por registro), security: [{ adminCookie: [] }], responses: { '201': { description: Creada } } }
+  /api/admin/payments:
+    get: { tags: [Equipo y pagos], summary: Pagos en USD con TRM y COP calculado, security: [{ adminCookie: [] }], responses: { '200': { description: OK } } }
+    post: { tags: [Equipo y pagos], summary: Registra pago (amountUsd, trm del día), security: [{ adminCookie: [] }], responses: { '201': { description: Creado } } }
+  /api/admin/trm:
+    get: { tags: [Equipo y pagos], summary: TRM del día (consulta y guarda en trm_rates), security: [{ adminCookie: [] }], responses: { '200': { description: OK } } }
+  /api/admin/portfolio:
+    get: { tags: [Portafolio], summary: Todas las fichas (publicadas y borradores), security: [{ adminCookie: [] }], responses: { '200': { description: OK } } }
+    post: { tags: [Portafolio], summary: Crea ficha (nace oculta), security: [{ adminCookie: [] }], responses: { '201': { description: Creada } } }
+  /api/admin/portfolio/{id}:
+    patch: { tags: [Portafolio], summary: Edita; is_published exige portada, security: [{ adminCookie: [] }], responses: { '200': { description: OK }, '422': { description: Validación } } }
+    delete: { tags: [Portafolio], summary: Elimina ficha y galería, security: [{ adminCookie: [] }], responses: { '204': { description: Eliminada } } }
+  /api/admin/portfolio/{id}/media:
+    post: { tags: [Portafolio], summary: Sube imagen de galería (webp ≤150 KB, ≤1920 px, alt obligatorio, máx. 6), security: [{ adminCookie: [] }], responses: { '201': { description: Creada }, '422': { description: Límite o formato } } }
+  /api/admin/social-media:
+    get: { tags: [Sitio], summary: Redes (incluye ocultas), security: [{ adminCookie: [] }], responses: { '200': { description: OK } } }
+    put: { tags: [Sitio], summary: Reemplaza la lista de redes (solo https o mailto), security: [{ adminCookie: [] }], responses: { '200': { description: OK } } }
+  /api/admin/policies:
+    get: { tags: [Sitio], summary: Políticas (públicas y privadas), security: [{ adminCookie: [] }], responses: { '200': { description: OK } } }
+    post: { tags: [Sitio], summary: Crea política, security: [{ adminCookie: [] }], responses: { '201': { description: Creada } } }
+  /api/admin/rates:
+    get: { tags: [Sitio], summary: Tarifas (privadas por defecto), security: [{ adminCookie: [] }], responses: { '200': { description: OK } } }
+    post: { tags: [Sitio], summary: Crea tarifa, security: [{ adminCookie: [] }], responses: { '201': { description: Creada } } }
+  /api/admin/experience:
+    get: { tags: [Experiencia], summary: Perfil, experiencias, habilidades, formación, certificaciones e idiomas (privado), security: [{ adminCookie: [] }], responses: { '200': { description: OK } } }
+    post: { tags: [Experiencia], summary: Añade experiencia, security: [{ adminCookie: [] }], responses: { '201': { description: Creada } } }
+  /api/admin/cv:
+    post: { tags: [Experiencia], summary: "Futuro: genera CV ATS para una vacante usando solo hechos guardados (sin inventar)", security: [{ adminCookie: [] }], responses: { '200': { description: Archivo generado } } }
+components:
+  securitySchemes:
+    adminCookie:
+      type: apiKey
+      in: cookie
+      name: admin_session
+  schemas:
+    PublicPortfolioEntry:
+      type: object
+      description: Fila de la vista public_portfolio. No incluye project_id, id interno ni is_published.
+      required: [slug, title, kind, status, description, cover_path]
+      properties:
+        slug: { type: string }
+        title: { type: string }
+        kind: { type: string, enum: [client, product] }
+        status: { type: string, enum: [published, in-development] }
+        description: { type: string }
+        role: { type: string }
+        year: { type: string }
+        duration: { type: string }
+        problem: { type: string }
+        decision: { type: string }
+        result: { type: string }
+        highlights: { type: array, items: { type: object, properties: { value: { type: string }, label: { type: string } } } }
+        scope: { type: array, items: { type: string } }
+        technologies: { type: array, items: { type: string } }
+        cover_path: { type: string }
+        og_path: { type: string }
+        url: { type: string }
+        featured: { type: boolean }
+        gallery: { type: array, items: { type: object, required: [src, alt], properties: { src: { type: string }, alt: { type: string }, caption: { type: string } } } }
