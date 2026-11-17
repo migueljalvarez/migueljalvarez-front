@@ -135,3 +135,60 @@ test('perfil admite una sola fila y experiencia valida su tipo', opts, () => {
     /experiences_kind_check/
   )
 })
+
+test(
+  'portafolio: publicar exige portada y la vista pública oculta lo no publicado y lo privado',
+  opts,
+  () => {
+    rejects(
+      "INSERT INTO portfolio_entries (slug, title, kind, description, is_published) VALUES ('x', 'X', 'product', 'd', true);",
+      /portfolio_publish_requires_cover/
+    )
+    const out = run(`BEGIN;
+INSERT INTO portfolio_entries (slug, title, kind, description, cover_path, is_published) VALUES ('visible', 'V', 'product', 'd', '/p/v.webp', true);
+INSERT INTO portfolio_entries (slug, title, kind, description) VALUES ('borrador', 'B', 'product', 'd');
+SELECT count(*) FROM public_portfolio;
+SELECT count(*) FROM information_schema.columns WHERE table_name = 'public_portfolio' AND column_name IN ('project_id', 'id', 'is_published');
+ROLLBACK;`)
+    assert.deepEqual(
+      out.split('\n').filter(l => /^\d+$/.test(l)),
+      ['1', '0']
+    )
+  }
+)
+
+test('portafolio: máximo 6 imágenes de galería, con alt obligatorio', opts, () => {
+  const entry =
+    "INSERT INTO portfolio_entries (id, slug, title, kind, description) VALUES ('00000000-0000-0000-0000-0000000000aa', 'g', 'G', 'product', 'd');"
+  const media = n =>
+    Array.from(
+      { length: n },
+      (_, i) =>
+        `INSERT INTO portfolio_media (entry_id, path, alt) VALUES ('00000000-0000-0000-0000-0000000000aa', '/p/${i}.webp', 'alt ${i}');`
+    ).join('\n')
+  rejects(`${entry}\n${media(7)}`, /portfolio_media_limit/)
+  rejects(
+    `${entry}\nINSERT INTO portfolio_media (entry_id, path, alt) VALUES ('00000000-0000-0000-0000-0000000000aa', '/p.webp', '');`,
+    /portfolio_media_alt_check/
+  )
+})
+
+test('testimonios públicos: solo aprobados, sin correo ni token', opts, () => {
+  const out = run(`BEGIN;
+INSERT INTO testimonial_requests (client_name, email, token_hash, status, expires_at, answer, published_text, consent_publish)
+  VALUES ('Ana', 'ana@x.co', '${'b'.repeat(64)}', 'aprobada', now() + interval '7 days', 'original', 'editado', true);
+INSERT INTO testimonial_requests (client_name, email, token_hash, status, expires_at, answer)
+  VALUES ('Beto', 'beto@x.co', '${'c'.repeat(64)}', 'respondida', now() + interval '7 days', 'pendiente');
+SELECT author_name, body FROM public_testimonials;
+SELECT count(*) FROM information_schema.columns WHERE table_name = 'public_testimonials' AND column_name IN ('email', 'token_hash', 'answer');
+ROLLBACK;`)
+  const lines = out.split('\n').filter(l => l.includes('|') || /^\d+$/.test(l))
+  assert.deepEqual(lines, ['Ana|editado', '0'])
+})
+
+test('redes sociales: solo https o mailto', opts, () => {
+  rejects(
+    "INSERT INTO social_links (name, url, icon) VALUES ('X', 'http://inseguro.com', 'mdi:web');",
+    /social_links_url_check/
+  )
+})
