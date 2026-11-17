@@ -16,6 +16,7 @@ export default defineEventHandler(event => {
     '/',
     '/como-trabajo',
     '/portafolio',
+    '/privacidad',
     ...PORTFOLIO_PROJECTS.filter(project => project.status !== 'in-development').map(
       project => `/portafolio/${project.slug || project.id}`
     )

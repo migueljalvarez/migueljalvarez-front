@@ -59,6 +59,7 @@ export const HOME_COPY = {
       'No necesitas tener un documento técnico ni todos los requisitos definidos. Cuéntame qué quieres hacer, qué problema tienes o qué quieres mejorar. Primero hablamos; después vemos si puedo ayudarte.',
     benefits: ['Respuesta en menos de 24 horas', 'Primera consulta sin costo'],
     privacy: 'Uso tus datos solo para responderte.',
+    privacyLink: 'Política de tratamiento de datos',
     serviceDescription: 'Servicios de consultoría y desarrollo de software',
     sendError: 'Error al enviar el mensaje. Por favor, inténtalo de nuevo más tarde.',
     form: {
