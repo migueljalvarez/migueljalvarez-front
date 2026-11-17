@@ -32,7 +32,7 @@ npm test           # node --test (tests/*.mjs)
 
 ```
 pages/            index (landing), como-trabajo, privacidad, login, portafolio/{index,[slug]}, dashboard/index (sesión activa; módulos futuros en /admin)
-layouts/          default, dashboard, error
+layouts/          default, dashboard (el error global está en error.vue, en la raíz)
 components/
   atoms/          Button, Input, Select, Title
   molecules/      Header, SocialMedia
@@ -45,7 +45,7 @@ data/             services.ts, work.ts (contenido estático de servicios y "cóm
 server/api/       (contact), admin/{login,logout,session}, portafolio
 utils/            cn.ts, portfolioFilters.ts
 docs/             brand-system.md (tipografía/paleta), openapi.yaml (contrato de API)
-tests/            portfolioFilters.test.mjs
+tests/            filtros del portafolio, mocks fuera del build, secretos fuera del build y contrato OpenAPI
 ```
 
 Atomic design: atoms → molecules → organisms → templates → pages. Cada carpeta tiene `index.ts` y `.d.ts` de tipos.
@@ -78,7 +78,7 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 ## Calidad antes de integrar
 
 - Además de lint, build y tests: abrir la home en `npm run dev` y revisar que la consola no muestre avisos de Vue ni "Hydration mismatch". Un import perdido (p. ej. `Section`) no rompe la página a la vista pero sí genera errores de hidratación.
-- Lighthouse (referencia nov-2026, build local): móvil 80 / escritorio 98 en rendimiento; accesibilidad, buenas prácticas y SEO en 100. Imágenes de `public/` ≤ ~100 KB y ≤ 1920 px de ancho.
+- Lighthouse (referencia nov-2026, build local): móvil 68–80 (varía por corrida) / escritorio 98–99 en rendimiento; accesibilidad, buenas prácticas y SEO en 100. Imágenes de `public/` ≤ ~100 KB y ≤ 1920 px de ancho.
 
 ## Contrato de API
 
@@ -131,6 +131,10 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 - Para ver cómo se comporta la UI con varios proyectos, los mocks viven en un archivo aparte (`constants/portfolio.mock.ts`) y solo se activan en desarrollo (`USE_PORTFOLIO_MOCKS = import.meta.dev` en `constants/portfolio.ts`; en `npm run dev` se ve la marca "Datos de ejemplo"). Nunca deben llegar a producción, `build` ni `generate`: `tests/portfolioMocks.test.mjs` revisa `.output` tras un `npm run build`. Para ver el sitio solo con datos reales, usa `npm run build && npm run preview`.
 - Lo mismo aplica a testimonios: sin testimonios reales aprobados, la sección no se muestra en producción.
 
+## Antes de reemplazar `main` (publicar)
+
+El checklist completo vive en Notion (página "Checklist antes de reemplazar main"). Resumen: repo público/privado decidido, variables de entorno cargadas en Netlify, `NUXT_PUBLIC_BASE_URL` definido, revisión legal de `/privacidad`, prueba real del formulario, revisión en teléfono real, Node 22.22.3, contenido de Mi Comodoro y CI en verde. Reemplazar `main` dispara el deploy de producción: solo cuando el autor lo pida.
+
 ## Gestión de pendientes
 
 Plan de trabajo y backlog en Notion (workspace del autor). Base "migueljalvarez.com – Backlog": https://app.notion.com/p/41a3dd9397f681c9ba0fd839c2e4786b (sprints semanales S1–S15 desde el 16-nov-2026, ~5 h/semana; vistas Tablero, Roadmap y Por sprint).
@@ -145,12 +149,11 @@ Módulos previstos en `/admin` (privado, noindex, Supabase Auth, un solo admin):
 
 ## Deuda técnica conocida (a priorizar en el plan)
 
-- **Auth del dashboard es provisional** (rama `feat/security-hardening`): login con `ADMIN_EMAIL` / `ADMIN_PASSWORD`, cookie `admin_session` firmada (HMAC con `ADMIN_SESSION_SECRET`), httpOnly, 8 h, validada en servidor (`server/utils/adminSession.ts`, `/api/admin/session`, `middleware/auth.ts`). Sin esas variables el acceso queda cerrado (503). Limitaciones: un solo usuario, contador de intentos en memoria. El panel viejo (6 páginas con datos de ejemplo en localStorage) se eliminó en nov-2026; `/dashboard` solo muestra la sesión activa hasta que exista `/admin`. Se reemplaza por Supabase Auth (S7).
+- **Auth del dashboard es provisional:** login con `ADMIN_EMAIL` / `ADMIN_PASSWORD`, cookie `admin_session` firmada (HMAC con `ADMIN_SESSION_SECRET`), httpOnly, 8 h, validada en servidor (`server/utils/adminSession.ts`, `/api/admin/session`, `middleware/auth.ts`). Sin esas variables el acceso queda cerrado (503). Limitaciones: un solo usuario, contador de intentos en memoria. El panel viejo (6 páginas con datos de ejemplo en localStorage) se eliminó en nov-2026; `/dashboard` solo muestra la sesión activa hasta que exista `/admin`. Se reemplaza por Supabase Auth (S7).
 - `server/api/(contact)/contact.ts` ya está endurecido (escape de HTML, límites, honeypot, 5 intentos/10 min por IP en memoria, `runtimeConfig`). Pendiente: rate limit del proveedor y prueba de envío real en preview.
 - La web pública ya no depende de ninguna base de datos: puede desplegarse sin esperar a Supabase (la compuerta de publicación sigue siendo decisión del autor).
 - Netlify: el build con el preset `netlify` funciona en local (`NITRO_PRESET=netlify npm run build`); pesa 45 MB la función por los iconos de `@nuxt/icon` en modo local (valorar modo `remote` o recorte de colecciones). Falta medir en un deploy preview real.
 - Cobertura de tests básica (filtros, mocks, contrato OpenAPI, secretos).
-- `constants/portfolio.ts` `PORTFOLIO_TYPE_OPTIONS` ('Productos Propios') difiere en capitalización de `PortfolioFilter` ('Productos propios').
 
 ## Problemas conocidos de entorno
 
