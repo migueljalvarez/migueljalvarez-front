@@ -1,7 +1,19 @@
-# netlify.toml
+# Netlify detecta Nuxt y compila con el preset "netlify" de Nitro: los estáticos salen en `dist`
+# y el servidor (SSR + /api) como función en `.netlify/functions-internal`. No cambiar `publish`
+# a `.output` (esa carpeta es del preset `node-server` que se usa solo en local).
+#
+# IMPORTANTE: no se publica nada hasta que la base de datos esté lista (ver AGENTS.md).
+# Variables de entorno necesarias en Netlify (ver .env.example): NUXT_PUBLIC_BASE_URL,
+# RESEND_API_KEY, MAIL_FROM, MAIL_TO, FIREBASE_*, ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_SESSION_SECRET.
+# Los secretos se leen en ejecución; defínelos con alcance de funciones/runtime.
+
 [build]
   publish = "dist"
   command = "npm run build"
+
+[build.environment]
+  # Nuxt 4.6 exige Node ^22.22.3 || ^24.15 || >=26. Mantener igual que .nvmrc.
+  NODE_VERSION = "22.22.3"
 
 [images]
   remote_images = ["https://res.cloudinary.com/m2a/.*"]

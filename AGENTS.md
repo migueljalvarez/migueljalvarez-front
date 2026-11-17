@@ -15,7 +15,7 @@ Sitio personal/portafolio de **Miguel Alvarez** (Medellín, Colombia; trabajo re
 - Nuxt 4.6 (SSR activo; estructura de carpetas en la raíz, sin `app/`), Vue 3 `<script setup lang="ts">`, TypeScript.
 - Nuxt UI 4 + Tailwind CSS 4 (tokens de marca `brand-*` en `assets/css/main.css`), `@nuxt/icon` (mdi / simple-icons), `@nuxt/image` (ipx + Cloudinary `res.cloudinary.com/m2a`), `@nuxt/fonts` (Poppins, Inter, IBM Plex Mono).
 - Backend en Nitro (`server/api`): Firebase Admin/Firestore, Resend (correo de contacto), Zod (validación).
-- Despliegue: Netlify (`netlify.toml`). Node `>=22 <25` (ver `.nvmrc`).
+- Despliegue: Netlify (`netlify.toml`, preset `netlify` de Nitro: estáticos en `dist`, SSR como función). Node 22.22.3 (`.nvmrc` y `netlify.toml`). CI en `.github/workflows/ci.yml` y Dependabot.
 
 ## Comandos
 
@@ -150,7 +150,7 @@ Módulos previstos en `/admin` (privado, noindex, Supabase Auth, un solo admin):
 - `server/api/(contact)/contact.ts` ya está endurecido (escape de HTML, límites, honeypot, 5 intentos/10 min por IP en memoria, `runtimeConfig`). Pendiente: rate limit del proveedor y prueba de envío real en preview.
 - (Resuelto) `server/utils/firebase-admin.ts` ya sin doble extensión y sin el `DotNavigation` duplicado de Hero.
 - Dos fuentes de verdad para portafolio: `constants/portfolio.ts` vs. dashboard `/dashboard/portfolio` (Firestore) — sin sincronizar. Lo mismo con servicios y testimonios.
-- `README.md` es el de la plantilla de Nuxt; `netlify.toml` publica `dist` pero Nuxt SSR genera `.output`; `useSeoMeta` en `index.vue` calcula `origin` con `window` (riesgo de hydration mismatch), sin sitemap/robots/canonical.
+- Netlify: el build con el preset `netlify` funciona en local (`NITRO_PRESET=netlify npm run build`); pesa 45 MB la función por los iconos de `@nuxt/icon` en modo local (valorar modo `remote` o recorte de colecciones). Falta medir en un deploy preview real.
 - Cobertura de tests básica (filtros, mocks, contrato OpenAPI, secretos).
 - `constants/portfolio.ts` `PORTFOLIO_TYPE_OPTIONS` ('Productos Propios') difiere en capitalización de `PortfolioFilter` ('Productos propios').
 

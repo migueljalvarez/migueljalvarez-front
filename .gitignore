@@ -25,3 +25,6 @@ logs
 
 # Archivos privados locales (CV, documentos). Nunca se versionan ni se sirven publicamente.
 .private
+
+# Salida del preset de Netlify
+.netlify

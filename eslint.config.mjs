@@ -7,7 +7,7 @@ import vueParser from 'vue-eslint-parser'
 const vueConfig = await vue.configs['vue3-recommended'] ?? {}
 export default [
   {
-    ignores: ['.nuxt', '.output', 'dist', 'node_modules', '**/*.d.ts'],
+    ignores: ['.nuxt', '.output', '.netlify', 'dist', 'node_modules', '**/*.d.ts'],
   },
   {
     files: ['**/*.{ts,js,vue}'],
