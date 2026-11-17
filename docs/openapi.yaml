@@ -262,17 +262,29 @@ components:
           type: string
         message:
           type: string
-    Image:
+    ProjectImage:
       type: object
-      required: [title, url]
+      required: [src, alt]
       properties:
-        title:
+        src:
           type: string
-        url:
+          description: Ruta bajo /public (p. ej. /projects/mi-comodoro/01-pantalla.webp), 1600x900 WebP <=150 KB
+        alt:
+          type: string
+        caption:
+          type: string
+    ProjectHighlight:
+      type: object
+      required: [value, label]
+      properties:
+        value:
+          type: string
+        label:
           type: string
     PortfolioProject:
       type: object
-      required: [id, title, type, portfolioType, technologies, version, description, urlImage, url, initialProblem, solutionDetails, images]
+      description: Guia de contenido e imagenes en docs/portfolio-guide.md
+      required: [id, title, type, portfolioType, technologies, description, urlImage]
       properties:
         id:
           type: string
@@ -289,37 +301,47 @@ components:
           description: Los `in-development` no tienen ficha de detalle.
         portfolioType:
           type: string
-          description: Etiqueta de presentación (p. ej. "Producto propio", "Cliente")
+          description: Etiqueta de presentacion (p. ej. "Producto propio", "Cliente")
+        description:
+          type: string
+          description: Resumen de 1-2 frases
+        role:
+          type: string
+        year:
+          type: string
+        duration:
+          type: string
         problem:
           type: string
         decision:
           type: string
         result:
           type: string
+        highlights:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectHighlight'
+        scope:
+          type: array
+          items:
+            type: string
         technologies:
           type: array
           items:
             type: string
-        version:
-          type: string
-        description:
-          type: string
         urlImage:
           type: string
-        url:
+          description: Portada 1280x720 WebP <=100 KB
+        ogImage:
           type: string
-        initialProblem:
-          type: string
-        solutionDetails:
-          type: string
-        images:
-          type: array
-          items:
-            $ref: '#/components/schemas/Image'
+          description: Imagen para redes 1200x630 JPG <=100 KB
         gallery:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/ProjectImage'
+        url:
+          type: string
+          description: Enlace publico del proyecto, si existe
     ContactRequest:
       type: object
       required: [name, email, subject, message]

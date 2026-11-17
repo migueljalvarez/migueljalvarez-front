@@ -44,7 +44,7 @@ constants/        common (copy HOME_COPY/HOME_HERO_COPY/META), portfolio (+ mock
 data/             services.ts, work.ts (contenido estático de servicios y "cómo trabajo")
 server/api/       (contact), admin/{login,logout,session}, portafolio
 utils/            cn.ts, portfolioFilters.ts
-docs/             brand-system.md (tipografía/paleta), openapi.yaml (contrato de API)
+docs/             brand-system.md (tipografía/paleta), openapi.yaml (contrato de API), portfolio-guide.md (qué mostrar y medidas de imágenes)
 tests/            filtros del portafolio, mocks fuera del build, secretos fuera del build y contrato OpenAPI
 ```
 
@@ -57,7 +57,7 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 ## Fuentes de datos (importante)
 
 - **Copy y contenido de la landing**: mayormente estático en `constants/` y `data/`.
-- **Portafolio**: hoy vive en `constants/portfolio.ts` (solo Mi Comodoro y Mi Despensa) y se sirve por `/api/portafolio` (no desde Firestore). Campos clave: `slug`, `type` (`client` | `product` | `practice`), `status` (`published` | `in-development`; en desarrollo no tiene ficha de detalle), `problem` / `decision` / `result`. El detalle público es `pages/portafolio/[slug].vue` (la página legacy `[id].vue` se eliminó porque tapaba a `[slug]`).
+- **Portafolio**: hoy vive en `constants/portfolio.ts` (solo Mi Comodoro y Mi Despensa) y se sirve por `/api/portafolio` (no desde Firestore). Campos clave: `slug`, `type` (`client` | `product` | `practice`), `status` (`published` | `in-development`; en desarrollo no tiene ficha de detalle), `description`, `role` / `year` / `duration`, `problem` / `decision` / `result`, `highlights`, `scope`, `gallery` (con `alt`) y `ogImage`; lo opcional solo se muestra si tiene contenido. Guía completa: `docs/portfolio-guide.md`. El detalle público es `pages/portafolio/[slug].vue` (la página legacy `[id].vue` se eliminó porque tapaba a `[slug]`).
 - **Redes sociales**: constantes (`MY_SOCIAL_MEDIA` en `constants/common`, vía `useSocialMedia()`); se renderizan en el servidor sin petición. Más adelante se gestionarán desde el panel. Los testimonios no tienen endpoint hasta que exista uno real aprobado.
 - **Contacto**: `POST /api/contact` → Resend (`RESEND_API_KEY`, `MAIL_FROM`, `MAIL_TO`).
 
@@ -67,7 +67,7 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 - Clases Tailwind canónicas v4 y tokens `brand-*`; seguir `docs/brand-system.md` para jerarquía tipográfica y contraste.
 - Accesibilidad: `min-h-11` en objetivos táctiles, `focus-visible`, `aria-hidden` en iconos decorativos.
 - Texto de UI en español, tono cercano y orientado al negocio (no jerga técnica en el copy).
-- Imágenes en `public/` (webp, ≤ ~100 KB); usar `NuxtImg`.
+- Imágenes en `public/` (webp); usar `NuxtImg`. Las de proyectos van en `public/projects/<slug>/` con las medidas de `docs/portfolio-guide.md` (portada 1280×720 ≤100 KB, galería 1600×900 ≤150 KB, 3–6 por proyecto, og 1200×630 jpg). `tests/publicImages.test.mjs` hace cumplir ≤150 KB y ≤1920 px.
 - Commits en español, descriptivos y cortos (ver `git log`).
 
 ## Seguridad de cabeceras
