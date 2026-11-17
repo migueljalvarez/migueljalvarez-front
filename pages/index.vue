@@ -8,39 +8,56 @@
     Services
   } from '~/components/templates'
 
-  import { META } from '~/constants/common'
+  import { META, MY_SOCIAL_MEDIA } from '~/constants/common'
   import { HOME_PORTFOLIO_PROJECTS } from '~/constants/portfolio'
 
-  import { useRuntimeConfig } from '#imports'
-  import { Section } from '~/components/organisms'
-  const aboutImage = 'og-image.jpg'
   definePageMeta({ layout: 'default', keepalive: true })
-  const runtime = useRuntimeConfig()
-  const nuxtApp = useNuxtApp()
-  const origin = nuxtApp.payload.serverRendered
-    ? typeof window !== 'undefined'
-      ? window.location.origin
-      : runtime.public.baseUrl
-    : runtime.public.baseUrl
-  useSeoMeta({
+
+  usePageSeo({
     title: META.TITLE,
     description: META.DESCRIPTION,
-    ogTitle: META.TITLE,
-    ogDescription: META.DESCRIPTION,
-    ogImage: `${origin}/${aboutImage}`,
-    ogImageAlt: 'Imagen destacada de Miguel Álvarez',
-    ogType: 'website',
-    ogUrl: origin,
-    twitterCard: 'summary_large_image',
-    twitterTitle: META.TITLE,
-    twitterDescription: META.DESCRIPTION,
-    twitterImage: `${origin}/${aboutImage}`
+    path: '/',
+    imageAlt: 'Miguel Álvarez, desarrollo de software y soluciones digitales'
   })
   useHead({
     titleTemplate: titleChunk =>
       titleChunk
         ? `${titleChunk} | Desarrollo de Software y Soluciones Digitales`
-        : 'Desarrollo de Software y Soluciones Digitales'
+        : 'Desarrollo de Software y Soluciones Digitales',
+    script: [
+      {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'Person',
+              '@id': `${useSiteUrl()}/#person`,
+              name: 'Miguel Álvarez',
+              jobTitle: 'Ingeniero de sistemas',
+              url: useSiteUrl(),
+              image: `${useSiteUrl()}/og-image.jpg`,
+              address: {
+                '@type': 'PostalAddress',
+                addressLocality: 'Medellín',
+                addressCountry: 'CO'
+              },
+              sameAs: MY_SOCIAL_MEDIA.map(item => item.link)
+            },
+            {
+              '@type': 'ProfessionalService',
+              '@id': `${useSiteUrl()}/#service`,
+              name: 'Miguel Álvarez - Desarrollo de Software',
+              description: META.DESCRIPTION,
+              url: useSiteUrl(),
+              founder: { '@id': `${useSiteUrl()}/#person` },
+              areaServed: 'Latinoamérica',
+              availableLanguage: 'es'
+            }
+          ]
+        })
+      }
+    ]
   })
   const portfolioProjects = HOME_PORTFOLIO_PROJECTS
 </script>

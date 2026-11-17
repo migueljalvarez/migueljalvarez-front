@@ -71,6 +71,12 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 - Imágenes en `public/` (webp) o Cloudinary; usar `NuxtImg`.
 - Commits en español, descriptivos y cortos (ver `git log`).
 
+## SEO
+
+- Metadatos por página con `usePageSeo()` (`composables/useSiteSeo.ts`): título, descripción, canonical, Open Graph y Twitter. La URL base sale de `NUXT_PUBLIC_BASE_URL` (obligatoria en producción: `https://migueljalvarez.com`); nunca usar `window` para calcularla.
+- `/robots.txt` y `/sitemap.xml` son rutas de servidor (`server/routes/`). El robots bloquea todo si la URL base es local. El sitemap excluye proyectos `in-development`.
+- Páginas privadas (`/login`, `/dashboard/*`) llevan `noindex`. JSON-LD (Person + ProfessionalService) en la home.
+
 ## Flujo de ramas y publicación
 
 - **NO se publica nada hasta que la base de datos (Supabase) esté OK.** No hacer push, PR a `main`, merge a `main` ni deploy sin que el autor lo pida explícitamente.

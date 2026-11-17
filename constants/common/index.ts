@@ -165,5 +165,5 @@ export const CANONICAL_URL = 'https://www.migueljalvarez.com/'
 export const META = {
   TITLE: 'Miguel Álvarez',
   DESCRIPTION:
-    'Desarrollo de Software y Soluciones Digitales. Ayudo a emprendedores y empresas a convertir ideas en sitios, sistemas y MVPs sostenibles. Con 9+ años de experiencia, construyo soluciones digitales eficientes y escalables.'
+    'Desarrollo de Software y Soluciones Digitales. Ayudo a emprendedores y empresas a convertir ideas en sitios, sistemas y MVPs sostenibles. Con 10+ años de experiencia, construyo soluciones digitales eficientes y escalables.'
 }

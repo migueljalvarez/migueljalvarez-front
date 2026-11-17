@@ -27,6 +27,37 @@
     { immediate: true }
   )
 
+  const siteUrl = useSiteUrl()
+  const seoImage = computed(() => {
+    const image = project.value?.urlImage
+    return image
+      ? image.startsWith('http')
+        ? image
+        : `${siteUrl}${image}`
+      : `${siteUrl}/og-image.jpg`
+  })
+  const seoTitle = computed(() => project.value?.title ?? 'Proyecto no encontrado')
+  const seoDescription = computed(
+    () => project.value?.description ?? 'Proyecto del portafolio de Miguel Álvarez.'
+  )
+  useSeoMeta({
+    title: seoTitle,
+    description: seoDescription,
+    robots: () => (project.value ? 'index, follow' : 'noindex, nofollow'),
+    ogType: 'article',
+    ogLocale: 'es_CO',
+    ogSiteName: 'Miguel Álvarez',
+    ogTitle: seoTitle,
+    ogDescription: seoDescription,
+    ogUrl: () => `${siteUrl}/portafolio/${slug.value}`,
+    ogImage: seoImage,
+    twitterCard: 'summary_large_image',
+    twitterTitle: seoTitle,
+    twitterDescription: seoDescription,
+    twitterImage: seoImage
+  })
+  useHead({ link: [{ rel: 'canonical', href: () => `${siteUrl}/portafolio/${slug.value}` }] })
+
   // Respuesta 404 real (no un "soft 404") cuando el proyecto no existe o no tiene ficha pública.
   if (!project.value && import.meta.server) {
     const event = useRequestEvent()

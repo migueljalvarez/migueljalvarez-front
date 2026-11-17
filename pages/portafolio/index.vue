@@ -7,9 +7,11 @@
     title: 'Portafolio'
   })
 
-  useSeoMeta({
+  usePageSeo({
     title: 'Portafolio',
-    description: 'Proyectos y soluciones digitales desarrollados para resolver problemas concretos.'
+    description:
+      'Proyectos y soluciones digitales desarrollados para resolver problemas concretos.',
+    path: '/portafolio'
   })
 </script>
 
