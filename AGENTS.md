@@ -20,7 +20,7 @@ Sitio personal/portafolio de **Miguel Alvarez** (Medellín, Colombia; trabajo re
 ## Comandos
 
 ```bash
-npm run dev        # http://localhost:3000
+npm run dev        # http://localhost:3000 (si está ocupado, uno temporal: PORT=3333 npm run dev; ajusta NUXT_PUBLIC_BASE_URL)
 npm run build      # build de producción
 npm run generate   # prerender estático
 npm run lint       # eslint
