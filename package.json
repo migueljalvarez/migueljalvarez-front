@@ -23,13 +23,11 @@
     "@nuxt/icon": "^2.6.2",
     "@nuxt/image": "^2.2.1",
     "@nuxt/ui": "^4.12.2",
-    "@unhead/vue": "^2.0.8",
     "estree-walker": "^2.0.2",
     "firebase-admin": "^13.4.0",
     "nuxt": "^4.6.4",
     "resend": "^4.5.2",
     "tailwindcss": "^4.3.3",
-    "vite-plugin-compression": "^0.5.1",
     "vue": "^3.5.13",
     "zod": "^4.5.4"
   },
@@ -57,10 +55,10 @@
     "npm": ">=10.0.0 <13.0.0"
   },
   "allowScripts": {
-    "@firebase/util@1.15.3": true,
     "protobufjs@7.6.6": true,
     "vue-demi@0.14.10": true,
     "esbuild@0.28.2": true,
-    "esbuild@0.25.12": true
+    "esbuild@0.25.12": true,
+    "esbuild@0.27.2": true
   }
 }

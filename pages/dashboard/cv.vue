@@ -17,8 +17,8 @@
 
   const initialForm: CvForm = {
     fullName: 'Miguel Álvarez',
-    email: 'ing.migueljalvarez@gmail.com',
-    phone: '[telefono retirado]',
+    email: '',
+    phone: '',
     city: 'Medellín, Colombia',
     summary:
       'Desarrollador de software con más de 9 años de experiencia creando productos digitales, MVPs y soluciones web de alto rendimiento.',

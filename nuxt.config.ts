@@ -1,6 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
-import compression from 'vite-plugin-compression'
 import { META } from './constants/common'
 
 export default defineNuxtConfig({
@@ -102,6 +101,8 @@ export default defineNuxtConfig({
     '/api/admin/**': { headers: { 'Cache-Control': 'no-store' } }
   },
   nitro: {
+    // Comprime (gzip/brotli) los estáticos al compilar; reemplaza a vite-plugin-compression (sin mantenimiento).
+    compressPublicAssets: true,
     publicAssets: [
       {
         baseURL: '/',
@@ -123,7 +124,6 @@ export default defineNuxtConfig({
     }
   },
   vite: {
-    plugins: [compression()],
     css: {
       devSourcemap: false
     },
