@@ -12,8 +12,8 @@ Sitio personal/portafolio de **Miguel Alvarez** (Medellín, Colombia; trabajo re
 
 ## Stack
 
-- Nuxt 3.21 (SSR activo), Vue 3 `<script setup lang="ts">`, TypeScript.
-- Nuxt UI 3 + Tailwind CSS 4 (tokens de marca `brand-*` en `assets/css/main.css`), `@nuxt/icon` (mdi / simple-icons), `@nuxt/image` (ipx + Cloudinary `res.cloudinary.com/m2a`), `@nuxt/fonts` (Poppins, Inter, IBM Plex Mono).
+- Nuxt 4.6 (SSR activo; estructura de carpetas en la raíz, sin `app/`), Vue 3 `<script setup lang="ts">`, TypeScript.
+- Nuxt UI 4 + Tailwind CSS 4 (tokens de marca `brand-*` en `assets/css/main.css`), `@nuxt/icon` (mdi / simple-icons), `@nuxt/image` (ipx + Cloudinary `res.cloudinary.com/m2a`), `@nuxt/fonts` (Poppins, Inter, IBM Plex Mono).
 - Backend en Nitro (`server/api`): Firebase Admin/Firestore, Resend (correo de contacto), Zod (validación).
 - Despliegue: Netlify (`netlify.toml`). Node `>=22 <25` (ver `.nvmrc`).
 
@@ -137,5 +137,6 @@ Módulos previstos en `/admin` (privado, noindex, Supabase Auth, un solo admin):
 
 ## Problemas conocidos de entorno
 
-- `@nuxt/image` se fija en `~2.1.0`: la 2.2.x requiere `nuxt/server` (Nuxt 4) y rompe el servidor con Nuxt 3.21. Subirla solo junto con la migración a Nuxt 4.
-- `npm run build` + `node .output/server/index.mjs` en local falla con 500 (`ERR_PACKAGE_PATH_NOT_EXPORTED` de `estree-walker`: no se copia a `.output`). No lo causa `npm audit fix`. Pendiente verificar si ocurre con el preset de Netlify antes de publicar.
+- **Node**: Nuxt 4.6 exige Node `^22.22.3 || ^24.15.0 || >=26`. Con 22.12 compila pero avisa "unsupported". Actualizar con `nvm install 22.22.3` (Netlify usa `.nvmrc`).
+- `estree-walker@^2.0.2` es dependencia directa a propósito: sin ella `node .output/server/index.mjs` falla con `ERR_PACKAGE_PATH_NOT_EXPORTED` (Nitro no copiaba la v2 anidada de `@vue/compiler-core`). No quitarla.
+- Los secretos de `runtimeConfig` se leen de `process.env` **al compilar** y quedan dentro de `.output/server` (verificado). Para sobrescribirlos en ejecución usar variables `NUXT_*` (p. ej. `NUXT_ADMIN_EMAIL`). Pendiente: dejar los valores privados vacíos en `nuxt.config.ts` y proveerlos solo en runtime.
