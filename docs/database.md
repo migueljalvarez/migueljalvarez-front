@@ -8,6 +8,7 @@ Esquema PostgreSQL del panel `/admin`. Es SQL estándar (Postgres ≥ 13, sin ex
 npm run db:up       # Postgres 17 en Docker, 127.0.0.1:5433 (usuario/clave de desarrollo: dev/dev)
 npm run db:migrate  # aplica db/migrations/*.sql pendientes (tabla schema_migrations)
 npm run db:reset    # borra el esquema y vuelve a migrar (solo desarrollo)
+npm run db:seed     # carga .private/seed/*.sql (datos personales, fuera de git)
 npm run db:down
 ```
 
@@ -21,9 +22,14 @@ Cadena de conexión local: `postgres://dev:dev@127.0.0.1:5433/migueljalvarez`. E
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `0001_core.sql`  | clients, leads, lead_notes, testimonial_requests, projects, team_members, assignments, time_entries, trm_rates, payments, rates, policies, experiences |
 | `0002_auth.sql`  | admin_users (hash de contraseña), admin_sessions (hash del token, vencimiento, revocación), login_attempts                                             |
+| `0004_cv.sql`    | profile, skills, education, certifications, languages (+ kind/location en experiences): hechos del CV, privados                                        |
 | `0003_views.sql` | project_hours, member_balances, assignment_hours                                                                                                       |
 
 Las migraciones son de solo avance: un cambio nuevo es un archivo nuevo (`0004_...sql`), nunca se edita uno aplicado.
+
+## Datos privados (seed)
+
+El repositorio es público: las migraciones llevan solo estructura. Los hechos reales del CV (perfil, experiencia, habilidades, formación) viven en `.private/seed/cv.sql`, ignorado por git, y se cargan con `npm run db:seed` (idempotente). En producción se cargarán desde el panel `/admin` o con un respaldo propio, nunca desde el repositorio. El generador de CV solo selecciona y ordena estos hechos.
 
 ## Decisiones
 

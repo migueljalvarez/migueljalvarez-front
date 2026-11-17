@@ -124,3 +124,14 @@ ROLLBACK;`)
   assert.equal(lines[1], '8.50|85.0')
   assert.equal(lines[2], '120000')
 })
+
+test('perfil admite una sola fila y experiencia valida su tipo', opts, () => {
+  rejects(
+    "INSERT INTO profile (full_name) VALUES ('A'); INSERT INTO profile (full_name) VALUES ('B');",
+    /profile_pkey/
+  )
+  rejects(
+    "INSERT INTO experiences (company, role, start_date, is_current, achievements, kind) VALUES ('X', 'Y', '2020-01-01', true, 'logro', 'otro');",
+    /experiences_kind_check/
+  )
+})
