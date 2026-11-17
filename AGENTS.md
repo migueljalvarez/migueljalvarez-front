@@ -26,6 +26,7 @@ npm run generate   # prerender estático
 npm run lint       # eslint
 npm run format     # prettier
 npm test           # node --test (tests/*.mjs)
+npm run db:up      # Postgres de desarrollo en Docker (127.0.0.1:5433); luego db:migrate / db:reset
 ```
 
 ## Estructura
@@ -44,7 +45,8 @@ constants/        common (copy HOME_COPY/HOME_HERO_COPY/META), portfolio (+ mock
 data/             services.ts, work.ts (contenido estático de servicios y "cómo trabajo")
 server/api/       (contact), admin/{login,logout,session}, portafolio
 utils/            cn.ts, portfolioFilters.ts
-docs/             brand-system.md (tipografía/paleta), openapi.yaml (contrato de API), portfolio-guide.md (qué mostrar y medidas de imágenes)
+db/               migrations/*.sql (esquema Postgres) y migrate.mjs; ver docs/database.md
+docs/             database.md, brand-system.md (tipografía/paleta), openapi.yaml (contrato de API), portfolio-guide.md (qué mostrar y medidas de imágenes)
 tests/            filtros del portafolio, mocks fuera del build, secretos fuera del build y contrato OpenAPI
 ```
 
