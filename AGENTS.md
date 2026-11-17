@@ -77,6 +77,11 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 - `/robots.txt` y `/sitemap.xml` son rutas de servidor (`server/routes/`). El robots bloquea todo si la URL base es local. El sitemap excluye proyectos `in-development`.
 - Páginas privadas (`/login`, `/dashboard/*`) llevan `noindex`. JSON-LD (Person + ProfessionalService) en la home.
 
+## Archivos privados
+
+- El CV y otros documentos personales NO se sirven públicamente. Viven en `.private/` (ignorado por git). Solo se descargarán o generarán desde el panel `/admin` con sesión válida (módulo de experiencia/CV, futuro); nunca desde `public/`.
+- El repositorio de GitHub es **público**: no subir datos personales (teléfono, correo, CV) ni secretos.
+
 ## Flujo de ramas y publicación
 
 - **NO se publica nada hasta que la base de datos (Supabase) esté OK.** No hacer push, PR a `main`, merge a `main` ni deploy sin que el autor lo pida explícitamente.
