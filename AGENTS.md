@@ -34,15 +34,15 @@ npm test           # node --test (tests/*.mjs)
 pages/            index (landing), como-trabajo, login, portafolio/{index,[slug],[id]}, dashboard/*
 layouts/          default, dashboard, error
 components/
-  atoms/          Avatar, Badge, Button, DotNavigation, Hero, Input, Select, Title
-  molecules/      AvatarCard, Blockquote, Card, Footer, Header, HeroVisual, InfiniteCarousel, SocialMedia
-  organisms/      Carousel, Section
-  templates/      Main, Services, ProcessSection, Portfolio*, About, Contact, HowWork*, Testimonial
+  atoms/          Button, Input, Select, Title
+  molecules/      Header, SocialMedia
+  organisms/      Section
+  templates/      Main, Services, ProcessSection, Portfolio*, About, Contact, HowWork*
   Form/
 composables/      useEmail, useSectionReveal, useSiteSeo, useSocialMedia
 constants/        common (copy HOME_COPY/HOME_HERO_COPY/META), portfolio (+ mock solo dev), routes (PUBLIC_ROUTES, API)
 data/             services.ts, work.ts (contenido estático de servicios y "cómo trabajo")
-server/api/       (contact), (me), admin/{login,logout}, portafolio, testimonials
+server/api/       (contact), (me), admin/{login,logout,session}, portafolio
 utils/            cn.ts, portfolioFilters.ts
 docs/             brand-system.md (tipografía/paleta), firebase-me-update.md
 tests/            portfolioFilters.test.mjs
@@ -80,6 +80,11 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 - Metadatos por página con `usePageSeo()` (`composables/useSiteSeo.ts`): título, descripción, canonical, Open Graph y Twitter. La URL base sale de `NUXT_PUBLIC_BASE_URL` (obligatoria en producción: `https://migueljalvarez.com`); nunca usar `window` para calcularla.
 - `/robots.txt` y `/sitemap.xml` son rutas de servidor (`server/routes/`). El robots bloquea todo si la URL base es local. El sitemap excluye proyectos `in-development`.
 - Páginas privadas (`/login`, `/dashboard/*`) llevan `noindex`. JSON-LD (Person + ProfessionalService) en la home.
+
+## Código retirado a propósito
+
+- Se eliminó todo lo que ninguna página usaba (nov-2026): componentes (Hero, Avatar, Badge, Footer, Card, AvatarCard, Blockquote, carruseles, HeroVisual, HeroCurve, Testimonial, PortfolioItem), `DynamicTable`, composables sin uso y el endpoint `/api/testimonials`. Quedan en el historial de git si se necesitan.
+- **Testimonios**: no hay sección pública ni endpoint hasta que exista un testimonio real aprobado (módulo planeado en S9-S10 del plan). Entonces se reconstruyen desde cero.
 
 ## Archivos privados
 

@@ -19,15 +19,3 @@ export type PortafolioType = {
   images: Image[]
   gallery?: string[]
 }
-export type PortfolioProps = {
-  title: string
-  projects: PortafolioType[]
-}
-
-export type PorfolioItemProps = {
-  id: string
-  title: string
-  portfolioType: string
-  image: string
-  technologies: string[]
-}
