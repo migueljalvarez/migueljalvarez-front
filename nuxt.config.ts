@@ -82,8 +82,33 @@ export default defineNuxtConfig({
     }
   },
   devServer: {
-    host: '0.0.0.0',
+    // Solo local: no expone el servidor de desarrollo a toda la red.
+    host: 'localhost',
     port: 3000
+  },
+  routeRules: {
+    // Cabeceras de seguridad para todo el sitio. El CSP completo (script-src, connect-src...) se
+    // activará cuando se retire el SDK de Firebase del navegador; por ahora solo directivas que no
+    // pueden romper la hidratación de Nuxt.
+    '/**': {
+      headers: {
+        'X-Content-Type-Options': 'nosniff',
+        'X-Frame-Options': 'DENY',
+        'Referrer-Policy': 'strict-origin-when-cross-origin',
+        'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=()',
+        'Strict-Transport-Security': 'max-age=31536000',
+        'Content-Security-Policy':
+          "frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+      }
+    },
+    // Zonas privadas: sin caché compartida y fuera de buscadores.
+    '/dashboard/**': {
+      headers: { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' }
+    },
+    '/login': {
+      headers: { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' }
+    },
+    '/api/admin/**': { headers: { 'Cache-Control': 'no-store' } }
   },
   nitro: {
     publicAssets: [
