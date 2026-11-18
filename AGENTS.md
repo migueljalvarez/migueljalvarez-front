@@ -158,6 +158,11 @@ Subagentes con rol fijo (`.claude/agents/*.md`) y skills alineadas a cada uno (`
 
 `nuxt-ui` es la skill oficial de Nuxt UI v4 (copiada de `finhub-dashboard`); si choca con la identidad, mandan los tokens `brand-*` de `brand-identity`. Flujo: `frontend-dev` → `architect` + `design` → `review`.
 
+## Gestión legal
+
+- El plugin `legal@knowledge-work-plugins` (Anthropic) está instalado a nivel de usuario: `/review-contract`, `/triage-nda`, `/legal-response`. Lee su playbook de `.claude/legal.local.md`, **ignorado por git** (posiciones de negociación del titular, marco colombiano; es un borrador sujeto a revisión de un abogado). No escribir en él documento de identidad, cuentas ni datos de clientes.
+- Los datos del titular (nombre, documento, correo, ciudad) nunca van en el repositorio: salen de `NUXT_PUBLIC_LEGAL_*` en Netlify. Los Términos y Condiciones (`data/terms.ts`) son un borrador pendiente de revisión legal.
+
 ## Gestión de pendientes
 
 Plan de trabajo y backlog en Notion (workspace del autor). Base "migueljalvarez.com – Backlog": https://app.notion.com/p/41a3dd9397f681c9ba0fd839c2e4786b (sprints semanales S1–S15 desde el 16-nov-2026, ~5 h/semana; vistas Tablero, Roadmap y Por sprint).
