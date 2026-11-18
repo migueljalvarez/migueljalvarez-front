@@ -115,9 +115,16 @@ paths:
       tags: [Contacto]
       summary: Envía un mensaje desde el formulario de contacto
       description: |
-        Valida, aplica límite de 5 intentos por IP cada 10 minutos y envía un correo (Resend).
+        Valida (exige `consent: true`, autorización previa y expresa según la Ley 1581), aplica límite de
+        5 intentos por IP cada 10 minutos y captura el mensaje por dos canales: primero envía el correo
+        (Resend) y después guarda el lead en la API de contenido (`POST /api/intake/leads`, con la clave
+        compartida `NUXT_INTAKE_API_KEY`), con hasta 3 reintentos ante fallos transitorios. La API es
+        idempotente, de modo que un reintento no duplica el lead. La versión de la política de
+        privacidad la fija el servidor (no el navegador).
+
+        Responde 200 si AL MENOS UNO de los dos canales capturó el mensaje; solo si fallan ambos
+        responde 500. Si la API no está configurada, solo se envía el correo.
         Si el campo trampa `website` viene con texto, responde 200 sin enviar (bot).
-        Objetivo en S8: además guardar el lead en base de datos.
       operationId: sendContact
       requestBody:
         required: true
@@ -421,7 +428,7 @@ components:
           description: Dato de ejemplo (solo desarrollo, nunca en producción)
     ContactRequest:
       type: object
-      required: [name, email, subject, message]
+      required: [name, email, subject, message, consent]
       properties:
         name:
           type: string
@@ -438,6 +445,10 @@ components:
           type: string
           minLength: 1
           maxLength: 5000
+        consent:
+          type: boolean
+          enum: [true]
+          description: Autorización de tratamiento de datos (Ley 1581). Debe ser exactamente true.
         website:
           type: string
           maxLength: 200

@@ -1,22 +1,9 @@
 import { Resend } from 'resend'
-import { z } from 'zod'
-
-const SUBJECT_LABELS = {
-  desarrollo: 'Desarrollo',
-  oferta: 'Oferta',
-  consulta: 'Consulta',
-  soporte: 'Soporte',
-  otro: 'Otro'
-} as const
-
-// Honeypot: el campo `website` está oculto para personas; si llega con texto es un bot.
-const schema = z.object({
-  name: z.string().trim().min(1).max(100),
-  email: z.string().trim().max(254).pipe(z.email()),
-  subject: z.enum(Object.keys(SUBJECT_LABELS) as [keyof typeof SUBJECT_LABELS]),
-  message: z.string().trim().min(1).max(5000),
-  website: z.string().max(200).optional()
-})
+import { PRIVACY_UPDATED_AT } from '~/data/privacy'
+import { processContact } from '../../utils/contactFlow'
+import { contactSchema, SUBJECT_LABELS } from '../../utils/contactSchema'
+import { saveLead } from '../../utils/leadIntake'
+import { createPublicApiClient } from '../../utils/publicApiClient'
 
 const escapeHtml = (value: string) =>
   value
@@ -65,7 +52,7 @@ export default defineEventHandler(async event => {
   }
 
   const body = await readBody(event)
-  const parsed = schema.safeParse(body)
+  const parsed = contactSchema.safeParse(body)
 
   if (!parsed.success) {
     throw createError({
@@ -81,24 +68,20 @@ export default defineEventHandler(async event => {
     return { success: true }
   }
 
-  const resendApiKey = getServerSecret('resendApiKey', event)
-  const mailFrom = getServerSecret('mailFrom', event)
-  const mailTo = getServerSecret('mailTo', event)
+  const sendEmail = async () => {
+    const resendApiKey = getServerSecret('resendApiKey', event)
+    const mailFrom = getServerSecret('mailFrom', event)
+    const mailTo = getServerSecret('mailTo', event)
 
-  if (!resendApiKey || !mailFrom || !mailTo) {
-    console.error('Contacto: faltan RESEND_API_KEY, MAIL_FROM o MAIL_TO en la configuración')
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'No se pudo enviar el correo'
-    })
-  }
+    if (!resendApiKey || !mailFrom || !mailTo) {
+      throw new Error('faltan RESEND_API_KEY, MAIL_FROM o MAIL_TO en la configuración')
+    }
 
-  const subjectLabel = SUBJECT_LABELS[subject]
-  const safeName = escapeHtml(name)
-  const safeEmail = escapeHtml(email)
-  const safeMessage = escapeHtml(message).replace(/\r?\n/g, '<br>')
+    const subjectLabel = SUBJECT_LABELS[subject]
+    const safeName = escapeHtml(name)
+    const safeEmail = escapeHtml(email)
+    const safeMessage = escapeHtml(message).replace(/\r?\n/g, '<br>')
 
-  try {
     const resend = new Resend(resendApiKey)
     const { error } = await resend.emails.send({
       from: mailFrom,
@@ -123,10 +106,40 @@ export default defineEventHandler(async event => {
     if (error) {
       throw new Error(error.message)
     }
+  }
+
+  // El lead se guarda en la API con el consentimiento y la versión de la política vigente en el servidor
+  // (la versión no la decide el navegador). Nunca lanza: devuelve el resultado.
+  const storeLead = () => {
+    const id = getServerSecret('apiAccessClientId', event)
+    const secret = getServerSecret('apiAccessClientSecret', event)
+    const client = createPublicApiClient({
+      baseUrl: getServerSecret('apiBaseUrl', event),
+      timeoutMs: 3000,
+      headers: id && secret ? { 'CF-Access-Client-Id': id, 'CF-Access-Client-Secret': secret } : {}
+    })
+    return saveLead(
+      client,
+      { name, email, subject, message, consent: true, consentPolicyVersion: PRIVACY_UPDATED_AT },
+      { intakeKey: getServerSecret('intakeApiKey', event) }
+    )
+  }
+
+  try {
+    const result = await processContact({ sendEmail, saveLead: storeLead })
+
+    // Registro sin datos personales: solo el estado de cada canal.
+    if (!result.emailSent) {
+      console.error(
+        `[contact] correo NO enviado; el mensaje quedó guardado en la API (${result.lead})`
+      )
+    } else if (result.lead !== 'saved' && result.lead !== 'duplicate') {
+      console.warn(`[contact] correo enviado; el lead no se guardó en la API (${result.lead})`)
+    }
 
     return { success: true }
   } catch (error) {
-    console.error('Error al enviar correo con Resend:', (error as Error).message)
+    console.error('[contact] no se pudo capturar el mensaje:', (error as Error).message)
     throw createError({
       statusCode: 500,
       statusMessage: 'No se pudo enviar el correo'

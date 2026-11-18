@@ -13,6 +13,7 @@ export type ServerSecretKey =
   | 'apiBaseUrl'
   | 'apiAccessClientId'
   | 'apiAccessClientSecret'
+  | 'intakeApiKey'
 
 const LEGACY_ENV: Record<ServerSecretKey, string> = {
   resendApiKey: 'RESEND_API_KEY',
@@ -23,7 +24,8 @@ const LEGACY_ENV: Record<ServerSecretKey, string> = {
   adminSessionSecret: 'ADMIN_SESSION_SECRET',
   apiBaseUrl: 'API_BASE_URL',
   apiAccessClientId: 'API_ACCESS_CLIENT_ID',
-  apiAccessClientSecret: 'API_ACCESS_CLIENT_SECRET'
+  apiAccessClientSecret: 'API_ACCESS_CLIENT_SECRET',
+  intakeApiKey: 'INTAKE_API_KEY'
 }
 
 export const getServerSecret = (key: ServerSecretKey, event?: H3Event): string => {
