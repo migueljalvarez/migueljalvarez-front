@@ -138,6 +138,20 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 
 El checklist completo vive en Notion (página "Checklist antes de reemplazar main"). Resumen: repo público/privado decidido, variables de entorno cargadas en Netlify, `NUXT_PUBLIC_BASE_URL` definido, revisión legal de `/privacidad`, prueba real del formulario, revisión en teléfono real, Node 22.22.3, contenido de Mi Comodoro y CI en verde. Reemplazar `main` dispara el deploy de producción: solo cuando el autor lo pida.
 
+## Agentes y skills (`.claude/` y espejo `.agents/`)
+
+Subagentes con rol fijo (`.claude/agents/*.md`) y skills alineadas a cada uno (`.claude/skills/<name>/SKILL.md`). `.agents/` es una copia idéntica para otras herramientas: **al editar uno, copiar al otro** (`npm test` falla si difieren). Las skills de diseño y frontend viven solo aquí; la API (`../migueljalvarez-api`) tiene las suyas de backend.
+
+| Agente | Rol | Skills |
+|---|---|---|
+| `architect` | Valida Atomic Design, capas, público/privado y nombres; solo revisa | `atomic-design` |
+| `design` | Valida identidad visual, pixel perfect y accesibilidad; solo revisa | `brand-identity`, `nuxt-ui` |
+| `frontend-dev` | Implementa UI componentizada, pixel perfect | `atomic-design`, `brand-identity`, `nuxt-ui` |
+| `refactor` | Corrige violaciones y deuda de nombres de forma incremental | `atomic-design` |
+| `review` | Revisión final de calidad y reglas del proyecto | `atomic-design`, `brand-identity` |
+
+`nuxt-ui` es la skill oficial de Nuxt UI v4 (copiada de `finhub-dashboard`); si choca con la identidad, mandan los tokens `brand-*` de `brand-identity`. Flujo: `frontend-dev` → `architect` + `design` → `review`.
+
 ## Gestión de pendientes
 
 Plan de trabajo y backlog en Notion (workspace del autor). Base "migueljalvarez.com – Backlog": https://app.notion.com/p/41a3dd9397f681c9ba0fd839c2e4786b (sprints semanales S1–S15 desde el 16-nov-2026, ~5 h/semana; vistas Tablero, Roadmap y Por sprint).
