@@ -4,7 +4,8 @@ import type { LegalSection } from '~/types/legal'
 import { legalIdText, type LegalHolder } from '~/utils/legalHolder'
 
 export const PRIVACY_UPDATED_AT = '2026-11-18'
-export const PRIVACY_CONTACT_EMAIL = 'ing.migueljalvarez@gmail.com'
+// Correo de respaldo (ejemplo): el real sale de NUXT_PUBLIC_LEGAL_EMAIL y nunca se escribe en el repositorio público.
+export const PRIVACY_CONTACT_EMAIL = 'correo@example.com'
 
 export type PrivacySection = LegalSection
 
