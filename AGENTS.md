@@ -180,6 +180,8 @@ Módulos previstos en `/admin` (privado, noindex, Supabase Auth, un solo admin):
 
 ## Deuda técnica conocida (a priorizar en el plan)
 
+- **Nombres en español pendientes de renombrar** (sin cambiar el copy visible): claves de `data/services.ts` (`situacion`, `titulo`, `paraQuien`, `comoAyudo`, `queRecibes`, `etiquetas`, `fases`) y de `data/work.ts` (`titulo`, `texto`, `nota`, `pregunta`, `respuesta`); los literales `'cliente'`/`'propio'` y las etiquetas de `PortfolioFilter` en `types/portfolio.ts` y `utils/portfolioFilters.ts` (separar el id de la etiqueta visible).
+
 - **Auth del panel:** la resuelve la API (`../migueljalvarez-api`): contraseña (argon2id) + TOTP, sesión `admin_session` HttpOnly. El sitio ya **no guarda credenciales de administrador** (se retiraron `ADMIN_EMAIL/PASSWORD/SESSION_SECRET` y la sesión provisional). Todo `/api/admin/**` pasa por el proxy `server/api/admin/[...path].ts` (`server/utils/adminProxy.ts`): reenvía solo la cookie `admin_session` y la IP real, valida segmentos de ruta y `Origin`, no sigue redirecciones. Sin `NUXT_API_BASE_URL` o con la API caída responde 503 y el panel lo explica. El usuario se crea en el repo de la API con `npm run admin:create`.
 - `server/api/(contact)/contact.ts` ya está endurecido (escape de HTML, límites, honeypot, 5 intentos/10 min por IP en memoria, `runtimeConfig`). Pendiente: rate limit del proveedor y prueba de envío real en preview.
 - La web pública ya no depende de ninguna base de datos: puede desplegarse sin esperar a Supabase (la compuerta de publicación sigue siendo decisión del autor).
