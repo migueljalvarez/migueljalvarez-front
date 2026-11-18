@@ -117,7 +117,7 @@
 
 <template>
   <div
-    class="w-full max-w-md rounded-2xl border border-brand-border bg-brand-surface-card p-5 shadow-[0_10px_24px_var(--color-brand-shadow-card)] md:p-6"
+    class="w-full max-w-md rounded-2xl border border-brand-border bg-brand-surface-card p-5 shadow-card md:p-6"
   >
     <div class="mb-6">
       <p class="text-xs font-semibold uppercase tracking-[0.14em] text-brand-accent-text">

@@ -263,7 +263,12 @@
           :key="item.name"
           :to="item.link"
           :aria-current="isActive(item.link) ? 'page' : undefined"
-          class="nav-link group flex min-h-11 w-fit flex-col items-start justify-center gap-2 py-1 text-brand-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue"
+          class="nav-link group flex min-h-11 w-fit flex-col items-start justify-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue"
+          :class="
+            isContactNavLink(item.name)
+              ? 'rounded-lg bg-brand-accent px-4 py-2 text-sm tracking-[0.12em] text-brand-white shadow-sm transition-colors hover:bg-brand-mid motion-reduce:transition-none'
+              : 'py-1 text-brand-navy'
+          "
           @click="toggleSidebar"
         >
           <span>{{ item.name }}</span>

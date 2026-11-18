@@ -201,7 +201,7 @@
                   <NuxtLink
                     to="/privacidad"
                     target="_blank"
-                    class="underline underline-offset-4 hover:text-brand-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
+                    class="inline-block py-2 underline underline-offset-4 hover:text-brand-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
                   >
                     {{ HOME_COPY.contact.privacyLink }}
                   </NuxtLink>
