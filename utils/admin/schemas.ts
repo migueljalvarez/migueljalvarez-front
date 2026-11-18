@@ -1,8 +1,9 @@
 import { z } from 'zod'
 
 /**
- * Esquemas de validación del panel. Se usan hoy en los formularios y son el contrato que validará
- * también la API cuando se conecte (mismos campos y reglas). Mensajes en español.
+ * Esquemas de validación de los módulos del panel que aún guardan en memoria (testimonios, equipo,
+ * tarifas, experiencia). Leads, clientes y proyectos ya hablan con la API: ver `leads.ts` y `projects.ts`.
+ * Mensajes en español.
  */
 const text = (max = 200) =>
   z.string().trim().min(1, 'Obligatorio').max(max, `Máximo ${max} caracteres`)
@@ -22,52 +23,12 @@ const positive = (label = 'Debe ser mayor que 0') =>
     .positive(label)
     .max(10_000_000, 'Valor demasiado alto')
 
-export const LEAD_SUBJECTS = ['desarrollo', 'oferta', 'consulta', 'soporte', 'otro'] as const
-export const LEAD_ORIGINS = ['formulario', 'whatsapp', 'linkedin', 'referido', 'otro'] as const
-export const PROJECT_STATUSES = ['planificado', 'en-curso', 'pausado', 'entregado'] as const
-
-export const leadSchema = z.object({
-  name: text(100),
-  email,
-  phone: optionalText(30),
-  subject: z.enum(LEAD_SUBJECTS, { message: 'Elige un asunto' }),
-  origin: z.enum(LEAD_ORIGINS, { message: 'Elige un origen' }),
-  message: optionalText(5000),
-  nextAction: optionalText(200),
-  nextActionDate: optionalDate
-})
-
-export const noteSchema = z.object({ text: text(2000) })
-
 export const testimonialRequestSchema = z.object({
   clientName: text(100),
   email,
   projectName: optionalText(150),
   message: optionalText(1000)
 })
-
-export const clientSchema = z.object({
-  name: text(120),
-  email: optionalEmail,
-  company: optionalText(120),
-  notes: optionalText(2000)
-})
-
-export const projectSchema = z
-  .object({
-    name: text(150),
-    clientId: z.string().min(1, 'Elige un cliente'),
-    status: z.enum(PROJECT_STATUSES, { message: 'Elige un estado' }),
-    rateUsd: positive('La tarifa debe ser mayor que 0'),
-    budgetHours: positive('Las horas deben ser mayores que 0'),
-    startDate: date,
-    deadline: date,
-    publishable: z.boolean()
-  })
-  .refine(value => value.deadline >= value.startDate, {
-    path: ['deadline'],
-    message: 'El deadline no puede ser anterior al inicio'
-  })
 
 export const teamMemberSchema = z.object({
   name: text(100),
@@ -121,8 +82,6 @@ export const experienceSchema = z
     message: 'Indica la fecha de fin o marca "Trabajo actual"'
   })
 
-export type LeadInput = z.infer<typeof leadSchema>
-export type ProjectInput = z.infer<typeof projectSchema>
 export type ExperienceInput = z.infer<typeof experienceSchema>
 
 /** Convierte los errores de Zod en un mapa campo → mensaje. */
