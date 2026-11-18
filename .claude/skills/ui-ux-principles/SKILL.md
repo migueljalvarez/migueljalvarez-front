@@ -100,6 +100,7 @@ Anatomía, siempre en este orden: **(1)** migas → **(2)** `AdminPageHeader` (e
 ## 9. Interacción y movimiento
 
 - Foco visible **siempre**: `focus-visible:outline-2 outline-offset-2` en `brand-blue` sobre fondo claro y `brand-white` sobre oscuro. El hover nunca es el único indicador.
+- **Trampa de Tailwind 4:** `outline-none` y `outline-hidden` fijan `--tw-outline-style: none`, así que combinarlos con `focus-visible:outline-2` **no dibuja ningún anillo** (el foco queda solo en el color del borde). No uses ninguna de las dos en controles con anillo propio. Verifícalo midiendo `getComputedStyle(el).outlineStyle === 'solid'` **tras esperar la transición de 200 ms** (medir justo al enfocar da valores intermedios).
 - Transiciones de color `duration-200`; sin animar layout; respetar `prefers-reduced-motion`.
 - Feedback inmediato (< 100 ms) en la acción; si tarda > 1 s, estado de carga en el propio botón (“Guardando…”) sin cambiar su ancho.
 

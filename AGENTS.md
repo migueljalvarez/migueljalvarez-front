@@ -162,7 +162,7 @@ Dirección estratégica: cerrar y publicar v2/landing → endurecer seguridad �
 
 ## Panel administrativo (estructura hecha, sin datos reales)
 
-- `/admin/*` (layout `admin`, guarda global `middleware/auth.global.ts`): Resumen, Leads, Testimonios, Proyectos, Equipo y pagos, Políticas y tarifas, Experiencia. El menú y los módulos se definen en `constants/admin.ts`. `/dashboard/**` redirige a `/admin`. `/login` usa el layout mínimo `auth`.
+- `/admin/*` (layout `admin`, guarda global `middleware/auth.global.ts`): Menú agrupado: _Contenido del sitio_ (Portafolio —próximamente—, Redes sociales, Políticas, Testimonios) y _Gestión_ (Leads, Proyectos, Equipo y pagos, Tarifas, Experiencia). Redes sociales y Políticas ya están conectadas a la API (`pages/admin/social-links.vue`, `pages/admin/policies.vue`). El menú y los módulos se definen en `constants/admin.ts`. `/dashboard/**` redirige a `/admin`. `/login` usa el layout mínimo `auth`.
 - Los datos de ejemplo del panel (`constants/admin.samples.ts`) existen solo en desarrollo, con la etiqueta "Datos de ejemplo"; en producción el panel muestra estados vacíos hasta conectar la API.
 - Toda página nueva de `/admin` queda protegida automáticamente por la guarda global.
 - **Capa de datos del panel (conectada a la API):** `composables/useAdminSession.ts` (login en dos pasos, sesión, logout), `composables/useAdminApi.ts` (único punto de acceso a la API: `get/post/patch/put/del`, errores como `AdminApiError` con mensaje listo para mostrar, 401 → `/login`) y `utils/adminApiError.ts`. Las pantallas nunca llaman a `$fetch` directamente. Los módulos aún en memoria (`useAdminData`) se van migrando uno a uno.

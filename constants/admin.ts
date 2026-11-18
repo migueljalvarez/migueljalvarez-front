@@ -2,28 +2,85 @@
  * Estructura del panel privado /admin. Los módulos marcados `planned` aún no tienen datos reales:
  * se construyen cuando exista la base de datos (ver plan de trabajo en Notion).
  */
+export type AdminNavGroup = 'overview' | 'content' | 'management'
+
 export type AdminNavItem = {
   label: string
   to: string
   icon: string
+  group: AdminNavGroup
   /** Frase corta de lo que hará el módulo. */
   summary: string
   /** Capacidades previstas (se muestran en la página mientras el módulo no existe). */
   planned: string[]
+  /** El módulo aún no está construido: el menú lo marca con "Pronto". */
+  soon?: boolean
 }
+
+/** Encabezados del menú lateral, en orden. El grupo `overview` no lleva encabezado. */
+export const ADMIN_NAV_GROUPS: { id: AdminNavGroup; label?: string }[] = [
+  { id: 'overview' },
+  { id: 'content', label: 'Contenido del sitio' },
+  { id: 'management', label: 'Gestión' }
+]
 
 export const ADMIN_NAV: AdminNavItem[] = [
   {
     label: 'Resumen',
     to: '/admin',
     icon: 'mdi:view-dashboard-outline',
+    group: 'overview',
     summary: 'Vista general de leads, proyectos y pagos pendientes.',
     planned: []
+  },
+  {
+    label: 'Portafolio',
+    to: '/admin/portfolio',
+    icon: 'mdi:image-multiple-outline',
+    group: 'content',
+    summary: 'Los proyectos que muestras en el portafolio público, sin tocar el código.',
+    planned: [
+      'Crear y editar proyectos con problema, decisión y resultado',
+      'Subir la portada y la galería con las medidas correctas',
+      'Publicar, ocultar o marcar un proyecto como en desarrollo',
+      'Elegir cuáles aparecen como destacados en la página de inicio'
+    ],
+    soon: true
+  },
+  {
+    label: 'Redes sociales',
+    to: '/admin/social-links',
+    icon: 'mdi:share-variant-outline',
+    group: 'content',
+    summary: 'Los enlaces del encabezado y del contacto, en el orden que quieras.',
+    planned: []
+  },
+  {
+    label: 'Políticas',
+    to: '/admin/policies',
+    icon: 'mdi:file-document-edit-outline',
+    group: 'content',
+    summary: 'Tus acuerdos de trabajo: los públicos se muestran en Cómo trabajo.',
+    planned: []
+  },
+  {
+    label: 'Testimonios',
+    to: '/admin/testimonios',
+    icon: 'mdi:message-star-outline',
+    group: 'content',
+    summary: 'Solicita testimonios a clientes reales y apruébalos antes de publicarlos.',
+    planned: [
+      'Solicitud por correo con enlace único y vencimiento',
+      'Página pública para que el cliente deje su testimonio, foto y logo',
+      'Aprobar, rechazar o editar (conservando el texto original)',
+      'Publicar solo los aprobados en la web'
+    ]
   },
   {
     label: 'Leads',
     to: '/admin/leads',
     icon: 'mdi:account-search-outline',
+    group: 'management',
     summary: 'Posibles clientes que te escriben por el formulario o que agregas a mano.',
     planned: [
       'Captura automática desde el formulario de contacto',
@@ -34,21 +91,10 @@ export const ADMIN_NAV: AdminNavItem[] = [
     ]
   },
   {
-    label: 'Testimonios',
-    to: '/admin/testimonios',
-    icon: 'mdi:message-star-outline',
-    summary: 'Solicita testimonios a clientes reales y apruébalos antes de publicarlos.',
-    planned: [
-      'Solicitud por correo con enlace único y vencimiento',
-      'Página pública para que el cliente deje su testimonio, foto y logo',
-      'Aprobar, rechazar o editar (conservando el texto original)',
-      'Publicar solo los aprobados en la web'
-    ]
-  },
-  {
     label: 'Proyectos',
     to: '/admin/proyectos',
     icon: 'mdi:folder-outline',
+    group: 'management',
     summary: 'Clientes y proyectos con presupuesto de horas y fecha límite aproximada.',
     planned: [
       'Clientes y proyectos con estado, tarifa en USD y deadline',
@@ -61,6 +107,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     label: 'Equipo y pagos',
     to: '/admin/equipo',
     icon: 'mdi:account-group-outline',
+    group: 'management',
     summary: 'Colaboradores, horas pactadas y cuándo debes pagarles.',
     planned: [
       'Colaboradores con rol, responsabilidades y tarifa en USD',
@@ -70,12 +117,12 @@ export const ADMIN_NAV: AdminNavItem[] = [
     ]
   },
   {
-    label: 'Políticas y tarifas',
+    label: 'Tarifas',
     to: '/admin/tarifas',
-    icon: 'mdi:file-document-edit-outline',
-    summary: 'Políticas de trabajo, preguntas frecuentes y valor de la hora.',
+    icon: 'mdi:cash-multiple',
+    group: 'management',
+    summary: 'El valor de tu hora por tipo de servicio, siempre en USD.',
     planned: [
-      'Editar los compromisos y preguntas frecuentes de "Cómo trabajo"',
       'Tarifas por tipo de servicio (siempre en USD)',
       'Decidir qué se muestra en público y qué es interno'
     ]
@@ -84,6 +131,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     label: 'Experiencia',
     to: '/admin/experiencia',
     icon: 'mdi:briefcase-outline',
+    group: 'management',
     summary: 'Tu trayectoria como fuente de verdad privada (nunca pública).',
     planned: [
       'Empresas, roles, logros con métricas verificables y evidencias',

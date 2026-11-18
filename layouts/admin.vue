@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ADMIN_NAV } from '~/constants/admin'
+  import { ADMIN_NAV, ADMIN_NAV_GROUPS } from '~/constants/admin'
 
   useSeoMeta({ title: 'Panel', robots: 'noindex, nofollow' })
 
@@ -18,6 +18,10 @@
   const isActive = (to: string) =>
     to === '/admin' ? route.path === '/admin' : route.path.startsWith(to)
   const current = computed(() => ADMIN_NAV.find(item => isActive(item.to)))
+  const groups = ADMIN_NAV_GROUPS.map(group => ({
+    ...group,
+    items: ADMIN_NAV.filter(item => item.group === group.id)
+  }))
 </script>
 
 <template>
@@ -71,22 +75,45 @@
         Panel privado
       </p>
 
-      <nav aria-label="Secciones del panel" class="flex-1 space-y-1 overflow-y-auto">
-        <NuxtLink
-          v-for="item in ADMIN_NAV"
-          :key="item.to"
-          :to="item.to"
-          :aria-current="isActive(item.to) ? 'page' : undefined"
-          class="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-white"
-          :class="
-            isActive(item.to)
-              ? 'bg-brand-surface-panel text-brand-white'
-              : 'text-brand-text-soft hover:bg-brand-surface-panel/70'
-          "
+      <nav aria-label="Secciones del panel" class="flex-1 overflow-y-auto">
+        <div
+          v-for="(group, index) in groups"
+          :key="group.id"
+          :class="index > 0 ? 'mt-6' : ''"
+          :role="group.label ? 'group' : undefined"
+          :aria-labelledby="group.label ? `admin-nav-${group.id}` : undefined"
         >
-          <Icon :name="item.icon" size="20" aria-hidden="true" />
-          {{ item.label }}
-        </NuxtLink>
+          <p
+            v-if="group.label"
+            :id="`admin-nav-${group.id}`"
+            class="mb-2 px-3 text-xs font-semibold uppercase tracking-[0.14em] text-brand-text-subtle"
+          >
+            {{ group.label }}
+          </p>
+          <div class="space-y-1">
+            <NuxtLink
+              v-for="item in group.items"
+              :key="item.to"
+              :to="item.to"
+              :aria-current="isActive(item.to) ? 'page' : undefined"
+              class="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-white"
+              :class="
+                isActive(item.to)
+                  ? 'bg-brand-surface-panel text-brand-white'
+                  : 'text-brand-text-soft hover:bg-brand-surface-panel/70'
+              "
+            >
+              <Icon :name="item.icon" size="20" aria-hidden="true" />
+              {{ item.label }}
+              <span
+                v-if="item.soon"
+                class="ml-auto rounded-full border border-brand-border-strong px-2 py-0.5 text-xs font-semibold text-brand-text-soft"
+              >
+                Pronto
+              </span>
+            </NuxtLink>
+          </div>
+        </div>
       </nav>
 
       <div class="mt-6 rounded-xl border border-brand-border-strong bg-brand-surface-panel p-3">
