@@ -172,15 +172,15 @@
 
           <dl class="mt-4 grid grid-cols-3 gap-3 text-sm">
             <div>
-              <dt class="text-xs text-brand-helper">Tarifa</dt>
+              <dt class="text-xs text-brand-muted">Tarifa</dt>
               <dd class="font-medium text-brand-ink">${{ project.rateUsd }}/h</dd>
             </div>
             <div>
-              <dt class="text-xs text-brand-helper">Inicio</dt>
+              <dt class="text-xs text-brand-muted">Inicio</dt>
               <dd class="font-medium text-brand-ink">{{ formatDate(project.startDate) }}</dd>
             </div>
             <div>
-              <dt class="text-xs text-brand-helper">Deadline</dt>
+              <dt class="text-xs text-brand-muted">Deadline</dt>
               <dd class="font-medium text-brand-ink">{{ formatDate(project.deadline) }}</dd>
               <dd
                 class="text-xs font-semibold"
@@ -239,10 +239,10 @@
         >
           <p class="font-medium text-brand-ink">{{ client.name }}</p>
           <p v-if="client.company" class="text-sm text-brand-muted">{{ client.company }}</p>
-          <p v-if="client.email" class="text-xs text-brand-helper">{{ client.email }}</p>
+          <p v-if="client.email" class="text-xs text-brand-muted">{{ client.email }}</p>
         </li>
       </ul>
-      <p v-else class="text-sm text-brand-helper">Sin clientes todavía.</p>
+      <p v-else class="text-sm text-brand-muted">Sin clientes todavía.</p>
     </section>
 
     <AdminDialog :open="clientOpen" title="Nuevo cliente" @close="clientOpen = false">

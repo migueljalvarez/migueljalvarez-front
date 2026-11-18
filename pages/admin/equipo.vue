@@ -214,7 +214,7 @@
           </tbody>
         </table>
       </div>
-      <p v-else class="text-sm text-brand-helper">Aún no hay colaboradores.</p>
+      <p v-else class="text-sm text-brand-muted">Aún no hay colaboradores.</p>
     </section>
 
     <section class="mt-10" aria-labelledby="assign-heading">
@@ -232,7 +232,7 @@
           <p
             class="mt-2 text-xs"
             :class="
-              row.used > row.agreed ? 'font-semibold text-brand-error-text' : 'text-brand-helper'
+              row.used > row.agreed ? 'font-semibold text-brand-error-text' : 'text-brand-muted'
             "
           >
             {{ row.used }} de {{ row.agreed }} h usadas{{
@@ -241,7 +241,7 @@
           </p>
         </li>
       </ul>
-      <p v-else class="text-sm text-brand-helper">Sin asignaciones todavía.</p>
+      <p v-else class="text-sm text-brand-muted">Sin asignaciones todavía.</p>
     </section>
 
     <section class="mt-10" aria-labelledby="pay-heading">
@@ -261,13 +261,13 @@
           </span>
           <span class="text-right">
             <span class="block font-semibold text-brand-ink">{{ usd(payment.amountUsd) }}</span>
-            <span class="block text-xs text-brand-helper">
+            <span class="block text-xs text-brand-muted">
               {{ cop(payment.amountUsd * payment.trm) }}
             </span>
           </span>
         </li>
       </ul>
-      <p v-else class="text-sm text-brand-helper">Sin pagos registrados.</p>
+      <p v-else class="text-sm text-brand-muted">Sin pagos registrados.</p>
     </section>
 
     <AdminDialog :open="open === 'member'" title="Nuevo colaborador" @close="open = null">

@@ -6,19 +6,36 @@
   const dialog = ref<HTMLDialogElement | null>(null)
   const uid = useId()
 
+  // Foco inicial: lo marcado con `data-autofocus` (p. ej. "Cancelar" en una confirmación) o, si no hay,
+  // el primer campo del formulario; sin campos, el navegador elige (el botón de cerrar).
+  const focusInitial = (element: HTMLDialogElement) => {
+    const target =
+      element.querySelector<HTMLElement>('[data-autofocus]') ??
+      element.querySelector<HTMLElement>(
+        'input:not([type=hidden]):not([disabled]), select:not([disabled]), textarea:not([disabled])'
+      )
+    target?.focus()
+  }
+
   watch(
     () => props.open,
     value => {
       const element = dialog.value
       if (!element) return
-      if (value && !element.open) element.showModal()
+      if (value && !element.open) {
+        element.showModal()
+        focusInitial(element)
+      }
       if (!value && element.open) element.close()
     },
     { flush: 'post' }
   )
 
   onMounted(() => {
-    if (props.open) dialog.value?.showModal()
+    if (props.open && dialog.value) {
+      dialog.value.showModal()
+      focusInitial(dialog.value)
+    }
   })
 </script>
 

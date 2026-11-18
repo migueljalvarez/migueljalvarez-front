@@ -94,10 +94,10 @@
         <p class="mt-3 whitespace-pre-line text-sm leading-6 text-brand-muted">
           {{ item.achievements }}
         </p>
-        <p v-if="item.technologies" class="mt-3 text-xs text-brand-helper">
+        <p v-if="item.technologies" class="mt-3 text-xs text-brand-muted">
           Tecnologías: {{ item.technologies }}
         </p>
-        <p v-if="item.evidence" class="text-xs text-brand-helper">Evidencia: {{ item.evidence }}</p>
+        <p v-if="item.evidence" class="text-xs text-brand-muted">Evidencia: {{ item.evidence }}</p>
       </li>
     </ul>
     <div

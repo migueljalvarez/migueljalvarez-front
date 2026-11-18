@@ -138,19 +138,21 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 
 ## Antes de reemplazar `main` (publicar)
 
+- **BLOQUEANTE: reactivar el segundo factor (OTP) del panel.** Hoy se pospone en desarrollo con `AUTH_REQUIRE_TOTP=false` en el `.env` de la API (solo permitido con `APP_ENV=local`). Antes de publicar: `true` en el servidor, administrador real creado con `npm run admin:create` y códigos de recuperación guardados.
+
 El checklist completo vive en Notion (página "Checklist antes de reemplazar main"). Resumen: repo público/privado decidido, variables de entorno cargadas en Netlify, `NUXT_PUBLIC_BASE_URL` definido, revisión legal de `/privacidad`, prueba real del formulario, revisión en teléfono real, Node 22.22.3, contenido de Mi Comodoro y CI en verde. Reemplazar `main` dispara el deploy de producción: solo cuando el autor lo pida.
 
 ## Agentes y skills (`.claude/` y espejo `.agents/`)
 
 Subagentes con rol fijo (`.claude/agents/*.md`) y skills alineadas a cada uno (`.claude/skills/<name>/SKILL.md`). `.agents/` es una copia idéntica para otras herramientas: **al editar uno, copiar al otro** (`npm test` falla si difieren). Las skills de diseño y frontend viven solo aquí; la API (`../migueljalvarez-api`) tiene las suyas de backend.
 
-| Agente         | Rol                                                                 | Skills                                       |
-| -------------- | ------------------------------------------------------------------- | -------------------------------------------- |
-| `architect`    | Valida Atomic Design, capas, público/privado y nombres; solo revisa | `atomic-design`                              |
-| `design`       | Valida identidad visual, pixel perfect y accesibilidad; solo revisa | `brand-identity`, `nuxt-ui`                  |
-| `frontend-dev` | Implementa UI componentizada, pixel perfect                         | `atomic-design`, `brand-identity`, `nuxt-ui` |
-| `refactor`     | Corrige violaciones y deuda de nombres de forma incremental         | `atomic-design`                              |
-| `review`       | Revisión final de calidad y reglas del proyecto                     | `atomic-design`, `brand-identity`            |
+| Agente         | Rol                                                                 | Skills                                                           |
+| -------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `architect`    | Valida Atomic Design, capas, público/privado y nombres; solo revisa | `atomic-design`                                                  |
+| `design`       | Valida identidad visual, pixel perfect y accesibilidad; solo revisa | `brand-identity`, `ui-ux-principles`, `nuxt-ui`                  |
+| `frontend-dev` | Implementa UI componentizada, pixel perfect                         | `atomic-design`, `brand-identity`, `ui-ux-principles`, `nuxt-ui` |
+| `refactor`     | Corrige violaciones y deuda de nombres de forma incremental         | `atomic-design`                                                  |
+| `review`       | Revisión final de calidad y reglas del proyecto                     | `atomic-design`, `brand-identity`, `ui-ux-principles`            |
 
 `nuxt-ui` es la skill oficial de Nuxt UI v4 (copiada de `finhub-dashboard`); si choca con la identidad, mandan los tokens `brand-*` de `brand-identity`. Flujo: `frontend-dev` → `architect` + `design` → `review`.
 
@@ -162,9 +164,10 @@ Dirección estratégica: cerrar y publicar v2/landing → endurecer seguridad �
 
 ## Panel administrativo (estructura hecha, sin datos reales)
 
-- `/admin/*` (layout `admin`, guarda global `middleware/auth.global.ts`): Resumen, Leads, Testimonios, Proyectos, Equipo y pagos, Políticas y tarifas, Experiencia. El menú y los módulos se definen en `constants/admin.ts`. `/dashboard/**` redirige a `/admin`. `/login` usa el layout mínimo `auth`.
+- `/admin/*` (layout `admin`, guarda global `middleware/auth.global.ts`): Menú agrupado: _Contenido del sitio_ (Portafolio —próximamente—, Redes sociales, Políticas, Testimonios) y _Gestión_ (Leads, Proyectos, Equipo y pagos, Tarifas, Experiencia). Redes sociales y Políticas ya están conectadas a la API (`pages/admin/social-links.vue`, `pages/admin/policies.vue`). El menú y los módulos se definen en `constants/admin.ts`. `/dashboard/**` redirige a `/admin`. `/login` usa el layout mínimo `auth`.
 - Los datos de ejemplo del panel (`constants/admin.samples.ts`) existen solo en desarrollo, con la etiqueta "Datos de ejemplo"; en producción el panel muestra estados vacíos hasta conectar la API.
 - Toda página nueva de `/admin` queda protegida automáticamente por la guarda global.
+- **Capa de datos del panel (conectada a la API):** `composables/useAdminSession.ts` (login en dos pasos, sesión, logout), `composables/useAdminApi.ts` (único punto de acceso a la API: `get/post/patch/put/del`, errores como `AdminApiError` con mensaje listo para mostrar, 401 → `/login`) y `utils/adminApiError.ts`. Las pantallas nunca llaman a `$fetch` directamente. Los módulos aún en memoria (`useAdminData`) se van migrando uno a uno.
 - **Formularios y acciones ya construidos** (leads con pipeline y notas, testimonios, clientes y proyectos con horas y deadline, equipo con horas y pagos en USD con TRM, tarifas y políticas, experiencia). Validan con Zod (`utils/admin/schemas.ts`, mismos campos que validará la API) y hablan con una sola capa de datos: `composables/useAdminData.ts`. **Hoy esa capa guarda en memoria y solo en desarrollo**; en producción los módulos muestran "Sin API conectada" y las acciones quedan deshabilitadas (`ADMIN_API_CONNECTED` en `constants/admin.ts`). Al conectar la API solo cambia el interior de `useAdminData`.
 - Primitivas de UI del panel en `components/admin/` (`AdminInput`, `AdminField`, `AdminDialog` con `<dialog>` nativo, `AdminButton`, `AdminPageHeader`). Importar siempre los componentes de forma explícita.
 
@@ -176,7 +179,7 @@ Módulos previstos en `/admin` (privado, noindex, Supabase Auth, un solo admin):
 
 ## Deuda técnica conocida (a priorizar en el plan)
 
-- **Auth del dashboard es provisional:** login con `ADMIN_EMAIL` / `ADMIN_PASSWORD`, cookie `admin_session` firmada (HMAC con `ADMIN_SESSION_SECRET`), httpOnly, 8 h, validada en servidor (`server/utils/adminSession.ts`, `/api/admin/session`, `middleware/auth.ts`). Sin esas variables el acceso queda cerrado (503). Limitaciones: un solo usuario, contador de intentos en memoria. El panel viejo (6 páginas con datos de ejemplo en localStorage) se eliminó en nov-2026; `/dashboard` solo muestra la sesión activa hasta que exista `/admin`. Se reemplaza por Supabase Auth (S7).
+- **Auth del panel:** la resuelve la API (`../migueljalvarez-api`): contraseña (argon2id) + TOTP, sesión `admin_session` HttpOnly. El sitio ya **no guarda credenciales de administrador** (se retiraron `ADMIN_EMAIL/PASSWORD/SESSION_SECRET` y la sesión provisional). Todo `/api/admin/**` pasa por el proxy `server/api/admin/[...path].ts` (`server/utils/adminProxy.ts`): reenvía solo la cookie `admin_session` y la IP real, valida segmentos de ruta y `Origin`, no sigue redirecciones. Sin `NUXT_API_BASE_URL` o con la API caída responde 503 y el panel lo explica. El usuario se crea en el repo de la API con `npm run admin:create`.
 - `server/api/(contact)/contact.ts` ya está endurecido (escape de HTML, límites, honeypot, 5 intentos/10 min por IP en memoria, `runtimeConfig`). Pendiente: rate limit del proveedor y prueba de envío real en preview.
 - La web pública ya no depende de ninguna base de datos: puede desplegarse sin esperar a Supabase (la compuerta de publicación sigue siendo decisión del autor).
 - Netlify: el build con el preset `netlify` funciona en local (`NITRO_PRESET=netlify npm run build`); pesa 45 MB la función por los iconos de `@nuxt/icon` en modo local (valorar modo `remote` o recorte de colecciones). Falta medir en un deploy preview real.

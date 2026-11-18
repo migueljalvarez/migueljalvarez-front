@@ -7,9 +7,6 @@ export type ServerSecretKey =
   | 'resendApiKey'
   | 'mailFrom'
   | 'mailTo'
-  | 'adminEmail'
-  | 'adminPassword'
-  | 'adminSessionSecret'
   | 'apiBaseUrl'
   | 'apiAccessClientId'
   | 'apiAccessClientSecret'
@@ -19,9 +16,6 @@ const LEGACY_ENV: Record<ServerSecretKey, string> = {
   resendApiKey: 'RESEND_API_KEY',
   mailFrom: 'MAIL_FROM',
   mailTo: 'MAIL_TO',
-  adminEmail: 'ADMIN_EMAIL',
-  adminPassword: 'ADMIN_PASSWORD',
-  adminSessionSecret: 'ADMIN_SESSION_SECRET',
   apiBaseUrl: 'API_BASE_URL',
   apiAccessClientId: 'API_ACCESS_CLIENT_ID',
   apiAccessClientSecret: 'API_ACCESS_CLIENT_SECRET',

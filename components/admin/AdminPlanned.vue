@@ -26,7 +26,7 @@
           <span>{{ line }}</span>
         </li>
       </ul>
-      <p class="mt-5 text-sm text-brand-helper">
+      <p class="mt-5 text-sm text-brand-muted">
         Este módulo se construirá cuando la base de datos esté lista.
       </p>
     </section>

@@ -4,6 +4,7 @@ description: Implementa funcionalidades de UI del sitio con Atomic Design, compo
 skills:
   - atomic-design
   - brand-identity
+  - ui-ux-principles
   - nuxt-ui
 color: green
 ---

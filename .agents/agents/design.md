@@ -3,6 +3,7 @@ name: design
 description: Verifica que la UI respete la identidad visual del proyecto (tokens brand-*, tipografía, hexágonos, bandas) y sea fiel al diseño (pixel perfect) con accesibilidad. Solo revisa; no modifica código.
 skills:
   - brand-identity
+  - ui-ux-principles
   - nuxt-ui
 color: purple
 ---

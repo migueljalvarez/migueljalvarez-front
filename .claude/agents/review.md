@@ -4,6 +4,7 @@ description: Revisión final de calidad del sitio: completitud, consistencia, es
 skills:
   - atomic-design
   - brand-identity
+  - ui-ux-principles
 color: orange
 ---
 

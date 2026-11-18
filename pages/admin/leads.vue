@@ -517,10 +517,10 @@
               class="rounded-xl border border-brand-border p-3 text-sm"
             >
               <p class="text-brand-ink">{{ note.text }}</p>
-              <p class="mt-1 text-xs text-brand-helper">{{ formatDate(note.at) }}</p>
+              <p class="mt-1 text-xs text-brand-muted">{{ formatDate(note.at) }}</p>
             </li>
           </ul>
-          <p v-else class="text-sm text-brand-helper">Aún no hay notas.</p>
+          <p v-else class="text-sm text-brand-muted">Aún no hay notas.</p>
         </section>
 
         <div class="flex justify-between border-t border-brand-border pt-4">

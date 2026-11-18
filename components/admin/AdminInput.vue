@@ -1,13 +1,14 @@
 <script setup lang="ts">
   import AdminField from '~/components/admin/AdminField.vue'
+  import { cn } from '~/utils/cn'
 
-  // Control de texto, número, fecha, correo, área de texto o lista desplegable con su campo.
+  // Control de texto, número, fecha, correo, contraseña, área de texto o lista desplegable con su campo.
   const props = withDefaults(
     defineProps<{
       id: string
       label: string
       modelValue: string | number | boolean
-      type?: 'text' | 'email' | 'number' | 'date' | 'textarea' | 'select' | 'checkbox'
+      type?: 'text' | 'email' | 'password' | 'number' | 'date' | 'textarea' | 'select' | 'checkbox'
       options?: { value: string; label: string }[]
       placeholder?: string
       error?: string
@@ -15,15 +16,38 @@
       required?: boolean
       rows?: number
       step?: string
+      maxlength?: number
+      /** Muestra "actual/máximo" junto a la etiqueta (requiere `maxlength`). */
+      counter?: boolean
+      inputmode?: 'text' | 'numeric' | 'decimal' | 'email' | 'url'
+      autocomplete?: string
+      /** Id de un `<datalist>` con sugerencias. */
+      list?: string
+      /** Clases extra del control (p. ej. el campo grande del código de verificación). */
+      inputClass?: string
     }>(),
     { type: 'text', rows: 3 }
   )
   const emit = defineEmits<{ 'update:modelValue': [value: string | number | boolean] }>()
 
+  // Alto táctil 44 px (`min-h-11`) y radio de control `rounded-lg`, igual que AdminButton y la landing.
+  // El borde usa `brand-helper` (3,6:1 sobre blanco): el borde de un campo es un componente de interfaz
+  // y debe llegar a 3:1 (WCAG 1.4.11); `brand-border` (1,1:1) no alcanza.
   const base =
-    'w-full rounded-xl border bg-brand-surface px-3 py-2.5 text-sm text-brand-ink outline-none transition placeholder:text-brand-helper focus:border-brand-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue'
+    'min-h-11 w-full rounded-lg border bg-brand-surface px-3 py-2.5 text-sm text-brand-ink transition placeholder:text-brand-helper focus:border-brand-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue'
   const stateClass = computed(() =>
-    props.error ? 'border-brand-error-border' : 'border-brand-border'
+    props.error ? 'border-brand-error-text' : 'border-brand-helper'
+  )
+  // `cn` resuelve conflictos: `inputClass` (p. ej. `text-2xl`) gana sobre `text-sm` de la base.
+  const controlClass = computed(() => cn(base, stateClass.value, props.inputClass))
+
+  const count = computed(() =>
+    props.counter && props.maxlength
+      ? { current: String(props.modelValue).length, max: props.maxlength }
+      : undefined
+  )
+  const inputmodeAttr = computed(
+    () => props.inputmode ?? (props.type === 'number' ? 'decimal' : undefined)
   )
 
   const onInput = (event: Event) => {
@@ -38,36 +62,49 @@
       :id="id"
       type="checkbox"
       :checked="Boolean(modelValue)"
-      class="mt-1 size-5 rounded border-brand-border accent-brand-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue"
+      class="mt-3 size-5 shrink-0 rounded border-brand-helper accent-brand-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue"
       :aria-describedby="hint ? `${id}-hint` : undefined"
       @change="onInput"
     />
     <div>
-      <label :for="id" class="text-sm font-medium text-brand-ink">{{ label }}</label>
-      <p v-if="hint" :id="`${id}-hint`" class="text-xs text-brand-helper">{{ hint }}</p>
+      <label :for="id" class="flex min-h-11 items-center text-sm font-medium text-brand-ink">
+        {{ label }}
+      </label>
+      <p v-if="hint" :id="`${id}-hint`" class="-mt-2 pb-2 text-xs text-brand-muted">{{ hint }}</p>
     </div>
   </div>
 
-  <AdminField v-else :id="id" :label="label" :error="error" :hint="hint" :required="required">
+  <AdminField
+    v-else
+    :id="id"
+    :label="label"
+    :error="error"
+    :hint="hint"
+    :required="required"
+    :count="count"
+  >
     <template #default="{ describedBy, invalid }">
       <textarea
         v-if="type === 'textarea'"
         :id="id"
         :value="String(modelValue)"
         :rows="rows"
+        :maxlength="maxlength"
         :placeholder="placeholder"
+        :required="required"
         :aria-describedby="describedBy"
         :aria-invalid="invalid"
-        :class="[base, stateClass]"
+        :class="controlClass"
         @input="onInput"
       />
       <select
         v-else-if="type === 'select'"
         :id="id"
         :value="String(modelValue)"
+        :required="required"
         :aria-describedby="describedBy"
         :aria-invalid="invalid"
-        :class="[base, stateClass]"
+        :class="controlClass"
         @change="onInput"
       >
         <option value="" disabled>{{ placeholder ?? 'Selecciona…' }}</option>
@@ -75,19 +112,25 @@
           {{ option.label }}
         </option>
       </select>
-      <input
-        v-else
-        :id="id"
-        :type="type"
-        :value="String(modelValue)"
-        :placeholder="placeholder"
-        :step="step"
-        :inputmode="type === 'number' ? 'decimal' : undefined"
-        :aria-describedby="describedBy"
-        :aria-invalid="invalid"
-        :class="[base, stateClass]"
-        @input="onInput"
-      />
+      <div v-else class="flex items-start gap-3">
+        <slot name="prefix" />
+        <input
+          :id="id"
+          :type="type"
+          :value="String(modelValue)"
+          :placeholder="placeholder"
+          :step="step"
+          :maxlength="maxlength"
+          :inputmode="inputmodeAttr"
+          :autocomplete="autocomplete"
+          :list="list"
+          :required="required"
+          :aria-describedby="describedBy"
+          :aria-invalid="invalid"
+          :class="cn(controlClass, 'min-w-0 flex-1')"
+          @input="onInput"
+        />
+      </div>
     </template>
   </AdminField>
 </template>

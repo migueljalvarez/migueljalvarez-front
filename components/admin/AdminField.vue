@@ -6,6 +6,8 @@
     error?: string
     hint?: string
     required?: boolean
+    /** Contador "actual/máximo" junto a la etiqueta (p. ej. textos con límite). */
+    count?: { current: number; max: number }
   }>()
 
   const describedBy = computed(() =>
@@ -17,12 +19,17 @@
 
 <template>
   <div>
-    <label :for="id" class="mb-1 block text-sm font-medium text-brand-ink">
-      {{ label }}
-      <span v-if="required" class="text-brand-error-text" aria-hidden="true">*</span>
-    </label>
+    <div class="mb-1 flex items-end justify-between gap-3">
+      <label :for="id" class="block text-sm font-medium text-brand-ink">
+        {{ label }}
+        <span v-if="required" class="text-brand-error-text" aria-hidden="true">*</span>
+      </label>
+      <span v-if="count" class="text-xs tabular-nums text-brand-muted" aria-hidden="true">
+        {{ count.current }}/{{ count.max }}
+      </span>
+    </div>
     <slot :described-by="describedBy || undefined" :invalid="!!error" />
-    <p v-if="hint" :id="`${id}-hint`" class="mt-1 text-xs text-brand-helper">{{ hint }}</p>
+    <p v-if="hint" :id="`${id}-hint`" class="mt-1 text-xs text-brand-muted">{{ hint }}</p>
     <p
       v-if="error"
       :id="`${id}-error`"
