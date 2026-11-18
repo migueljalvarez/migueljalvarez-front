@@ -2,6 +2,8 @@
   import Contact from '~/components/templates/Contact/Contact.vue'
   import HowWorkContent from '~/components/templates/HowWork/HowWorkContent.vue'
 
+  const { policies } = await usePolicies()
+
   usePageSeo({
     title: 'Cómo trabajo',
     description:
@@ -12,7 +14,7 @@
 
 <template>
   <div>
-    <HowWorkContent />
+    <HowWorkContent :policies="policies" />
     <Contact title="Hablemos" />
   </div>
 </template>

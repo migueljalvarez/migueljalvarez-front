@@ -10,7 +10,6 @@
 
   import { META, MY_SOCIAL_MEDIA } from '~/constants/common'
   import { Section } from '~/components/organisms'
-  import { HOME_PORTFOLIO_PROJECTS } from '~/constants/portfolio'
 
   definePageMeta({ layout: 'default', keepalive: true })
 
@@ -60,7 +59,7 @@
       }
     ]
   })
-  const portfolioProjects = HOME_PORTFOLIO_PROJECTS
+  const { homeCards: portfolioProjects } = await usePortfolio()
 </script>
 
 <template>

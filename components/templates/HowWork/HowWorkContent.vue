@@ -1,6 +1,10 @@
 <script setup lang="ts">
   import { Section } from '~/components/organisms'
-  import { WORK_FAQ, WORK_NON_NEGOTIABLES, WORK_POLICY_BLOCKS, WORK_COMMITMENTS } from '~/data/work'
+  import { WORK_FAQ, WORK_NON_NEGOTIABLES, WORK_COMMITMENTS } from '~/data/work'
+  import type { PolicyBlock } from '~/utils/publicContent'
+
+  /** Acuerdos de trabajo (API con respaldo en el código); el resto del copy es identidad de marca. */
+  defineProps<{ policies: PolicyBlock[] }>()
 </script>
 
 <template>
@@ -61,12 +65,12 @@
 
     <div class="mx-auto grid w-full max-w-7xl gap-4 md:grid-cols-3">
       <article
-        v-for="block in WORK_POLICY_BLOCKS"
+        v-for="block in policies"
         :key="block.id"
         class="rounded-2xl border border-brand-border bg-brand-surface-card p-5 shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:p-6"
       >
-        <h2 class="text-lg font-semibold text-brand-ink">{{ block.titulo }}</h2>
-        <p class="mt-3 text-sm leading-6 text-brand-muted">{{ block.texto }}</p>
+        <h2 class="text-lg font-semibold text-brand-ink">{{ block.title }}</h2>
+        <p class="mt-3 text-sm leading-6 text-brand-muted">{{ block.body }}</p>
       </article>
     </div>
 

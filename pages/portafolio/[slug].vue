@@ -12,8 +12,7 @@
   const slug = computed(() => String(route.params.slug || ''))
   const project = ref<PortafolioType | null>(null)
 
-  const projectData = await useFetch('/api/portafolio')
-  const projects = computed(() => (projectData.data.value as PortafolioType[]) ?? [])
+  const { items: projects } = await usePortfolio()
 
   watch(
     () => slug.value,

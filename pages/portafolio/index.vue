@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import PortfolioSection from '~/components/templates/Portfolio/PortfolioSection.vue'
-  import { ALL_PORTFOLIO_CARD_PROJECTS } from '~/constants/portfolio'
+
+  const { allCards } = await usePortfolio()
 
   definePageMeta({
     layout: 'default',
@@ -32,7 +33,7 @@
         description="Una selección de productos, plataformas y sistemas construidos para resolver problemas concretos."
         heading-level="h1"
         section-id="portfolio-page"
-        :projects="ALL_PORTFOLIO_CARD_PROJECTS"
+        :projects="allCards"
         :show-view-all="false"
         :reveal="false"
       />

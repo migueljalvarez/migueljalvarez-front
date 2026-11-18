@@ -1,5 +1,3 @@
-import { PORTFOLIO_PROJECTS } from '~/constants/portfolio'
-
 const escapeXml = (value: string) =>
   value
     .replace(/&/g, '&amp;')
@@ -8,18 +6,19 @@ const escapeXml = (value: string) =>
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&apos;')
 
-export default defineEventHandler(event => {
+export default defineEventHandler(async event => {
   const baseUrl = String(useRuntimeConfig(event).public.baseUrl || '').replace(/\/+$/, '')
 
   // Rutas públicas fijas + proyectos con ficha de detalle (los "en desarrollo" no la tienen).
+  const projects = await getPortfolioItems()
   const paths = [
     '/',
     '/como-trabajo',
     '/portafolio',
     '/privacidad',
-    ...PORTFOLIO_PROJECTS.filter(project => project.status !== 'in-development').map(
-      project => `/portafolio/${project.slug || project.id}`
-    )
+    ...projects
+      .filter(project => project.status !== 'in-development')
+      .map(project => `/portafolio/${project.slug || project.id}`)
   ]
 
   const urls = paths
