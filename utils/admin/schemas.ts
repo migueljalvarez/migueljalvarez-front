@@ -105,12 +105,6 @@ export const rateSchema = z.object({
   isPublic: z.boolean()
 })
 
-export const policySchema = z.object({
-  title: text(120),
-  body: text(2000),
-  isPublic: z.boolean()
-})
-
 export const experienceSchema = z
   .object({
     company: text(120),

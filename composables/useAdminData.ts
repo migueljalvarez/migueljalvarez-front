@@ -8,7 +8,6 @@ import type {
   Experience,
   Lead,
   Payment,
-  Policy,
   Project,
   Rate,
   TeamMember,
@@ -119,22 +118,12 @@ export const useAdminData = () => {
     data.value.payments.unshift({ ...input, id: newId() })
   }
 
-  // --- Políticas y tarifas
+  // --- Tarifas
   const addRate = (input: Omit<Rate, 'id'>) => {
     data.value.rates.push({ ...input, id: newId() })
   }
   const removeRate = (id: string) => {
     data.value.rates = data.value.rates.filter(item => item.id !== id)
-  }
-  const addPolicy = (input: Omit<Policy, 'id'>) => {
-    data.value.policies.push({ ...input, id: newId() })
-  }
-  const togglePolicyPublic = (id: string) => {
-    const policy = data.value.policies.find(item => item.id === id)
-    if (policy) policy.isPublic = !policy.isPublic
-  }
-  const removePolicy = (id: string) => {
-    data.value.policies = data.value.policies.filter(item => item.id !== id)
   }
 
   // --- Experiencia
@@ -190,9 +179,6 @@ export const useAdminData = () => {
     addPayment,
     addRate,
     removeRate,
-    addPolicy,
-    togglePolicyPublic,
-    removePolicy,
     addExperience,
     removeExperience,
     clientName,

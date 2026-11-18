@@ -17,6 +17,8 @@
 
   const isActive = (to: string) =>
     to === '/admin' ? route.path === '/admin' : route.path.startsWith(to)
+  // Las pantallas anidadas (p. ej. el editor de un proyecto) declaran su migaja con `meta.crumb`.
+  const crumb = computed(() => (route.meta.crumb as string | undefined) ?? '')
   const current = computed(() => ADMIN_NAV.find(item => isActive(item.to)))
   const groups = ADMIN_NAV_GROUPS.map(group => ({
     ...group,
@@ -105,12 +107,6 @@
             >
               <Icon :name="item.icon" size="20" aria-hidden="true" />
               {{ item.label }}
-              <span
-                v-if="item.soon"
-                class="ml-auto rounded-full border border-brand-border-strong px-2 py-0.5 text-xs font-semibold text-brand-text-soft"
-              >
-                Pronto
-              </span>
             </NuxtLink>
           </div>
         </div>
@@ -143,7 +139,13 @@
         <ol class="flex items-center gap-2 text-brand-muted">
           <li><NuxtLink to="/admin" class="hover:text-brand-ink">Panel</NuxtLink></li>
           <li aria-hidden="true">/</li>
-          <li aria-current="page" class="font-medium text-brand-ink">{{ current.label }}</li>
+          <li v-if="crumb">
+            <NuxtLink :to="current.to" class="hover:text-brand-ink">{{ current.label }}</NuxtLink>
+          </li>
+          <li v-if="crumb" aria-hidden="true">/</li>
+          <li aria-current="page" class="font-medium text-brand-ink">
+            {{ crumb || current.label }}
+          </li>
         </ol>
       </nav>
       <slot />

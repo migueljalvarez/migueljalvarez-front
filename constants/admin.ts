@@ -13,8 +13,6 @@ export type AdminNavItem = {
   summary: string
   /** Capacidades previstas (se muestran en la página mientras el módulo no existe). */
   planned: string[]
-  /** El módulo aún no está construido: el menú lo marca con "Pronto". */
-  soon?: boolean
 }
 
 /** Encabezados del menú lateral, en orden. El grupo `overview` no lleva encabezado. */
@@ -38,14 +36,9 @@ export const ADMIN_NAV: AdminNavItem[] = [
     to: '/admin/portfolio',
     icon: 'mdi:image-multiple-outline',
     group: 'content',
-    summary: 'Los proyectos que muestras en el portafolio público, sin tocar el código.',
-    planned: [
-      'Crear y editar proyectos con problema, decisión y resultado',
-      'Subir la portada y la galería con las medidas correctas',
-      'Publicar, ocultar o marcar un proyecto como en desarrollo',
-      'Elegir cuáles aparecen como destacados en la página de inicio'
-    ],
-    soon: true
+    summary:
+      'Los proyectos del portafolio público: créalos, edítalos y publícalos sin tocar el código.',
+    planned: []
   },
   {
     label: 'Redes sociales',

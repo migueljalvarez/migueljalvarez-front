@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import AdminField from '~/components/admin/AdminField.vue'
+  import { ADMIN_CONTROL_BASE, adminControlState } from '~/utils/admin/controlClass'
   import { cn } from '~/utils/cn'
 
   // Control de texto, número, fecha, correo, contraseña, área de texto o lista desplegable con su campo.
@@ -14,6 +15,8 @@
       error?: string
       hint?: string
       required?: boolean
+      /** Solo en casillas: la explicación de por qué no se puede marcar va en `hint`. */
+      disabled?: boolean
       rows?: number
       step?: string
       maxlength?: number
@@ -30,16 +33,9 @@
   )
   const emit = defineEmits<{ 'update:modelValue': [value: string | number | boolean] }>()
 
-  // Alto táctil 44 px (`min-h-11`) y radio de control `rounded-lg`, igual que AdminButton y la landing.
-  // El borde usa `brand-helper` (3,6:1 sobre blanco): el borde de un campo es un componente de interfaz
-  // y debe llegar a 3:1 (WCAG 1.4.11); `brand-border` (1,1:1) no alcanza.
-  const base =
-    'min-h-11 w-full rounded-lg border bg-brand-surface px-3 py-2.5 text-sm text-brand-ink transition placeholder:text-brand-helper focus:border-brand-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue'
-  const stateClass = computed(() =>
-    props.error ? 'border-brand-error-text' : 'border-brand-helper'
-  )
+  const stateClass = computed(() => adminControlState(!!props.error))
   // `cn` resuelve conflictos: `inputClass` (p. ej. `text-2xl`) gana sobre `text-sm` de la base.
-  const controlClass = computed(() => cn(base, stateClass.value, props.inputClass))
+  const controlClass = computed(() => cn(ADMIN_CONTROL_BASE, stateClass.value, props.inputClass))
 
   const count = computed(() =>
     props.counter && props.maxlength
@@ -62,12 +58,17 @@
       :id="id"
       type="checkbox"
       :checked="Boolean(modelValue)"
-      class="mt-3 size-5 shrink-0 rounded border-brand-helper accent-brand-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue"
+      :disabled="disabled"
+      class="mt-3 size-5 shrink-0 rounded border-brand-helper accent-brand-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue disabled:cursor-not-allowed disabled:opacity-60"
       :aria-describedby="hint ? `${id}-hint` : undefined"
       @change="onInput"
     />
     <div>
-      <label :for="id" class="flex min-h-11 items-center text-sm font-medium text-brand-ink">
+      <label
+        :for="id"
+        class="flex min-h-11 items-center text-sm font-medium text-brand-ink"
+        :class="{ 'opacity-60': disabled }"
+      >
         {{ label }}
       </label>
       <p v-if="hint" :id="`${id}-hint`" class="-mt-2 pb-2 text-xs text-brand-muted">{{ hint }}</p>

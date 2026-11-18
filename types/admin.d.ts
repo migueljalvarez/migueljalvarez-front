@@ -75,7 +75,6 @@ export type Payment = {
 }
 
 export type Rate = { id: string; service: string; rateUsd: number; isPublic: boolean }
-export type Policy = { id: string; title: string; body: string; isPublic: boolean }
 
 export type Experience = {
   id: string
@@ -99,6 +98,5 @@ export type AdminData = {
   timeEntries: TimeEntry[]
   payments: Payment[]
   rates: Rate[]
-  policies: Policy[]
   experiences: Experience[]
 }
