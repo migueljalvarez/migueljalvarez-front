@@ -34,7 +34,7 @@
       {{ offering.titulo }}
     </h4>
 
-    <p class="mt-3 text-sm leading-6 text-brand-muted">
+    <p class="mt-3 mb-4 text-sm leading-6 text-brand-muted">
       {{ offering.paraQuien }}
     </p>
 
