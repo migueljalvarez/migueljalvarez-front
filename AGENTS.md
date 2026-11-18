@@ -144,13 +144,13 @@ El checklist completo vive en Notion (página "Checklist antes de reemplazar mai
 
 Subagentes con rol fijo (`.claude/agents/*.md`) y skills alineadas a cada uno (`.claude/skills/<name>/SKILL.md`). `.agents/` es una copia idéntica para otras herramientas: **al editar uno, copiar al otro** (`npm test` falla si difieren). Las skills de diseño y frontend viven solo aquí; la API (`../migueljalvarez-api`) tiene las suyas de backend.
 
-| Agente         | Rol                                                                 | Skills                                       |
-| -------------- | ------------------------------------------------------------------- | -------------------------------------------- |
-| `architect`    | Valida Atomic Design, capas, público/privado y nombres; solo revisa | `atomic-design`                              |
-| `design`       | Valida identidad visual, pixel perfect y accesibilidad; solo revisa | `brand-identity`, `nuxt-ui`                  |
-| `frontend-dev` | Implementa UI componentizada, pixel perfect                         | `atomic-design`, `brand-identity`, `nuxt-ui` |
-| `refactor`     | Corrige violaciones y deuda de nombres de forma incremental         | `atomic-design`                              |
-| `review`       | Revisión final de calidad y reglas del proyecto                     | `atomic-design`, `brand-identity`            |
+| Agente         | Rol                                                                 | Skills                                                           |
+| -------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `architect`    | Valida Atomic Design, capas, público/privado y nombres; solo revisa | `atomic-design`                                                  |
+| `design`       | Valida identidad visual, pixel perfect y accesibilidad; solo revisa | `brand-identity`, `ui-ux-principles`, `nuxt-ui`                  |
+| `frontend-dev` | Implementa UI componentizada, pixel perfect                         | `atomic-design`, `brand-identity`, `ui-ux-principles`, `nuxt-ui` |
+| `refactor`     | Corrige violaciones y deuda de nombres de forma incremental         | `atomic-design`                                                  |
+| `review`       | Revisión final de calidad y reglas del proyecto                     | `atomic-design`, `brand-identity`, `ui-ux-principles`            |
 
 `nuxt-ui` es la skill oficial de Nuxt UI v4 (copiada de `finhub-dashboard`); si choca con la identidad, mandan los tokens `brand-*` de `brand-identity`. Flujo: `frontend-dev` → `architect` + `design` → `review`.
 
