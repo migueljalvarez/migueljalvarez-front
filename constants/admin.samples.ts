@@ -18,7 +18,6 @@ const empty = (): AdminData => ({
   timeEntries: [],
   payments: [],
   rates: [],
-  policies: [],
   experiences: []
 })
 
@@ -228,14 +227,6 @@ export const buildSampleData = (): AdminData => {
     rates: [
       { id: 'r1', service: 'Desarrollo web a la medida', rateUsd: 30, isPublic: false },
       { id: 'r2', service: 'Consultoría técnica', rateUsd: 40, isPublic: false }
-    ],
-    policies: [
-      {
-        id: 'po1',
-        title: 'El código y los accesos son tuyos',
-        body: 'Al completar el pago, los derechos del código desarrollado para ti pasan a ser tuyos (ejemplo).',
-        isPublic: true
-      }
     ],
     experiences: []
   }
