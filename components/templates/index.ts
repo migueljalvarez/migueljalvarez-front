@@ -6,7 +6,9 @@ import Services from './Services/Services.vue'
 import ProcessSection from './Services/ProcessSection.vue'
 import HowWorkTeaser from './HowWork/HowWorkTeaser.vue'
 import HowWorkContent from './HowWork/HowWorkContent.vue'
+import LegalDocument from './LegalDocument/LegalDocument.vue'
 export {
+  LegalDocument,
   Main,
   About,
   Contact,
