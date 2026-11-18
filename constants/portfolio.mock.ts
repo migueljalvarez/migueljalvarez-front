@@ -1,4 +1,4 @@
-import type { PortafolioType } from '~/types/common'
+import type { PortfolioType } from '~/types/common'
 
 /**
  * DATOS DE EJEMPLO — SOLO DESARROLLO.
@@ -6,7 +6,7 @@ import type { PortafolioType } from '~/types/common'
  * Se activan únicamente con `import.meta.dev` (ver constants/portfolio.ts) y no deben llegar a producción.
  * Ninguno de estos proyectos se muestra en el sitio real.
  */
-export const MOCK_PORTFOLIO_PROJECTS: PortafolioType[] = [
+export const MOCK_PORTFOLIO_PROJECTS: PortfolioType[] = [
   {
     id: 'tu-radio-ar-stereo',
     type: 'client',

@@ -28,7 +28,7 @@
       value: hasData
         ? String(data.value.projects.filter(item => item.status === 'en-curso').length)
         : '—',
-      to: '/admin/proyectos'
+      to: '/admin/projects'
     },
     {
       label: 'Deadlines en 14 días',
@@ -39,14 +39,14 @@
             ).length
           )
         : '—',
-      to: '/admin/proyectos'
+      to: '/admin/projects'
     },
     {
       label: 'Testimonios por aprobar',
       value: hasData
         ? String(data.value.testimonials.filter(item => item.status === 'respondida').length)
         : '—',
-      to: '/admin/testimonios'
+      to: '/admin/testimonials'
     }
   ])
   void hoursByProject

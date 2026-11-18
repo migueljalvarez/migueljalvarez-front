@@ -1,7 +1,7 @@
 import { PORTFOLIO_PROJECTS } from '~/constants/portfolio'
 import { MY_SOCIAL_MEDIA } from '~/constants/common'
 import { WORK_POLICY_BLOCKS } from '~/data/work'
-import type { PortafolioType, SocialMediaType } from '~/types/common'
+import type { PortfolioType, SocialMediaType } from '~/types/common'
 import {
   mapApiPolicy,
   mapApiPortfolioEntry,
@@ -31,7 +31,7 @@ const apiClient = () => {
 }
 
 /** Proyectos del portafolio, con los destacados primero (la API ya los entrega ordenados). */
-export const getPortfolioItems = async (): Promise<PortafolioType[]> => {
+export const getPortfolioItems = async (): Promise<PortfolioType[]> => {
   const entries = await apiClient().get<ApiPortfolioEntry[]>('/api/portfolio')
   if (entries && entries.length > 0) return entries.map(mapApiPortfolioEntry)
   return PORTFOLIO_PROJECTS

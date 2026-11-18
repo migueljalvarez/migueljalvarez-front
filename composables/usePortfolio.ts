@@ -1,4 +1,4 @@
-import type { PortafolioType } from '~/types/common'
+import type { PortfolioType } from '~/types/common'
 import { toHomeCardProjects, toPortfolioCardProject } from '~/utils/publicContent'
 
 /**
@@ -6,7 +6,7 @@ import { toHomeCardProjects, toPortfolioCardProject } from '~/utils/publicConten
  * y se expone ya convertido a tarjetas para la home y para `/portafolio`.
  */
 export const usePortfolio = async () => {
-  const { data } = await useFetch<PortafolioType[]>('/api/portfolio', {
+  const { data } = await useFetch<PortfolioType[]>('/api/portfolio', {
     key: 'portfolio',
     default: () => []
   })

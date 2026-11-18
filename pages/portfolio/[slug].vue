@@ -1,8 +1,9 @@
 <script lang="ts" setup>
   import Button from '~/components/atoms/Button/Button.vue'
-  import type { PortafolioType } from '~/types/common'
+  import type { PortfolioType } from '~/types/common'
 
   definePageMeta({
+    path: '/portafolio/:slug()',
     layout: 'default',
     keepalive: true,
     title: 'Detalle del proyecto'
@@ -10,7 +11,7 @@
 
   const route = useRoute()
   const slug = computed(() => String(route.params.slug || ''))
-  const project = ref<PortafolioType | null>(null)
+  const project = ref<PortfolioType | null>(null)
 
   const { items: projects } = await usePortfolio()
 
@@ -18,7 +19,7 @@
     () => slug.value,
     value => {
       if (!value) return
-      const found = (projects.value as PortafolioType[]).find(
+      const found = (projects.value as PortfolioType[]).find(
         item => item.slug === value && item.status !== 'in-development'
       )
       project.value = found ?? null

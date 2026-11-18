@@ -4,6 +4,7 @@
   const { allCards } = await usePortfolio()
 
   definePageMeta({
+    path: '/portafolio',
     layout: 'default',
     title: 'Portafolio'
   })

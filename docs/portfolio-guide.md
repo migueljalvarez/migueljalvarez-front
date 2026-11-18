@@ -1,8 +1,8 @@
 # Guía del portafolio: qué mostrar y cómo preparar las imágenes
 
 Esta guía define qué debe tener cada proyecto para convencer a un cliente o visitante y las medidas
-exactas de las imágenes. Los datos viven en `constants/portfolio.ts` (tipo `PortafolioType` en
-`types/common/index.d.ts`). La ficha pública es `pages/portafolio/[slug].vue`.
+exactas de las imágenes. Los datos viven en `constants/portfolio.ts` (tipo `PortfolioType` en
+`types/common/index.d.ts`). La ficha pública es `pages/portfolio/[slug].vue`.
 
 **Regla de oro:** solo se muestra lo real y verificable. Si no hay dato, el campo se omite; la ficha
 no muestra secciones vacías. Nada de cifras, clientes ni capturas inventados.

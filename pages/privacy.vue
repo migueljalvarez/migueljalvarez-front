@@ -1,6 +1,8 @@
 <script setup lang="ts">
   import { PRIVACY_SECTIONS, PRIVACY_UPDATED_AT } from '~/data/privacy'
 
+  definePageMeta({ path: '/privacidad' })
+
   usePageSeo({
     title: 'Política de tratamiento de datos',
     description:
