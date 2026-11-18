@@ -138,6 +138,8 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 
 ## Antes de reemplazar `main` (publicar)
 
+- **BLOQUEANTE: reactivar el segundo factor (OTP) del panel.** Hoy se pospone en desarrollo con `AUTH_REQUIRE_TOTP=false` en el `.env` de la API (solo permitido con `APP_ENV=local`). Antes de publicar: `true` en el servidor, administrador real creado con `npm run admin:create` y códigos de recuperación guardados.
+
 El checklist completo vive en Notion (página "Checklist antes de reemplazar main"). Resumen: repo público/privado decidido, variables de entorno cargadas en Netlify, `NUXT_PUBLIC_BASE_URL` definido, revisión legal de `/privacidad`, prueba real del formulario, revisión en teléfono real, Node 22.22.3, contenido de Mi Comodoro y CI en verde. Reemplazar `main` dispara el deploy de producción: solo cuando el autor lo pida.
 
 ## Agentes y skills (`.claude/` y espejo `.agents/`)
