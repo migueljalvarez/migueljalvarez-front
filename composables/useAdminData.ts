@@ -1,14 +1,10 @@
 import { ADMIN_API_CONNECTED } from '~/constants/admin'
 import { buildSampleData, USE_ADMIN_SAMPLES } from '~/constants/admin.samples'
-import type { LeadStatus } from '~/constants/admin'
 import type {
   AdminData,
   Assignment,
-  Client,
   Experience,
-  Lead,
   Payment,
-  Project,
   Rate,
   TeamMember,
   TestimonialRequest,
@@ -20,7 +16,9 @@ const newId = () => `${Date.now().toString(36)}${Math.random().toString(36).slic
 const today = () => new Date().toISOString().slice(0, 10)
 
 /**
- * Capa de datos del panel. HOY guarda en memoria (se pierde al recargar) y solo se puede escribir en
+ * Capa de datos en memoria de los módulos del panel que aún no hablan con la API (testimonios, equipo,
+ * tarifas, experiencia). Leads, clientes y proyectos ya usan la API: `useAdminLeads` y `useAdminProjects`.
+ * HOY guarda en memoria (se pierde al recargar) y solo se puede escribir en
  * desarrollo con datos de ejemplo. Cuando exista la API, solo cambia el interior de estas funciones
  * (cada acción pasará a llamar a un endpoint documentado en docs/openapi.yaml); las pantallas no cambian.
  */
@@ -34,36 +32,6 @@ export const useAdminData = () => {
     : USE_ADMIN_SAMPLES
       ? 'memoria'
       : 'ninguna'
-
-  // --- Leads
-  const addLead = (input: Omit<Lead, 'id' | 'status' | 'lostReason' | 'createdAt' | 'notes'>) => {
-    const lead: Lead = {
-      ...input,
-      id: newId(),
-      status: 'nuevo',
-      lostReason: '',
-      createdAt: today(),
-      notes: []
-    }
-    data.value.leads.unshift(lead)
-    return lead
-  }
-  const setLeadStatus = (id: string, status: LeadStatus, lostReason = '') => {
-    const lead = data.value.leads.find(item => item.id === id)
-    if (!lead) return
-    lead.status = status
-    lead.lostReason = status === 'perdido' ? lostReason : ''
-  }
-  const updateLeadAction = (id: string, nextAction: string, nextActionDate: string) => {
-    const lead = data.value.leads.find(item => item.id === id)
-    if (lead) Object.assign(lead, { nextAction, nextActionDate })
-  }
-  const addLeadNote = (id: string, text: string) => {
-    data.value.leads.find(item => item.id === id)?.notes.unshift({ id: newId(), text, at: today() })
-  }
-  const removeLead = (id: string) => {
-    data.value.leads = data.value.leads.filter(item => item.id !== id)
-  }
 
   // --- Testimonios
   const addTestimonialRequest = (
@@ -81,25 +49,6 @@ export const useAdminData = () => {
   const setTestimonialStatus = (id: string, status: TestimonialRequestStatus) => {
     const item = data.value.testimonials.find(entry => entry.id === id)
     if (item) item.status = status
-  }
-
-  // --- Clientes y proyectos
-  const addClient = (input: Omit<Client, 'id'>) => {
-    const client = { ...input, id: newId() }
-    data.value.clients.push(client)
-    return client
-  }
-  const addProject = (input: Omit<Project, 'id'>) => {
-    const project = { ...input, id: newId() }
-    data.value.projects.unshift(project)
-    return project
-  }
-  const setProjectStatus = (id: string, status: string) => {
-    const project = data.value.projects.find(item => item.id === id)
-    if (project) project.status = status
-  }
-  const removeProject = (id: string) => {
-    data.value.projects = data.value.projects.filter(item => item.id !== id)
   }
 
   // --- Equipo, horas y pagos
@@ -135,7 +84,6 @@ export const useAdminData = () => {
   }
 
   // --- Cálculos de apoyo
-  const clientName = (id: string) => data.value.clients.find(item => item.id === id)?.name ?? '—'
   const memberName = (id: string) => data.value.team.find(item => item.id === id)?.name ?? '—'
   const projectName = (id: string) => data.value.projects.find(item => item.id === id)?.name ?? '—'
 
@@ -162,17 +110,8 @@ export const useAdminData = () => {
     data,
     canWrite,
     persistence,
-    addLead,
-    setLeadStatus,
-    updateLeadAction,
-    addLeadNote,
-    removeLead,
     addTestimonialRequest,
     setTestimonialStatus,
-    addClient,
-    addProject,
-    setProjectStatus,
-    removeProject,
     addMember,
     addAssignment,
     addTimeEntry,
@@ -181,7 +120,6 @@ export const useAdminData = () => {
     removeRate,
     addExperience,
     removeExperience,
-    clientName,
     memberName,
     projectName,
     hoursByProject,

@@ -1,91 +1,129 @@
 <script setup lang="ts">
   import AdminButton from '~/components/admin/AdminButton.vue'
-  import AdminDialog from '~/components/admin/AdminDialog.vue'
-  import AdminInput from '~/components/admin/AdminInput.vue'
+  import AdminConfirmDialog from '~/components/admin/AdminConfirmDialog.vue'
+  import AdminEmptyState from '~/components/admin/AdminEmptyState.vue'
+  import AdminNotice from '~/components/admin/AdminNotice.vue'
   import AdminPageHeader from '~/components/admin/AdminPageHeader.vue'
-  import AdminSampleBanner from '~/components/admin/AdminSampleBanner.vue'
-  import { PROJECT_STATUSES, clientSchema, projectSchema } from '~/utils/admin/schemas'
+  import AdminSkeleton from '~/components/admin/AdminSkeleton.vue'
+  import ClientCard from '~/components/admin/projects/ClientCard.vue'
+  import ClientFormDialog from '~/components/admin/projects/ClientFormDialog.vue'
+  import ProjectCard from '~/components/admin/projects/ProjectCard.vue'
+  import ProjectFormDialog from '~/components/admin/projects/ProjectFormDialog.vue'
+  import { toAdminApiError } from '~/utils/adminApiError'
+  import {
+    PROJECT_STATUS_OPTIONS,
+    clientNameOf,
+    countProjects,
+    filterProjects,
+    type ClientRecord,
+    type ProjectFilter,
+    type ProjectRecord
+  } from '~/utils/admin/projects'
 
   definePageMeta({ layout: 'admin' })
+  useSeoMeta({ title: 'Proyectos | Panel', robots: 'noindex, nofollow' })
 
-  const store = useAdminData()
-  const { data, canWrite } = store
+  const api = useAdminProjects()
   const { status, announce } = useAdminStatus()
 
-  const label = (value: string) => value.charAt(0).toUpperCase() + value.slice(1).replace('-', ' ')
-  const statusOptions = PROJECT_STATUSES.map(value => ({ value, label: label(value) }))
-  const clientOptions = computed(() =>
-    data.value.clients.map(client => ({ value: client.id, label: client.name }))
-  )
-  const today = () => new Date().toISOString().slice(0, 10)
+  // El error viaja dentro de los datos para que el servidor y el navegador muestren lo mismo.
+  type Loaded = {
+    clients: ClientRecord[] | null
+    projects: ProjectRecord[] | null
+    clientsTotal: number
+    projectsTotal: number
+    error: string
+  }
+  const { data, refresh } = await useLazyAsyncData<Loaded>('admin-projects', async () => {
+    try {
+      const [clients, projects] = await Promise.all([api.listClients(), api.listProjects()])
+      return {
+        clients: clients.items,
+        projects: projects.items,
+        clientsTotal: clients.total,
+        projectsTotal: projects.total,
+        error: ''
+      }
+    } catch (error) {
+      return {
+        clients: null,
+        projects: null,
+        clientsTotal: 0,
+        projectsTotal: 0,
+        error: toAdminApiError(error).message
+      }
+    }
+  })
+  const clients = computed(() => data.value?.clients ?? [])
+  const projects = computed(() => data.value?.projects ?? [])
+  const loadError = computed(() => data.value?.error ?? '')
+  const isLoading = computed(() => !data.value)
+  const isReady = computed(() => !!data.value?.clients && !!data.value?.projects)
 
-  const formatDate = (iso: string) =>
-    new Date(`${iso}T12:00:00`).toLocaleDateString('es-CO', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric'
-    })
+  // --- Filtro de proyectos por estado
+  const FILTERS: { value: ProjectFilter; label: string }[] = [
+    { value: 'all', label: 'Todos' },
+    ...PROJECT_STATUS_OPTIONS.map(option => ({ value: option.value, label: option.label }))
+  ]
+  const selected = ref<ProjectFilter>('all')
+  const rows = computed(() => filterProjects(projects.value, selected.value))
 
-  // Indicador de deadline: vencido, cercano (≤14 días) o en plazo.
-  const deadlineInfo = (iso: string, projectStatus: string) => {
-    if (projectStatus === 'entregado') return { text: 'Entregado', tone: 'text-brand-success-text' }
-    const days = Math.round((new Date(`${iso}T12:00:00`).getTime() - Date.now()) / 86_400_000)
-    if (days < 0) return { text: `Vencido hace ${-days} d`, tone: 'text-brand-error-text' }
-    if (days <= 14) return { text: `Faltan ${days} d`, tone: 'text-brand-warning-text' }
-    return { text: `Faltan ${days} d`, tone: 'text-brand-muted' }
+  // --- Altas y ediciones
+  const clientDialog = reactive<{ open: boolean; client: ClientRecord | null }>({
+    open: false,
+    client: null
+  })
+  const projectDialog = reactive<{ open: boolean; project: ProjectRecord | null }>({
+    open: false,
+    project: null
+  })
+  const openClient = (client: ClientRecord | null = null) => {
+    clientDialog.client = client
+    clientDialog.open = true
   }
-
-  // Cliente
-  const clientOpen = ref(false)
-  const clientForm = useAdminForm(clientSchema, () => ({
-    name: '',
-    email: '',
-    company: '',
-    notes: ''
-  }))
-  const openClient = () => {
-    clientForm.reset()
-    clientOpen.value = true
-  }
-  const submitClient = () => {
-    const parsed = clientForm.validate()
-    if (!parsed) return
-    store.addClient(parsed)
-    clientOpen.value = false
-    announce('Cliente creado')
+  const openProject = (project: ProjectRecord | null = null) => {
+    projectDialog.project = project
+    projectDialog.open = true
   }
 
-  // Proyecto
-  const projectOpen = ref(false)
-  const projectForm = useAdminForm(projectSchema, () => ({
-    name: '',
-    clientId: '',
-    status: 'planificado',
-    rateUsd: '',
-    budgetHours: '',
-    startDate: today(),
-    deadline: '',
-    publishable: false
-  }))
-  const openProject = () => {
-    projectForm.reset()
-    projectOpen.value = true
+  const onClientSaved = async (_client: ClientRecord, created: boolean) => {
+    clientDialog.open = false
+    await refresh()
+    announce(created ? 'Cliente creado' : 'Cliente actualizado')
   }
-  const submitProject = () => {
-    const parsed = projectForm.validate()
-    if (!parsed) return
-    store.addProject(parsed)
-    projectOpen.value = false
-    announce('Proyecto creado')
+  const onProjectSaved = async (_project: ProjectRecord, created: boolean) => {
+    projectDialog.open = false
+    await refresh()
+    announce(created ? 'Proyecto creado' : 'Proyecto actualizado')
   }
-  const changeStatus = (id: string, value: string | number | boolean) => {
-    store.setProjectStatus(id, String(value))
-    announce('Estado actualizado')
+
+  // --- Eliminación (con confirmación que nombra lo que se elimina)
+  const removal = reactive<{
+    kind: 'client' | 'project' | null
+    id: string
+    name: string
+    busy: boolean
+    error: string
+  }>({ kind: null, id: '', name: '', busy: false, error: '' })
+
+  const askRemove = (kind: 'client' | 'project', id: string, name: string) => {
+    Object.assign(removal, { kind, id, name, busy: false, error: '' })
   }
-  const deleteProject = (id: string, name: string) => {
-    if (!window.confirm(`¿Eliminar el proyecto "${name}"?`)) return
-    store.removeProject(id)
-    announce('Proyecto eliminado')
+  const confirmRemove = async () => {
+    removal.busy = true
+    removal.error = ''
+    try {
+      if (removal.kind === 'project') await api.removeProject(removal.id)
+      else await api.removeClient(removal.id)
+      const message = removal.kind === 'project' ? 'Proyecto eliminado' : 'Cliente eliminado'
+      removal.kind = null
+      await refresh()
+      announce(message)
+    } catch (error) {
+      removal.error = toAdminApiError(error).message
+    } finally {
+      removal.busy = false
+    }
   }
 </script>
 
@@ -97,271 +135,154 @@
       description="Clientes y proyectos con presupuesto de horas, tarifa en USD y fecha límite aproximada."
     >
       <template #actions>
-        <AdminButton :disabled="!canWrite" @click="openClient">Nuevo cliente</AdminButton>
-        <AdminButton
-          variant="primary"
-          :disabled="!canWrite || !data.clients.length"
-          :title="data.clients.length ? undefined : 'Crea primero un cliente'"
-          @click="openProject"
-        >
-          <Icon name="mdi:plus" size="18" aria-hidden="true" />
+        <AdminButton @click="openClient()">Nuevo cliente</AdminButton>
+        <AdminButton v-if="clients.length" variant="primary" @click="openProject()">
+          <Icon name="mdi:plus" size="20" aria-hidden="true" />
           Nuevo proyecto
         </AdminButton>
       </template>
     </AdminPageHeader>
-    <AdminSampleBanner />
 
-    <p
-      v-if="status"
-      role="status"
-      class="mb-4 rounded-lg bg-brand-success-bg px-3 py-2 text-sm font-medium text-brand-success-text"
+    <AdminNotice tone="success" :message="status" />
+
+    <AdminSkeleton
+      v-if="isLoading"
+      :rows="2"
+      height-class="h-56"
+      label="Cargando proyectos y clientes…"
+    />
+
+    <AdminNotice v-else-if="!isReady" tone="error" :message="loadError">
+      <AdminButton @click="refresh()">Reintentar</AdminButton>
+    </AdminNotice>
+
+    <AdminEmptyState
+      v-else-if="!clients.length"
+      icon="mdi:folder-outline"
+      title="Aún no hay clientes ni proyectos"
+      description="Empieza por crear un cliente (o convierte un lead ganado en cliente). Luego podrás crear su proyecto con presupuesto de horas y deadline."
     >
-      {{ status }}
-    </p>
+      <AdminButton variant="primary" @click="openClient()">
+        <Icon name="mdi:plus" size="20" aria-hidden="true" />
+        Crear el primer cliente
+      </AdminButton>
+    </AdminEmptyState>
 
-    <section aria-labelledby="projects-heading">
-      <h2 id="projects-heading" class="mb-3 text-lg font-semibold text-brand-ink">Proyectos</h2>
-      <ul v-if="data.projects.length" class="grid gap-4 lg:grid-cols-2">
-        <li
-          v-for="project in data.projects"
-          :key="project.id"
-          class="rounded-2xl border border-brand-border bg-brand-surface-card p-5"
+    <template v-else>
+      <section aria-labelledby="projects-heading">
+        <h2 id="projects-heading" class="mb-3 text-xl font-semibold text-brand-ink">Proyectos</h2>
+
+        <AdminEmptyState
+          v-if="!projects.length"
+          icon="mdi:briefcase-outline"
+          title="Aún no hay proyectos"
+          description="Crea el primer proyecto de uno de tus clientes con su presupuesto de horas, tarifa y deadline."
         >
-          <div class="flex items-start justify-between gap-3">
-            <div class="min-w-0">
-              <h3 class="truncate font-semibold text-brand-ink">{{ project.name }}</h3>
-              <p class="text-sm text-brand-muted">{{ store.clientName(project.clientId) }}</p>
-            </div>
-            <span
-              v-if="project.publishable"
-              class="shrink-0 rounded-full border border-brand-border bg-brand-surface-soft px-2.5 py-1 text-xs font-semibold text-brand-accent-text"
+          <AdminButton variant="primary" @click="openProject()">
+            <Icon name="mdi:plus" size="20" aria-hidden="true" />
+            Crear el primer proyecto
+          </AdminButton>
+        </AdminEmptyState>
+
+        <template v-else>
+          <div role="group" aria-label="Filtrar por estado" class="mb-4 flex flex-wrap gap-2">
+            <button
+              v-for="filter in FILTERS"
+              :key="filter.value"
+              type="button"
+              class="min-h-11 rounded-full border px-4 text-sm font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue"
+              :class="
+                selected === filter.value
+                  ? 'border-brand-accent bg-brand-accent text-brand-white'
+                  : 'border-brand-border bg-brand-surface-card text-brand-muted hover:bg-brand-surface-soft'
+              "
+              :aria-pressed="selected === filter.value"
+              @click="selected = filter.value"
             >
-              Publicable
-            </span>
+              {{ filter.label }} ({{ countProjects(projects, filter.value) }})
+            </button>
           </div>
 
-          <div class="mt-4">
-            <div class="flex justify-between text-xs text-brand-muted">
-              <span>Horas {{ store.hoursByProject(project.id) }} / {{ project.budgetHours }}</span>
-              <span>
-                {{
-                  Math.min(
-                    Math.round((store.hoursByProject(project.id) / project.budgetHours) * 100),
-                    999
-                  )
-                }}
-                %
-              </span>
-            </div>
-            <div
-              class="mt-1 h-2 overflow-hidden rounded-full bg-brand-surface-soft"
-              role="progressbar"
-              :aria-valuenow="store.hoursByProject(project.id)"
-              aria-valuemin="0"
-              :aria-valuemax="project.budgetHours"
-              :aria-label="`Horas usadas de ${project.name}`"
-            >
-              <div
-                class="h-full rounded-full bg-brand-blue"
-                :style="{
-                  width: `${Math.min((store.hoursByProject(project.id) / project.budgetHours) * 100, 100)}%`
-                }"
+          <ul v-if="rows.length" class="grid gap-4 lg:grid-cols-2">
+            <li v-for="project in rows" :key="project.id">
+              <ProjectCard
+                :project="project"
+                :client-name="clientNameOf(clients, project.clientId)"
+                @edit="openProject(project)"
+                @remove="askRemove('project', project.id, project.name)"
               />
-            </div>
-          </div>
-
-          <dl class="mt-4 grid grid-cols-3 gap-3 text-sm">
-            <div>
-              <dt class="text-xs text-brand-muted">Tarifa</dt>
-              <dd class="font-medium text-brand-ink">${{ project.rateUsd }}/h</dd>
-            </div>
-            <div>
-              <dt class="text-xs text-brand-muted">Inicio</dt>
-              <dd class="font-medium text-brand-ink">{{ formatDate(project.startDate) }}</dd>
-            </div>
-            <div>
-              <dt class="text-xs text-brand-muted">Deadline</dt>
-              <dd class="font-medium text-brand-ink">{{ formatDate(project.deadline) }}</dd>
-              <dd
-                class="text-xs font-semibold"
-                :class="deadlineInfo(project.deadline, project.status).tone"
-              >
-                {{ deadlineInfo(project.deadline, project.status).text }}
-              </dd>
-            </div>
-          </dl>
-
-          <div class="mt-4 flex flex-wrap items-end justify-between gap-3">
-            <div class="w-44">
-              <AdminInput
-                :id="`status-${project.id}`"
-                :model-value="project.status"
-                label="Estado"
-                type="select"
-                :options="statusOptions"
-                @update:model-value="changeStatus(project.id, $event)"
-              />
-            </div>
-            <AdminButton
-              variant="danger"
-              :disabled="!canWrite"
-              @click="deleteProject(project.id, project.name)"
+            </li>
+          </ul>
+          <p
+            v-else
+            class="rounded-2xl border border-dashed border-brand-border-soft bg-brand-surface-card p-8 text-center text-sm text-brand-muted"
+          >
+            No hay proyectos en este estado.
+            <button
+              type="button"
+              class="min-h-11 font-semibold text-brand-accent-text underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue"
+              @click="selected = 'all'"
             >
-              Eliminar
-            </AdminButton>
-          </div>
-        </li>
-      </ul>
-      <div
-        v-else
-        class="rounded-2xl border border-dashed border-brand-border-soft bg-brand-surface-card p-8 text-center"
-      >
-        <Icon
-          name="mdi:folder-outline"
-          size="32"
-          class="mx-auto text-brand-helper"
-          aria-hidden="true"
-        />
-        <p class="mt-3 font-semibold text-brand-ink">Aún no hay proyectos</p>
-        <p class="mx-auto mt-1 max-w-md text-sm leading-6 text-brand-muted">
-          Crea un cliente y luego su proyecto con presupuesto de horas y deadline.
+              Ver todos
+            </button>
+          </p>
+          <p
+            v-if="data && data.projectsTotal > projects.length"
+            class="mt-3 text-xs text-brand-muted"
+          >
+            Se muestran {{ projects.length }} de {{ data.projectsTotal }} proyectos.
+          </p>
+        </template>
+      </section>
+
+      <section class="mt-10" aria-labelledby="clients-heading">
+        <h2 id="clients-heading" class="mb-3 text-xl font-semibold text-brand-ink">Clientes</h2>
+        <ul class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <li v-for="client in clients" :key="client.id">
+            <ClientCard
+              :client="client"
+              @edit="openClient(client)"
+              @remove="askRemove('client', client.id, client.name)"
+            />
+          </li>
+        </ul>
+        <p v-if="data && data.clientsTotal > clients.length" class="mt-3 text-xs text-brand-muted">
+          Se muestran {{ clients.length }} de {{ data.clientsTotal }} clientes.
         </p>
-      </div>
-    </section>
+      </section>
+    </template>
 
-    <section class="mt-10" aria-labelledby="clients-heading">
-      <h2 id="clients-heading" class="mb-3 text-lg font-semibold text-brand-ink">Clientes</h2>
-      <ul v-if="data.clients.length" class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-        <li
-          v-for="client in data.clients"
-          :key="client.id"
-          class="rounded-xl border border-brand-border bg-brand-surface-card p-4"
-        >
-          <p class="font-medium text-brand-ink">{{ client.name }}</p>
-          <p v-if="client.company" class="text-sm text-brand-muted">{{ client.company }}</p>
-          <p v-if="client.email" class="text-xs text-brand-muted">{{ client.email }}</p>
-        </li>
-      </ul>
-      <p v-else class="text-sm text-brand-muted">Sin clientes todavía.</p>
-    </section>
+    <ClientFormDialog
+      :open="clientDialog.open"
+      :client="clientDialog.client"
+      @close="clientDialog.open = false"
+      @saved="onClientSaved"
+    />
+    <ProjectFormDialog
+      :open="projectDialog.open"
+      :project="projectDialog.project"
+      :clients="clients"
+      @close="projectDialog.open = false"
+      @saved="onProjectSaved"
+    />
 
-    <AdminDialog :open="clientOpen" title="Nuevo cliente" @close="clientOpen = false">
-      <form class="space-y-4" novalidate @submit.prevent="submitClient">
-        <div class="grid gap-4 sm:grid-cols-2">
-          <AdminInput
-            id="cl-name"
-            v-model="clientForm.values.name"
-            label="Nombre"
-            required
-            :error="clientForm.errors.value.name"
-          />
-          <AdminInput
-            id="cl-company"
-            v-model="clientForm.values.company"
-            label="Empresa (opcional)"
-            :error="clientForm.errors.value.company"
-          />
-        </div>
-        <AdminInput
-          id="cl-email"
-          v-model="clientForm.values.email"
-          label="Correo (opcional)"
-          type="email"
-          :error="clientForm.errors.value.email"
-        />
-        <AdminInput
-          id="cl-notes"
-          v-model="clientForm.values.notes"
-          label="Notas"
-          type="textarea"
-          :error="clientForm.errors.value.notes"
-        />
-        <div class="flex justify-end gap-3 pt-2">
-          <AdminButton @click="clientOpen = false">Cancelar</AdminButton>
-          <AdminButton type="submit" variant="primary">Crear cliente</AdminButton>
-        </div>
-      </form>
-    </AdminDialog>
-
-    <AdminDialog
-      :open="projectOpen"
-      title="Nuevo proyecto"
-      description="Todos los montos son en USD."
-      @close="projectOpen = false"
+    <AdminConfirmDialog
+      :open="removal.kind !== null"
+      :title="removal.kind === 'project' ? 'Eliminar proyecto' : 'Eliminar cliente'"
+      :confirm-label="removal.kind === 'project' ? 'Eliminar proyecto' : 'Eliminar cliente'"
+      loading-label="Eliminando…"
+      :busy="removal.busy"
+      :error="removal.error"
+      @close="removal.kind = null"
+      @confirm="confirmRemove"
     >
-      <form class="space-y-4" novalidate @submit.prevent="submitProject">
-        <AdminInput
-          id="pr-name"
-          v-model="projectForm.values.name"
-          label="Nombre del proyecto"
-          required
-          :error="projectForm.errors.value.name"
-        />
-        <div class="grid gap-4 sm:grid-cols-2">
-          <AdminInput
-            id="pr-client"
-            v-model="projectForm.values.clientId"
-            label="Cliente"
-            type="select"
-            :options="clientOptions"
-            required
-            :error="projectForm.errors.value.clientId"
-          />
-          <AdminInput
-            id="pr-status"
-            v-model="projectForm.values.status"
-            label="Estado"
-            type="select"
-            :options="statusOptions"
-            required
-            :error="projectForm.errors.value.status"
-          />
-          <AdminInput
-            id="pr-rate"
-            v-model="projectForm.values.rateUsd"
-            label="Tarifa por hora (USD)"
-            type="number"
-            step="0.5"
-            required
-            :error="projectForm.errors.value.rateUsd"
-          />
-          <AdminInput
-            id="pr-hours"
-            v-model="projectForm.values.budgetHours"
-            label="Horas presupuestadas"
-            type="number"
-            required
-            :error="projectForm.errors.value.budgetHours"
-          />
-          <AdminInput
-            id="pr-start"
-            v-model="projectForm.values.startDate"
-            label="Inicio"
-            type="date"
-            required
-            :error="projectForm.errors.value.startDate"
-          />
-          <AdminInput
-            id="pr-deadline"
-            v-model="projectForm.values.deadline"
-            label="Deadline aproximado"
-            type="date"
-            required
-            :error="projectForm.errors.value.deadline"
-          />
-        </div>
-        <AdminInput
-          id="pr-publishable"
-          v-model="projectForm.values.publishable"
-          label="Publicable en el portafolio"
-          type="checkbox"
-          hint="Solo si el cliente lo permite."
-        />
-        <div class="flex justify-end gap-3 pt-2">
-          <AdminButton @click="projectOpen = false">Cancelar</AdminButton>
-          <AdminButton type="submit" variant="primary">Crear proyecto</AdminButton>
-        </div>
-      </form>
-    </AdminDialog>
+      <template v-if="removal.kind === 'project'">
+        Se eliminará el proyecto «{{ removal.name }}». Esta acción no se puede deshacer.
+      </template>
+      <template v-else>
+        Se eliminará el cliente «{{ removal.name }}». Solo es posible si no tiene proyectos. Esta
+        acción no se puede deshacer.
+      </template>
+    </AdminConfirmDialog>
   </div>
 </template>
