@@ -18,7 +18,7 @@
   <component
     :is="project.href ? NuxtLink : 'article'"
     :to="project.href"
-    class="group relative isolate flex min-h-65 min-w-0 flex-col overflow-hidden rounded-2xl border border-brand-border bg-brand-surface-card text-brand-ink shadow-[0_8px_22px_var(--color-brand-shadow-card)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-accent-text"
+    class="group relative isolate flex min-h-65 min-w-0 flex-col overflow-hidden rounded-2xl border border-brand-border bg-brand-surface-card text-brand-ink shadow-card focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-accent-text"
     :class="[
       { 'cursor-pointer': project.href },
       layoutMode === 'horizontal' ? 'md:flex-row' : '',

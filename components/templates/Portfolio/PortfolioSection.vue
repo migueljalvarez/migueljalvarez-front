@@ -168,7 +168,7 @@
       <article
         v-if="layout.showViewAllCard"
         key="portfolio-all-projects"
-        class="col-span-full flex min-h-0 flex-col items-start justify-between gap-5 overflow-hidden rounded-2xl border border-brand-border-strong bg-brand-surface-contrast p-5 text-left text-brand-text-strong shadow-[0_8px_22px_var(--color-brand-shadow-card)] sm:flex-row sm:items-center sm:gap-6 md:p-6"
+        class="col-span-full flex min-h-0 flex-col items-start justify-between gap-5 overflow-hidden rounded-2xl border border-brand-border-strong bg-brand-surface-contrast p-5 text-left text-brand-text-strong shadow-card sm:flex-row sm:items-center sm:gap-6 md:p-6"
       >
         <div class="flex min-w-0 items-center gap-4">
           <span

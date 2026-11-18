@@ -67,7 +67,7 @@
       <div class="grid min-w-0 grid-cols-1 items-stretch gap-8 lg:grid-cols-5 lg:gap-12">
         <div class="relative min-w-0 min-h-80 lg:col-span-2 lg:min-h-0">
           <div
-            class="absolute inset-2 overflow-hidden rounded-2xl border border-brand-border bg-brand-surface-card p-2 shadow-[0_8px_22px_var(--color-brand-shadow-card)]"
+            class="absolute inset-2 overflow-hidden rounded-2xl border border-brand-border bg-brand-surface-card p-2 shadow-card"
           >
             <NuxtImg
               src="ma.webp"
@@ -81,7 +81,7 @@
           </div>
 
           <div
-            class="absolute right-3 bottom-3 z-20 flex translate-y-1/2 items-center gap-3 rounded-full border border-brand-blue/30 bg-brand-surface-card/95 px-4 py-2 shadow-[0_8px_22px_var(--color-brand-shadow-card)] sm:right-0 sm:bottom-0 sm:translate-x-2 sm:translate-y-2"
+            class="absolute right-3 bottom-3 z-20 flex translate-y-1/2 items-center gap-3 rounded-full border border-brand-blue/30 bg-brand-surface-card/95 px-4 py-2 shadow-card sm:right-0 sm:bottom-0 sm:translate-x-2 sm:translate-y-2"
           >
             <span
               class="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-blue/10"
@@ -143,7 +143,7 @@
 
       <div class="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-6">
         <article
-          class="rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:p-8 lg:col-span-7"
+          class="rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-card md:p-8 lg:col-span-7"
         >
           <span
             class="mb-4 flex size-10 items-center justify-center rounded-xl border border-brand-border bg-brand-surface-soft"
@@ -168,7 +168,7 @@
         </article>
 
         <article
-          class="rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:p-8 lg:col-span-5"
+          class="rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-card md:p-8 lg:col-span-5"
         >
           <span
             class="mb-4 flex size-10 items-center justify-center rounded-xl border border-brand-border bg-brand-surface-soft"

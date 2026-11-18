@@ -80,7 +80,7 @@
     class="gap-4 bg-[linear-gradient(180deg,var(--color-brand-surface)_0%,var(--color-brand-surface)_22%,var(--color-brand-surface-contrast)_22%,var(--color-brand-surface-contrast)_100%)] px-0 sm:px-4"
   >
     <div
-      class="relative mx-auto mb-0 w-full max-w-none overflow-hidden rounded-none border-y border-brand-border-strong/50 bg-brand-surface-contrast p-5 shadow-none sm:mb-8 sm:max-w-7xl sm:rounded-2xl sm:border sm:p-9 sm:shadow-[0_18px_40px_var(--color-brand-shadow-card)]"
+      class="relative mx-auto mb-0 w-full max-w-none overflow-hidden rounded-none border-y border-brand-border-strong/50 bg-brand-surface-contrast p-5 shadow-none sm:mb-8 sm:max-w-7xl sm:rounded-2xl sm:border sm:p-9 sm:shadow-card-lg"
     >
       <!-- Logo decorativo asomando desde la esquina — placeholder mientras subes el SVG real a public/ -->
       <NuxtImg
@@ -154,7 +154,7 @@
 
           <div class="flex flex-col gap-2 md:w-1/2">
             <div
-              class="rounded-2xl border border-brand-border-strong/70 bg-brand-surface-panel p-4 shadow-[0_8px_22px_var(--color-brand-shadow-card)]"
+              class="rounded-2xl border border-brand-border-strong/70 bg-brand-surface-panel p-4 shadow-card"
             >
               <Form
                 :successful="isSendedSuccessful"

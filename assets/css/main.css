@@ -59,6 +59,12 @@
   --color-brand-error-text: #7a1f2a;
   --color-brand-error-border: #fda4af;
 
+  /* sombras de marca (usar shadow-card, shadow-card-lg, shadow-dialog, shadow-header) */
+  --shadow-card: 0 8px 22px var(--color-brand-shadow-card);
+  --shadow-card-lg: 0 18px 40px var(--color-brand-shadow-card);
+  --shadow-dialog: 0 20px 60px var(--color-brand-shadow-card);
+  --shadow-header: 0 10px 30px var(--color-brand-shadow-card);
+
   --font-sans: 'Inter', sans-serif;
   --font-display: 'Poppins', sans-serif;
 }

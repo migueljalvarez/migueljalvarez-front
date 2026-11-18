@@ -24,7 +24,7 @@
 
     <div class="mx-auto grid w-full max-w-7xl gap-5 md:grid-cols-2">
       <article
-        class="rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-[0_8px_22px_var(--color-brand-shadow-card)]"
+        class="rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-card"
       >
         <h2 class="text-xl font-semibold text-brand-ink">Me comprometo a</h2>
         <ul class="mt-4 space-y-3 text-sm leading-6 text-brand-muted">
@@ -41,7 +41,7 @@
       </article>
       <article
         id="no-acepto"
-        class="rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-[0_8px_22px_var(--color-brand-shadow-card)]"
+        class="rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-card"
       >
         <h2 class="text-xl font-semibold text-brand-ink">Lo que no hago</h2>
         <ul class="mt-4 space-y-3 text-sm leading-6 text-brand-muted">
@@ -67,7 +67,7 @@
       <article
         v-for="block in policies"
         :key="block.id"
-        class="rounded-2xl border border-brand-border bg-brand-surface-card p-5 shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:p-6"
+        class="rounded-2xl border border-brand-border bg-brand-surface-card p-5 shadow-card md:p-6"
       >
         <h2 class="text-lg font-semibold text-brand-ink">{{ block.title }}</h2>
         <p class="mt-3 text-sm leading-6 text-brand-muted">{{ block.body }}</p>

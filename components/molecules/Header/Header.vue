@@ -132,7 +132,7 @@
         ? 'header-top text-brand-white backdrop-blur-none'
         : 'bg-brand-surface/95 text-brand-ink',
       isScrolled
-        ? 'shadow-[0_10px_30px_var(--color-brand-shadow-card)] border-b border-brand-border/80'
+        ? 'shadow-header border-b border-brand-border/80'
         : 'border-b-0 shadow-none'
     ]"
   >

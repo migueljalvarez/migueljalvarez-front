@@ -21,7 +21,7 @@
 <template>
   <article
     :id="offering.id"
-    class="flex h-full flex-col rounded-2xl border border-brand-border bg-brand-surface-card p-5 text-brand-ink transition-shadow hover:shadow-[0_8px_22px_var(--color-brand-shadow-card)] md:p-6"
+    class="flex h-full flex-col rounded-2xl border border-brand-border bg-brand-surface-card p-5 text-brand-ink transition-shadow hover:shadow-card md:p-6"
   >
     <p class="min-h-10 text-sm font-normal leading-5 text-brand-muted">
       {{ offering.situacion }}
@@ -60,7 +60,7 @@
       <dialog
         :id="`service-details-${offering.id}`"
         ref="detailsDialog"
-        class="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-4xl overflow-y-auto rounded-2xl border border-brand-border bg-brand-surface-card p-0 text-brand-ink shadow-[0_20px_60px_var(--color-brand-shadow-card)] backdrop:bg-brand-navy/70"
+        class="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-4xl overflow-y-auto rounded-2xl border border-brand-border bg-brand-surface-card p-0 text-brand-ink shadow-dialog backdrop:bg-brand-navy/70"
         :aria-labelledby="`service-details-title-${offering.id}`"
         @click="closeOnBackdrop"
         @cancel.prevent="closeDetails"

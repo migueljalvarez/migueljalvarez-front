@@ -85,7 +85,7 @@
       </NuxtLink>
 
       <article
-        class="overflow-hidden rounded-3xl border border-brand-border bg-brand-surface-card shadow-[0_18px_40px_var(--color-brand-shadow-card)]"
+        class="overflow-hidden rounded-3xl border border-brand-border bg-brand-surface-card shadow-card-lg"
       >
         <header class="p-5 md:p-8">
           <p
