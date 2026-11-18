@@ -47,33 +47,6 @@ export type Project = {
   publishable: boolean
 }
 
-export type TeamMember = {
-  id: string
-  name: string
-  email: string
-  role: string
-  responsibilities: string
-  rateUsd: number
-}
-
-export type Assignment = { id: string; memberId: string; projectId: string; agreedHours: number }
-export type TimeEntry = {
-  id: string
-  memberId: string
-  projectId: string
-  hours: number
-  date: string
-  note: string
-}
-export type Payment = {
-  id: string
-  memberId: string
-  amountUsd: number
-  trm: number
-  date: string
-  note: string
-}
-
 export type Rate = { id: string; service: string; rateUsd: number; isPublic: boolean }
 
 export type Experience = {
@@ -93,10 +66,6 @@ export type AdminData = {
   testimonials: TestimonialRequest[]
   clients: Client[]
   projects: Project[]
-  team: TeamMember[]
-  assignments: Assignment[]
-  timeEntries: TimeEntry[]
-  payments: Payment[]
   rates: Rate[]
   experiences: Experience[]
 }

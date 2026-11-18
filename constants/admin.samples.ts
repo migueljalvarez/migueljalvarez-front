@@ -13,10 +13,6 @@ const empty = (): AdminData => ({
   testimonials: [],
   clients: [],
   projects: [],
-  team: [],
-  assignments: [],
-  timeEntries: [],
-  payments: [],
   rates: [],
   experiences: []
 })
@@ -180,49 +176,6 @@ export const buildSampleData = (): AdminData => {
         deadline: '2027-01-15',
         publishable: true
       }
-    ],
-    team: [
-      {
-        id: 'm1',
-        name: 'Diseñadora Ejemplo',
-        email: 'diseno@ejemplo.test',
-        role: 'Diseñadora UI',
-        responsibilities: 'Interfaz y sistema de diseño (ejemplo).',
-        rateUsd: 18
-      },
-      {
-        id: 'm2',
-        name: 'Dev Ejemplo',
-        email: 'dev@ejemplo.test',
-        role: 'Desarrollador frontend',
-        responsibilities: 'Maquetación y componentes (ejemplo).',
-        rateUsd: 22
-      }
-    ],
-    assignments: [
-      { id: 'a1', memberId: 'm1', projectId: 'p1', agreedHours: 20 },
-      { id: 'a2', memberId: 'm2', projectId: 'p1', agreedHours: 30 }
-    ],
-    timeEntries: [
-      {
-        id: 'h1',
-        memberId: 'm1',
-        projectId: 'p1',
-        hours: 12,
-        date: '2026-11-05',
-        note: 'Diseño de pantallas'
-      },
-      {
-        id: 'h2',
-        memberId: 'm2',
-        projectId: 'p1',
-        hours: 18,
-        date: '2026-11-12',
-        note: 'Componentes base'
-      }
-    ],
-    payments: [
-      { id: 'y1', memberId: 'm1', amountUsd: 100, trm: 4100, date: '2026-11-08', note: 'Anticipo' }
     ],
     rates: [
       { id: 'r1', service: 'Desarrollo web a la medida', rateUsd: 30, isPublic: false },
