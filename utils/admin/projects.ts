@@ -56,12 +56,12 @@ export type ProjectRecord = {
 }
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/
-const text = (max: number) =>
+export const text = (max: number) =>
   z.string().trim().min(1, 'Obligatorio').max(max, `Máximo ${max} caracteres`)
-const optionalText = (max: number) => z.string().trim().max(max, `Máximo ${max} caracteres`)
+export const optionalText = (max: number) => z.string().trim().max(max, `Máximo ${max} caracteres`)
 
 /** Fecha real de calendario: rechaza formatos libres y días inexistentes (30 de febrero). */
-const date = z
+export const date = z
   .string()
   .regex(DATE_RE, 'Fecha inválida')
   .refine(value => {
@@ -71,7 +71,7 @@ const date = z
 
 const twoDecimals = (value: number) => Math.abs(Math.round(value * 100) / 100 - value) < 1e-9
 
-const amount = (max: number, emptyMessage: string) =>
+export const amount = (max: number, emptyMessage: string) =>
   z
     .string()
     .trim()
@@ -170,7 +170,7 @@ export const projectFormFromRecord = (project: ProjectRecord): ProjectFormValues
   publishable: project.publishable
 })
 
-type Result<T> = { ok: true; data: T } | { ok: false; errors: Record<string, string> }
+export type Result<T> = { ok: true; data: T } | { ok: false; errors: Record<string, string> }
 
 export const validateClientForm = (values: ClientFormValues): Result<ClientPayload> => {
   const result = clientSchema.safeParse(values)

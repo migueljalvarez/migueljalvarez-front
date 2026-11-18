@@ -5,7 +5,7 @@
 
   definePageMeta({ layout: 'admin' })
 
-  const { data, persistence, hoursByProject } = useAdminData()
+  const { data, persistence } = useAdminData()
   const hasData = persistence !== 'ninguna'
 
   const soon = (iso: string, days: number) => {
@@ -49,7 +49,6 @@
       to: '/admin/testimonials'
     }
   ])
-  void hoursByProject
 
   const modules = ADMIN_NAV.filter(item => item.to !== '/admin')
 </script>

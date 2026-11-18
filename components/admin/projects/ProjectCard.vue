@@ -1,10 +1,10 @@
 <script setup lang="ts">
   import AdminBadge from '~/components/admin/AdminBadge.vue'
   import AdminButton from '~/components/admin/AdminButton.vue'
+  import AdminHoursProgress from '~/components/admin/AdminHoursProgress.vue'
   import {
     deadlineInfo,
     formatProjectDate,
-    hoursProgress,
     projectStatusBadge,
     type ProjectRecord
   } from '~/utils/admin/projects'
@@ -14,7 +14,6 @@
   const emit = defineEmits<{ edit: []; remove: [] }>()
 
   const badge = computed(() => projectStatusBadge(props.project.status))
-  const progress = computed(() => hoursProgress(props.project.usedHours, props.project.budgetHours))
   const deadline = computed(() => deadlineInfo(props.project.deadline, props.project.status))
   const DEADLINE_TONE = {
     success: 'text-brand-success-text',
@@ -37,31 +36,13 @@
       </div>
     </div>
 
-    <div class="mt-4">
-      <div class="flex justify-between text-xs text-brand-muted">
-        <span class="tabular-nums">Horas {{ project.usedHours }} / {{ project.budgetHours }}</span>
-        <span
-          class="tabular-nums"
-          :class="{ 'font-semibold text-brand-error-text': progress.over }"
-        >
-          {{ progress.percent }} %{{ progress.over ? ' · excede el presupuesto' : '' }}
-        </span>
-      </div>
-      <div
-        class="mt-1 h-2 overflow-hidden rounded-full bg-brand-surface-soft"
-        role="progressbar"
-        :aria-valuenow="project.usedHours"
-        aria-valuemin="0"
-        :aria-valuemax="project.budgetHours"
-        :aria-label="`Horas usadas de ${project.name}`"
-      >
-        <div
-          class="h-full rounded-full"
-          :class="progress.over ? 'bg-brand-error-text' : 'bg-brand-blue'"
-          :style="{ width: `${progress.bar}%` }"
-        />
-      </div>
-    </div>
+    <AdminHoursProgress
+      class="mt-4"
+      :used="project.usedHours"
+      :total="project.budgetHours"
+      :label="`Horas usadas de ${project.name}`"
+      over-label="excede el presupuesto"
+    />
 
     <dl class="mt-4 grid grid-cols-3 gap-3 text-sm">
       <div>

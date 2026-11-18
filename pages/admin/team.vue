@@ -1,130 +1,195 @@
 <script setup lang="ts">
   import AdminButton from '~/components/admin/AdminButton.vue'
-  import AdminDialog from '~/components/admin/AdminDialog.vue'
-  import AdminInput from '~/components/admin/AdminInput.vue'
+  import AdminConfirmDialog from '~/components/admin/AdminConfirmDialog.vue'
+  import AdminEmptyState from '~/components/admin/AdminEmptyState.vue'
+  import AdminNotice from '~/components/admin/AdminNotice.vue'
   import AdminPageHeader from '~/components/admin/AdminPageHeader.vue'
-  import AdminSampleBanner from '~/components/admin/AdminSampleBanner.vue'
+  import AdminSkeleton from '~/components/admin/AdminSkeleton.vue'
+  import AssignmentCard from '~/components/admin/team/AssignmentCard.vue'
+  import AssignmentFormDialog from '~/components/admin/team/AssignmentFormDialog.vue'
+  import MemberCard from '~/components/admin/team/MemberCard.vue'
+  import MemberFormDialog from '~/components/admin/team/MemberFormDialog.vue'
+  import PaymentFormDialog from '~/components/admin/team/PaymentFormDialog.vue'
+  import PaymentRow from '~/components/admin/team/PaymentRow.vue'
+  import TeamSummary from '~/components/admin/team/TeamSummary.vue'
+  import TimeEntryFormDialog from '~/components/admin/team/TimeEntryFormDialog.vue'
+  import TimeEntryRow from '~/components/admin/team/TimeEntryRow.vue'
+  import TrmFormDialog from '~/components/admin/team/TrmFormDialog.vue'
+  import { toAdminApiError } from '~/utils/adminApiError'
+  import type { ProjectRecord } from '~/utils/admin/projects'
   import {
-    assignmentSchema,
-    paymentSchema,
-    teamMemberSchema,
-    timeEntrySchema
-  } from '~/utils/admin/schemas'
+    memberNameOf,
+    projectNameOf,
+    totalDue,
+    type AssignmentRecord,
+    type PaymentRecord,
+    type TeamMemberRecord,
+    type TimeEntryRecord,
+    type TrmRecord
+  } from '~/utils/admin/team'
 
   definePageMeta({ layout: 'admin' })
+  useSeoMeta({ title: 'Equipo y pagos | Panel', robots: 'noindex, nofollow' })
 
-  const store = useAdminData()
-  const { data, canWrite } = store
+  const api = useAdminTeam()
+  const projectsApi = useAdminProjects()
   const { status, announce } = useAdminStatus()
 
-  const today = () => new Date().toISOString().slice(0, 10)
-  const usd = (value: number) =>
-    value.toLocaleString('es-CO', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 })
-  const cop = (value: number) =>
-    value.toLocaleString('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 })
-  const formatDate = (iso: string) =>
-    new Date(`${iso}T12:00:00`).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' })
-
-  const memberOptions = computed(() =>
-    data.value.team.map(member => ({ value: member.id, label: member.name }))
-  )
-  const projectOptions = computed(() =>
-    data.value.projects.map(project => ({ value: project.id, label: project.name }))
-  )
-
-  const balances = computed(() =>
-    data.value.team.map(member => ({ member, ...store.memberBalance(member.id) }))
-  )
-  const totalDue = computed(() => balances.value.reduce((sum, item) => sum + item.due, 0))
-
-  type DialogKey = 'member' | 'assignment' | 'hours' | 'payment' | null
-  const open = ref<DialogKey>(null)
-
-  const memberForm = useAdminForm(teamMemberSchema, () => ({
-    name: '',
-    email: '',
-    role: '',
-    responsibilities: '',
-    rateUsd: ''
-  }))
-  const assignmentForm = useAdminForm(assignmentSchema, () => ({
-    memberId: '',
-    projectId: '',
-    agreedHours: ''
-  }))
-  const hoursForm = useAdminForm(timeEntrySchema, () => ({
-    memberId: '',
-    projectId: '',
-    hours: '',
-    date: today(),
-    note: ''
-  }))
-  const paymentForm = useAdminForm(paymentSchema, () => ({
-    memberId: '',
-    amountUsd: '',
-    trm: '',
-    date: today(),
-    note: ''
-  }))
-
-  const forms = {
-    member: memberForm,
-    assignment: assignmentForm,
-    hours: hoursForm,
-    payment: paymentForm
+  type Page<T> = { items: T[]; total: number }
+  // El error viaja dentro de los datos para que el servidor y el navegador muestren lo mismo.
+  type Loaded = {
+    members: Page<TeamMemberRecord> | null
+    assignments: Page<AssignmentRecord> | null
+    entries: Page<TimeEntryRecord> | null
+    payments: Page<PaymentRecord> | null
+    projects: ProjectRecord[] | null
+    trm: TrmRecord | null
+    error: string
   }
-  const openDialog = (key: Exclude<DialogKey, null>) => {
-    forms[key].reset()
-    open.value = key
-  }
-
-  const submitMember = () => {
-    const parsed = memberForm.validate()
-    if (!parsed) return
-    store.addMember(parsed)
-    open.value = null
-    announce('Colaborador agregado')
-  }
-  const submitAssignment = () => {
-    const parsed = assignmentForm.validate()
-    if (!parsed) return
-    store.addAssignment(parsed)
-    open.value = null
-    announce('Asignación registrada')
-  }
-  const submitHours = () => {
-    const parsed = hoursForm.validate()
-    if (!parsed) return
-    store.addTimeEntry(parsed)
-    open.value = null
-    announce('Horas registradas')
-  }
-  const submitPayment = () => {
-    const parsed = paymentForm.validate()
-    if (!parsed) return
-    store.addPayment(parsed)
-    open.value = null
-    announce('Pago registrado')
-  }
-
-  // Equivalente en COP del pago que se está escribiendo (TRM manual por ahora).
-  const copPreview = computed(() => {
-    const amount = Number(paymentForm.values.amountUsd)
-    const trm = Number(paymentForm.values.trm)
-    return amount > 0 && trm > 0 ? cop(amount * trm) : ''
+  const { data, refresh } = await useLazyAsyncData<Loaded>('admin-team', async () => {
+    try {
+      const [members, assignments, entries, payments, projects, trm] = await Promise.all([
+        api.listMembers(),
+        api.listAssignments(),
+        api.listTimeEntries(),
+        api.listPayments(),
+        projectsApi.listProjects(),
+        // Sin ninguna TRM registrada la API responde 404: no es un error, solo "aún no hay".
+        api.getTrm().catch((error: unknown) => {
+          if (toAdminApiError(error).status === 404) return null
+          throw error
+        })
+      ])
+      return { members, assignments, entries, payments, projects: projects.items, trm, error: '' }
+    } catch (error) {
+      return {
+        members: null,
+        assignments: null,
+        entries: null,
+        payments: null,
+        projects: null,
+        trm: null,
+        error: toAdminApiError(error).message
+      }
+    }
   })
 
-  const assignmentRows = computed(() =>
-    data.value.assignments.map(item => ({
-      id: item.id,
-      member: store.memberName(item.memberId),
-      project: store.projectName(item.projectId),
-      agreed: item.agreedHours,
-      used: data.value.timeEntries
-        .filter(entry => entry.memberId === item.memberId && entry.projectId === item.projectId)
-        .reduce((sum, entry) => sum + entry.hours, 0)
-    }))
+  const members = computed(() => data.value?.members?.items ?? [])
+  const assignments = computed(() => data.value?.assignments?.items ?? [])
+  const entries = computed(() => data.value?.entries?.items ?? [])
+  const payments = computed(() => data.value?.payments?.items ?? [])
+  const projects = computed(() => data.value?.projects ?? [])
+  const trm = computed(() => data.value?.trm ?? null)
+  const loadError = computed(() => data.value?.error ?? '')
+  const isLoading = computed(() => !data.value)
+  const isReady = computed(() => !!data.value?.members)
+
+  const activeMembers = computed(() => members.value.filter(member => member.active))
+  const activeOptions = computed(() =>
+    activeMembers.value.map(member => ({ value: member.id, label: member.name }))
   )
+  const projectOptions = computed(() =>
+    projects.value.map(project => ({ value: project.id, label: project.name }))
+  )
+  const due = computed(() => totalDue(members.value))
+  const nameOfMember = (id: string) => memberNameOf(members.value, id)
+  const nameOfProject = (id: string) => projectNameOf(projects.value, id)
+  const shownOf = (page: Page<unknown> | null | undefined, shown: number) =>
+    page && page.total > shown ? `Se muestran ${shown} de ${page.total}.` : ''
+
+  // --- Altas y ediciones
+  const memberDialog = reactive<{ open: boolean; member: TeamMemberRecord | null }>({
+    open: false,
+    member: null
+  })
+  const assignmentDialog = reactive<{ open: boolean; assignment: AssignmentRecord | null }>({
+    open: false,
+    assignment: null
+  })
+  const hoursOpen = ref(false)
+  const paymentOpen = ref(false)
+  const trmOpen = ref(false)
+
+  const openMember = (member: TeamMemberRecord | null = null) => {
+    memberDialog.member = member
+    memberDialog.open = true
+  }
+  const openAssignment = (assignment: AssignmentRecord | null = null) => {
+    assignmentDialog.assignment = assignment
+    assignmentDialog.open = true
+  }
+
+  const onMemberSaved = async (_member: TeamMemberRecord, created: boolean) => {
+    memberDialog.open = false
+    await refresh()
+    announce(created ? 'Colaborador creado' : 'Colaborador actualizado')
+  }
+  const onAssignmentSaved = async (_assignment: AssignmentRecord, created: boolean) => {
+    assignmentDialog.open = false
+    await refresh()
+    announce(created ? 'Asignación creada' : 'Horas pactadas actualizadas')
+  }
+  const onHoursSaved = async (entry: {
+    memberId: string
+    projectId: string
+    assignment: { exceeded: boolean }
+  }) => {
+    hoursOpen.value = false
+    await refresh()
+    announce(
+      entry.assignment.exceeded
+        ? `Horas registradas. ${nameOfMember(entry.memberId)} ya supera lo pactado en ${nameOfProject(entry.projectId)}.`
+        : 'Horas registradas'
+    )
+  }
+  const onPaymentSaved = async () => {
+    paymentOpen.value = false
+    await refresh()
+    announce('Pago registrado')
+  }
+  const onTrmSaved = async () => {
+    trmOpen.value = false
+    await refresh()
+    announce('TRM guardada')
+  }
+
+  // --- Eliminación (con confirmación que nombra lo que se elimina)
+  type RemovalKind = 'member' | 'assignment' | 'entry'
+  const removal = reactive<{
+    kind: RemovalKind | null
+    id: string
+    name: string
+    busy: boolean
+    error: string
+  }>({ kind: null, id: '', name: '', busy: false, error: '' })
+
+  const REMOVAL_COPY: Record<RemovalKind, { title: string; done: string }> = {
+    member: { title: 'Eliminar colaborador', done: 'Colaborador eliminado' },
+    assignment: { title: 'Eliminar asignación', done: 'Asignación eliminada' },
+    entry: { title: 'Eliminar registro de horas', done: 'Registro de horas eliminado' }
+  }
+
+  const askRemove = (kind: RemovalKind, id: string, name: string) => {
+    Object.assign(removal, { kind, id, name, busy: false, error: '' })
+  }
+  const confirmRemove = async () => {
+    const kind = removal.kind
+    if (!kind) return
+    removal.busy = true
+    removal.error = ''
+    try {
+      if (kind === 'member') await api.removeMember(removal.id)
+      else if (kind === 'assignment') await api.removeAssignment(removal.id)
+      else await api.removeTimeEntry(removal.id)
+      removal.kind = null
+      await refresh()
+      announce(REMOVAL_COPY[kind].done)
+    } catch (error) {
+      removal.error = toAdminApiError(error).message
+    } finally {
+      removal.busy = false
+    }
+  }
 </script>
 
 <template>
@@ -132,348 +197,240 @@
     <AdminPageHeader
       eyebrow="Panel privado"
       title="Equipo y pagos"
-      description="Colaboradores, horas pactadas y cuánto debes pagarles. Todo en USD; la TRM del día queda guardada en cada pago."
+      description="Colaboradores, horas pactadas y cuánto debes pagarles. Todo en USD; la TRM usada queda guardada en cada pago."
     >
       <template #actions>
-        <AdminButton :disabled="!canWrite" @click="openDialog('member')">
-          Nuevo colaborador
-        </AdminButton>
-        <AdminButton
-          :disabled="!canWrite || !data.team.length || !data.projects.length"
-          @click="openDialog('assignment')"
-        >
+        <AdminButton @click="openMember()">Nuevo colaborador</AdminButton>
+        <AdminButton v-if="activeMembers.length && projects.length" @click="openAssignment()">
           Asignar a proyecto
         </AdminButton>
-        <AdminButton
-          :disabled="!canWrite || !data.team.length || !data.projects.length"
-          @click="openDialog('hours')"
-        >
+        <AdminButton v-if="assignments.length" @click="hoursOpen = true">
           Registrar horas
         </AdminButton>
-        <AdminButton
-          variant="primary"
-          :disabled="!canWrite || !data.team.length"
-          @click="openDialog('payment')"
-        >
+        <AdminButton v-if="members.length" variant="primary" @click="paymentOpen = true">
+          <Icon name="mdi:plus" size="20" aria-hidden="true" />
           Registrar pago
         </AdminButton>
       </template>
     </AdminPageHeader>
-    <AdminSampleBanner />
 
-    <p
-      v-if="status"
-      role="status"
-      class="mb-4 rounded-lg bg-brand-success-bg px-3 py-2 text-sm font-medium text-brand-success-text"
+    <AdminNotice tone="success" :message="status" />
+
+    <AdminSkeleton
+      v-if="isLoading"
+      :rows="2"
+      height-class="h-56"
+      label="Cargando equipo y pagos…"
+    />
+
+    <AdminNotice v-else-if="!isReady" tone="error" :message="loadError">
+      <AdminButton @click="refresh()">Reintentar</AdminButton>
+    </AdminNotice>
+
+    <AdminEmptyState
+      v-else-if="!members.length"
+      icon="mdi:account-group-outline"
+      title="Aún no hay colaboradores"
+      description="Agrega a las personas que trabajan contigo con su tarifa por hora. Luego podrás asignarlas a un proyecto, registrar sus horas y llevar sus pagos."
     >
-      {{ status }}
-    </p>
+      <AdminButton variant="primary" @click="openMember()">
+        <Icon name="mdi:plus" size="20" aria-hidden="true" />
+        Crear el primer colaborador
+      </AdminButton>
+    </AdminEmptyState>
 
-    <div class="mb-6 rounded-2xl border border-brand-border bg-brand-surface-card p-5">
-      <p class="text-sm text-brand-muted">Total por pagar al equipo</p>
-      <p class="text-3xl font-semibold text-brand-ink">{{ usd(totalDue) }}</p>
-    </div>
+    <template v-else>
+      <TeamSummary :due-usd="due" :trm="trm" @edit-trm="trmOpen = true" />
 
-    <section aria-labelledby="team-heading">
-      <h2 id="team-heading" class="mb-3 text-lg font-semibold text-brand-ink">Colaboradores</h2>
-      <div
-        v-if="balances.length"
-        class="overflow-x-auto rounded-2xl border border-brand-border bg-brand-surface-card"
-      >
-        <table class="w-full min-w-[44rem] text-left text-sm">
-          <caption class="sr-only">Saldo por colaborador</caption>
-          <thead
-            class="border-b border-brand-border bg-brand-surface-soft text-xs uppercase tracking-[0.08em] text-brand-muted"
-          >
-            <tr>
-              <th scope="col" class="px-4 py-3 font-semibold">Colaborador</th>
-              <th scope="col" class="px-4 py-3 font-semibold">Tarifa</th>
-              <th scope="col" class="px-4 py-3 font-semibold">Horas</th>
-              <th scope="col" class="px-4 py-3 font-semibold">Causado</th>
-              <th scope="col" class="px-4 py-3 font-semibold">Pagado</th>
-              <th scope="col" class="px-4 py-3 font-semibold">Por pagar</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-brand-border">
-            <tr v-for="row in balances" :key="row.member.id">
-              <td class="px-4 py-3">
-                <p class="font-medium text-brand-ink">{{ row.member.name }}</p>
-                <p class="text-xs text-brand-muted">{{ row.member.role }}</p>
-              </td>
-              <td class="px-4 py-3 text-brand-muted">{{ usd(row.member.rateUsd) }}/h</td>
-              <td class="px-4 py-3 text-brand-muted">{{ row.hours }}</td>
-              <td class="px-4 py-3 text-brand-muted">{{ usd(row.earned) }}</td>
-              <td class="px-4 py-3 text-brand-muted">{{ usd(row.paid) }}</td>
-              <td
-                class="px-4 py-3 font-semibold"
-                :class="row.due > 0 ? 'text-brand-warning-text' : 'text-brand-success-text'"
-              >
-                {{ usd(row.due) }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p v-else class="text-sm text-brand-muted">Aún no hay colaboradores.</p>
-    </section>
-
-    <section class="mt-10" aria-labelledby="assign-heading">
-      <h2 id="assign-heading" class="mb-3 text-lg font-semibold text-brand-ink">
-        Horas pactadas por proyecto
-      </h2>
-      <ul v-if="assignmentRows.length" class="grid gap-3 sm:grid-cols-2">
-        <li
-          v-for="row in assignmentRows"
-          :key="row.id"
-          class="rounded-xl border border-brand-border bg-brand-surface-card p-4 text-sm"
-        >
-          <p class="font-medium text-brand-ink">{{ row.member }}</p>
-          <p class="text-brand-muted">{{ row.project }}</p>
-          <p
-            class="mt-2 text-xs"
-            :class="
-              row.used > row.agreed ? 'font-semibold text-brand-error-text' : 'text-brand-muted'
-            "
-          >
-            {{ row.used }} de {{ row.agreed }} h usadas{{
-              row.used > row.agreed ? ' — excede lo pactado' : ''
-            }}
-          </p>
-        </li>
-      </ul>
-      <p v-else class="text-sm text-brand-muted">Sin asignaciones todavía.</p>
-    </section>
-
-    <section class="mt-10" aria-labelledby="pay-heading">
-      <h2 id="pay-heading" class="mb-3 text-lg font-semibold text-brand-ink">Pagos registrados</h2>
-      <ul
-        v-if="data.payments.length"
-        class="divide-y divide-brand-border rounded-2xl border border-brand-border bg-brand-surface-card"
-      >
-        <li
-          v-for="payment in data.payments"
-          :key="payment.id"
-          class="flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-sm"
-        >
-          <span class="font-medium text-brand-ink">{{ store.memberName(payment.memberId) }}</span>
-          <span class="text-brand-muted">
-            {{ formatDate(payment.date) }} · TRM {{ payment.trm.toLocaleString('es-CO') }}
-          </span>
-          <span class="text-right">
-            <span class="block font-semibold text-brand-ink">{{ usd(payment.amountUsd) }}</span>
-            <span class="block text-xs text-brand-muted">
-              {{ cop(payment.amountUsd * payment.trm) }}
-            </span>
-          </span>
-        </li>
-      </ul>
-      <p v-else class="text-sm text-brand-muted">Sin pagos registrados.</p>
-    </section>
-
-    <AdminDialog :open="open === 'member'" title="Nuevo colaborador" @close="open = null">
-      <form class="space-y-4" novalidate @submit.prevent="submitMember">
-        <div class="grid gap-4 sm:grid-cols-2">
-          <AdminInput
-            id="tm-name"
-            v-model="memberForm.values.name"
-            label="Nombre"
-            required
-            :error="memberForm.errors.value.name"
-          />
-          <AdminInput
-            id="tm-role"
-            v-model="memberForm.values.role"
-            label="Rol"
-            required
-            :error="memberForm.errors.value.role"
-          />
-          <AdminInput
-            id="tm-email"
-            v-model="memberForm.values.email"
-            label="Correo (opcional)"
-            type="email"
-            :error="memberForm.errors.value.email"
-          />
-          <AdminInput
-            id="tm-rate"
-            v-model="memberForm.values.rateUsd"
-            label="Tarifa por hora (USD)"
-            type="number"
-            step="0.5"
-            required
-            :error="memberForm.errors.value.rateUsd"
-          />
-        </div>
-        <AdminInput
-          id="tm-resp"
-          v-model="memberForm.values.responsibilities"
-          label="Responsabilidades"
-          type="textarea"
-          :error="memberForm.errors.value.responsibilities"
-        />
-        <div class="flex justify-end gap-3 pt-2">
-          <AdminButton @click="open = null">Cancelar</AdminButton>
-          <AdminButton type="submit" variant="primary">Agregar colaborador</AdminButton>
-        </div>
-      </form>
-    </AdminDialog>
-
-    <AdminDialog
-      :open="open === 'assignment'"
-      title="Asignar a un proyecto"
-      description="Define cuántas horas pactaste con esta persona para el proyecto."
-      @close="open = null"
-    >
-      <form class="space-y-4" novalidate @submit.prevent="submitAssignment">
-        <AdminInput
-          id="as-member"
-          v-model="assignmentForm.values.memberId"
-          label="Colaborador"
-          type="select"
-          :options="memberOptions"
-          required
-          :error="assignmentForm.errors.value.memberId"
-        />
-        <AdminInput
-          id="as-project"
-          v-model="assignmentForm.values.projectId"
-          label="Proyecto"
-          type="select"
-          :options="projectOptions"
-          required
-          :error="assignmentForm.errors.value.projectId"
-        />
-        <AdminInput
-          id="as-hours"
-          v-model="assignmentForm.values.agreedHours"
-          label="Horas pactadas"
-          type="number"
-          required
-          :error="assignmentForm.errors.value.agreedHours"
-        />
-        <div class="flex justify-end gap-3 pt-2">
-          <AdminButton @click="open = null">Cancelar</AdminButton>
-          <AdminButton type="submit" variant="primary">Asignar</AdminButton>
-        </div>
-      </form>
-    </AdminDialog>
-
-    <AdminDialog :open="open === 'hours'" title="Registrar horas" @close="open = null">
-      <form class="space-y-4" novalidate @submit.prevent="submitHours">
-        <div class="grid gap-4 sm:grid-cols-2">
-          <AdminInput
-            id="ho-member"
-            v-model="hoursForm.values.memberId"
-            label="Colaborador"
-            type="select"
-            :options="memberOptions"
-            required
-            :error="hoursForm.errors.value.memberId"
-          />
-          <AdminInput
-            id="ho-project"
-            v-model="hoursForm.values.projectId"
-            label="Proyecto"
-            type="select"
-            :options="projectOptions"
-            required
-            :error="hoursForm.errors.value.projectId"
-          />
-          <AdminInput
-            id="ho-hours"
-            v-model="hoursForm.values.hours"
-            label="Horas"
-            type="number"
-            step="0.25"
-            required
-            :error="hoursForm.errors.value.hours"
-          />
-          <AdminInput
-            id="ho-date"
-            v-model="hoursForm.values.date"
-            label="Fecha"
-            type="date"
-            required
-            :error="hoursForm.errors.value.date"
-          />
-        </div>
-        <AdminInput
-          id="ho-note"
-          v-model="hoursForm.values.note"
-          label="Detalle (opcional)"
-          :error="hoursForm.errors.value.note"
-        />
-        <div class="flex justify-end gap-3 pt-2">
-          <AdminButton @click="open = null">Cancelar</AdminButton>
-          <AdminButton type="submit" variant="primary">Registrar horas</AdminButton>
-        </div>
-      </form>
-    </AdminDialog>
-
-    <AdminDialog
-      :open="open === 'payment'"
-      title="Registrar pago"
-      description="El monto se guarda en USD junto con la TRM del día del pago."
-      @close="open = null"
-    >
-      <form class="space-y-4" novalidate @submit.prevent="submitPayment">
-        <AdminInput
-          id="pa-member"
-          v-model="paymentForm.values.memberId"
-          label="Colaborador"
-          type="select"
-          :options="memberOptions"
-          required
-          :error="paymentForm.errors.value.memberId"
-        />
-        <div class="grid gap-4 sm:grid-cols-2">
-          <AdminInput
-            id="pa-amount"
-            v-model="paymentForm.values.amountUsd"
-            label="Monto (USD)"
-            type="number"
-            step="0.01"
-            required
-            :error="paymentForm.errors.value.amountUsd"
-          />
-          <AdminInput
-            id="pa-trm"
-            v-model="paymentForm.values.trm"
-            label="TRM del día (COP por USD)"
-            type="number"
-            step="0.01"
-            required
-            hint="Por ahora se escribe a mano; luego se traerá automáticamente."
-            :error="paymentForm.errors.value.trm"
-          />
-          <AdminInput
-            id="pa-date"
-            v-model="paymentForm.values.date"
-            label="Fecha"
-            type="date"
-            required
-            :error="paymentForm.errors.value.date"
-          />
-        </div>
-        <p
-          v-if="copPreview"
-          class="rounded-xl bg-brand-surface-soft p-3 text-sm text-brand-muted"
-          role="status"
-        >
-          Equivale a
-          <strong class="text-brand-ink">{{ copPreview }}</strong>
+      <section aria-labelledby="members-heading">
+        <h2 id="members-heading" class="mb-3 text-xl font-semibold text-brand-ink">
+          Colaboradores
+        </h2>
+        <ul class="grid gap-4 lg:grid-cols-2">
+          <li v-for="member in members" :key="member.id">
+            <MemberCard
+              :member="member"
+              @edit="openMember(member)"
+              @remove="askRemove('member', member.id, member.name)"
+            />
+          </li>
+        </ul>
+        <p v-if="shownOf(data?.members, members.length)" class="mt-3 text-xs text-brand-muted">
+          {{ shownOf(data?.members, members.length) }}
         </p>
-        <AdminInput
-          id="pa-note"
-          v-model="paymentForm.values.note"
-          label="Nota (opcional)"
-          :error="paymentForm.errors.value.note"
-        />
-        <div class="flex justify-end gap-3 pt-2">
-          <AdminButton @click="open = null">Cancelar</AdminButton>
-          <AdminButton type="submit" variant="primary">Registrar pago</AdminButton>
-        </div>
-      </form>
-    </AdminDialog>
+      </section>
+
+      <section class="mt-10" aria-labelledby="assignments-heading">
+        <h2 id="assignments-heading" class="mb-3 text-xl font-semibold text-brand-ink">
+          Horas pactadas por proyecto
+        </h2>
+        <ul v-if="assignments.length" class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <li v-for="assignment in assignments" :key="assignment.id">
+            <AssignmentCard
+              :assignment="assignment"
+              :member-name="nameOfMember(assignment.memberId)"
+              :project-name="nameOfProject(assignment.projectId)"
+              @edit="openAssignment(assignment)"
+              @remove="
+                askRemove(
+                  'assignment',
+                  assignment.id,
+                  `${nameOfMember(assignment.memberId)} en ${nameOfProject(assignment.projectId)}`
+                )
+              "
+            />
+          </li>
+        </ul>
+        <p
+          v-else
+          class="rounded-2xl border border-dashed border-brand-border-soft bg-brand-surface-card p-6 text-sm leading-6 text-brand-muted"
+        >
+          <template v-if="projects.length">
+            Aún no asignas a nadie a un proyecto. Define cuántas horas pactaste con cada persona
+            para ver cuándo se pasa.
+          </template>
+          <template v-else>
+            Primero crea un proyecto en
+            <NuxtLink
+              to="/admin/projects"
+              class="inline-flex min-h-11 items-center font-semibold text-brand-accent-text underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue"
+            >
+              Proyectos
+            </NuxtLink>
+            para poder asignar horas.
+          </template>
+        </p>
+        <p
+          v-if="shownOf(data?.assignments, assignments.length)"
+          class="mt-3 text-xs text-brand-muted"
+        >
+          {{ shownOf(data?.assignments, assignments.length) }}
+        </p>
+      </section>
+
+      <section class="mt-10" aria-labelledby="entries-heading">
+        <h2 id="entries-heading" class="mb-3 text-xl font-semibold text-brand-ink">
+          Horas registradas
+        </h2>
+        <ul
+          v-if="entries.length"
+          class="divide-y divide-brand-border rounded-2xl border border-brand-border bg-brand-surface-card"
+        >
+          <TimeEntryRow
+            v-for="entry in entries"
+            :key="entry.id"
+            :entry="entry"
+            :member-name="nameOfMember(entry.memberId)"
+            :project-name="nameOfProject(entry.projectId)"
+            @remove="
+              askRemove(
+                'entry',
+                entry.id,
+                `${nameOfMember(entry.memberId)} en ${nameOfProject(entry.projectId)}`
+              )
+            "
+          />
+        </ul>
+        <p
+          v-else
+          class="rounded-2xl border border-dashed border-brand-border-soft bg-brand-surface-card p-6 text-sm leading-6 text-brand-muted"
+        >
+          Aún no hay horas registradas.
+          {{
+            assignments.length ? 'Usa «Registrar horas» cuando alguien trabaje en un proyecto.' : ''
+          }}
+        </p>
+        <p v-if="shownOf(data?.entries, entries.length)" class="mt-3 text-xs text-brand-muted">
+          {{ shownOf(data?.entries, entries.length) }} Las más recientes primero.
+        </p>
+      </section>
+
+      <section class="mt-10" aria-labelledby="payments-heading">
+        <h2 id="payments-heading" class="mb-3 text-xl font-semibold text-brand-ink">
+          Pagos registrados
+        </h2>
+        <ul
+          v-if="payments.length"
+          class="divide-y divide-brand-border rounded-2xl border border-brand-border bg-brand-surface-card"
+        >
+          <PaymentRow
+            v-for="payment in payments"
+            :key="payment.id"
+            :payment="payment"
+            :member-name="nameOfMember(payment.memberId)"
+          />
+        </ul>
+        <p
+          v-else
+          class="rounded-2xl border border-dashed border-brand-border-soft bg-brand-surface-card p-6 text-sm leading-6 text-brand-muted"
+        >
+          Aún no hay pagos registrados.
+        </p>
+        <p v-if="shownOf(data?.payments, payments.length)" class="mt-3 text-xs text-brand-muted">
+          {{ shownOf(data?.payments, payments.length) }} Los más recientes primero.
+        </p>
+      </section>
+    </template>
+
+    <MemberFormDialog
+      :open="memberDialog.open"
+      :member="memberDialog.member"
+      @close="memberDialog.open = false"
+      @saved="onMemberSaved"
+    />
+    <AssignmentFormDialog
+      :open="assignmentDialog.open"
+      :assignment="assignmentDialog.assignment"
+      :member-options="activeOptions"
+      :project-options="projectOptions"
+      :member-name="
+        assignmentDialog.assignment ? nameOfMember(assignmentDialog.assignment.memberId) : ''
+      "
+      :project-name="
+        assignmentDialog.assignment ? nameOfProject(assignmentDialog.assignment.projectId) : ''
+      "
+      @close="assignmentDialog.open = false"
+      @saved="onAssignmentSaved"
+    />
+    <TimeEntryFormDialog
+      :open="hoursOpen"
+      :member-options="activeOptions"
+      :assignments="assignments"
+      :projects="projects"
+      @close="hoursOpen = false"
+      @saved="onHoursSaved"
+    />
+    <PaymentFormDialog
+      :open="paymentOpen"
+      :members="members"
+      :trm="trm"
+      @close="paymentOpen = false"
+      @saved="onPaymentSaved"
+    />
+    <TrmFormDialog :open="trmOpen" :trm="trm" @close="trmOpen = false" @saved="onTrmSaved" />
+
+    <AdminConfirmDialog
+      :open="removal.kind !== null"
+      :title="removal.kind ? REMOVAL_COPY[removal.kind].title : ''"
+      :confirm-label="removal.kind ? REMOVAL_COPY[removal.kind].title : ''"
+      loading-label="Eliminando…"
+      :busy="removal.busy"
+      :error="removal.error"
+      @close="removal.kind = null"
+      @confirm="confirmRemove"
+    >
+      <template v-if="removal.kind === 'member'">
+        Se eliminará a «{{ removal.name }}». Solo es posible si no tiene horas ni pagos; si los
+        tiene, desactívalo desde «Editar». Esta acción no se puede deshacer.
+      </template>
+      <template v-else-if="removal.kind === 'assignment'">
+        Se eliminará la asignación de «{{ removal.name }}». Solo es posible si aún no hay horas
+        registradas. Esta acción no se puede deshacer.
+      </template>
+      <template v-else>
+        Se eliminará el registro de horas de «{{ removal.name }}» y el saldo se recalculará. Úsalo
+        solo para corregir un error de captura. Esta acción no se puede deshacer.
+      </template>
+    </AdminConfirmDialog>
   </div>
 </template>

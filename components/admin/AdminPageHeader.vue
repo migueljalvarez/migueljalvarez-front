@@ -20,7 +20,7 @@
         {{ description }}
       </p>
     </div>
-    <div class="flex shrink-0 items-center gap-2">
+    <div class="flex flex-wrap items-center gap-2">
       <slot name="actions" />
     </div>
   </header>
