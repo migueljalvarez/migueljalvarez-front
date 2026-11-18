@@ -1,12 +1,10 @@
 <script setup lang="ts">
   import { ref } from 'vue'
   import { DEVELOPMENT_PHASES, HOME_COPY } from '~/constants/common'
-  import type { ServiceOffering } from '~/data/services'
+  import type { ServiceCardProps } from '../organism'
   import { Card, Chip, HexMarker } from '~/components/atoms'
 
-  const { offering } = defineProps<{
-    offering: ServiceOffering
-  }>()
+  const { offering } = defineProps<ServiceCardProps>()
 
   const phaseNumber = (phase: number) => String(phase).padStart(2, '0')
 

@@ -59,6 +59,10 @@ export type EyebrowProps = {
 export type ChipProps = {
   tone?: 'neutral' | 'brand' | 'success' | 'warning'
   size?: 'sm' | 'md'
+  /** Forma de píldora (rounded-full). */
+  pill?: boolean
+  /** Mayúsculas con tracking (etiquetas de tipo). */
+  uppercase?: boolean
 }
 
 export type CardProps = {

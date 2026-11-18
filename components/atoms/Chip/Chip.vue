@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   import type { ChipProps } from '../atom'
 
-  withDefaults(defineProps<ChipProps & { pill?: boolean; uppercase?: boolean }>(), {
+  withDefaults(defineProps<ChipProps>(), {
     tone: 'neutral',
     size: 'md',
     pill: false,

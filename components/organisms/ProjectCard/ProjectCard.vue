@@ -1,23 +1,9 @@
 <script lang="ts" setup>
   import { NuxtLink } from '#components'
   import { Chip } from '~/components/atoms'
-  import type {
-    PortfolioCardProject,
-    PortfolioCardVariant,
-    PortfolioLayoutMode
-  } from '~/types/portfolio'
+  import type { ProjectCardProps } from '../organism'
 
-  withDefaults(
-    defineProps<{
-      project: PortfolioCardProject
-      variant: PortfolioCardVariant
-      layoutMode: PortfolioLayoutMode
-      showTypeBadge: boolean
-      /** Nivel del título según el contexto (h3 bajo un h2 de sección; h2 bajo el h1 de la página). */
-      headingLevel?: 'h2' | 'h3'
-    }>(),
-    { headingLevel: 'h3' }
-  )
+  withDefaults(defineProps<ProjectCardProps>(), { headingLevel: 'h3' })
 </script>
 
 <template>
