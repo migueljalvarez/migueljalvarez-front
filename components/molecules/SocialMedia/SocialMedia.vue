@@ -1,41 +1,30 @@
 <script lang="ts" setup>
-  defineProps({
-    link: { type: String, required: true },
-    name: { type: String, required: true },
-    icon: { type: String, required: true },
-    isHovered: { type: Boolean, required: true },
+  import type { SocialMediaProps } from '../molecule'
 
-    size: { type: Number, required: true }
-  })
-
-  const iconStyles = {
-    base: {
-      color: '#C9D1DC'
-    },
-    hover: {
-      color: '#F5F7FA'
-    }
-  }
+  defineProps<SocialMediaProps>()
 </script>
+
 <template>
-  <div>
-    <div class="flex flex-col my-2">
-      <ul class="flex flex-row gap-2">
-        <li
-          :key="name"
-          class="text-[#C9D1DC] cursor-pointer hover:text-[#F5F7FA] transition-colors duration-200"
-        >
-          <NuxtLink :to="link" target="_blank" :aria-label="name" class="flex items-center gap-2">
-            <Icon
-              :name="icon"
-              :size="size"
-              :style="isHovered ? iconStyles.hover : iconStyles.base"
-            />
-            {{ name }}
-          </NuxtLink>
-        </li>
-      </ul>
-    </div>
-  </div>
+  <ul class="my-2 flex flex-row gap-2">
+    <li
+      class="transition-colors duration-200 motion-reduce:transition-none"
+      :class="
+        onLight
+          ? 'text-brand-muted hover:text-brand-ink'
+          : 'text-brand-text-subtle hover:text-brand-text-strong'
+      "
+    >
+      <NuxtLink
+        :to="link"
+        target="_blank"
+        rel="noopener noreferrer"
+        :aria-label="name"
+        class="flex min-h-11 items-center gap-2 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2"
+        :class="onLight ? 'focus-visible:outline-brand-blue' : 'focus-visible:outline-brand-white'"
+      >
+        <Icon :name="icon" :size="size" aria-hidden="true" />
+        {{ name }}
+      </NuxtLink>
+    </li>
+  </ul>
 </template>
-<style></style>

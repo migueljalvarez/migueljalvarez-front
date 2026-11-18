@@ -1,5 +1,5 @@
 import type { PortfolioType, SocialMediaType } from '~/types/common'
-import type { PortfolioCardProject } from '~/components/templates/Portfolio/portfolio.types'
+import type { PortfolioCardProject } from '~/types/portfolio'
 
 /**
  * Forma de las respuestas públicas de la API (migueljalvarez-api, docs/openapi-panel.yaml) y su

@@ -2,11 +2,16 @@
   import { ref } from 'vue'
   import { DEVELOPMENT_PHASES, HOME_COPY } from '~/constants/common'
   import type { ServiceOffering } from '~/data/services'
-  import PhaseMarker from './PhaseMarker.vue'
+  import { Card, Chip, HexMarker } from '~/components/atoms'
 
   const { offering } = defineProps<{
     offering: ServiceOffering
   }>()
+
+  const phaseNumber = (phase: number) => String(phase).padStart(2, '0')
+
+  const phaseLabel = (phase: number) =>
+    `Fase ${phaseNumber(phase)}${offering.fases.includes(phase) ? ', incluida' : ', no incluida'}`
 
   const detailsDialog = ref<HTMLDialogElement | null>(null)
 
@@ -19,9 +24,10 @@
 </script>
 
 <template>
-  <article
+  <Card
     :id="offering.id"
-    class="flex h-full flex-col rounded-2xl border border-brand-border bg-brand-surface-card p-5 text-brand-ink transition-shadow hover:shadow-card md:p-6"
+    as="article"
+    class="flex h-full flex-col p-5 transition-shadow hover:shadow-card motion-reduce:transition-none md:p-6"
   >
     <p class="min-h-10 text-sm font-normal leading-5 text-brand-muted">
       {{ offering.situacion }}
@@ -36,13 +42,7 @@
 
     <div class="mt-auto border-t border-brand-border pt-3">
       <div class="mb-2 flex flex-wrap gap-2">
-        <span
-          v-for="tag in offering.etiquetas"
-          :key="tag"
-          class="rounded-md border border-brand-border bg-brand-surface-soft px-2.5 py-1 text-xs font-medium text-brand-muted"
-        >
-          {{ tag }}
-        </span>
+        <Chip v-for="tag in offering.etiquetas" :key="tag">{{ tag }}</Chip>
       </div>
       <button
         type="button"
@@ -90,18 +90,20 @@
           </div>
 
           <div class="mt-6 grid gap-4 md:grid-cols-3">
-            <section
+            <Card
               v-for="detail in [
                 { title: HOME_COPY.services.detailLabels.audience, text: offering.paraQuien },
                 { title: HOME_COPY.services.detailLabels.approach, text: offering.comoAyudo },
                 { title: HOME_COPY.services.detailLabels.deliverables, text: offering.queRecibes }
               ]"
               :key="detail.title"
-              class="rounded-xl border border-brand-border bg-brand-surface-soft p-4 sm:p-5"
+              tone="soft"
+              as="section"
+              class="p-4 sm:p-5"
             >
               <h3 class="text-sm font-semibold text-brand-ink">{{ detail.title }}</h3>
               <p class="mt-2 text-sm leading-6 text-brand-muted">{{ detail.text }}</p>
-            </section>
+            </Card>
           </div>
 
           <section class="mt-6 border-t border-brand-border pt-5">
@@ -113,9 +115,10 @@
               :aria-label="`Fases aplicables: ${offering.situacion}`"
             >
               <li v-for="(phase, index) in DEVELOPMENT_PHASES" :key="phase.title">
-                <PhaseMarker
-                  :phase="index + 1"
+                <HexMarker
+                  :label="phaseNumber(index + 1)"
                   :active="offering.fases.includes(index + 1)"
+                  :aria-label="phaseLabel(index + 1)"
                   compact
                 />
               </li>
@@ -124,5 +127,5 @@
         </div>
       </dialog>
     </Teleport>
-  </article>
+  </Card>
 </template>

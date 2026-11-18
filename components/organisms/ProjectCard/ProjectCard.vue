@@ -1,17 +1,23 @@
 <script lang="ts" setup>
   import { NuxtLink } from '#components'
+  import { Chip } from '~/components/atoms'
   import type {
     PortfolioCardProject,
     PortfolioCardVariant,
     PortfolioLayoutMode
-  } from './portfolio.types'
+  } from '~/types/portfolio'
 
-  defineProps<{
-    project: PortfolioCardProject
-    variant: PortfolioCardVariant
-    layoutMode: PortfolioLayoutMode
-    showTypeBadge: boolean
-  }>()
+  withDefaults(
+    defineProps<{
+      project: PortfolioCardProject
+      variant: PortfolioCardVariant
+      layoutMode: PortfolioLayoutMode
+      showTypeBadge: boolean
+      /** Nivel del título según el contexto (h3 bajo un h2 de sección; h2 bajo el h1 de la página). */
+      headingLevel?: 'h2' | 'h3'
+    }>(),
+    { headingLevel: 'h3' }
+  )
 </script>
 
 <template>
@@ -69,35 +75,22 @@
           </g>
         </svg>
         <p
+          aria-hidden="true"
           class="relative z-10 max-w-[80%] text-center text-lg font-semibold leading-tight text-brand-text-strong md:text-xl"
         >
           {{ project.title }}
         </p>
       </div>
       <div class="absolute left-4 top-4 flex flex-wrap items-center gap-2">
-        <span
+        <Chip
           v-if="showTypeBadge"
-          class="rounded-md border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-brand-white"
-          :class="
-            project.type === 'cliente'
-              ? 'border-brand-blue bg-brand-blue'
-              : 'border-emerald-600 bg-emerald-600'
-          "
+          :tone="project.type === 'cliente' ? 'brand' : 'success'"
+          uppercase
         >
           {{ project.type === 'cliente' ? 'Cliente' : 'Producto propio' }}
-        </span>
-        <span
-          v-if="project.status === 'in-development'"
-          class="rounded-md border border-brand-warning-border bg-brand-warning-bg px-2.5 py-1 text-[11px] font-semibold text-brand-warning-text"
-        >
-          En desarrollo
-        </span>
-        <span
-          v-if="project.tags[0]"
-          class="rounded-md border border-brand-border bg-brand-surface-soft px-2.5 py-1 text-[11px] text-brand-muted"
-        >
-          {{ project.tags[0] }}
-        </span>
+        </Chip>
+        <Chip v-if="project.status === 'in-development'" tone="warning">En desarrollo</Chip>
+        <Chip v-if="project.tags[0]">{{ project.tags[0] }}</Chip>
       </div>
     </div>
 
@@ -108,14 +101,14 @@
         layoutMode === 'three' && variant === 'default' ? 'md:p-3' : ''
       ]"
     >
-      <h3 class="text-lg font-semibold leading-tight sm:text-xl">
+      <component :is="headingLevel" class="text-lg font-semibold leading-tight sm:text-xl">
         {{ project.title }}
-      </h3>
+      </component>
       <p class="mt-2 text-sm leading-5 text-brand-muted">
         {{ project.description }}
       </p>
       <div class="mt-auto flex items-center justify-between gap-3 pt-4">
-        <p class="min-w-0 flex-1 text-xs text-brand-muted">Dirigido a {{ project.audience }}</p>
+        <p class="min-w-0 flex-1 text-sm text-brand-muted">Dirigido a {{ project.audience }}</p>
         <Icon
           v-if="project.href"
           name="mdi:arrow-right"

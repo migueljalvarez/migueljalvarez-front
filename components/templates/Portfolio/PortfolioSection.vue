@@ -5,10 +5,10 @@
     PortfolioCardVariant,
     PortfolioFilter,
     PortfolioLayoutMode
-  } from './portfolio.types'
-  import Button from '~/components/atoms/Button/Button.vue'
-  import PortfolioFilters from './PortfolioFilters.vue'
-  import ProjectCard from './ProjectCard.vue'
+  } from '~/types/portfolio'
+  import { Button, Card, Chip } from '~/components/atoms'
+  import { FilterPills, SectionHeader } from '~/components/molecules'
+  import { ProjectCard } from '~/components/organisms'
   import { HOME_COPY } from '~/constants/common'
   import { getAvailablePortfolioFilters } from '~/utils/portfolioFilters'
 
@@ -35,6 +35,9 @@
 
   /** Marca "Datos de ejemplo" solo cuando alguna tarjeta es de ejemplo (nunca con contenido real). */
   const hasSampleData = computed(() => props.projects.some(project => project.sample))
+
+  /** Bajo el h1 de la página los títulos de tarjeta son h2; bajo el h2 de la home, h3. */
+  const cardHeadingLevel = computed(() => (props.headingLevel === 'h1' ? 'h2' : 'h3'))
 
   const sectionRef = ref<HTMLElement | null>(null)
   const selectedFilter = ref<PortfolioFilter>('Todos')
@@ -109,34 +112,33 @@
     :aria-labelledby="`${sectionId}-heading`"
   >
     <header class="mb-8 flex flex-col gap-5 md:mb-10 md:flex-row md:items-start md:justify-between">
-      <div class="max-w-3xl">
-        <p class="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-brand-accent-text">
-          {{ title }}
-          <span
+      <SectionHeader
+        :eyebrow="title"
+        :heading="heading"
+        :description="description"
+        :level="headingLevel"
+        :heading-id="`${sectionId}-heading`"
+        class="max-w-3xl"
+      >
+        <template #eyebrow-extra>
+          <Chip
             v-if="hasSampleData"
-            class="ml-2 rounded-full border border-brand-warning-border bg-brand-warning-bg px-2 py-0.5 text-[10px] normal-case tracking-normal text-brand-warning-text"
+            tone="warning"
+            size="sm"
+            pill
+            class="ml-2 normal-case tracking-normal"
           >
             Datos de ejemplo (solo desarrollo)
-          </span>
-        </p>
-        <component
-          :is="headingLevel"
-          :id="`${sectionId}-heading`"
-          class="text-2xl font-semibold leading-tight text-brand-ink md:text-3xl"
-        >
-          {{ heading }}
-        </component>
-        <p class="mt-3 max-w-3xl text-sm leading-6 text-brand-muted md:text-base md:leading-7">
-          {{ description }}
-        </p>
-      </div>
+          </Chip>
+        </template>
+      </SectionHeader>
       <div v-if="layout.showFilters" class="md:shrink-0 md:pt-7">
-        <PortfolioFilters v-model="selectedFilter" :filters="availableFilters" />
+        <FilterPills v-model="selectedFilter" :filters="availableFilters" />
       </div>
       <NuxtLink
         v-else-if="layout.showViewAllLink"
         to="/portafolio"
-        class="inline-flex min-h-10 items-center gap-1 self-end text-sm font-semibold text-brand-accent-text focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-accent-text md:ml-auto md:mt-7"
+        class="inline-flex min-h-11 items-center gap-1 self-end text-sm font-semibold text-brand-accent-text focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-accent-text md:ml-auto md:mt-7"
       >
         Ver todos los proyectos
         <Icon name="mdi:arrow-right" size="16" aria-hidden="true" />
@@ -163,12 +165,16 @@
         :variant="card.variant"
         :layout-mode="layout.mode"
         :show-type-badge="hasMultipleProjectTypes"
+        :heading-level="cardHeadingLevel"
       />
 
-      <article
+      <Card
         v-if="layout.showViewAllCard"
         key="portfolio-all-projects"
-        class="col-span-full flex min-h-0 flex-col items-start justify-between gap-5 overflow-hidden rounded-2xl border border-brand-border-strong bg-brand-surface-contrast p-5 text-left text-brand-text-strong shadow-card sm:flex-row sm:items-center sm:gap-6 md:p-6"
+        tone="dark"
+        as="article"
+        elevated
+        class="col-span-full flex min-h-0 flex-col items-start justify-between gap-5 overflow-hidden rounded-2xl border-brand-border-strong bg-brand-surface-contrast p-5 text-left sm:flex-row sm:items-center sm:gap-6 md:p-6"
       >
         <div class="flex min-w-0 items-center gap-4">
           <span
@@ -178,20 +184,21 @@
             <Icon name="mdi:folder-multiple-outline" size="24" class="text-brand-text-soft" />
           </span>
           <div class="min-w-0">
-            <h3 class="mt-1 text-md font-semibold leading-snug text-brand-text-strong md:text-xl">
+            <component
+              :is="cardHeadingLevel"
+              class="text-base font-semibold leading-snug text-brand-text-strong md:text-xl"
+            >
               {{ HOME_COPY.portfolio.allHeading }}
-            </h3>
-            <p class="mt-1 text-xs leading-6 text-brand-text-subtle">
+            </component>
+            <p class="mt-1 text-sm leading-6 text-brand-text-subtle">
               {{ HOME_COPY.portfolio.allDescription }}
             </p>
           </div>
         </div>
-        <NuxtLink v-slot="{ href, navigate }" to="/portafolio" custom>
-          <Button as="a" :href="href ?? undefined" theme="primary" size="md" @click="navigate">
-            {{ HOME_COPY.portfolio.allCta }}
-          </Button>
-        </NuxtLink>
-      </article>
+        <Button to="/portafolio" theme="primary" size="md" on-dark>
+          {{ HOME_COPY.portfolio.allCta }}
+        </Button>
+      </Card>
     </TransitionGroup>
   </section>
 </template>

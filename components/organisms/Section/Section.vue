@@ -1,13 +1,8 @@
 <script lang="ts" setup>
   import { Title } from '~/components/atoms'
+  import type { SectionProps } from '../organism'
 
-  type SectionType = {
-    id: string
-    title?: string
-    background?: string
-    backgroundImage?: string
-  }
-  const props = withDefaults(defineProps<SectionType>(), {
+  const props = withDefaults(defineProps<SectionProps>(), {
     title: ''
   })
 
