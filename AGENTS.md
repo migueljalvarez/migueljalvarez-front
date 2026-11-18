@@ -79,6 +79,7 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 
 ## Calidad antes de integrar
 
+- **Auditoría de dependencias:** el CI ejecuta `npm run audit:ci` (`scripts/audit.mjs`), que falla ante cualquier aviso alto o crítico salvo los aceptados en `scripts/audit-allowlist.json` (con motivo y fecha de vencimiento; al vencer vuelve a bloquear). Excepción vigente: `GHSA-fc5q-39xc-vjpf` (`picomatch`, ReDoS; sin parche publicado; solo herramientas de build, no está en `.output`), revisar antes del 2026-12-15. Nunca usar `npm audit fix --force` (sugiere degradar Nuxt).
 - Además de lint, build y tests: abrir la home en `npm run dev` y revisar que la consola no muestre avisos de Vue ni "Hydration mismatch". Un import perdido (p. ej. `Section`) no rompe la página a la vista pero sí genera errores de hidratación.
 - Lighthouse (referencia nov-2026, build local): móvil 68–80 (varía por corrida) / escritorio 98–99 en rendimiento; accesibilidad, buenas prácticas y SEO en 100. Imágenes de `public/` ≤ ~100 KB y ≤ 1920 px de ancho.
 
