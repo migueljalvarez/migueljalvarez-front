@@ -28,3 +28,6 @@ logs
 
 # Salida del preset de Netlify
 .netlify
+
+# Playbook legal privado (posiciones de negociacion del titular)
+.claude/legal.local.md
