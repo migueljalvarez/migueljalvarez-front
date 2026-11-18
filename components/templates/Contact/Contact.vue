@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-  import { Button, Checkbox, Input, Select } from '~/components/atoms'
+  import { Button, Card, Checkbox, Eyebrow, Input, Select } from '~/components/atoms'
   import Form from '~/components/Form/Form.vue'
-  import { SocialMedia } from '~/components/molecules'
+  import { CheckList, SocialMedia } from '~/components/molecules'
   import { Section } from '~/components/organisms'
 
   import {
@@ -9,20 +9,14 @@
     REGEX_COMMON,
     REGEX_EMAIL,
     REGEX_LARGE_TEXT,
-    WHATSAPP_CTA_LABEL
+    WHATSAPP_CTA_LABEL,
+    WHATSAPP_URL
   } from '~/constants/common'
-  import type { SocialMediaType } from '~/types/common'
 
   defineProps<{
     title?: string
   }>()
   const { socials } = useSocialMedia()
-  const hoverIcon = (item: SocialMediaType) => {
-    item.isHovered = true
-  }
-  const leaveIcon = (item: SocialMediaType) => {
-    item.isHovered = false
-  }
   // Contact Form
   const subjectOptions = HOME_COPY.contact.form.subjects
 
@@ -80,52 +74,45 @@
     class="gap-4 bg-[linear-gradient(180deg,var(--color-brand-surface)_0%,var(--color-brand-surface)_22%,var(--color-brand-surface-contrast)_22%,var(--color-brand-surface-contrast)_100%)] px-0 sm:px-4"
   >
     <div
-      class="relative mx-auto mb-0 w-full max-w-none overflow-hidden rounded-none border-y border-brand-border-strong/50 bg-brand-surface-contrast p-5 shadow-none sm:mb-8 sm:max-w-7xl sm:rounded-2xl sm:border sm:p-9 sm:shadow-[0_18px_40px_var(--color-brand-shadow-card)]"
+      class="relative mx-auto mb-0 w-full max-w-none overflow-hidden rounded-none border-y border-brand-border-strong/50 bg-brand-surface-contrast p-5 shadow-none sm:mb-8 sm:max-w-7xl sm:rounded-2xl sm:border sm:p-9 sm:shadow-card-lg"
     >
       <!-- Logo decorativo asomando desde la esquina — placeholder mientras subes el SVG real a public/ -->
       <NuxtImg
         src="only-brand.svg"
-        alt="Miguel Álvarez"
+        alt=""
+        aria-hidden="true"
+        width="256"
+        height="256"
         class="pointer-events-none select-none absolute -bottom-10 -right-20 w-64 h-64 opacity-[0.06] z-0"
       />
 
       <div class="relative z-10">
-        <p class="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-brand-text-soft">
-          {{ title || HOME_COPY.contact.eyebrow }}
-        </p>
+        <Eyebrow tone="dark" class="mb-4">{{ title || HOME_COPY.contact.eyebrow }}</Eyebrow>
 
         <div class="flex flex-col md:flex-row gap-8 items-stretch">
           <div class="flex flex-col gap-4 md:w-1/2">
-            <h3 class="text-2xl font-semibold leading-tight text-brand-text-strong md:text-3xl">
+            <h2 class="text-2xl font-semibold leading-tight text-brand-text-strong md:text-3xl">
               {{ HOME_COPY.contact.heading }}
-            </h3>
+            </h2>
             <p class="text-sm leading-6 text-brand-text-subtle md:text-base md:leading-7">
               {{ HOME_COPY.contact.description }}
             </p>
             <Button
               as="a"
-              href="https://wa.link/bxjfgq"
+              :href="WHATSAPP_URL"
               target="_blank"
               rel="noopener noreferrer"
               icon="mdi:whatsapp"
-              class="w-fit whitespace-nowrap bg-brand-whatsapp text-brand-white hover:bg-brand-whatsapp/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
+              theme="whatsapp"
+              on-dark
+              class="w-fit whitespace-nowrap"
               icon-position="left"
               size="md"
             >
               {{ WHATSAPP_CTA_LABEL }}
             </Button>
 
-            <ul class="space-y-3 p-4 text-sm leading-6 text-brand-text-subtle">
-              <li v-for="benefit in HOME_COPY.contact.benefits" :key="benefit" class="flex gap-3">
-                <Icon
-                  name="mdi:check-circle-outline"
-                  size="19"
-                  class="mt-0.5 shrink-0 text-brand-blue"
-                  aria-hidden="true"
-                />
-                <span>{{ benefit }}</span>
-              </li>
-            </ul>
+            <CheckList :items="HOME_COPY.contact.benefits" tone="dark" class="p-4" />
             <div class="flex gap-3">
               <SocialMedia
                 v-for="item in socials"
@@ -133,11 +120,7 @@
                 :link="item.link"
                 :name="item.name"
                 :icon="item.icon"
-                :is-hovered="item.isHovered"
-                orientation="horizontal"
                 :size="32"
-                @mouseover="hoverIcon(item)"
-                @mouseleave="leaveIcon(item)"
               />
             </div>
 
@@ -153,9 +136,7 @@
           </div>
 
           <div class="flex flex-col gap-2 md:w-1/2">
-            <div
-              class="rounded-2xl border border-brand-border-strong/70 bg-brand-surface-panel p-4 shadow-[0_8px_22px_var(--color-brand-shadow-card)]"
-            >
+            <Card tone="dark" elevated class="p-4">
               <Form
                 :successful="isSendedSuccessful"
                 :validation-message="
@@ -220,7 +201,7 @@
                   <NuxtLink
                     to="/privacidad"
                     target="_blank"
-                    class="underline underline-offset-4 hover:text-brand-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
+                    class="inline-block py-2 underline underline-offset-4 hover:text-brand-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
                   >
                     {{ HOME_COPY.contact.privacyLink }}
                   </NuxtLink>
@@ -230,13 +211,14 @@
                   type="submit"
                   :disabled="disabledButton"
                   size="md"
-                  class="w-full whitespace-nowrap py-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
+                  class="w-full whitespace-nowrap py-2"
+                  on-dark
                   theme="primary"
                 >
                   {{ HOME_COPY.contact.form.submit }}
                 </Button>
               </Form>
-            </div>
+            </Card>
 
             <p
               class="mt-auto flex w-full flex-col pt-2 text-right font-sans text-xs text-brand-text-subtle"

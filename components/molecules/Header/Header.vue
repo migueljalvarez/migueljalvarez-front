@@ -2,8 +2,9 @@
   import Button from '~/components/atoms/Button/Button.vue'
   import { useSocialMedia } from '~/composables/useSocialMedia'
   import { PUBLIC_ROUTES } from '~/constants/routes'
-  import type { SocialMediaType } from '~/types/common'
   import SocialMedia from '../SocialMedia/SocialMedia.vue'
+
+  const menuId = 'mobile-menu'
 
   const sidebarOpen = ref(false)
   const isScrolled = ref(false)
@@ -12,13 +13,6 @@
 
   const toggleSidebar = () => {
     sidebarOpen.value = !sidebarOpen.value
-  }
-
-  const hoverIcon = (item: SocialMediaType) => {
-    item.isHovered = true
-  }
-  const leaveIcon = (item: SocialMediaType) => {
-    item.isHovered = false
   }
 
   const route = useRoute()
@@ -131,9 +125,7 @@
       isHeroTop
         ? 'header-top text-brand-white backdrop-blur-none'
         : 'bg-brand-surface/95 text-brand-ink',
-      isScrolled
-        ? 'shadow-[0_10px_30px_var(--color-brand-shadow-card)] border-b border-brand-border/80'
-        : 'border-b-0 shadow-none'
+      isScrolled ? 'shadow-header border-b border-brand-border/80' : 'border-b-0 shadow-none'
     ]"
   >
     <div
@@ -147,26 +139,24 @@
           height="40"
           alt="Miguel Álvarez"
           format="webp"
-          :class="['flex object-contain px-2', isHeroTop ? '' : '']"
+          class="flex object-contain px-2"
         />
       </Transition>
 
       <nav
-        class="hidden w-auto shrink-0 items-center justify-end gap-4 font-bold uppercase md:gap-5 xl:flex 2xl:flex"
+        class="hidden w-auto shrink-0 items-center justify-end gap-4 font-bold uppercase md:gap-5 xl:flex"
       >
         <nuxt-link
           v-for="item in navLinks"
           :key="item.name"
           :to="item.link"
-          :class="[
-            isContactNavLink(item.name)
-              ? 'text-brand-white'
-              : isHeroTop
-                ? 'text-brand-white'
-                : 'text-brand-ink'
-          ]"
+          :class="
+            isContactNavLink(item.name) || isHeroTop
+              ? 'text-brand-white focus-visible:outline-brand-white'
+              : 'text-brand-ink focus-visible:outline-brand-blue'
+          "
           :aria-current="isActive(item.link) ? 'page' : undefined"
-          class="nav-link group inline-flex h-10 shrink-0 flex-col items-center justify-center gap-2 whitespace-nowrap text-xs font-bold leading-none tracking-[0.12em] transition-colors duration-300"
+          class="nav-link group inline-flex h-11 shrink-0 flex-col items-center justify-center gap-2 whitespace-nowrap text-xs font-bold leading-none tracking-[0.12em] transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none"
         >
           <span
             :class="
@@ -191,8 +181,11 @@
         <Button
           type="button"
           theme="secondary"
-          aria-label="Toggle menu"
-          class="ml-auto w-auto rounded-lg border-0 bg-transparent p-2"
+          aria-label="Abrir menú"
+          :aria-expanded="sidebarOpen"
+          :aria-controls="menuId"
+          :on-dark="isHeroTop"
+          class="ml-auto w-auto min-w-11 border-0 bg-transparent p-2"
           :class="[
             sidebarOpen ? 'hidden' : 'block',
             isHeroTop ? 'text-brand-white' : 'text-brand-ink'
@@ -200,8 +193,10 @@
           @click="toggleSidebar"
         >
           <svg
-            class="h-6 w-6 transition-transform duration-300 ease-in-out"
+            class="size-6 transition-transform duration-300 ease-in-out motion-reduce:transition-none"
             :class="sidebarOpen ? 'rotate-90' : 'rotate-0'"
+            aria-hidden="true"
+            focusable="false"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -228,20 +223,26 @@
   </header>
 
   <aside
-    class="fixed left-0 top-0 z-50 flex h-full w-full max-w-xs flex-col justify-between overflow-y-auto border-r border-brand-border bg-brand-surface p-6 text-brand-ink transition-transform duration-300 ease-in-out lg:hidden"
+    :id="menuId"
+    aria-label="Menú de navegación"
+    :inert="!sidebarOpen"
+    class="fixed left-0 top-0 z-50 flex h-full w-full max-w-xs flex-col justify-between overflow-y-auto border-r border-brand-border bg-brand-surface p-6 text-brand-ink transition-transform duration-300 ease-in-out motion-reduce:transition-none xl:hidden"
     :class="{ 'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen }"
+    @keydown.esc="sidebarOpen = false"
   >
     <div>
       <div class="mb-8 flex items-center justify-end gap-3">
         <Button
           type="button"
           theme="secondary"
-          aria-label="Close menu"
-          class="w-auto rounded-lg border-0 bg-transparent p-2 text-brand-navy focus:ring-2 focus:ring-brand-accent"
+          aria-label="Cerrar menú"
+          class="w-auto min-w-11 border-0 bg-transparent p-2 text-brand-navy"
           @click="toggleSidebar"
         >
           <svg
-            class="h-6 w-6 transition-transform duration-300 ease-in-out hover:rotate-90"
+            class="size-6"
+            aria-hidden="true"
+            focusable="false"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -262,7 +263,12 @@
           :key="item.name"
           :to="item.link"
           :aria-current="isActive(item.link) ? 'page' : undefined"
-          class="nav-link group flex w-fit flex-col items-start gap-2 py-1 text-brand-navy"
+          class="nav-link group flex min-h-11 w-fit flex-col items-start justify-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue"
+          :class="
+            isContactNavLink(item.name)
+              ? 'rounded-lg bg-brand-accent px-4 py-2 text-sm tracking-[0.12em] text-brand-white shadow-sm transition-colors hover:bg-brand-mid motion-reduce:transition-none'
+              : 'py-1 text-brand-navy'
+          "
           @click="toggleSidebar"
         >
           <span>{{ item.name }}</span>
@@ -284,18 +290,16 @@
         :link="item.link"
         :name="item.name"
         :icon="item.icon"
-        :is-hovered="item.isHovered"
-        orientation="horizontal"
         :size="28"
-        @mouseover="hoverIcon(item)"
-        @mouseleave="leaveIcon(item)"
+        on-light
       />
     </div>
   </aside>
 
   <div
     v-if="sidebarOpen"
-    class="fixed inset-0 z-40 bg-brand-ink/30 md:hidden"
+    class="fixed inset-0 z-40 bg-brand-ink/30 xl:hidden"
+    aria-hidden="true"
     @click="toggleSidebar"
   />
 </template>

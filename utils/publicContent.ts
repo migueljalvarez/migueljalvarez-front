@@ -1,5 +1,5 @@
 import type { PortfolioType, SocialMediaType } from '~/types/common'
-import type { PortfolioCardProject } from '~/components/templates/Portfolio/portfolio.types'
+import type { PortfolioCardProject } from '~/types/portfolio'
 
 /**
  * Forma de las respuestas públicas de la API (migueljalvarez-api, docs/openapi-panel.yaml) y su
@@ -71,8 +71,7 @@ export const mapApiPortfolioEntry = (entry: ApiPortfolioEntry): PortfolioType =>
 export const mapApiSocialLink = (link: ApiSocialLink): SocialMediaType => ({
   name: link.name,
   link: link.url,
-  icon: link.icon,
-  isHovered: false
+  icon: link.icon
 })
 
 /** Identificador estable para la clave de lista: título normalizado (la API no expone ids de política). */

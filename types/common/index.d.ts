@@ -2,7 +2,6 @@ export type SocialMediaType = {
   name: string
   link: string
   icon: string
-  isHovered: boolean
 }
 
 export type ProjectType = 'client' | 'product' | 'practice'

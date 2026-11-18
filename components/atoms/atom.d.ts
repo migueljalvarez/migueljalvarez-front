@@ -2,7 +2,11 @@ import type { Component } from 'nuxt/schema'
 
 export type ButtonProps = {
   size?: 'sm' | 'md' | 'lg'
-  theme?: 'primary' | 'secondary' | 'tertiary'
+  theme?: 'primary' | 'secondary' | 'tertiary' | 'whatsapp'
+  /** Fondo oscuro: el foco y el contorno se dibujan en claro. */
+  onDark?: boolean
+  /** Ruta interna: renderiza un NuxtLink (navegación SPA). */
+  to?: string
   uppercase?: boolean
   icon?: string
   iconPosition?: 'left' | 'right'
@@ -45,4 +49,33 @@ export type SelectProps = {
   options: { value: string; label: string }[]
   placeholder?: string
   required?: boolean
+}
+
+export type EyebrowProps = {
+  tone?: 'light' | 'dark'
+  as?: 'p' | 'span'
+}
+
+export type ChipProps = {
+  tone?: 'neutral' | 'brand' | 'success' | 'warning'
+  size?: 'sm' | 'md'
+  /** Forma de píldora (rounded-full). */
+  pill?: boolean
+  /** Mayúsculas con tracking (etiquetas de tipo). */
+  uppercase?: boolean
+}
+
+export type CardProps = {
+  tone?: 'light' | 'soft' | 'dark'
+  as?: string
+  /** Sombra de marca (shadow-card). */
+  elevated?: boolean
+}
+
+export type HexMarkerProps = {
+  label: string
+  active?: boolean
+  compact?: boolean
+  /** Texto accesible; si se omite el marcador es decorativo. */
+  ariaLabel?: string
 }

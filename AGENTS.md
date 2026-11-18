@@ -34,9 +34,9 @@ npm test           # node --test (tests/*.mjs)
 pages/            index (landing), how-we-work (/como-trabajo), privacy (/privacidad), login, portfolio/{index,[slug]} (/portafolio), admin/* (panel privado)
 layouts/          default, admin (panel), auth (login); el error global está en error.vue (raíz)
 components/
-  atoms/          Button, Input, Select, Title
-  molecules/      Header, SocialMedia
-  organisms/      Section
+  atoms/          Button (tema primary/secondary/whatsapp, onDark, to), Input, Select, Checkbox, Title, Eyebrow, Chip, Card, HexMarker
+  molecules/      Header, SocialMedia, SectionHeader (eyebrow + título + texto), CheckList, BackLink, FilterPills
+  organisms/      Section, ProjectCard, ServiceCard
   templates/      Main, Services, ProcessSection, Portfolio*, About, Contact, HowWork*
   Form/
 composables/      useEmail, useSectionReveal, useSiteSeo, useSocialMedia
@@ -48,7 +48,7 @@ docs/             brand-system.md (tipografía/paleta), openapi.yaml (contrato d
 tests/            filtros del portafolio, mocks fuera del build, secretos fuera del build y contrato OpenAPI
 ```
 
-Atomic design: atoms → molecules → organisms → templates → pages. Cada carpeta tiene `index.ts` y `.d.ts` de tipos.
+Atomic design: atoms → molecules → organisms → templates → pages. Cada carpeta tiene `index.ts` y `.d.ts` de tipos (`atom.d.ts`, `molecule.d.ts`, `organism.d.ts`, `template.d.ts`); los tipos de portafolio viven en `types/portfolio.ts`. Sombras de marca como tokens (`shadow-card`, `shadow-card-lg`, `shadow-dialog`, `shadow-header`) en `assets/css/main.css`; ritmo vertical de bandas `py-12 md:py-16`.
 
 ## Landing (orden de secciones en `pages/index.vue`)
 
@@ -179,6 +179,8 @@ Módulos previstos en `/admin` (privado, noindex, Supabase Auth, un solo admin):
 **Posicionamiento**: el sitio público proyecta a un profesional que presta servicios, no a alguien que busca empleo. No exponer CV ni experiencia laboral públicamente.
 
 ## Deuda técnica conocida (a priorizar en el plan)
+
+- **Nombres en español pendientes de renombrar** (sin cambiar el copy visible): claves de `data/services.ts` (`situacion`, `titulo`, `paraQuien`, `comoAyudo`, `queRecibes`, `etiquetas`, `fases`) y de `data/work.ts` (`titulo`, `texto`, `nota`, `pregunta`, `respuesta`); los literales `'cliente'`/`'propio'` y las etiquetas de `PortfolioFilter` en `types/portfolio.ts` y `utils/portfolioFilters.ts` (separar el id de la etiqueta visible).
 
 - **Auth del panel:** la resuelve la API (`../migueljalvarez-api`): contraseña (argon2id) + TOTP, sesión `admin_session` HttpOnly. El sitio ya **no guarda credenciales de administrador** (se retiraron `ADMIN_EMAIL/PASSWORD/SESSION_SECRET` y la sesión provisional). Todo `/api/admin/**` pasa por el proxy `server/api/admin/[...path].ts` (`server/utils/adminProxy.ts`): reenvía solo la cookie `admin_session` y la IP real, valida segmentos de ruta y `Origin`, no sigue redirecciones. Sin `NUXT_API_BASE_URL` o con la API caída responde 503 y el panel lo explica. El usuario se crea en el repo de la API con `npm run admin:create`.
 - `server/api/(contact)/contact.ts` ya está endurecido (escape de HTML, límites, honeypot, 5 intentos/10 min por IP en memoria, `runtimeConfig`). Pendiente: rate limit del proveedor y prueba de envío real en preview.

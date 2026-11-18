@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import type { PortfolioCardProject } from '../../components/templates/Portfolio/portfolio.types'
+import type { PortfolioCardProject } from '../../types/portfolio'
 import { mapApiPortfolioEntry, toPortfolioCardProject } from '../publicContent.ts'
 import { moveItem } from './siteContent.ts'
 

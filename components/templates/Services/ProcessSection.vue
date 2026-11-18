@@ -1,8 +1,9 @@
 <script lang="ts" setup>
+  import { Card, HexMarker } from '~/components/atoms'
+  import { SectionHeader } from '~/components/molecules'
   import { Section } from '~/components/organisms'
   import { DEVELOPMENT_PHASES, HOME_COPY } from '~/constants/common'
   import HowWorkTeaser from '~/components/templates/HowWork/HowWorkTeaser.vue'
-  import PhaseMarker from './PhaseMarker.vue'
 
   const backgroundRef = ref<HTMLElement | null>(null)
   let sectionElement: HTMLElement | null = null
@@ -47,46 +48,38 @@
   <Section
     id="proceso"
     aria-labelledby="process-heading"
-    class="process-section relative isolate gap-8 overflow-hidden px-4 py-8 md:gap-10 md:py-12"
+    class="process-section relative isolate gap-8 overflow-hidden px-4 py-12 md:gap-10 md:py-16"
   >
     <div
       ref="backgroundRef"
       class="process-background pointer-events-none absolute inset-x-0 top-[-10%] bottom-[-10%] z-0"
       aria-hidden="true"
     />
-    <div class="relative z-10 mx-auto w-full max-w-7xl">
-      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-brand-text-soft">
-        {{ HOME_COPY.process.eyebrow }}
-      </p>
-      <div class="flex flex-col gap-4">
-        <h2
-          id="process-heading"
-          class="max-w-5xl text-2xl font-semibold leading-tight text-brand-text-strong md:text-3xl"
-        >
-          {{ HOME_COPY.process.heading }}
-        </h2>
-        <div class="max-w-6xl">
-          <p class="text-sm leading-6 text-brand-text-strong">
-            {{ HOME_COPY.process.description }}
-          </p>
-        </div>
-      </div>
-    </div>
+    <SectionHeader
+      :eyebrow="HOME_COPY.process.eyebrow"
+      :heading="HOME_COPY.process.heading"
+      :description="HOME_COPY.process.description"
+      heading-id="process-heading"
+      tone="dark"
+      class="relative z-10 mx-auto w-full max-w-7xl"
+    />
 
     <ol
       class="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5"
     >
       <li v-for="(phase, index) in DEVELOPMENT_PHASES" :key="phase.title" class="min-w-0">
-        <article
-          class="h-full rounded-2xl border border-brand-border-strong/70 bg-brand-surface-panel/95 p-5 text-brand-text-strong backdrop-blur-sm transition duration-200 hover:border-brand-blue/70 hover:bg-brand-surface-panel-strong focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-blue motion-reduce:transition-none md:p-6"
+        <Card
+          tone="dark"
+          as="article"
+          class="h-full bg-brand-surface-panel/95 p-5 backdrop-blur-sm transition duration-200 hover:border-brand-blue/70 hover:bg-brand-surface-panel-strong motion-reduce:transition-none md:p-6"
         >
           <div class="mb-4 flex items-center gap-3">
-            <PhaseMarker :phase="index + 1" />
+            <HexMarker :label="String(index + 1).padStart(2, '0')" />
             <h3 class="text-base font-semibold text-brand-text-strong">{{ phase.title }}</h3>
           </div>
 
           <p class="text-sm leading-6 text-brand-text-subtle">{{ phase.description }}</p>
-        </article>
+        </Card>
       </li>
     </ol>
 

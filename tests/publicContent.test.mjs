@@ -107,7 +107,7 @@ test('las tarjetas de ejemplo conservan su marca', () => {
 test('convierte las redes sociales de la API', () => {
   assert.deepEqual(
     mapApiSocialLink({ name: 'GitHub', url: 'https://github.com/x', icon: 'simple-icons:github' }),
-    { name: 'GitHub', link: 'https://github.com/x', icon: 'simple-icons:github', isHovered: false }
+    { name: 'GitHub', link: 'https://github.com/x', icon: 'simple-icons:github' }
   )
 })
 

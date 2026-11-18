@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { BackLink } from '~/components/molecules'
   import PortfolioSection from '~/components/templates/Portfolio/PortfolioSection.vue'
 
   const { allCards } = await usePortfolio()
@@ -18,15 +19,9 @@
 </script>
 
 <template>
-  <div class="min-h-screen bg-brand-surface px-4 py-8 md:py-12">
+  <div class="bg-brand-surface px-4 py-8 md:py-12">
     <div class="mx-auto w-full max-w-7xl">
-      <NuxtLink
-        to="/"
-        class="mb-8 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-brand-muted transition-colors hover:text-brand-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
-      >
-        <Icon name="mdi:arrow-left" size="18" aria-hidden="true" />
-        Volver al inicio
-      </NuxtLink>
+      <BackLink to="/" class="mb-8">Volver al inicio</BackLink>
 
       <PortfolioSection
         title="Portafolio"
