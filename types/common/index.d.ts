@@ -52,4 +52,9 @@ export type PortafolioType = {
   gallery?: ProjectImage[]
   /** Enlace público del proyecto, si existe. */
   url?: string
+  /** Etiquetas de la tarjeta (máx. 4) y a quién va dirigido el proyecto. */
+  tags?: string[]
+  audience?: string
+  /** Dato de ejemplo (solo desarrollo): la interfaz lo marca como tal. */
+  sample?: boolean
 }

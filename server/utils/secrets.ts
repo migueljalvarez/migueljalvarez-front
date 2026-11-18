@@ -4,7 +4,15 @@ import type { H3Event } from 'h3'
 // build (.output). Aquí se leen en ejecución: primero la variable estándar de Nuxt (NUXT_<CLAVE>, que
 // sobrescribe runtimeConfig) y, como respaldo, el nombre clásico (p. ej. RESEND_API_KEY del .env).
 export type ServerSecretKey =
-  'resendApiKey' | 'mailFrom' | 'mailTo' | 'adminEmail' | 'adminPassword' | 'adminSessionSecret'
+  | 'resendApiKey'
+  | 'mailFrom'
+  | 'mailTo'
+  | 'adminEmail'
+  | 'adminPassword'
+  | 'adminSessionSecret'
+  | 'apiBaseUrl'
+  | 'apiAccessClientId'
+  | 'apiAccessClientSecret'
 
 const LEGACY_ENV: Record<ServerSecretKey, string> = {
   resendApiKey: 'RESEND_API_KEY',
@@ -12,7 +20,10 @@ const LEGACY_ENV: Record<ServerSecretKey, string> = {
   mailTo: 'MAIL_TO',
   adminEmail: 'ADMIN_EMAIL',
   adminPassword: 'ADMIN_PASSWORD',
-  adminSessionSecret: 'ADMIN_SESSION_SECRET'
+  adminSessionSecret: 'ADMIN_SESSION_SECRET',
+  apiBaseUrl: 'API_BASE_URL',
+  apiAccessClientId: 'API_ACCESS_CLIENT_ID',
+  apiAccessClientSecret: 'API_ACCESS_CLIENT_SECRET'
 }
 
 export const getServerSecret = (key: ServerSecretKey, event?: H3Event): string => {

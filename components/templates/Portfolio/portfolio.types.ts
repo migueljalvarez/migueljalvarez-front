@@ -10,6 +10,8 @@ export type PortfolioCardProject = {
   href: string
   primary?: boolean
   status?: 'published' | 'in-development'
+  /** Dato de ejemplo (solo desarrollo). */
+  sample?: boolean
 }
 
 export type PortfolioFilter = 'Todos' | 'Clientes' | 'Productos propios'

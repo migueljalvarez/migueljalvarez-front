@@ -57,13 +57,14 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 ## Fuentes de datos (importante)
 
 - **Copy y contenido de la landing**: mayormente estático en `constants/` y `data/`.
-- **Portafolio**: hoy vive en `constants/portfolio.ts` (solo Mi Comodoro y Mi Despensa) y se sirve por `/api/portafolio` (no desde Firestore). Campos clave: `slug`, `type` (`client` | `product` | `practice`), `status` (`published` | `in-development`; en desarrollo no tiene ficha de detalle), `description`, `role` / `year` / `duration`, `problem` / `decision` / `result`, `highlights`, `scope`, `gallery` (con `alt`) y `ogImage`; lo opcional solo se muestra si tiene contenido. Guía completa: `docs/portfolio-guide.md`. El detalle público es `pages/portafolio/[slug].vue` (la página legacy `[id].vue` se eliminó porque tapaba a `[slug]`).
-- **Redes sociales**: constantes (`MY_SOCIAL_MEDIA` en `constants/common`, vía `useSocialMedia()`); se renderizan en el servidor sin petición. Más adelante se gestionarán desde el panel. Los testimonios no tienen endpoint hasta que exista uno real aprobado.
+- **Contenido público gestionado desde el panel (portafolio, redes, políticas)**: la fuente principal es la API (`../migueljalvarez-api`), consumida **solo desde Nitro** con `server/utils/publicContent.ts` y `publicApiClient.ts` (variable `NUXT_API_BASE_URL`; sin ella no hay API). Si la API no está configurada, no responde (tiempo máximo 2 s) o no tiene nada publicado, el sitio usa el **contenido de respaldo del código** (`constants/portfolio.ts`, `MY_SOCIAL_MEDIA`, `data/work.ts`): el landing nunca cae ni queda vacío. Endpoints del sitio: `/api/portfolio`, `/api/portfolio/[slug]`, `/api/social-links`, `/api/policies` (caché corta con `swr` en producción; **sin caché en desarrollo**). La lógica de mapeo y tarjetas es pura y vive en `utils/publicContent.ts` (con pruebas). Las páginas cargan con `usePortfolio()` / `usePolicies()`; las redes, con el plugin `plugins/socialLinks.ts` (SSR, sin parpadeo).
+- **Portafolio (respaldo)**: vive en `constants/portfolio.ts` (solo Mi Comodoro y Mi Despensa) y se sirve por `/api/portfolio` cuando no hay API (no desde Firestore). Campos clave: `slug`, `type` (`client` | `product` | `practice`), `status` (`published` | `in-development`; en desarrollo no tiene ficha de detalle), `description`, `role` / `year` / `duration`, `problem` / `decision` / `result`, `highlights`, `scope`, `gallery` (con `alt`) y `ogImage`; lo opcional solo se muestra si tiene contenido. Guía completa: `docs/portfolio-guide.md`. El detalle público es `pages/portafolio/[slug].vue` (la página legacy `[id].vue` se eliminó porque tapaba a `[slug]`).
+- **Redes sociales**: salen de la API (`/api/social-links`, gestionadas desde el panel) con respaldo en `MY_SOCIAL_MEDIA` (`constants/common`), vía `useSocialMedia()`; se cargan durante el SSR. Los testimonios no tienen endpoint hasta que exista uno real aprobado.
 - **Contacto**: `POST /api/contact` → Resend (`RESEND_API_KEY`, `MAIL_FROM`, `MAIL_TO`).
 
 ## Convenciones
 
-- **Nombres en inglés, siempre.** Ningún archivo, carpeta, componente, composable, tipo, constante ni ruta de API se nombra en español. El español es solo para el copy visible y la documentación. Las URL públicas pueden seguir en español por SEO (`/portafolio`, `/como-trabajo`, `/privacidad`) definiéndolas con `definePageMeta({ path })` o `routeRules`, con el archivo en inglés. **Deuda existente a renombrar** (tarea en Notion): `pages/como-trabajo.vue`, `pages/privacidad.vue`, `pages/portafolio/`, `pages/admin/{equipo,experiencia,leads,proyectos,tarifas,testimonios}.vue`, `server/api/portafolio/`, y las claves/IDs en español de `constants/` y `data/` que se detecten al tocarlos.
+- **Nombres en inglés, siempre.** Ningún archivo, carpeta, componente, composable, tipo, constante ni ruta de API se nombra en español. El español es solo para el copy visible y la documentación. Las URL públicas pueden seguir en español por SEO (`/portafolio`, `/como-trabajo`, `/privacidad`) definiéndolas con `definePageMeta({ path })` o `routeRules`, con el archivo en inglés. **Deuda existente a renombrar** (tarea en Notion): `pages/como-trabajo.vue`, `pages/privacidad.vue`, `pages/portafolio/`, `pages/admin/{equipo,experiencia,leads,proyectos,tarifas,testimonios}.vue`, y las claves/IDs en español de `constants/` y `data/` que se detecten al tocarlos.
 - **Frontend: Atomic Design obligatorio y pixel perfect.** Todo UI nuevo se construye como átomos → moléculas → organismos → plantillas → páginas; si un fragmento se repite o tiene identidad propia, se **componentiza** (no se duplica marcado). Se implementa **fiel al diseño** (espaciados, tipografía, radios, sombras, colores y estados exactos de `docs/brand-system.md` y de la referencia visual), revisado en el navegador en móvil y escritorio antes de cerrar. Los componentes del panel (`components/admin/`) siguen la misma jerarquía.
 - Prettier + ESLint (config en repo); `<script>` indentado dentro de `.vue`. Respetar `.prettierrc`.
 - Clases Tailwind canónicas v4 y tokens `brand-*`; seguir `docs/brand-system.md` para jerarquía tipográfica y contraste.
@@ -143,13 +144,13 @@ El checklist completo vive en Notion (página "Checklist antes de reemplazar mai
 
 Subagentes con rol fijo (`.claude/agents/*.md`) y skills alineadas a cada uno (`.claude/skills/<name>/SKILL.md`). `.agents/` es una copia idéntica para otras herramientas: **al editar uno, copiar al otro** (`npm test` falla si difieren). Las skills de diseño y frontend viven solo aquí; la API (`../migueljalvarez-api`) tiene las suyas de backend.
 
-| Agente | Rol | Skills |
-|---|---|---|
-| `architect` | Valida Atomic Design, capas, público/privado y nombres; solo revisa | `atomic-design` |
-| `design` | Valida identidad visual, pixel perfect y accesibilidad; solo revisa | `brand-identity`, `nuxt-ui` |
-| `frontend-dev` | Implementa UI componentizada, pixel perfect | `atomic-design`, `brand-identity`, `nuxt-ui` |
-| `refactor` | Corrige violaciones y deuda de nombres de forma incremental | `atomic-design` |
-| `review` | Revisión final de calidad y reglas del proyecto | `atomic-design`, `brand-identity` |
+| Agente         | Rol                                                                 | Skills                                       |
+| -------------- | ------------------------------------------------------------------- | -------------------------------------------- |
+| `architect`    | Valida Atomic Design, capas, público/privado y nombres; solo revisa | `atomic-design`                              |
+| `design`       | Valida identidad visual, pixel perfect y accesibilidad; solo revisa | `brand-identity`, `nuxt-ui`                  |
+| `frontend-dev` | Implementa UI componentizada, pixel perfect                         | `atomic-design`, `brand-identity`, `nuxt-ui` |
+| `refactor`     | Corrige violaciones y deuda de nombres de forma incremental         | `atomic-design`                              |
+| `review`       | Revisión final de calidad y reglas del proyecto                     | `atomic-design`, `brand-identity`            |
 
 `nuxt-ui` es la skill oficial de Nuxt UI v4 (copiada de `finhub-dashboard`); si choca con la identidad, mandan los tokens `brand-*` de `brand-identity`. Flujo: `frontend-dev` → `architect` + `design` → `review`.
 

@@ -3,7 +3,9 @@ info:
   title: API de migueljalvarez.com
   version: 0.1.0
   description: |
-    Contrato actual de los endpoints `/api/*` implementados en Nitro (Nuxt). Es la referencia que
+    Contrato actual de los endpoints `/api/*` implementados en Nitro (Nuxt). El contenido público (portafolio, redes,
+    políticas) lo sirve la API propia (`../migueljalvarez-api`) con respaldo en el código; los endpoints del panel
+    viven en el repositorio de la API. Es la referencia que
     debe cumplir el futuro backend Nest + Postgres: mientras el contrato no cambie, el frontend solo
     necesita cambiar la URL base.
 
@@ -29,33 +31,36 @@ tags:
     description: Sesión provisional del panel (se reemplazará por Supabase Auth y luego por auth propia en Nest)
   - name: SEO
 paths:
-  /api/portafolio:
+  /api/portfolio:
     get:
       tags: [Público]
       summary: Lista los proyectos del portafolio
       description: |
-        Devuelve los proyectos reales (productos propios y trabajos de clientes) con Mi Comodoro primero.
-        En desarrollo también incluye proyectos de ejemplo (mocks); nunca en producción.
+        Fuente principal: la API de contenido (migueljalvarez-api, `GET /api/portfolio`), gestionada desde
+        el panel. Si la API no está configurada (`NUXT_API_BASE_URL`), no responde o no tiene nada
+        publicado, se usa el contenido de respaldo del código (productos propios y trabajos reales).
+        En desarrollo el respaldo incluye proyectos de ejemplo (marcados con `sample`); nunca en producción.
+        Caché corta (60 s, stale-while-revalidate).
       operationId: listPortfolio
       responses:
         '200':
-          description: Lista de proyectos
+          description: Lista de proyectos (destacados primero)
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/PortfolioProject'
-  /api/portafolio/{id}:
+  /api/portfolio/{slug}:
     get:
       tags: [Público]
-      summary: Detalle de un proyecto por id o slug
+      summary: Detalle de un proyecto por slug
       operationId: getPortfolioProject
       parameters:
-        - name: id
+        - name: slug
           in: path
           required: true
-          description: Id o slug del proyecto
+          description: Slug del proyecto
           schema:
             type: string
       responses:
@@ -71,6 +76,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /api/social-links:
+    get:
+      tags: [Público]
+      summary: Redes sociales del sitio
+      description: |
+        API de contenido (`GET /api/social-links`, solo las visibles) con respaldo en `MY_SOCIAL_MEDIA`.
+        Caché corta (60 s, stale-while-revalidate).
+      operationId: listSocialLinks
+      responses:
+        '200':
+          description: Redes ordenadas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SocialLink'
+  /api/policies:
+    get:
+      tags: [Público]
+      summary: Acuerdos de trabajo (/como-trabajo)
+      description: |
+        API de contenido (`GET /api/policies`, solo las públicas) con respaldo en `data/work.ts`.
+        Caché corta (60 s, stale-while-revalidate).
+      operationId: listPolicies
+      responses:
+        '200':
+          description: Políticas ordenadas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PolicyBlock'
   /api/contact:
     post:
       tags: [Contacto]
@@ -281,6 +320,32 @@ components:
           type: string
         label:
           type: string
+    SocialLink:
+      type: object
+      required: [name, link, icon]
+      properties:
+        name:
+          type: string
+        link:
+          type: string
+          description: 'https:// o mailto:'
+        icon:
+          type: string
+          description: 'Icono prefijo:nombre (p. ej. mdi:github)'
+        isHovered:
+          type: boolean
+          description: Estado local de la interfaz (siempre false al llegar)
+    PolicyBlock:
+      type: object
+      required: [id, title, body]
+      properties:
+        id:
+          type: string
+          description: Identificador estable para la clave de lista (no es un id de base de datos)
+        title:
+          type: string
+        body:
+          type: string
     PortfolioProject:
       type: object
       description: Guia de contenido e imagenes en docs/portfolio-guide.md
@@ -342,6 +407,18 @@ components:
         url:
           type: string
           description: Enlace publico del proyecto, si existe
+        tags:
+          type: array
+          maxItems: 4
+          items:
+            type: string
+          description: Etiquetas de la tarjeta
+        audience:
+          type: string
+          description: A quién va dirigido (texto de la tarjeta)
+        sample:
+          type: boolean
+          description: Dato de ejemplo (solo desarrollo, nunca en producción)
     ContactRequest:
       type: object
       required: [name, email, subject, message]

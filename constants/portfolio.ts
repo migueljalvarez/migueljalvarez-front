@@ -1,5 +1,4 @@
 import type { PortafolioType } from '~/types/common'
-import type { PortfolioCardProject } from '~/components/templates/Portfolio/portfolio.types'
 import { MOCK_PORTFOLIO_CONTEXT, MOCK_PORTFOLIO_PROJECTS } from './portfolio.mock'
 
 /**
@@ -42,58 +41,42 @@ const REAL_PORTFOLIO_PROJECTS: PortafolioType[] = [
   }
 ]
 
-export const PORTFOLIO_PROJECTS: PortafolioType[] = USE_PORTFOLIO_MOCKS
-  ? [...REAL_PORTFOLIO_PROJECTS, ...MOCK_PORTFOLIO_PROJECTS]
-  : REAL_PORTFOLIO_PROJECTS
-
-const PORTFOLIO_PROJECT_CONTEXT: Record<
-  string,
-  Pick<PortfolioCardProject, 'audience'> & { projectKind: string; sector: string }
-> = {
+/**
+ * Datos de presentación de la tarjeta (etiquetas y público objetivo) del contenido de respaldo.
+ * Cuando el contenido viene de la API, estos datos se guardan en la propia ficha (`tags`, `audience`).
+ */
+const FALLBACK_CARD_CONTEXT: Record<string, { tags: string[]; audience: string }> = {
   'mi-comodoro': {
-    projectKind: 'Aplicación financiera',
-    sector: 'Finanzas personales',
+    tags: ['Aplicación financiera', 'Finanzas personales'],
     audience: 'personas que organizan sus finanzas'
   },
   'mi-despensa': {
-    projectKind: 'Aplicación móvil',
-    sector: 'En desarrollo',
+    tags: ['Aplicación móvil', 'En desarrollo'],
     audience: 'personas que gestionan su despensa con un presupuesto'
   },
-  ...(USE_PORTFOLIO_MOCKS ? MOCK_PORTFOLIO_CONTEXT : {})
+  ...(USE_PORTFOLIO_MOCKS
+    ? Object.fromEntries(
+        Object.entries(MOCK_PORTFOLIO_CONTEXT).map(([id, context]) => [
+          id,
+          { tags: [context.projectKind, context.sector], audience: context.audience }
+        ])
+      )
+    : {})
 }
 
-const toPortfolioCardProject = (
-  projectId: string,
-  options: { primary?: boolean } = {}
-): PortfolioCardProject => {
-  const project = PORTFOLIO_PROJECTS.find(item => item.id === projectId)
-  const context = PORTFOLIO_PROJECT_CONTEXT[projectId]
+const withCardContext = (projects: PortafolioType[], sample = false): PortafolioType[] =>
+  projects.map(project => ({
+    ...project,
+    ...FALLBACK_CARD_CONTEXT[project.id],
+    ...(sample ? { sample: true } : {})
+  }))
 
-  if (!project || !context) {
-    throw new Error(`Portfolio project not found: ${projectId}`)
-  }
-
-  return {
-    id: project.id,
-    slug: project.slug || project.id,
-    title: project.title,
-    description: project.description,
-    type: project.type === 'client' ? 'cliente' : 'propio',
-    tags: [context.projectKind, context.sector],
-    audience: context.audience,
-    image: project.urlImage,
-    // Sin ficha de detalle mientras el producto está en desarrollo (no hay contenido real que mostrar).
-    href: project.status === 'in-development' ? '' : `/portafolio/${project.slug || project.id}`,
-    primary: options.primary,
-    status: project.status
-  }
-}
-
-export const HOME_PORTFOLIO_PROJECTS: PortfolioCardProject[] = PORTFOLIO_PROJECTS.slice(0, 5).map(
-  (project, index) => toPortfolioCardProject(project.id, { primary: index === 0 })
-)
-
-export const ALL_PORTFOLIO_CARD_PROJECTS: PortfolioCardProject[] = PORTFOLIO_PROJECTS.map(project =>
-  toPortfolioCardProject(project.id)
-)
+/**
+ * CONTENIDO DE RESPALDO. La fuente principal es la API (se gestiona desde el panel); estos proyectos
+ * solo se usan cuando la API no está configurada, no responde o aún no tiene nada publicado, para que
+ * el sitio nunca quede sin portafolio. Los de ejemplo solo existen en desarrollo y van marcados.
+ */
+export const PORTFOLIO_PROJECTS: PortafolioType[] = [
+  ...withCardContext(REAL_PORTFOLIO_PROJECTS),
+  ...(USE_PORTFOLIO_MOCKS ? withCardContext(MOCK_PORTFOLIO_PROJECTS, true) : [])
+]
