@@ -34,9 +34,9 @@ npm test           # node --test (tests/*.mjs)
 pages/            index (landing), how-we-work (/como-trabajo), privacy (/privacidad), login, portfolio/{index,[slug]} (/portafolio), admin/* (panel privado)
 layouts/          default, admin (panel), auth (login); el error global está en error.vue (raíz)
 components/
-  atoms/          Button, Input, Select, Title
-  molecules/      Header, SocialMedia
-  organisms/      Section
+  atoms/          Button (tema primary/secondary/whatsapp, onDark, to), Input, Select, Checkbox, Title, Eyebrow, Chip, Card, HexMarker
+  molecules/      Header, SocialMedia, SectionHeader (eyebrow + título + texto), CheckList, BackLink, FilterPills
+  organisms/      Section, ProjectCard, ServiceCard
   templates/      Main, Services, ProcessSection, Portfolio*, About, Contact, HowWork*
   Form/
 composables/      useEmail, useSectionReveal, useSiteSeo, useSocialMedia
@@ -48,7 +48,7 @@ docs/             brand-system.md (tipografía/paleta), openapi.yaml (contrato d
 tests/            filtros del portafolio, mocks fuera del build, secretos fuera del build y contrato OpenAPI
 ```
 
-Atomic design: atoms → molecules → organisms → templates → pages. Cada carpeta tiene `index.ts` y `.d.ts` de tipos.
+Atomic design: atoms → molecules → organisms → templates → pages. Cada carpeta tiene `index.ts` y `.d.ts` de tipos (`atom.d.ts`, `molecule.d.ts`, `organism.d.ts`, `template.d.ts`); los tipos de portafolio viven en `types/portfolio.ts`. Sombras de marca como tokens (`shadow-card`, `shadow-card-lg`, `shadow-dialog`, `shadow-header`) en `assets/css/main.css`; ritmo vertical de bandas `py-12 md:py-16`.
 
 ## Landing (orden de secciones en `pages/index.vue`)
 
