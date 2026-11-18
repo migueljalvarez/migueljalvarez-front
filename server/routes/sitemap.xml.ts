@@ -16,6 +16,7 @@ export default defineEventHandler(async event => {
     '/como-trabajo',
     '/portafolio',
     '/privacidad',
+    '/terminos-y-condiciones',
     ...projects
       .filter(project => project.status !== 'in-development')
       .map(project => `/portafolio/${project.slug || project.id}`)

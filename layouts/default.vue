@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { Header } from '~/components/molecules'
+  import { Footer } from '~/components/organisms'
 </script>
 <template>
   <div class="layout">
@@ -7,5 +8,6 @@
     <main class="overflow-hidden pt-20">
       <slot />
     </main>
+    <Footer />
   </div>
 </template>

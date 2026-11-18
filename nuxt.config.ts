@@ -39,7 +39,16 @@ export default defineNuxtConfig({
     // Clave compartida con la API para guardar los leads del formulario de contacto (INTAKE_API_KEY de la API).
     intakeApiKey: '',
     public: {
-      baseUrl: process.env.NUXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+      baseUrl: process.env.NUXT_PUBLIC_BASE_URL || 'http://localhost:3000',
+      // Titular del sitio (Términos, Privacidad y pie). Vacío a propósito: nunca van datos personales en el
+      // código. Se llenan en ejecución con NUXT_PUBLIC_LEGAL_NAME, _ID_TYPE (CC | NIT), _ID_NUMBER, _EMAIL y _CITY.
+      legal: {
+        name: '',
+        idType: '',
+        idNumber: '',
+        email: '',
+        city: ''
+      }
     }
   },
   compatibilityDate: '2024-11-01',
