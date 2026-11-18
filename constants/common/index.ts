@@ -91,14 +91,12 @@ export const MY_SOCIAL_MEDIA: SocialMediaType[] = [
   {
     name: 'LinkedIn',
     link: 'https://www.linkedin.com/in/ingmiguelalvarez/',
-    icon: 'mdi:linkedin',
-    isHovered: false
+    icon: 'mdi:linkedin'
   },
   {
     name: 'GitHub',
     link: 'https://github.com/migueljalvarez',
-    icon: 'mdi:github',
-    isHovered: false
+    icon: 'mdi:github'
   }
 ]
 

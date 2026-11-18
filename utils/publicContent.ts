@@ -71,8 +71,7 @@ export const mapApiPortfolioEntry = (entry: ApiPortfolioEntry): PortfolioType =>
 export const mapApiSocialLink = (link: ApiSocialLink): SocialMediaType => ({
   name: link.name,
   link: link.url,
-  icon: link.icon,
-  isHovered: false
+  icon: link.icon
 })
 
 /** Identificador estable para la clave de lista: título normalizado (la API no expone ids de política). */
