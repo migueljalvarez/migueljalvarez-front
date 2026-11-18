@@ -28,7 +28,7 @@ tags:
     description: Lectura de contenido del sitio
   - name: Contacto
   - name: Admin
-    description: Sesión provisional del panel (se reemplazará por Supabase Auth y luego por auth propia en Nest)
+    description: Panel privado /admin (proxy hacia la API propia con contraseña + TOTP)
   - name: SEO
 paths:
   /api/portfolio:
@@ -162,105 +162,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /api/admin/login:
-    post:
+  /api/admin/{...path}:
+    x-proxy: true
+    get:
       tags: [Admin]
-      summary: Inicia sesión del panel (provisional)
+      summary: Proxy del panel hacia la API (cualquier método permitido)
       description: |
-        Compara con `ADMIN_EMAIL` / `ADMIN_PASSWORD`. Crea la cookie `admin_session` (HttpOnly,
-        SameSite=Lax, Secure en producción, 8 h, firmada con HMAC). 5 fallos por IP cada 15 minutos
-        bloquean con 429. Sin variables de entorno responde 503.
-      operationId: adminLogin
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [email, password]
-              properties:
-                email:
-                  type: string
-                  format: email
-                password:
-                  type: string
-                  format: password
+        El panel nunca llama a la API desde el navegador: todo `/api/admin/**` del sitio se reenvía a
+        `/api/admin/**` de la API (migueljalvarez-api), que resuelve la autenticación y los módulos
+        (contrato en `docs/openapi-panel.yaml` del repositorio de la API). Métodos: GET, POST, PATCH,
+        PUT y DELETE.
+
+        - La sesión es la cookie `admin_session` (HttpOnly) que emite la API tras contraseña + TOTP;
+          el proxy solo reenvía esa cookie, la IP real (`x-client-ip`) y, si hace falta, las credenciales
+          de servicio de Cloudflare Access (nunca salen del servidor).
+        - Solo se aceptan segmentos de ruta `[A-Za-z0-9._~-]`: no puede salirse de `/api/admin/`.
+        - Las operaciones que modifican datos exigen que `Origin` (si viene) sea el del propio sitio.
+        - Cuerpo máximo 1 MB; no sigue redirecciones; respuestas `Cache-Control: no-store`.
+        - Sin API configurada (`NUXT_API_BASE_URL`) o caída: 503 con `{ statusCode, statusMessage, message }`.
+      operationId: adminProxy
+      parameters:
+        - name: path
+          in: path
+          required: true
+          description: Ruta bajo /api/admin de la API (p. ej. `leads/{id}`, `login/totp`, `session`)
+          schema:
+            type: string
       responses:
         '200':
-          description: Sesión creada (cookie `admin_session`)
-          headers:
-            Set-Cookie:
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  ok:
-                    type: boolean
-        '400':
-          description: Faltan credenciales
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          description: Respuesta de la API tal cual
+        '204':
+          description: Sin contenido (login/totp, logout, eliminaciones)
         '401':
-          description: Credenciales inválidas
+          description: Sin sesión válida
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-        '429':
-          description: Demasiados intentos
+        '403':
+          description: Origen no permitido
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '503':
-          description: Acceso no disponible por falta de configuración
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /api/admin/logout:
-    post:
-      tags: [Admin]
-      summary: Cierra la sesión (borra la cookie)
-      operationId: adminLogout
-      responses:
-        '200':
-          description: Sesión cerrada
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  ok:
-                    type: boolean
-  /api/admin/session:
-    get:
-      tags: [Admin]
-      summary: Estado de la sesión
-      operationId: adminSession
-      security:
-        - adminCookie: []
-      responses:
-        '200':
-          description: Sesión válida
-          content:
-            application/json:
-              schema:
-                type: object
-                required: [authenticated, email]
-                properties:
-                  authenticated:
-                    type: boolean
-                    const: true
-                  email:
-                    type: string
-        '401':
-          description: Sin sesión o cookie inválida o vencida
+          description: El panel no está conectado a la API o la API no responde
           content:
             application/json:
               schema:
@@ -297,7 +243,7 @@ components:
       type: apiKey
       in: cookie
       name: admin_session
-      description: Cookie firmada HttpOnly emitida por `/api/admin/login`.
+      description: Cookie HttpOnly emitida por la API tras contraseña + TOTP (`/api/admin/login` y `/api/admin/login/totp`).
   schemas:
     Error:
       type: object

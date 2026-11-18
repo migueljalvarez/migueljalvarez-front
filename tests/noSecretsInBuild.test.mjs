@@ -9,8 +9,8 @@ const envFile = join(root, '.env')
 
 // Variables privadas que nunca deben quedar escritas dentro del build.
 const SECRET_KEYS = [
-  'ADMIN_PASSWORD',
-  'ADMIN_SESSION_SECRET',
+  'INTAKE_API_KEY',
+  'API_ACCESS_CLIENT_SECRET',
   'RESEND_API_KEY',
   'FIREBASE_PRIVATE_KEY',
   'FIREBASE_CLIENT_EMAIL'

@@ -4,8 +4,8 @@
   useSeoMeta({ title: 'Panel', robots: 'noindex, nofollow' })
 
   const route = useRoute()
-  const { data: sessionData } = await useFetch<{ email: string }>('/api/admin/session')
-  const email = computed(() => sessionData.value?.email ?? 'Admin')
+  const { session, logout } = useAdminSession()
+  const email = computed(() => session.value?.email ?? 'Admin')
 
   const menuOpen = ref(false)
   watch(
@@ -18,15 +18,6 @@
   const isActive = (to: string) =>
     to === '/admin' ? route.path === '/admin' : route.path.startsWith(to)
   const current = computed(() => ADMIN_NAV.find(item => isActive(item.to)))
-
-  const logout = async () => {
-    try {
-      await $fetch('/api/admin/logout', { method: 'POST' })
-      await navigateTo('/login')
-    } catch (error) {
-      console.error('Error al cerrar sesión:', error)
-    }
-  }
 </script>
 
 <template>

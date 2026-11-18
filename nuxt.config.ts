@@ -30,9 +30,6 @@ export default defineNuxtConfig({
     resendApiKey: '',
     mailFrom: '',
     mailTo: '',
-    adminEmail: '',
-    adminPassword: '',
-    adminSessionSecret: '',
     // API de contenido (migueljalvarez-api). Vacío = sin API: el sitio usa su contenido de respaldo.
     // Se provee en ejecución con NUXT_API_BASE_URL (o API_BASE_URL). Las credenciales de servicio de
     // Cloudflare Access (NUXT_API_ACCESS_CLIENT_ID/SECRET) solo se necesitan si la API está detrás de Access.

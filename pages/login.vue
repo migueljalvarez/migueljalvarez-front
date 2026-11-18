@@ -1,41 +1,51 @@
 <script setup lang="ts">
   import Button from '~/components/atoms/Button/Button.vue'
+  import { toAdminApiError } from '~/utils/adminApiError'
 
   definePageMeta({ layout: 'auth' })
   useSeoMeta({ title: 'Acceso', robots: 'noindex, nofollow' })
 
+  const { login, verifySecondFactor } = useAdminSession()
+
+  type Step = 'password' | 'code'
+  const step = ref<Step>('password')
   const email = ref('')
   const password = ref('')
+  const code = ref('')
   const errorMessage = ref('')
   const isSubmitting = ref(false)
 
-  const login = async () => {
-    if (!email.value || !password.value) {
-      errorMessage.value = 'Ingresa email y contraseña.'
-      return
-    }
-
+  const submit = async () => {
+    errorMessage.value = ''
+    isSubmitting.value = true
     try {
-      isSubmitting.value = true
-      errorMessage.value = ''
-
-      await $fetch('/api/admin/login', {
-        method: 'POST',
-        body: {
-          email: email.value.trim(),
-          password: password.value
+      if (step.value === 'password') {
+        if (!email.value || !password.value) {
+          errorMessage.value = 'Ingresa tu correo y tu contraseña.'
+          return
         }
-      })
-
+        const needsCode = await login(email.value, password.value)
+        password.value = ''
+        if (needsCode) {
+          step.value = 'code'
+          return
+        }
+      } else {
+        if (!code.value.trim()) {
+          errorMessage.value = 'Ingresa el código de tu aplicación autenticadora.'
+          return
+        }
+        await verifySecondFactor(code.value)
+      }
       await navigateTo('/admin')
     } catch (error) {
-      const status = (error as { statusCode?: number }).statusCode
+      const apiError = toAdminApiError(error)
       errorMessage.value =
-        status === 429
-          ? 'Demasiados intentos. Inténtalo más tarde.'
-          : status === 503
-            ? 'Acceso no disponible por configuración.'
-            : 'Credenciales inválidas.'
+        apiError.status === 401 && step.value === 'password'
+          ? 'Credenciales inválidas.'
+          : apiError.status === 401
+            ? 'Código inválido o vencido. Si pasaron 5 minutos, vuelve a iniciar sesión.'
+            : apiError.message
     } finally {
       isSubmitting.value = false
     }
@@ -54,37 +64,53 @@
         <h1 class="mt-2 text-3xl font-semibold text-brand-ink">Iniciar sesión</h1>
       </div>
 
-      <form class="space-y-4" @submit.prevent="login">
-        <div>
-          <label class="mb-1 block text-sm font-medium text-brand-ink" for="email">Email</label>
-          <input
-            id="email"
-            v-model="email"
-            type="email"
-            autocomplete="email"
-            class="w-full rounded-xl border border-brand-border bg-brand-surface px-3 py-2.5 text-brand-ink outline-none transition focus:border-brand-accent"
-            placeholder="admin@ejemplo.com"
-          />
-        </div>
+      <form class="space-y-4" @submit.prevent="submit">
+        <template v-if="step === 'password'">
+          <div>
+            <label class="mb-1 block text-sm font-medium text-brand-ink" for="email">Email</label>
+            <input
+              id="email"
+              v-model="email"
+              type="email"
+              autocomplete="email"
+              class="w-full rounded-xl border border-brand-border bg-brand-surface px-3 py-2.5 text-brand-ink outline-none transition focus:border-brand-accent"
+            />
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium text-brand-ink" for="password">
+              Contraseña
+            </label>
+            <input
+              id="password"
+              v-model="password"
+              type="password"
+              autocomplete="current-password"
+              class="w-full rounded-xl border border-brand-border bg-brand-surface px-3 py-2.5 text-brand-ink outline-none transition focus:border-brand-accent"
+            />
+          </div>
+        </template>
 
-        <div>
-          <label class="mb-1 block text-sm font-medium text-brand-ink" for="password">
-            Contraseña
+        <div v-else>
+          <label class="mb-1 block text-sm font-medium text-brand-ink" for="code">
+            Código de verificación
           </label>
           <input
-            id="password"
-            v-model="password"
-            type="password"
-            autocomplete="current-password"
+            id="code"
+            v-model="code"
+            type="text"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            maxlength="11"
             class="w-full rounded-xl border border-brand-border bg-brand-surface px-3 py-2.5 text-brand-ink outline-none transition focus:border-brand-accent"
-            placeholder="••••••••"
           />
         </div>
 
-        <p v-if="errorMessage" class="text-sm text-brand-error-text">{{ errorMessage }}</p>
+        <p v-if="errorMessage" class="text-sm text-brand-error-text" role="alert">
+          {{ errorMessage }}
+        </p>
 
         <Button type="submit" size="md" :disabled="isSubmitting" class="w-full">
-          {{ isSubmitting ? 'Ingresando...' : 'Entrar' }}
+          {{ isSubmitting ? 'Verificando...' : step === 'password' ? 'Continuar' : 'Entrar' }}
         </Button>
       </form>
     </div>
