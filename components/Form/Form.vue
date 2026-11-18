@@ -22,7 +22,11 @@
         :role="successful ? 'status' : 'alert'"
         class="items-center justify-center gap-2 p-4 mb-4 rounded-lg"
       >
-        <Icon :name="successful ? 'mdi:check-circle' : 'mdi:close-circle'" size="20" aria-hidden="true" />
+        <Icon
+          :name="successful ? 'mdi:check-circle' : 'mdi:close-circle'"
+          size="20"
+          aria-hidden="true"
+        />
         <p>{{ validationMessage }}</p>
       </div>
       <div class="flex flex-col h-auto gap-4 py-4">

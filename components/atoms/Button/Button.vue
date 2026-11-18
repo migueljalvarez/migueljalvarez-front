@@ -37,10 +37,13 @@
 
   const isInternalLink = computed(() => !!props.to)
   const isLink = computed(() => isInternalLink.value || props.as === 'a' || !!props.href)
-  const tag = computed(() => (isInternalLink.value ? resolveComponent('NuxtLink') : isLink.value ? 'a' : 'button'))
+  const tag = computed(() =>
+    isInternalLink.value ? resolveComponent('NuxtLink') : isLink.value ? 'a' : 'button'
+  )
 
   const componentAttrs = computed(() => {
-    const { class: _class, ...rest } = attrs
+    const rest = { ...attrs }
+    delete rest.class
     if (isInternalLink.value) return { to: props.to, ...rest }
     return isLink.value
       ? { href: props.href, target: props.target, rel: props.rel, ...rest }

@@ -39,8 +39,18 @@
           {{ option.label }}
         </option>
       </select>
-      <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-brand-ink" aria-hidden="true">
-        <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" focusable="false">
+      <span
+        class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-brand-ink"
+        aria-hidden="true"
+      >
+        <svg
+          class="size-4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          focusable="false"
+        >
           <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
       </span>

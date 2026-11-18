@@ -31,7 +31,6 @@
       error.value,
     'border-brand-border bg-brand-surface-card text-brand-ink placeholder:text-brand-muted focus:border-brand-white focus:ring-2 focus:ring-brand-text-soft focus:outline-none':
       !error.value
-      !error.value
   }))
   const autocompleteValue = computed(() =>
     props.name === 'name' || props.name === 'email' ? props.name : 'off'
@@ -85,7 +84,9 @@
       @input="handleInput"
       @paste="handlePaste"
     />
-    <p v-if="error" :id="`${name}-error`" role="alert" class="mt-1 text-xs text-brand-error-border">{{ errorMessage }}</p>
+    <p v-if="error" :id="`${name}-error`" role="alert" class="mt-1 text-xs text-brand-error-border">
+      {{ errorMessage }}
+    </p>
   </div>
 </template>
 
