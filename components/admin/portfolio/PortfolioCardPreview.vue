@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import ProjectCard from '~/components/templates/Portfolio/ProjectCard.vue'
+  import { ProjectCard } from '~/components/organisms'
   import { formToCardProject, type PortfolioFormValues } from '~/utils/admin/portfolio'
 
   // La tarjeta real de la home (ProjectCard) con lo que hay en el formulario. Es una vista previa:
