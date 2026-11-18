@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-  import Button from '~/components/atoms/Button/Button.vue'
+  import { Button, Card, Chip } from '~/components/atoms'
+  import { BackLink, CheckList } from '~/components/molecules'
+  import { WHATSAPP_URL } from '~/constants/common'
   import type { PortfolioType } from '~/types/common'
 
   definePageMeta({
@@ -76,23 +78,15 @@
 <template>
   <section class="w-full bg-brand-surface px-4 py-8 md:py-12">
     <div v-if="project" class="mx-auto w-full max-w-5xl">
-      <NuxtLink
-        to="/portafolio"
-        class="mb-6 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-brand-muted transition-colors hover:text-brand-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
-      >
-        <Icon name="mdi:arrow-left" size="18" aria-hidden="true" />
-        Volver al portafolio
-      </NuxtLink>
+      <BackLink to="/portafolio">Volver al portafolio</BackLink>
 
       <article
         class="overflow-hidden rounded-3xl border border-brand-border bg-brand-surface-card shadow-card-lg"
       >
         <header class="p-5 md:p-8">
-          <p
-            class="mb-4 inline-flex items-center rounded-full border border-brand-border bg-brand-surface-soft px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-accent-text"
-          >
+          <Chip pill uppercase class="mb-4 tracking-[0.12em] text-brand-accent-text">
             {{ project.portfolioType }}
-          </p>
+          </Chip>
           <h1 class="text-3xl font-semibold leading-tight text-brand-ink md:text-5xl">
             {{ project.title }}
           </h1>
@@ -105,7 +99,7 @@
             class="mt-6 grid gap-4 border-t border-brand-border pt-6 sm:grid-cols-2 lg:grid-cols-4"
           >
             <div v-for="fact in facts" :key="fact.label">
-              <dt class="text-xs font-semibold uppercase tracking-[0.12em] text-brand-helper">
+              <dt class="text-xs font-semibold uppercase tracking-[0.12em] text-brand-muted">
                 {{ fact.label }}
               </dt>
               <dd class="mt-1 text-sm font-medium text-brand-ink">{{ fact.value }}</dd>
@@ -133,6 +127,8 @@
           <NuxtImg
             :src="project.urlImage"
             :alt="`Portada del proyecto ${project.title}`"
+            width="1280"
+            height="720"
             format="webp"
             class="aspect-video w-full rounded-2xl object-cover"
             fetchpriority="high"
@@ -145,13 +141,11 @@
             class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
             aria-label="Cifras destacadas"
           >
-            <li
-              v-for="item in project.highlights"
-              :key="item.label"
-              class="rounded-2xl border border-brand-border bg-brand-surface-soft p-5"
-            >
-              <p class="text-3xl font-semibold text-brand-ink">{{ item.value }}</p>
-              <p class="mt-1 text-sm text-brand-muted">{{ item.label }}</p>
+            <li v-for="item in project.highlights" :key="item.label">
+              <Card tone="soft" class="rounded-2xl p-5">
+                <p class="text-3xl font-semibold text-brand-ink">{{ item.value }}</p>
+                <p class="mt-1 text-sm text-brand-muted">{{ item.label }}</p>
+              </Card>
             </li>
           </ul>
 
@@ -188,6 +182,8 @@
                   <NuxtImg
                     :src="image.src"
                     :alt="image.alt"
+                    width="1600"
+                    height="900"
                     format="webp"
                     sizes="100vw sm:50vw"
                     class="aspect-video w-full rounded-2xl border border-brand-border object-cover"
@@ -205,17 +201,7 @@
             <h2 class="mb-3 text-xl font-semibold text-brand-accent-text md:text-2xl">
               Qué incluyó
             </h2>
-            <ul class="max-w-3xl space-y-2 text-base leading-7 text-brand-muted">
-              <li v-for="item in project.scope" :key="item" class="flex gap-3">
-                <Icon
-                  name="mdi:check-circle-outline"
-                  size="19"
-                  class="mt-1 shrink-0 text-brand-blue"
-                  aria-hidden="true"
-                />
-                <span>{{ item }}</span>
-              </li>
-            </ul>
+            <CheckList :items="project.scope" size="md" class="max-w-3xl" />
           </section>
 
           <section v-if="project.technologies?.length">
@@ -223,12 +209,10 @@
               Tecnologías
             </h2>
             <ul class="flex flex-wrap gap-2">
-              <li
-                v-for="tech in project.technologies"
-                :key="tech"
-                class="rounded-full border border-brand-border bg-brand-surface-soft px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-brand-ink"
-              >
-                {{ tech }}
+              <li v-for="tech in project.technologies" :key="tech">
+                <Chip pill uppercase class="px-3 py-1.5 tracking-[0.08em] text-brand-ink">
+                  {{ tech }}
+                </Chip>
               </li>
             </ul>
           </section>
@@ -247,22 +231,20 @@
             <div class="mt-5 flex flex-col gap-3 sm:flex-row">
               <Button
                 as="a"
-                href="https://wa.link/bxjfgq"
+                :href="WHATSAPP_URL"
                 target="_blank"
                 rel="noopener noreferrer"
-                theme="tertiary"
+                theme="whatsapp"
                 icon="mdi:whatsapp"
                 icon-position="left"
-                class="bg-brand-whatsapp text-brand-white hover:bg-brand-whatsapp/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white sm:w-fit"
+                on-dark
+                class="sm:w-fit"
               >
                 Hablemos por WhatsApp
               </Button>
-              <NuxtLink
-                to="/#contact"
-                class="inline-flex min-h-11 items-center justify-center rounded-lg border border-brand-border-strong px-5 text-sm font-semibold text-brand-text-strong transition hover:bg-brand-surface-panel focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
-              >
+              <Button to="/#contact" theme="secondary" on-dark class="px-5">
                 Escribirme por el formulario
-              </NuxtLink>
+              </Button>
             </div>
           </aside>
         </div>
@@ -275,9 +257,9 @@
     >
       <h1 class="text-2xl font-semibold text-brand-ink">Proyecto no encontrado</h1>
       <p class="mt-3 text-brand-muted">No existe un detalle disponible para esta ruta.</p>
-      <NuxtLink to="/portafolio" class="mt-5 inline-block">
-        <Button theme="secondary">Volver al portafolio</Button>
-      </NuxtLink>
+      <Button to="/portafolio" theme="secondary" class="mt-5 inline-flex">
+        Volver al portafolio
+      </Button>
     </div>
   </section>
 </template>

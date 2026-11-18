@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import { Eyebrow } from '~/components/atoms'
+  import { BackLink, CheckList } from '~/components/molecules'
   import { PRIVACY_SECTIONS, PRIVACY_UPDATED_AT } from '~/data/privacy'
 
   definePageMeta({ path: '/privacidad' })
@@ -18,19 +20,11 @@
 </script>
 
 <template>
-  <div class="min-h-screen bg-brand-surface px-4 py-8 md:py-12">
+  <div class="bg-brand-surface px-4 py-8 md:py-12">
     <div class="mx-auto w-full max-w-3xl">
-      <NuxtLink
-        to="/"
-        class="mb-8 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-brand-muted transition-colors hover:text-brand-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
-      >
-        <Icon name="mdi:arrow-left" size="18" aria-hidden="true" />
-        Volver al inicio
-      </NuxtLink>
+      <BackLink to="/" class="mb-8">Volver al inicio</BackLink>
 
-      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-brand-accent-text">
-        Privacidad
-      </p>
+      <Eyebrow class="mb-3">Privacidad</Eyebrow>
       <h1 class="text-3xl font-semibold leading-tight text-brand-ink md:text-4xl">
         Política de tratamiento de datos personales
       </h1>
@@ -67,17 +61,7 @@
           >
             {{ paragraph }}
           </p>
-          <ul v-if="section.items" class="mt-3 space-y-2 text-base leading-7 text-brand-muted">
-            <li v-for="item in section.items" :key="item" class="flex gap-3">
-              <Icon
-                name="mdi:check-circle-outline"
-                size="19"
-                class="mt-1 shrink-0 text-brand-blue"
-                aria-hidden="true"
-              />
-              <span>{{ item }}</span>
-            </li>
-          </ul>
+          <CheckList v-if="section.items" :items="section.items" size="md" class="mt-3" />
         </section>
       </article>
     </div>

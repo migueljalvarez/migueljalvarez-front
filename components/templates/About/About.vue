@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  import { Card } from '~/components/atoms'
+  import { SectionHeader } from '~/components/molecules'
   import { HOME_COPY } from '~/constants/common'
 
   const sectionRef = ref<HTMLElement | null>(null)
@@ -61,7 +63,7 @@
   <section
     id="about"
     ref="sectionRef"
-    class="w-full bg-brand-surface px-4 py-8 text-brand-ink md:py-12"
+    class="w-full bg-brand-surface px-4 py-12 text-brand-ink md:py-16"
   >
     <div class="mx-auto flex w-full max-w-7xl flex-col gap-8 md:gap-10">
       <div class="grid min-w-0 grid-cols-1 items-stretch gap-8 lg:grid-cols-5 lg:gap-12">
@@ -73,6 +75,7 @@
               src="ma.webp"
               alt="Miguel Álvarez, ingeniero de sistemas, trabajando en remoto"
               width="600"
+              height="400"
               sizes="100vw sm:544px lg:460px"
               format="webp"
               loading="lazy"
@@ -93,7 +96,7 @@
               <p class="text-xs font-semibold text-brand-ink">
                 {{ HOME_COPY.about.location }}
               </p>
-              <p class="text-[11px] text-brand-muted">
+              <p class="text-xs text-brand-muted">
                 {{ HOME_COPY.about.remote }}
               </p>
             </div>
@@ -103,16 +106,11 @@
         <div
           class="relative z-10 flex min-w-0 flex-col justify-center gap-5 py-2 md:gap-6 lg:col-span-3"
         >
-          <div>
-            <p
-              class="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-brand-accent-text"
-            >
-              {{ HOME_COPY.about.eyebrow }}
-            </p>
-            <h2 class="text-3xl font-semibold leading-tight md:text-4xl">
-              {{ HOME_COPY.about.heading }}
-            </h2>
-          </div>
+          <SectionHeader
+            :eyebrow="HOME_COPY.about.eyebrow"
+            :heading="HOME_COPY.about.heading"
+            size="lg"
+          />
 
           <p class="text-sm leading-6 text-brand-muted md:text-base md:leading-7">
             Hola, soy
@@ -123,10 +121,12 @@
           </p>
 
           <div class="grid w-full grid-cols-1 gap-3 sm:grid-cols-3">
-            <article
+            <Card
               v-for="(item, index) in highlights"
               :key="item.label"
-              class="flex min-w-0 flex-col justify-center rounded-xl border border-brand-border bg-brand-surface-soft px-4 py-3"
+              tone="soft"
+              as="article"
+              class="flex min-w-0 flex-col justify-center px-4 py-3"
             >
               <p class="text-xl font-bold leading-tight text-brand-ink md:text-2xl">
                 <template v-if="index === 0">{{ counters[0] }}+</template>
@@ -136,15 +136,13 @@
               <p class="mt-1 text-xs leading-5 text-brand-muted">
                 {{ item.label }}
               </p>
-            </article>
+            </Card>
           </div>
         </div>
       </div>
 
       <div class="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-6">
-        <article
-          class="rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-card md:p-8 lg:col-span-7"
-        >
+        <Card as="article" elevated class="p-6 md:p-8 lg:col-span-7">
           <span
             class="mb-4 flex size-10 items-center justify-center rounded-xl border border-brand-border bg-brand-surface-soft"
             aria-hidden="true"
@@ -160,16 +158,14 @@
             </strong>
           </p>
           <blockquote
-            class="mt-5 border-l-2 bg-brand-surface-soft px-4 py-3 text-sm leading-6 text-brand-muted md:px-5 md:py-4 md:text-base md:leading-7"
+            class="mt-5 border-l-2 border-brand-blue bg-brand-surface-soft px-4 py-3 text-sm leading-6 text-brand-muted md:px-5 md:py-4 md:text-base md:leading-7"
           >
             Por ejemplo, no dimensionar ni proyectar a futuro un proyecto lleva a mala
             planificación, reprocesos y módulos que nadie entiende por separado.
           </blockquote>
-        </article>
+        </Card>
 
-        <article
-          class="rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-card md:p-8 lg:col-span-5"
-        >
+        <Card as="article" elevated class="p-6 md:p-8 lg:col-span-5">
           <span
             class="mb-4 flex size-10 items-center justify-center rounded-xl border border-brand-border bg-brand-surface-soft"
             aria-hidden="true"
@@ -184,7 +180,7 @@
             café. También relajarme viendo películas y series, y estar siempre buscando algo nuevo
             que aprender.
           </p>
-        </article>
+        </Card>
       </div>
     </div>
   </section>

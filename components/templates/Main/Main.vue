@@ -1,6 +1,7 @@
 <script lang="ts" setup>
   import Button from '~/components/atoms/Button/Button.vue'
-  import { HOME_COPY, HOME_HERO_COPY, PRIMARY_CTA_LABEL } from '~/constants/common'
+  import { CheckList } from '~/components/molecules'
+  import { HOME_COPY, HOME_HERO_COPY, PRIMARY_CTA_LABEL, WHATSAPP_URL } from '~/constants/common'
 </script>
 
 <template>
@@ -36,7 +37,7 @@
         <p
           class="inline-flex w-fit items-center gap-2 rounded-full border border-brand-border-strong bg-brand-surface-contrast/90 px-4 py-2 text-xs font-semibold text-brand-text-soft"
         >
-          <span class="size-2.5 rounded-full bg-emerald-500" aria-hidden="true" />
+          <span class="size-2.5 rounded-full bg-brand-whatsapp" aria-hidden="true" />
           {{ HOME_COPY.hero.availability }}
         </p>
 
@@ -55,10 +56,11 @@
         >
           <Button
             as="a"
-            href="https://wa.link/bxjfgq"
+            :href="WHATSAPP_URL"
             target="_blank"
             rel="noopener noreferrer"
-            class="w-full whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white sm:w-auto"
+            class="w-full whitespace-nowrap sm:w-auto"
+            on-dark
             size="md"
             icon="mdi:whatsapp"
             icon-position="left"
@@ -68,9 +70,9 @@
           </Button>
 
           <Button
-            as="a"
-            href="/como-trabajo"
-            class="w-full whitespace-nowrap border-brand-text-soft text-brand-text-strong hover:bg-brand-white/10 hover:text-brand-text-strong focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white sm:w-auto"
+            to="/como-trabajo"
+            class="w-full whitespace-nowrap sm:w-auto"
+            on-dark
             size="md"
             theme="secondary"
           >
@@ -78,23 +80,12 @@
           </Button>
         </div>
 
-        <ul
-          class="flex flex-col gap-2 text-sm leading-6 text-brand-text-soft sm:flex-row sm:flex-wrap sm:gap-x-5 sm:gap-y-2"
-        >
-          <li
-            v-for="benefit in HOME_COPY.contact.benefits"
-            :key="benefit"
-            class="flex items-center gap-2"
-          >
-            <Icon
-              name="mdi:check-circle-outline"
-              size="19"
-              class="shrink-0 text-brand-text-soft"
-              aria-hidden="true"
-            />
-            <span>{{ benefit }}</span>
-          </li>
-        </ul>
+        <CheckList
+          :items="HOME_COPY.contact.benefits"
+          tone="dark"
+          icon-class="text-brand-text-soft"
+          inline
+        />
 
         <div class="flex w-full items-center gap-4 border-t border-brand-text-soft/30 pt-4 sm:pt-5">
           <NuxtImg
