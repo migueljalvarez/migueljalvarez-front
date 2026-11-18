@@ -4,6 +4,8 @@
 
   const { policies } = await usePolicies()
 
+  definePageMeta({ path: '/como-trabajo' })
+
   usePageSeo({
     title: 'Cómo trabajo',
     description:

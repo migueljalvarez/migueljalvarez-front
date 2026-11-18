@@ -1,4 +1,4 @@
-import type { PortafolioType, SocialMediaType } from '~/types/common'
+import type { PortfolioType, SocialMediaType } from '~/types/common'
 import type { PortfolioCardProject } from '~/components/templates/Portfolio/portfolio.types'
 
 /**
@@ -43,7 +43,7 @@ const PORTFOLIO_TYPE_LABEL: Record<ApiPortfolioEntry['type'], string> = {
 }
 
 /** Las listas vacías y los textos vacíos se omiten: la interfaz solo muestra lo que tiene contenido. */
-export const mapApiPortfolioEntry = (entry: ApiPortfolioEntry): PortafolioType => ({
+export const mapApiPortfolioEntry = (entry: ApiPortfolioEntry): PortfolioType => ({
   id: entry.slug,
   slug: entry.slug,
   title: entry.title,
@@ -95,7 +95,7 @@ export const mapApiPolicy = (policy: ApiPolicy, index: number): PolicyBlock => (
  * sin ficha de detalle mientras el proyecto está en desarrollo (no hay contenido real que mostrar).
  */
 export const toPortfolioCardProject = (
-  item: PortafolioType,
+  item: PortfolioType,
   options: { primary?: boolean } = {}
 ): PortfolioCardProject => {
   const slug = item.slug || item.id
@@ -116,5 +116,5 @@ export const toPortfolioCardProject = (
 }
 
 /** Tarjetas de la home: las primeras `limit`, la primera marcada como destacada. */
-export const toHomeCardProjects = (items: PortafolioType[], limit = 5): PortfolioCardProject[] =>
+export const toHomeCardProjects = (items: PortfolioType[], limit = 5): PortfolioCardProject[] =>
   items.slice(0, limit).map((item, index) => toPortfolioCardProject(item, { primary: index === 0 }))

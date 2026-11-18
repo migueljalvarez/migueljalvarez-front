@@ -31,7 +31,7 @@ npm test           # node --test (tests/*.mjs)
 ## Estructura
 
 ```
-pages/            index (landing), como-trabajo, privacidad, login, portafolio/{index,[slug]}, admin/* (panel privado)
+pages/            index (landing), how-we-work (/como-trabajo), privacy (/privacidad), login, portfolio/{index,[slug]} (/portafolio), admin/* (panel privado)
 layouts/          default, admin (panel), auth (login); el error global está en error.vue (raíz)
 components/
   atoms/          Button, Input, Select, Title
@@ -65,7 +65,7 @@ Main (hero) → Services → ProcessSection → Portafolio (destacados) → Abou
 
 ## Convenciones
 
-- **Nombres en inglés, siempre.** Ningún archivo, carpeta, componente, composable, tipo, constante ni ruta de API se nombra en español. El español es solo para el copy visible y la documentación. Las URL públicas pueden seguir en español por SEO (`/portafolio`, `/como-trabajo`, `/privacidad`) definiéndolas con `definePageMeta({ path })` o `routeRules`, con el archivo en inglés. **Deuda existente a renombrar** (tarea en Notion): `pages/como-trabajo.vue`, `pages/privacidad.vue`, `pages/portafolio/`, `pages/admin/{equipo,experiencia,leads,proyectos,tarifas,testimonios}.vue`, y las claves/IDs en español de `constants/` y `data/` que se detecten al tocarlos.
+- **Nombres en inglés, siempre.** Ningún archivo, carpeta, componente, composable, tipo, constante ni ruta de API se nombra en español. El español es solo para el copy visible y la documentación. Las URL públicas pueden seguir en español por SEO (`/portafolio`, `/como-trabajo`, `/privacidad`) definiéndolas con `definePageMeta({ path })` o `routeRules`, con el archivo en inglés. Deuda de nombres de páginas pagada (nov-2026): las URL públicas en español se definen con `definePageMeta({ path })` (`pages/how-we-work.vue`, `pages/privacy.vue`, `pages/portfolio/`); las rutas del panel van en inglés (`/admin/{team,experience,leads,projects,rates,testimonials}`). Renombra las claves/IDs en español de `constants/` y `data/` que se detecten al tocarlos.
 - **Frontend: Atomic Design obligatorio y pixel perfect.** Todo UI nuevo se construye como átomos → moléculas → organismos → plantillas → páginas; si un fragmento se repite o tiene identidad propia, se **componentiza** (no se duplica marcado). Se implementa **fiel al diseño** (espaciados, tipografía, radios, sombras, colores y estados exactos de `docs/brand-system.md` y de la referencia visual), revisado en el navegador en móvil y escritorio antes de cerrar. Los componentes del panel (`components/admin/`) siguen la misma jerarquía.
 - Prettier + ESLint (config en repo); `<script>` indentado dentro de `.vue`. Respetar `.prettierrc`.
 - Clases Tailwind canónicas v4 y tokens `brand-*`; seguir `docs/brand-system.md` para jerarquía tipográfica y contraste.

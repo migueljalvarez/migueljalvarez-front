@@ -25,7 +25,7 @@ export type ProjectHighlight = {
  * Proyecto del portafolio. Todo lo opcional solo se muestra si tiene contenido real.
  * Guía de contenido e imágenes: docs/portfolio-guide.md
  */
-export type PortafolioType = {
+export type PortfolioType = {
   id: string
   slug?: string
   title: string

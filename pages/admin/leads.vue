@@ -462,9 +462,7 @@
             class="flex flex-wrap items-center gap-3 rounded-xl bg-brand-success-bg p-3 text-sm text-brand-success-text"
           >
             <span>Lead ganado: conviértelo en cliente y proyecto.</span>
-            <NuxtLink to="/admin/proyectos" class="font-semibold underline">
-              Ir a proyectos
-            </NuxtLink>
+            <NuxtLink to="/admin/projects" class="font-semibold underline">Ir a proyectos</NuxtLink>
           </div>
         </section>
 

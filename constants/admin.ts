@@ -58,7 +58,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
   },
   {
     label: 'Testimonios',
-    to: '/admin/testimonios',
+    to: '/admin/testimonials',
     icon: 'mdi:message-star-outline',
     group: 'content',
     summary: 'Solicita testimonios a clientes reales y apruébalos antes de publicarlos.',
@@ -85,7 +85,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
   },
   {
     label: 'Proyectos',
-    to: '/admin/proyectos',
+    to: '/admin/projects',
     icon: 'mdi:folder-outline',
     group: 'management',
     summary: 'Clientes y proyectos con presupuesto de horas y fecha límite aproximada.',
@@ -98,7 +98,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
   },
   {
     label: 'Equipo y pagos',
-    to: '/admin/equipo',
+    to: '/admin/team',
     icon: 'mdi:account-group-outline',
     group: 'management',
     summary: 'Colaboradores, horas pactadas y cuándo debes pagarles.',
@@ -111,7 +111,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
   },
   {
     label: 'Tarifas',
-    to: '/admin/tarifas',
+    to: '/admin/rates',
     icon: 'mdi:cash-multiple',
     group: 'management',
     summary: 'El valor de tu hora por tipo de servicio, siempre en USD.',
@@ -122,7 +122,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
   },
   {
     label: 'Experiencia',
-    to: '/admin/experiencia',
+    to: '/admin/experience',
     icon: 'mdi:briefcase-outline',
     group: 'management',
     summary: 'Tu trayectoria como fuente de verdad privada (nunca pública).',

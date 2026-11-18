@@ -1,4 +1,4 @@
-import type { PortafolioType } from '~/types/common'
+import type { PortfolioType } from '~/types/common'
 import { MOCK_PORTFOLIO_CONTEXT, MOCK_PORTFOLIO_PROJECTS } from './portfolio.mock'
 
 /**
@@ -8,7 +8,7 @@ import { MOCK_PORTFOLIO_CONTEXT, MOCK_PORTFOLIO_PROJECTS } from './portfolio.moc
 export const USE_PORTFOLIO_MOCKS: boolean = import.meta.dev
 
 /** Solo productos propios y trabajos reales de clientes. */
-const REAL_PORTFOLIO_PROJECTS: PortafolioType[] = [
+const REAL_PORTFOLIO_PROJECTS: PortfolioType[] = [
   {
     id: 'mi-comodoro',
     type: 'product',
@@ -64,7 +64,7 @@ const FALLBACK_CARD_CONTEXT: Record<string, { tags: string[]; audience: string }
     : {})
 }
 
-const withCardContext = (projects: PortafolioType[], sample = false): PortafolioType[] =>
+const withCardContext = (projects: PortfolioType[], sample = false): PortfolioType[] =>
   projects.map(project => ({
     ...project,
     ...FALLBACK_CARD_CONTEXT[project.id],
@@ -76,7 +76,7 @@ const withCardContext = (projects: PortafolioType[], sample = false): Portafolio
  * solo se usan cuando la API no está configurada, no responde o aún no tiene nada publicado, para que
  * el sitio nunca quede sin portafolio. Los de ejemplo solo existen en desarrollo y van marcados.
  */
-export const PORTFOLIO_PROJECTS: PortafolioType[] = [
+export const PORTFOLIO_PROJECTS: PortfolioType[] = [
   ...withCardContext(REAL_PORTFOLIO_PROJECTS),
   ...(USE_PORTFOLIO_MOCKS ? withCardContext(MOCK_PORTFOLIO_PROJECTS, true) : [])
 ]
