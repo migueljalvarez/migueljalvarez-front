@@ -1,0 +1,8 @@
+[
+  {
+    "id": "GHSA-fc5q-39xc-vjpf",
+    "package": "picomatch",
+    "reason": "ReDoS por extglobs repetidos. No hay versión parcheada publicada (la última, 4.0.7, está afectada). Solo la usan herramientas de build y desarrollo (Vite, unplugin, nft); no está en .output ni en el bundle desplegado.",
+    "expires": "2026-12-15"
+  }
+]

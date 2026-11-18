@@ -33,5 +33,5 @@ jobs:
       - name: Tests (incluye contrato OpenAPI y comprobaciones del build)
         run: npm test
 
-      - name: Auditoría de dependencias (falla con severidad alta o crítica)
-        run: npm audit --audit-level=high
+      - name: Auditoría de dependencias (falla con severidad alta o crítica sin excepción vigente)
+        run: npm run audit:ci
