@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { Button, Input, Select } from '~/components/atoms'
+  import { Button, Checkbox, Input, Select } from '~/components/atoms'
   import Form from '~/components/Form/Form.vue'
   import { SocialMedia } from '~/components/molecules'
   import { Section } from '~/components/organisms'
@@ -31,6 +31,7 @@
     email: '',
     subject: '',
     message: '',
+    consent: false, // autorización previa, expresa e informada (Ley 1581)
     website: '' // honeypot: oculto para personas
   })
   const { sendEmail } = useEmail()
@@ -42,6 +43,7 @@
       !form.email.trim() ||
       !form.subject ||
       !form.message.trim() ||
+      !form.consent ||
       !form.email.includes('@')
     )
   })
@@ -52,6 +54,7 @@
     form.email = ''
     form.subject = ''
     form.message = ''
+    form.consent = false
   }
   async function onSubmit() {
     const name = form.name.trim()
@@ -60,7 +63,7 @@
     errorMessage.value = ''
 
     try {
-      await sendEmail(name, form.email, form.subject, form.message, form.website)
+      await sendEmail(name, form.email, form.subject, form.message, form.consent, form.website)
       isSendedSuccessful.value = true
       cleanForm()
     } catch (error) {
@@ -212,6 +215,17 @@
                   aria-hidden="true"
                   class="absolute -left-[9999px] size-px opacity-0"
                 />
+                <Checkbox v-model="form.consent" name="consent" required>
+                  {{ HOME_COPY.contact.consent }}
+                  <NuxtLink
+                    to="/privacidad"
+                    target="_blank"
+                    class="underline underline-offset-4 hover:text-brand-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
+                  >
+                    {{ HOME_COPY.contact.privacyLink }}
+                  </NuxtLink>
+                  <span class="mt-1 block">{{ HOME_COPY.contact.privacy }}</span>
+                </Checkbox>
                 <Button
                   type="submit"
                   :disabled="disabledButton"
@@ -221,15 +235,6 @@
                 >
                   {{ HOME_COPY.contact.form.submit }}
                 </Button>
-                <p class="text-xs leading-5 text-brand-text-subtle">
-                  {{ HOME_COPY.contact.privacy }}
-                  <NuxtLink
-                    to="/privacidad"
-                    class="underline underline-offset-4 hover:text-brand-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
-                  >
-                    {{ HOME_COPY.contact.privacyLink }}
-                  </NuxtLink>
-                </p>
               </Form>
             </div>
 

@@ -4,6 +4,7 @@ export function useEmail() {
     email: string,
     subject: string,
     message: string,
+    consent: boolean,
     website = ''
   ) => {
     try {
@@ -14,6 +15,7 @@ export function useEmail() {
           email,
           subject,
           message,
+          consent,
           website
         }
       })

@@ -27,11 +27,16 @@ export type InputProps = {
   errorMessage?: string
   rows?: number
 }
+export type CheckboxProps = {
+  name: string
+  modelValue?: boolean
+  required?: boolean
+  disabled?: boolean
+}
 export type TitleProps = {
   text: string
   variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 }
-
 
 export type SelectProps = {
   modelValue: string

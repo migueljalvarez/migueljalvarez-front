@@ -39,6 +39,8 @@ export default defineNuxtConfig({
     apiBaseUrl: '',
     apiAccessClientId: '',
     apiAccessClientSecret: '',
+    // Clave compartida con la API para guardar los leads del formulario de contacto (INTAKE_API_KEY de la API).
+    intakeApiKey: '',
     public: {
       baseUrl: process.env.NUXT_PUBLIC_BASE_URL || 'http://localhost:3000'
     }
