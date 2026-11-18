@@ -3,9 +3,10 @@
   import type { ButtonProps } from '../atom'
 
   const props = withDefaults(defineProps<ButtonProps>(), {
-    size: 'sm',
+    size: 'md',
     theme: 'primary',
     uppercase: false,
+    onDark: false,
     iconPosition: 'left',
     type: 'button',
     as: 'button'
@@ -14,34 +15,44 @@
   const attrs = useAttrs()
   const classes = computed(() =>
     cn(
-      'flex flex-row items-center justify-center gap-2 font-semibold rounded-lg cursor-pointer transition-colors duration-200 motion-reduce:transition-none disabled:text-brand-muted disabled:bg-brand-surface-soft disabled:border-brand-border-strong disabled:shadow-none disabled:cursor-not-allowed disabled:hover:bg-brand-surface-soft',
+      'flex flex-row items-center justify-center gap-2 font-semibold rounded-lg cursor-pointer transition-colors duration-200 motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 disabled:text-brand-muted disabled:bg-brand-surface-soft disabled:border-brand-border-strong disabled:shadow-none disabled:cursor-not-allowed disabled:hover:bg-brand-surface-soft',
+      props.onDark ? 'focus-visible:outline-brand-white' : 'focus-visible:outline-brand-blue',
       props.iconPosition !== 'left' && 'flex-row-reverse',
       props.uppercase && 'uppercase',
-      props.size === 'sm' && 'min-h-8 py-2 px-4 text-xs leading-none',
-      props.size === 'md' && 'min-h-9 py-2 px-4 text-sm leading-none',
+      // Objetivo táctil mínimo de 44 px (min-h-11) en todos los tamaños
+      props.size === 'sm' && 'min-h-11 py-2 px-4 text-xs leading-none',
+      props.size === 'md' && 'min-h-11 py-2 px-4 text-sm leading-none',
       props.size === 'lg' && 'min-h-12.5 py-3.5 px-7 text-sm leading-none',
       props.theme === 'primary' && 'bg-brand-accent text-brand-white hover:bg-brand-mid shadow-sm',
       props.theme === 'secondary' &&
-        'border border-brand-border bg-transparent text-brand-ink hover:bg-brand-surface-soft',
+        (props.onDark
+          ? 'border border-brand-text-soft bg-transparent text-brand-text-strong hover:bg-brand-white/10'
+          : 'border border-brand-border bg-transparent text-brand-ink hover:bg-brand-surface-soft'),
       props.theme === 'tertiary' && 'bg-brand-accent text-brand-white hover:bg-brand-mid',
+      props.theme === 'whatsapp' &&
+        'bg-brand-whatsapp text-brand-white hover:bg-brand-whatsapp/90 shadow-sm',
       typeof attrs.class === 'string' ? attrs.class : undefined
     )
   )
 
-  const isLink = computed(() => props.as === 'a' || !!props.href)
+  const isInternalLink = computed(() => !!props.to)
+  const isLink = computed(() => isInternalLink.value || props.as === 'a' || !!props.href)
+  const tag = computed(() => (isInternalLink.value ? resolveComponent('NuxtLink') : isLink.value ? 'a' : 'button'))
 
-  const componentAttrs = computed(() =>
-    isLink.value
-      ? { href: props.href, target: props.target, rel: props.rel, ...attrs }
-      : { type: props.type, ...attrs }
-  )
+  const componentAttrs = computed(() => {
+    const { class: _class, ...rest } = attrs
+    if (isInternalLink.value) return { to: props.to, ...rest }
+    return isLink.value
+      ? { href: props.href, target: props.target, rel: props.rel, ...rest }
+      : { type: props.type, ...rest }
+  })
 
   defineOptions({ inheritAttrs: false })
 </script>
 
 <template>
   <component
-    :is="isLink ? 'a' : 'button'"
+    :is="tag"
     v-bind="componentAttrs"
     :class="classes"
     :disabled="isLink ? undefined : props.disabled"
@@ -51,6 +62,7 @@
       v-if="props.icon"
       :name="props.icon"
       :size="props.size === 'sm' ? 16 : props.size === 'md' ? 20 : 22"
+      aria-hidden="true"
     />
     <slot />
   </component>

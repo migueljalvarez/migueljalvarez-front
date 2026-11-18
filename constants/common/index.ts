@@ -86,6 +86,7 @@ export const HOME_COPY = {
 }
 export const PRIMARY_CTA_LABEL = 'Hablemos de tu proyecto'
 export const WHATSAPP_CTA_LABEL = 'Hablemos por WhatsApp'
+export const WHATSAPP_URL = 'https://wa.link/bxjfgq'
 export const MY_SOCIAL_MEDIA: SocialMediaType[] = [
   {
     name: 'LinkedIn',
