@@ -5,7 +5,7 @@
     tone: 'light',
     size: 'sm',
     icon: 'mdi:check-circle-outline',
-    iconClass: 'text-brand-blue',
+    iconClass: undefined,
     inline: false
   })
 
@@ -28,7 +28,10 @@
         :name="icon"
         size="19"
         class="shrink-0"
-        :class="[size === 'md' ? 'mt-1' : 'mt-0.5', iconClass]"
+        :class="[
+          size === 'md' ? 'mt-1' : 'mt-0.5',
+          iconClass ?? (tone === 'dark' ? 'text-brand-text-soft' : 'text-brand-blue')
+        ]"
         aria-hidden="true"
       />
       <span>
