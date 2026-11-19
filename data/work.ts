@@ -1,7 +1,7 @@
 export type WorkPolicyBlock = {
   id: string
-  titulo: string
-  texto: string
+  title: string
+  text: string
 }
 
 export type WorkFaqItem = {
@@ -39,21 +39,18 @@ export const WORK_NON_NEGOTIABLES: WorkNonNegotiable[] = [
 export const WORK_POLICY_BLOCKS: WorkPolicyBlock[] = [
   {
     id: 'codigo',
-    titulo: 'El código',
-    texto:
-      'El repositorio vive en tu cuenta desde el primer día. Al completar el pago, los derechos del código desarrollado para ti pasan a ser tuyos, por contrato. Mis librerías y herramientas previas, y el software open source, conservan su licencia original. Lo escribo pensando en su propósito y legibilidad, para que otros puedan mantenerlo.'
+    title: 'El código',
+    text: 'El repositorio vive en tu cuenta desde el primer día. Al completar el pago, los derechos del código desarrollado para ti pasan a ser tuyos, por contrato. Mis librerías y herramientas previas, y el software open source, conservan su licencia original. Lo escribo pensando en su propósito y legibilidad, para que otros puedan mantenerlo.'
   },
   {
     id: 'lanzamiento',
-    titulo: 'Después del lanzamiento',
-    texto:
-      'Publicar es un comienzo, no el final. Podemos definir soporte y evolución según las necesidades reales del producto, con responsabilidades y tiempos acordados.'
+    title: 'Después del lanzamiento',
+    text: 'Publicar es un comienzo, no el final. Podemos definir soporte y evolución según las necesidades reales del producto, con responsabilidades y tiempos acordados.'
   },
   {
     id: 'ia',
-    titulo: 'Uso de IA',
-    texto:
-      'Uso herramientas de IA como apoyo cuando aportan valor. Reviso y valido sus resultados; la responsabilidad sobre las decisiones y el código sigue siendo humana.'
+    title: 'Uso de IA',
+    text: 'Uso herramientas de IA como apoyo cuando aportan valor. Reviso y valido sus resultados; la responsabilidad sobre las decisiones y el código sigue siendo humana.'
   }
 ]
 
