@@ -7,7 +7,6 @@
   import PortfolioImagePreview from '~/components/admin/portfolio/PortfolioImagePreview.vue'
   import {
     ABOUT_LIMITS,
-    ABOUT_SITE_IMAGES,
     makeDefaultImage,
     moveImage,
     removeImageAt,
@@ -16,8 +15,7 @@
   } from '~/utils/admin/about'
 
   // Imágenes de "Sobre mí": hasta 4 registradas por ruta (el archivo debe estar en public/about/ del
-  // sitio: la API no sube archivos). La primera es la predeterminada y la grande del collage; el sitio
-  // muestra las 3 primeras. Los cambios se aplican al guardar.
+  // sitio: la API no sube archivos). La primera es la predeterminada (la que se ve al cargar el carrusel). Los cambios se aplican al guardar.
   const props = defineProps<{
     id: string
     modelValue: AboutImageDraft[]
@@ -104,9 +102,6 @@
             </h3>
             <AdminBadge v-if="item.isDefault" tone="info" icon="mdi:star-outline">
               Predeterminada
-            </AdminBadge>
-            <AdminBadge v-if="index >= ABOUT_SITE_IMAGES" tone="neutral">
-              De reserva: el sitio no la muestra
             </AdminBadge>
             <AdminBadge v-if="!item.id" tone="warning" icon="mdi:circle-edit-outline">
               Sin registrar

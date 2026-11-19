@@ -126,6 +126,9 @@ export type ApiAbout = {
   eyebrow: string
   heading: string
   intro: string
+  role?: string
+  tagline?: string
+  name?: string
   quote?: string
   howIWork?: string
   beyondWork?: string
@@ -134,12 +137,13 @@ export type ApiAbout = {
   availability?: string
   stats: { value: string; label: string }[]
   tools: string[]
+  interests?: string[]
   cta?: { label: string; href: string }
   images: { src: string; alt: string; width?: number; height?: number }[]
 }
 
-/** El collage muestra como máximo estas imágenes (la API puede enviar hasta 4). */
-export const ABOUT_MAX_IMAGES = 3
+/** El carrusel muestra como máximo estas imágenes (el máximo de la API). */
+export const ABOUT_MAX_IMAGES = 4
 
 const isText = (value: unknown): value is string =>
   typeof value === 'string' && value.trim().length > 0
@@ -183,6 +187,10 @@ export const mapApiAbout = (raw: unknown): AboutContent | null => {
     .slice(0, 4)
     .map(item => ({ value: item.value.trim(), label: item.label.trim() }))
   const tools = (Array.isArray(data.tools) ? data.tools : []).filter(isText).slice(0, 12)
+  const interests = (Array.isArray(data.interests) ? data.interests : [])
+    .filter(isText)
+    .map(item => item.trim())
+    .slice(0, 6)
   const cta =
     data.cta && isText(data.cta.label) && isSafeHref(data.cta.href)
       ? { label: data.cta.label.trim(), href: data.cta.href }
@@ -192,6 +200,9 @@ export const mapApiAbout = (raw: unknown): AboutContent | null => {
     eyebrow: optionalText(data.eyebrow) ?? 'Sobre mí',
     heading: data.heading.trim(),
     intro: data.intro.trim(),
+    role: optionalText(data.role),
+    tagline: optionalText(data.tagline),
+    name: optionalText(data.name),
     quote: optionalText(data.quote),
     howIWork: optionalText(data.howIWork),
     beyondWork: optionalText(data.beyondWork),
@@ -200,6 +211,7 @@ export const mapApiAbout = (raw: unknown): AboutContent | null => {
     availability: optionalText(data.availability),
     stats,
     tools,
+    interests: interests.length ? interests : undefined,
     cta,
     images
   }

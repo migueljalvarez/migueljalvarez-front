@@ -13,6 +13,9 @@ export const ABOUT_LIMITS = {
   eyebrow: 30,
   heading: 80,
   intro: 400,
+  role: 60,
+  tagline: 160,
+  name: 60,
   quote: 220,
   howIWork: 500,
   beyondWork: 500,
@@ -24,6 +27,8 @@ export const ABOUT_LIMITS = {
   statLabel: 40,
   tools: 12,
   tool: 24,
+  interests: 6,
+  interest: 30,
   ctaLabel: 40,
   ctaHref: 200,
   images: 4,
@@ -33,10 +38,10 @@ export const ABOUT_LIMITS = {
 
 export const ABOUT_DEFAULT_EYEBROW = 'Sobre mí'
 
-/** Imágenes que muestra el sitio (la API acepta 4: la cuarta queda de reserva). */
-export const ABOUT_SITE_IMAGES = 3
-
 const IMAGE_PATH_RE = /^\/about\/[a-z0-9]+(-[a-z0-9]+)*\.(webp|jpg|jpeg|png)$/
+/** La API es de texto plano: rechaza `<` y `>` en los campos de presentación. */
+const PLAIN_TEXT_RE = /^[^<>]*$/
+const PLAIN_TEXT_MESSAGE = 'No se permiten los caracteres < y >.'
 const HREF_RE = /^(\/(?!\/)|https:\/\/)\S*$/
 const IMAGE_PATH_MESSAGE =
   'Escribe una ruta como /about/miguel.webp (minúsculas, números y guiones; webp, jpg, jpeg o png).'
@@ -61,6 +66,9 @@ export type AboutAdminRecord = {
   eyebrow: string
   heading: string
   intro: string
+  role: string
+  tagline: string
+  name: string
   quote: string
   howIWork: string
   beyondWork: string
@@ -69,6 +77,7 @@ export type AboutAdminRecord = {
   availability: string
   stats: AboutStat[]
   tools: string[]
+  interests: string[]
   ctaLabel: string
   ctaHref: string
   isPublished: boolean
@@ -88,6 +97,9 @@ export type AboutFormValues = {
   eyebrow: string
   heading: string
   intro: string
+  role: string
+  tagline: string
+  name: string
   quote: string
   howIWork: string
   beyondWork: string
@@ -96,6 +108,7 @@ export type AboutFormValues = {
   availability: string
   stats: AboutStat[]
   tools: string[]
+  interests: string[]
   ctaLabel: string
   ctaHref: string
   isPublished: boolean
@@ -110,6 +123,9 @@ export const emptyAboutForm = (): AboutFormValues => ({
   eyebrow: ABOUT_DEFAULT_EYEBROW,
   heading: '',
   intro: '',
+  role: '',
+  tagline: '',
+  name: '',
   quote: '',
   howIWork: '',
   beyondWork: '',
@@ -118,6 +134,7 @@ export const emptyAboutForm = (): AboutFormValues => ({
   availability: '',
   stats: [],
   tools: [],
+  interests: [],
   ctaLabel: '',
   ctaHref: '',
   isPublished: false,
@@ -128,6 +145,9 @@ export const formFromAboutRecord = (record: AboutAdminRecord): AboutFormValues =
   eyebrow: record.eyebrow || ABOUT_DEFAULT_EYEBROW,
   heading: record.heading,
   intro: record.intro,
+  role: record.role ?? '',
+  tagline: record.tagline ?? '',
+  name: record.name ?? '',
   quote: record.quote,
   howIWork: record.howIWork,
   beyondWork: record.beyondWork,
@@ -136,6 +156,7 @@ export const formFromAboutRecord = (record: AboutAdminRecord): AboutFormValues =
   availability: record.availability,
   stats: record.stats.map(item => ({ value: item.value, label: item.label })),
   tools: [...record.tools],
+  interests: [...(record.interests ?? [])],
   ctaLabel: record.ctaLabel,
   ctaHref: record.ctaHref,
   isPublished: record.isPublished,
@@ -163,6 +184,9 @@ export const normalizeAboutForm = (raw: AboutFormValues): AboutFormValues => {
     eyebrow: raw.eyebrow.trim() || ABOUT_DEFAULT_EYEBROW,
     heading: raw.heading.trim(),
     intro: raw.intro.trim(),
+    role: raw.role.trim(),
+    tagline: raw.tagline.trim(),
+    name: raw.name.trim(),
     quote: raw.quote.trim(),
     howIWork: raw.howIWork.trim(),
     beyondWork: raw.beyondWork.trim(),
@@ -171,6 +195,7 @@ export const normalizeAboutForm = (raw: AboutFormValues): AboutFormValues => {
     availability: raw.availability.trim(),
     stats: raw.stats.map(item => ({ value: item.value.trim(), label: item.label.trim() })),
     tools: raw.tools.map(item => item.trim()),
+    interests: raw.interests.map(item => item.trim()),
     ctaLabel: raw.ctaLabel.trim(),
     ctaHref: raw.ctaHref.trim(),
     isPublished: raw.isPublished,
@@ -214,6 +239,9 @@ const aboutSchema = z
       .string()
       .min(1, 'Escribe la presentación.')
       .max(ABOUT_LIMITS.intro, `La presentación admite hasta ${ABOUT_LIMITS.intro} caracteres.`),
+    role: text(ABOUT_LIMITS.role, 'El cargo').regex(PLAIN_TEXT_RE, PLAIN_TEXT_MESSAGE),
+    tagline: text(ABOUT_LIMITS.tagline, 'La frase').regex(PLAIN_TEXT_RE, PLAIN_TEXT_MESSAGE),
+    name: text(ABOUT_LIMITS.name, 'El nombre').regex(PLAIN_TEXT_RE, PLAIN_TEXT_MESSAGE),
     quote: text(ABOUT_LIMITS.quote, 'La cita'),
     howIWork: text(ABOUT_LIMITS.howIWork, 'Este texto'),
     beyondWork: text(ABOUT_LIMITS.beyondWork, 'Este texto'),
@@ -245,6 +273,18 @@ const aboutSchema = z
           .max(ABOUT_LIMITS.tool, `Cada herramienta admite hasta ${ABOUT_LIMITS.tool} caracteres.`)
       )
       .max(ABOUT_LIMITS.tools, `Máximo ${ABOUT_LIMITS.tools} herramientas.`),
+    interests: z
+      .array(
+        z
+          .string()
+          .min(1)
+          .max(
+            ABOUT_LIMITS.interest,
+            `Cada interés admite hasta ${ABOUT_LIMITS.interest} caracteres.`
+          )
+          .regex(PLAIN_TEXT_RE, PLAIN_TEXT_MESSAGE)
+      )
+      .max(ABOUT_LIMITS.interests, `Máximo ${ABOUT_LIMITS.interests} intereses.`),
     ctaLabel: text(ABOUT_LIMITS.ctaLabel, 'El texto del botón'),
     ctaHref: text(ABOUT_LIMITS.ctaHref, 'El enlace'),
     isPublished: z.boolean(),
@@ -351,6 +391,9 @@ export const hasAboutChanges = (saved: AboutFormValues, current: AboutFormValues
   JSON.stringify(normalizeAboutForm(saved)) !== JSON.stringify(normalizeAboutForm(current))
 
 const OPTIONAL_TEXT_FIELDS = [
+  'role',
+  'tagline',
+  'name',
   'quote',
   'howIWork',
   'beyondWork',
@@ -374,6 +417,7 @@ export const buildAboutPayload = (values: AboutFormValues) => {
     ...optional,
     stats: clean.stats,
     tools: clean.tools,
+    interests: clean.interests,
     isPublished: clean.isPublished
   }
 }
@@ -382,6 +426,9 @@ const CONTENT_FIELDS = [
   'eyebrow',
   'heading',
   'intro',
+  'role',
+  'tagline',
+  'name',
   'quote',
   'howIWork',
   'beyondWork',
@@ -390,6 +437,7 @@ const CONTENT_FIELDS = [
   'availability',
   'stats',
   'tools',
+  'interests',
   'ctaLabel',
   'ctaHref',
   'isPublished'
@@ -485,6 +533,10 @@ export const formToAboutContent = (raw: AboutFormValues): AboutContent => {
     eyebrow: values.eyebrow,
     heading: values.heading,
     intro: values.intro,
+    role: values.role || undefined,
+    tagline: values.tagline || undefined,
+    name: values.name || undefined,
+    interests: values.interests.length ? values.interests.filter(Boolean) : undefined,
     quote: values.quote || undefined,
     howIWork: values.howIWork || undefined,
     beyondWork: values.beyondWork || undefined,
@@ -496,7 +548,7 @@ export const formToAboutContent = (raw: AboutFormValues): AboutContent => {
     cta,
     images: values.images
       .filter(item => IMAGE_PATH_RE.test(item.path) && item.alt)
-      .slice(0, ABOUT_SITE_IMAGES)
+      .slice(0, ABOUT_LIMITS.images)
       .map(item => ({ src: item.path, alt: item.alt }))
   }
 }

@@ -40,20 +40,41 @@ test('about: conserva textos, cifras, herramientas y el botón', () => {
   assert.deepEqual(about.cta, { label: 'Escríbeme', href: 'https://wa.me/573000000000' })
 })
 
-test('about: muestra como máximo 3 imágenes y respeta el orden', () => {
-  const images = [1, 2, 3, 4].map(n => ({
+test('about: muestra como máximo 4 imágenes y respeta el orden', () => {
+  const images = [1, 2, 3, 4, 5].map(n => ({
     src: `/about/foto-${n}.webp`,
     alt: `Foto ${n}`,
     width: 1200,
     height: 1500
   }))
   const about = mapApiAbout(api({ images }))
-  assert.equal(ABOUT_MAX_IMAGES, 3)
+  assert.equal(ABOUT_MAX_IMAGES, 4)
   assert.deepEqual(
     about.images.map(item => item.src),
-    ['/about/foto-1.webp', '/about/foto-2.webp', '/about/foto-3.webp']
+    ['/about/foto-1.webp', '/about/foto-2.webp', '/about/foto-3.webp', '/about/foto-4.webp']
   )
   assert.equal(about.images[0].width, 1200)
+})
+
+test('about: cargo, frase, nombre e intereses; vacíos se omiten (sin mezclar con el respaldo)', () => {
+  const empty = mapApiAbout(api({ role: ' ', tagline: '', interests: [] }))
+  assert.equal(empty.role, undefined)
+  assert.equal(empty.tagline, undefined)
+  assert.equal(empty.name, undefined)
+  assert.equal(empty.interests, undefined)
+  const full = mapApiAbout(
+    api({
+      role: ' Ingeniero ',
+      tagline: 'Frase',
+      name: 'Miguel',
+      interests: [' Café ', '', 3, 'a', 'b', 'c', 'd', 'e', 'f']
+    })
+  )
+  assert.equal(full.role, 'Ingeniero')
+  assert.equal(full.tagline, 'Frase')
+  assert.equal(full.name, 'Miguel')
+  assert.deepEqual(full.interests, ['Café', 'a', 'b', 'c', 'd', 'e'])
+  assert.equal(mapApiAbout(api({ interests: 'Café' })).interests, undefined)
 })
 
 test('about: width y height solo van en pareja', () => {
