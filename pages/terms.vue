@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { LegalDocument } from '~/components/templates'
+  import LegalDocument from '~/components/templates/LegalDocument/LegalDocument.vue'
   import { getTermsSections, TERMS_UPDATED_AT } from '~/data/terms'
 
   definePageMeta({ path: '/terminos-y-condiciones', contact: 'compact' })

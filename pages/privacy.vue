@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { LegalDocument } from '~/components/templates'
+  import LegalDocument from '~/components/templates/LegalDocument/LegalDocument.vue'
   import { getPrivacySections, PRIVACY_UPDATED_AT } from '~/data/privacy'
 
   definePageMeta({ path: '/privacidad', contact: 'compact' })
