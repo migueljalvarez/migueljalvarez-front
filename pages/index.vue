@@ -1,8 +1,18 @@
 <script setup lang="ts">
-  import { About, Main, PortfolioSection, ProcessSection, Services } from '~/components/templates'
-
-  import { META, MY_SOCIAL_MEDIA } from '~/constants/common'
+  import Main from '~/components/templates/Main/Main.vue'
   import { Section } from '~/components/organisms'
+  import { META, MY_SOCIAL_MEDIA } from '~/constants/common'
+  import { lazySection } from '~/utils/lazySection'
+
+  // Solo el hero es crítico; el resto se hidrata al acercarse (ver utils/lazySection.ts).
+  const Services = lazySection(() => import('~/components/templates/Services/Services.vue'))
+  const ProcessSection = lazySection(
+    () => import('~/components/templates/Services/ProcessSection.vue')
+  )
+  const PortfolioSection = lazySection(
+    () => import('~/components/templates/Portfolio/PortfolioSection.vue')
+  )
+  const About = lazySection(() => import('~/components/templates/About/About.vue'))
 
   definePageMeta({ layout: 'default', keepalive: true })
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { TestimonialSubmit } from '~/components/templates'
+  import TestimonialSubmit from '~/components/templates/TestimonialSubmit/TestimonialSubmit.vue'
   import type { TestimonialSubmission } from '~/utils/testimonialSubmission'
 
   // URL pública en español por SEO/claridad; el archivo va en inglés. Enlace único del correo: no se

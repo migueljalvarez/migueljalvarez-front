@@ -17,7 +17,8 @@
 
   const route = useRoute()
   const { socials } = useSocialMedia()
-  let scrollHandler: (() => void) | null = null
+  const topSentinel = ref<HTMLElement | null>(null)
+  let observers: IntersectionObserver[] = []
 
   const navLinks = PUBLIC_ROUTES.map(item => ({
     ...item,
@@ -37,16 +38,25 @@
   }
 
   const stopScrollSpy = () => {
-    if (scrollHandler) {
-      window.removeEventListener('scroll', scrollHandler)
-      window.removeEventListener('resize', scrollHandler)
-      scrollHandler = null
-    }
+    observers.forEach(observer => observer.disconnect())
+    observers = []
   }
 
+  // Scroll-spy con IntersectionObserver (sin listeners de scroll ni lecturas de layout por fotograma):
+  // un centinela en lo alto del documento marca "con scroll" y una línea al 30 % de la ventana marca la
+  // sección activa, igual que el cálculo anterior.
   const startScrollSpy = async () => {
     stopScrollSpy()
-    isScrolled.value = window.scrollY > 10
+    if (typeof IntersectionObserver === 'undefined') return
+
+    if (topSentinel.value) {
+      const topObserver = new IntersectionObserver(([entry]) => {
+        isScrolled.value = !entry!.isIntersecting
+        if (route.path === '/' && !isScrolled.value) activeSection.value = 'home'
+      })
+      topObserver.observe(topSentinel.value)
+      observers.push(topObserver)
+    }
 
     if (route.path !== '/') {
       activeSection.value = ''
@@ -60,32 +70,29 @@
       .filter(link => link.link.includes('#'))
       .map(link => document.getElementById(link.sectionId))
       .filter(Boolean) as HTMLElement[]
+    const crossing = new Set<HTMLElement>()
 
-    scrollHandler = () => {
-      const scrollY = window.scrollY
-      isScrolled.value = scrollY > 10
+    const sectionObserver = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) crossing.add(entry.target as HTMLElement)
+          else crossing.delete(entry.target as HTMLElement)
+        })
 
-      if (scrollY <= 10) {
-        activeSection.value = 'home'
-        return
-      }
-
-      const activationPoint = scrollY + window.innerHeight * 0.3
-      const currentTarget = targets
-        .map(target => ({
-          target,
-          top: target.getBoundingClientRect().top + scrollY
-        }))
-        .filter(({ top }) => top <= activationPoint)
-        .sort((a, b) => a.top - b.top)
-        .at(-1)
-
-      activeSection.value = currentTarget?.target.id || 'home'
-    }
-
-    scrollHandler()
-    window.addEventListener('scroll', scrollHandler, { passive: true })
-    window.addEventListener('resize', scrollHandler, { passive: true })
+        const current = targets.filter(target => crossing.has(target)).at(-1)
+        if (current) {
+          activeSection.value = current.id
+        } else if (
+          !isScrolled.value ||
+          (targets[0] && targets[0].getBoundingClientRect().top > window.innerHeight * 0.3)
+        ) {
+          activeSection.value = 'home'
+        }
+      },
+      { rootMargin: '-30% 0px -69% 0px' }
+    )
+    targets.forEach(target => sectionObserver.observe(target))
+    observers.push(sectionObserver)
   }
 
   onMounted(() => {
@@ -119,6 +126,11 @@
 </script>
 
 <template>
+  <div
+    ref="topSentinel"
+    class="pointer-events-none absolute top-0 left-0 h-2.5 w-px"
+    aria-hidden="true"
+  />
   <header
     :class="[
       'fixed top-0 left-0 z-50 w-full backdrop-blur-md transition-all duration-200',
@@ -132,13 +144,14 @@
       class="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"
     >
       <Transition name="logo-fade" mode="out-in">
-        <NuxtImg
+        <!-- SVG directo: ipx lo rasterizaba a webp y pesaba más que el vector. -->
+        <img
           :key="isHeroTop ? 'contact-logo' : 'brand-logo'"
-          :src="isHeroTop ? 'brand_white_v2.svg' : 'brand.svg'"
+          :src="isHeroTop ? '/brand_white_v2.svg' : '/brand.svg'"
           width="250"
           height="40"
           alt="Miguel Álvarez"
-          format="webp"
+          decoding="async"
           class="flex object-contain px-2"
         />
       </Transition>
