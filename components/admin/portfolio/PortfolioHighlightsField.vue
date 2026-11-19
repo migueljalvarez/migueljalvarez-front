@@ -11,16 +11,36 @@
 
   // Cifras destacadas de la ficha: cada fila es una cifra y lo que mide. Se reordenan y se quitan con
   // botones de 44 px (también con teclado) y el foco no se pierde al moverlas.
-  const props = defineProps<{
-    id: string
-    modelValue: PortfolioHighlight[]
-    errors: PortfolioErrors
-  }>()
+  // Se reutiliza en "Sobre mí" (cifras) cambiando los límites, el prefijo de los errores y los ejemplos.
+  const props = withDefaults(
+    defineProps<{
+      id: string
+      modelValue: PortfolioHighlight[]
+      errors: PortfolioErrors
+      max?: number
+      valueMax?: number
+      labelMax?: number
+      /** Prefijo de las claves de error (`highlights.0.value`). */
+      errorPrefix?: string
+      valuePlaceholder?: string
+      labelPlaceholder?: string
+      listLabel?: string
+    }>(),
+    {
+      max: PORTFOLIO_LIMITS.highlights,
+      valueMax: PORTFOLIO_LIMITS.highlightValue,
+      labelMax: PORTFOLIO_LIMITS.highlightLabel,
+      errorPrefix: 'highlights',
+      valuePlaceholder: '30 %',
+      labelPlaceholder: 'menos tiempo en cerrar el mes',
+      listLabel: 'Cifras destacadas'
+    }
+  )
   const emit = defineEmits<{ 'update:modelValue': [value: PortfolioHighlight[]] }>()
 
   const root = ref<HTMLElement | null>(null)
   const liveMessage = ref('')
-  const atLimit = computed(() => props.modelValue.length >= PORTFOLIO_LIMITS.highlights)
+  const atLimit = computed(() => props.modelValue.length >= props.max)
 
   const set = (index: number, field: keyof PortfolioHighlight, value: string) =>
     emit(
@@ -63,12 +83,12 @@
       ?.focus()
   }
 
-  const listError = computed(() => props.errors.highlights)
+  const listError = computed(() => props.errors[props.errorPrefix])
 </script>
 
 <template>
   <div ref="root">
-    <ul v-if="modelValue.length" class="space-y-3" aria-label="Cifras destacadas">
+    <ul v-if="modelValue.length" class="space-y-3" :aria-label="listLabel">
       <li
         v-for="(item, index) in modelValue"
         :key="index"
@@ -106,22 +126,22 @@
             :id="`${id}-${index}-value`"
             :model-value="item.value"
             label="Cifra"
-            placeholder="30 %"
+            :placeholder="valuePlaceholder"
             required
-            :maxlength="PORTFOLIO_LIMITS.highlightValue"
+            :maxlength="valueMax"
             autocomplete="off"
-            :error="errors[`highlights.${index}.value`]"
+            :error="errors[`${errorPrefix}.${index}.value`]"
             @update:model-value="set(index, 'value', String($event))"
           />
           <AdminInput
             :id="`${id}-${index}-label`"
             :model-value="item.label"
             label="Qué mide"
-            placeholder="menos tiempo en cerrar el mes"
+            :placeholder="labelPlaceholder"
             required
-            :maxlength="PORTFOLIO_LIMITS.highlightLabel"
+            :maxlength="labelMax"
             autocomplete="off"
-            :error="errors[`highlights.${index}.label`]"
+            :error="errors[`${errorPrefix}.${index}.label`]"
             @update:model-value="set(index, 'label', String($event))"
           />
         </div>
@@ -142,9 +162,7 @@
       </AdminButton>
       <p class="text-sm tabular-nums text-brand-muted">
         {{
-          atLimit
-            ? `Llegaste al máximo de ${PORTFOLIO_LIMITS.highlights} cifras`
-            : `${modelValue.length} de ${PORTFOLIO_LIMITS.highlights} cifras`
+          atLimit ? `Llegaste al máximo de ${max} cifras` : `${modelValue.length} de ${max} cifras`
         }}
       </p>
     </div>
