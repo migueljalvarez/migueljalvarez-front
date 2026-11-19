@@ -1,74 +1,37 @@
 # migueljalvarez.com
 
-Sitio web de **Miguel Álvarez**, ingeniero de sistemas y desarrollador de software independiente.
-Es una página de captación de clientes (landing, portafolio, cómo trabajo y contacto) y, más adelante,
-un panel privado en `/admin` para gestionar leads, testimonios, proyectos, equipo y pagos.
+Sitio de Miguel Álvarez, desarrollador de software independiente: landing, portafolio, cómo trabajo, contacto, páginas legales y un panel privado en `/admin`. Se despliega en Netlify y consume la API de [`migueljalvarez-api`](../migueljalvarez-api) desde su servidor (Nitro). Sin la API funciona con contenido de respaldo.
 
-> **Estado:** en desarrollo (`v2/landing`). No se publica hasta que la base de datos esté lista.
-> Contexto completo para personas y agentes de IA: [AGENTS.md](AGENTS.md).
+Nuxt 4 (SSR) · Vue 3 · TypeScript · Nuxt UI 4 · Tailwind CSS 4 · Resend · Zod.
 
-## Stack
+## Levantarlo
 
-Nuxt 4 (SSR) · Vue 3 · TypeScript · Nuxt UI 4 · Tailwind CSS 4 · Nitro (`server/api`) ·
-Resend · Zod · (sin base de datos por ahora; llegará con Supabase y luego un backend propio) ·
-Netlify.
-
-## Requisitos
-
-- Node `^22.22.3 || ^24.15.0 || >=26` (ver `.nvmrc`; con `nvm install 22.22.3`).
-- npm 10 o superior.
-
-## Primeros pasos
+Requiere Node `^22.22.3 || ^24.15.0 || >=26` (ver `.nvmrc`) y npm 10 o superior.
 
 ```bash
-npm ci                      # instala dependencias
-cp .env.example .env        # completa los valores (nunca subas .env)
-npm run dev                 # http://localhost:3000
+npm ci
+cp .env.example .env   # completa los valores; nunca subas .env
+npm run dev            # http://localhost:3000
 ```
 
-Si el puerto 3000 está ocupado, usa uno temporal: `PORT=3333 npm run dev` (ajusta
-`NUXT_PUBLIC_BASE_URL` si lo necesitas).
+Si el puerto 3000 está ocupado: `PORT=3333 npm run dev` (ajusta `NUXT_PUBLIC_BASE_URL`).
 
-## Scripts
+## Probarlo
 
-| Comando          | Qué hace                                          |
-| ---------------- | ------------------------------------------------- |
-| `npm run dev`    | Servidor de desarrollo (con proyectos de ejemplo) |
-| `npm run build`  | Compila para producción                           |
-| `npm run lint`   | ESLint                                            |
-| `npm run format` | Prettier                                          |
-| `npm test`       | Tests (`node --test`)                             |
+```bash
+npm run lint
+npm test
+npm run build
+```
 
-Para probar el build de producción en local:
-`npm run build && node --env-file=.env .output/server/index.mjs`.
+Para ejecutar el build de producción: `node --env-file=.env .output/server/index.mjs`. El CI (`.github/workflows/ci.yml`) corre lint, build, tests y la auditoría de dependencias.
 
 ## Variables de entorno
 
-Los nombres están en [.env.example](.env.example). Los secretos se leen **en ejecución** (no quedan
-dentro del build): puedes usar el nombre clásico (`RESEND_API_KEY`) o su versión con prefijo `NUXT_`
-(`NUXT_RESEND_API_KEY`), que tiene prioridad.
+Los nombres están en [.env.example](.env.example). Los secretos se leen en ejecución, no quedan dentro del build; cada uno acepta su nombre clásico (`RESEND_API_KEY`) o la versión con prefijo `NUXT_` (`NUXT_RESEND_API_KEY`), que tiene prioridad. Los datos del titular legal (`NUXT_PUBLIC_LEGAL_*`) se cargan en Netlify, no en el repositorio.
 
-## Estructura
+## Desplegarlo
 
-```
-pages/         rutas (landing, cómo trabajo, portafolio, privacidad, login, dashboard)
-components/    atoms · molecules · organisms · templates (diseño atómico)
-server/api/    endpoints /api/* (contrato en docs/openapi.yaml)
-server/utils/  sesión admin, secretos, IP del cliente
-constants/     copy y datos del sitio (portafolio real + mock solo en dev)
-data/          servicios, "cómo trabajo", política de privacidad
-docs/          openapi.yaml, sistema de marca
-tests/         tests de filtros, mocks, contrato de API y secretos en el build
-```
+Netlify, con `netlify.toml` (preset `netlify` de Nitro, Node 22.22.3). Definir las variables de `.env.example` en Netlify antes del primer deploy; `NUXT_PUBLIC_BASE_URL` se lee al compilar. Reemplazar la rama `main` dispara el deploy de producción.
 
-## Calidad
-
-- `npm run lint`, `npm run build` y `npm test` deben pasar antes de integrar cambios.
-- La consola del navegador no debe mostrar avisos de Vue ni errores de hidratación.
-- CI (GitHub Actions) ejecuta lint, build, tests y `npm audit --audit-level=high`.
-
-## Despliegue (Netlify)
-
-`netlify.toml` está preparado (preset `netlify` de Nitro, `publish = "dist"`, Node 22.22.3). Antes de
-publicar: definir las variables de entorno en Netlify, completar la revisión legal de `/privacidad`
-y tener lista la base de datos. Ver [AGENTS.md](AGENTS.md) para el flujo de ramas.
+Convenciones, flujo de ramas y reglas para agentes: [AGENTS.md](AGENTS.md). Contrato de la API del sitio: [docs/openapi.yaml](docs/openapi.yaml). Sistema de marca: [docs/brand-system.md](docs/brand-system.md).

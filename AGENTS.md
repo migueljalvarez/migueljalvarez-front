@@ -1,204 +1,104 @@
 # AGENTS.md
 
-Guía para agentes de IA que trabajen en este repositorio. Regla del proyecto: **se usa `AGENTS.md`; no se usa `CLAUDE.md`**.
+Guía para agentes de IA en este repositorio. Se usa `AGENTS.md`; no se usa `CLAUDE.md`.
 
-## Qué es este proyecto
+## Proyecto
 
-Sitio personal/portafolio de **Miguel Alvarez** (Medellín, Colombia; trabajo remoto), desarrollador de software independiente. El sitio funciona como **página de captación de clientes**: posiciona a Miguel como alguien que "antes de escribir código, entiende el problema" y dirige al visitante a contactarlo (primera consulta sin costo, respuesta < 24 h).
+Sitio de captación de clientes de Miguel Álvarez (desarrollador independiente, Medellín): landing, portafolio, cómo trabajo, contacto, páginas legales y un panel privado `/admin`. Idioma de la UI y del copy: español. Nombres de código: inglés.
 
-- Público objetivo: emprendedores y empresas hispanohablantes que necesitan sitios web, sistemas y MVPs.
-- Idioma del contenido y de la UI: **español** (`lang="es"`). Código, nombres de variables y commits: mezcla; el copy siempre en español.
-- Rama de trabajo actual: `v2/landing-clean` (rediseño v2, historial limpio). **No mezclar con `origin/v2/landing`, `main` ni `develop`**: conservan un historial anterior distinto (con datos personales ya retirados aquí). `main` se reemplazará por esta rama cuando se publique. Se permite hacer push normal de `v2/landing-clean`; no usar `git pull` desde las otras ramas.
+El backend es el repositorio hermano `../migueljalvarez-api` (NestJS + PostgreSQL). El sitio lo consume solo desde Nitro, nunca desde el navegador.
 
-## Stack
+## Notion
 
-- Nuxt 4.6 (SSR activo; estructura de carpetas en la raíz, sin `app/`), Vue 3 `<script setup lang="ts">`, TypeScript.
-- Nuxt UI 4 + Tailwind CSS 4 (tokens de marca `brand-*` en `assets/css/main.css`), `@nuxt/icon` (mdi / simple-icons), `@nuxt/image` (ipx / proveedor de Netlify), `@nuxt/fonts` (Poppins, Inter).
-- Backend en Nitro (`server/api`): Resend (correo de contacto) y Zod (validación). **Sin base de datos por ahora**: Firebase se retiró por completo (nov-2026); la base y la API serán un backend propio (NestJS + PostgreSQL en el repositorio `../migueljalvarez-api`, en tu servidor tras Cloudflare Tunnel); Supabase queda solo como alternativa descartada por ahora.
-- Despliegue: Netlify (`netlify.toml`, preset `netlify` de Nitro: estáticos en `dist`, SSR como función). Node 22.22.3 (`.nvmrc` y `netlify.toml`). CI en `.github/workflows/ci.yml` y Dependabot.
+Tareas, estado de sprint, decisiones y pendientes viven en Notion, no en este repositorio.
+
+- Base "migueljalvarez.com – Backlog": https://app.notion.com/p/41a3dd9397f681c9ba0fd839c2e4786b
+- Estados: `Hecho` = terminado y verificado sin publicar; `Desplegado` = ya en producción. Actualizar tras cada iteración.
+- Aquí se documenta solo lo que no se deduce del código.
 
 ## Comandos
 
 ```bash
-npm run dev        # http://localhost:3000 (si está ocupado, uno temporal: PORT=3333 npm run dev; ajusta NUXT_PUBLIC_BASE_URL)
-npm run build      # build de producción
-npm run generate   # prerender estático
-npm run lint       # eslint
-npm run format     # prettier
-npm test           # node --test (tests/*.mjs)
+npm ci
+npm run dev        # http://localhost:3000 (si está ocupado: PORT=3333 npm run dev, y ajusta NUXT_PUBLIC_BASE_URL)
+npm run build
+npm run lint
+npm test           # node --test sobre tests/*.mjs; algunos revisan .output tras un build
+npm run audit:ci   # falla ante avisos altos o críticos no aceptados en scripts/audit-allowlist.json
 ```
 
-## Estructura
+Node `^22.22.3 || ^24.15.0 || >=26` (`.nvmrc`). Para probar el build: `npm run build && node --env-file=.env .output/server/index.mjs`.
 
-```
-pages/            index (landing), how-we-work (/como-trabajo), privacy (/privacidad), login, portfolio/{index,[slug]} (/portafolio), admin/* (panel privado)
-layouts/          default, admin (panel), auth (login); el error global está en error.vue (raíz)
-components/
-  atoms/          Button (tema primary/secondary/whatsapp, onDark, to), Input, Select, Checkbox, Title, Eyebrow, Chip, Card, HexMarker
-  molecules/      Header, SocialMedia, SectionHeader (eyebrow + título + texto), CheckList, BackLink, FilterPills
-  organisms/      Section, ProjectCard, ServiceCard
-  templates/      Main, Services, ProcessSection, Portfolio*, About, Contact, HowWork*
-  Form/
-composables/      useEmail, useSectionReveal, useSiteSeo, useSocialMedia
-constants/        common (copy HOME_COPY/HOME_HERO_COPY/META), portfolio (+ mock solo dev), routes (PUBLIC_ROUTES, API)
-data/             services.ts, work.ts (contenido estático de servicios y "cómo trabajo")
-server/api/       (contact), admin/{login,logout,session}, portafolio
-utils/            cn.ts, portfolioFilters.ts
-docs/             brand-system.md (tipografía/paleta), openapi.yaml (contrato de API), portfolio-guide.md (qué mostrar y medidas de imágenes)
-tests/            filtros del portafolio, mocks fuera del build, secretos fuera del build y contrato OpenAPI
-```
+Antes de cerrar una tarea: `npm run lint`, `npm test` y `npm run build`. Si toca UI, abrir la home en `npm run dev` y comprobar que la consola no muestre avisos de Vue ni "Hydration mismatch" (un import perdido no rompe la vista pero sí hidrata mal).
 
-Atomic design: atoms → molecules → organisms → templates → pages. Cada carpeta tiene `index.ts` y `.d.ts` de tipos (`atom.d.ts`, `molecule.d.ts`, `organism.d.ts`, `template.d.ts`); los tipos de portafolio viven en `types/portfolio.ts`. Sombras de marca como tokens (`shadow-card`, `shadow-card-lg`, `shadow-dialog`, `shadow-header`) en `assets/css/main.css`; ritmo vertical de bandas `py-12 md:py-16`.
+## Ramas y publicación
 
-## Landing (orden de secciones en `pages/index.vue`)
-
-Main (hero) → Services → ProcessSection → Portafolio (destacados) → About → Contact. Rutas públicas: `/`, `/como-trabajo`, `/portafolio`, `/portafolio/[slug]`.
-
-## Fuentes de datos (importante)
-
-- **Copy y contenido de la landing**: mayormente estático en `constants/` y `data/`.
-- **Contenido público gestionado desde el panel (portafolio, redes, políticas)**: la fuente principal es la API (`../migueljalvarez-api`), consumida **solo desde Nitro** con `server/utils/publicContent.ts` y `publicApiClient.ts` (variable `NUXT_API_BASE_URL`; sin ella no hay API). Si la API no está configurada, no responde (tiempo máximo 2 s) o no tiene nada publicado, el sitio usa el **contenido de respaldo del código** (`constants/portfolio.ts`, `MY_SOCIAL_MEDIA`, `data/work.ts`): el landing nunca cae ni queda vacío. Endpoints del sitio: `/api/portfolio`, `/api/portfolio/[slug]`, `/api/social-links`, `/api/policies` (caché corta con `swr` en producción; **sin caché en desarrollo**). La lógica de mapeo y tarjetas es pura y vive en `utils/publicContent.ts` (con pruebas). Las páginas cargan con `usePortfolio()` / `usePolicies()`; las redes, con el plugin `plugins/socialLinks.ts` (SSR, sin parpadeo).
-- **Modo mantenimiento** (`server/middleware/maintenance.ts`, lógica pura en `server/utils/{apiHealth,maintenancePage}.ts`): en producción, con `NUXT_API_BASE_URL` configurada, antes de renderizar cada página se comprueba `GET /api/health` (caché de 15 s si responde y 5 s si no, un reintento). Si la API está caída, se responde **503** con una página de mantenimiento autocontenida (`Retry-After: 60`, `no-store`, `noindex`; se reintenta sola), para evitar servir contenido de respaldo desactualizado. En desarrollo no se activa: el sitio carga con el respaldo aunque la API configurada esté caída. Estáticos, `/api/*`, `robots.txt` y `sitemap.xml` no pasan por la comprobación. El respaldo sigue usándose en producción si la API responde pero no tiene contenido publicado.
-- **Portafolio (respaldo)**: vive en `constants/portfolio.ts` (solo Mi Comodoro y Mi Despensa) y se sirve por `/api/portfolio` cuando no hay API (no desde Firestore). Campos clave: `slug`, `type` (`client` | `product` | `practice`), `status` (`published` | `in-development`; en desarrollo no tiene ficha de detalle), `description`, `role` / `year` / `duration`, `problem` / `decision` / `result`, `highlights`, `scope`, `gallery` (con `alt`) y `ogImage`; lo opcional solo se muestra si tiene contenido. Guía completa: `docs/portfolio-guide.md`. El detalle público es `pages/portafolio/[slug].vue` (la página legacy `[id].vue` se eliminó porque tapaba a `[slug]`).
-- **Sobre mí (home)**: `GET /api/about` de la API (gestionado desde `/admin/about`; solo se sirve si está publicado y con al menos una imagen) con respaldo en `ABOUT_FALLBACK` (`constants/common`, el contenido de `HOME_COPY.about` + `/ma.webp` + cierre con disponibilidad y WhatsApp). Misma ruta que el resto: `server/utils/publicContent.ts` (`getAbout`) → `server/api/about.get.ts` → `useAbout()` en `pages/index.vue` (SSR, sin parpadeo) → plantilla `About` (solo recibe `content`; muestra un carrusel accesible de hasta 4 imágenes (sin autoplay; sin flechas ni puntos con una sola) dentro de dos tarjetas lado a lado, y omite todo bloque sin datos; campos opcionales `role`, `tagline`, `name` e `interests` (máx. 6): la API los guarda desde la migración 0011 y el panel los edita; vacíos se omiten, sin mezclar con el respaldo; **orden de despliegue: API primero, luego el sitio**). Mapeo y validación puros en `mapApiAbout` (`utils/publicContent.ts`, con pruebas en `tests/publicAbout.test.mjs`). Las imágenes viven en `public/about/` (guía: `docs/about-guide.md`): la API solo registra la ruta, no sube archivos. La plantilla y sus moléculas (`ImageCarousel`, `StatList`, `QuoteBlock`, `InfoCard`, `ChipList`) usan consultas de contenedor (`@container`, variantes `@4xl:`) para que la vista previa del panel sea fiel.
-- **Redes sociales**: salen de la API (`/api/social-links`, gestionadas desde el panel) con respaldo en `MY_SOCIAL_MEDIA` (`constants/common`), vía `useSocialMedia()`; se cargan durante el SSR. Los testimonios no tienen endpoint hasta que exista uno real aprobado.
-- **Titular legal del sitio (Términos, Privacidad, pie)**: los datos NUNCA van en el código ni en el repositorio público. Llegan por `runtimeConfig.public.legal` (vacío por defecto) con las variables `NUXT_PUBLIC_LEGAL_NAME`, `NUXT_PUBLIC_LEGAL_ID_TYPE` (`CC` | `NIT`), `NUXT_PUBLIC_LEGAL_ID_NUMBER`, `NUXT_PUBLIC_LEGAL_EMAIL` y `NUXT_PUBLIC_LEGAL_CITY`, que se cargan en Netlify/servidor (solo nombres en `.env.example`). `useLegalHolder()` (lógica pura en `utils/legalHolder.ts`, con pruebas) devuelve el titular; todo texto que lo use se omite si falta el dato. Documentos legales: `data/privacy.ts` (`PRIVACY_UPDATED_AT`) y `data/terms.ts` (`TERMS_UPDATED_AT`, **actualizar al cambiar el texto**), renderizados con la plantilla `LegalDocument`; rutas `/privacidad` y `/terminos-y-condiciones`. Los Términos son un borrador que requiere revisión legal.
-- **Contacto**: `POST /api/contact` captura el mensaje por **dos canales**: primero el correo (Resend: `RESEND_API_KEY`, `MAIL_FROM`, `MAIL_TO`) y después el lead en la API (`POST /api/intake/leads` con `NUXT_INTAKE_API_KEY`, hasta 3 reintentos solo ante fallos transitorios; la API es idempotente). Éxito si **al menos uno** capturó el mensaje; solo si fallan ambos se devuelve error y el visitante conserva lo escrito. El formulario exige la casilla de consentimiento (Ley 1581, átomo `Checkbox`); el servidor valida `consent: true` y fija la versión de la política (`PRIVACY_UPDATED_AT` de `data/privacy.ts`; **al cambiar la política, actualizar esa fecha**). Lógica pura y probada en `server/utils/{contactSchema,contactFlow,leadIntake}.ts`. Sin API o sin clave, solo se envía el correo. Los registros no incluyen datos personales.
+- Rama de trabajo: `v2/landing-clean` (historial limpio). No mezclar con `origin/v2/landing`, `main` ni `develop`; no usar `git pull` desde ellas.
+- Ramas `feat/*` y `fix/*` desde `v2/landing-clean`, integradas con merge local `--no-ff`. El push de `v2/landing-clean` está permitido.
+- No hacer push a `main`, push forzado, PR a `main` ni deploy sin petición explícita: reemplazar `main` dispara el deploy de producción en Netlify.
+- Commits en español, cortos. Sin líneas de atribución de Claude (`Co-Authored-By`, "Generated with Claude Code").
+- El repositorio de GitHub es público: nada de datos personales (teléfono, correo, CV) ni secretos. El CV y documentos personales viven en `.private/` (ignorado) y no se sirven desde `public/`.
 
 ## Convenciones
 
-- **Nombres en inglés, siempre.** Ningún archivo, carpeta, componente, composable, tipo, constante ni ruta de API se nombra en español. El español es solo para el copy visible y la documentación. Las URL públicas pueden seguir en español por SEO (`/portafolio`, `/como-trabajo`, `/privacidad`) definiéndolas con `definePageMeta({ path })` o `routeRules`, con el archivo en inglés. Deuda de nombres de páginas pagada (nov-2026): las URL públicas en español se definen con `definePageMeta({ path })` (`pages/how-we-work.vue`, `pages/privacy.vue`, `pages/portfolio/`); las rutas del panel van en inglés (`/admin/{team,experience,leads,projects,rates,testimonials}`). Renombra las claves/IDs en español de `constants/` y `data/` que se detecten al tocarlos.
-- **Frontend: Atomic Design obligatorio y pixel perfect.** Todo UI nuevo se construye como átomos → moléculas → organismos → plantillas → páginas; si un fragmento se repite o tiene identidad propia, se **componentiza** (no se duplica marcado). Se implementa **fiel al diseño** (espaciados, tipografía, radios, sombras, colores y estados exactos de `docs/brand-system.md` y de la referencia visual), revisado en el navegador en móvil y escritorio antes de cerrar. Los componentes del panel (`components/admin/`) siguen la misma jerarquía.
-- Prettier + ESLint (config en repo); `<script>` indentado dentro de `.vue`. Respetar `.prettierrc`.
-- Clases Tailwind canónicas v4 y tokens `brand-*`; seguir `docs/brand-system.md` para jerarquía tipográfica y contraste.
+- **Nombres en inglés** para archivos, carpetas, componentes, composables, tipos, constantes y rutas de API. El español es solo copy y documentación. Las URL públicas pueden ir en español por SEO (`/portafolio`, `/como-trabajo`, `/privacidad`, `/terminos-y-condiciones`, `/testimonio/:token`) con `definePageMeta({ path })`; el archivo se queda en inglés.
+- **Atomic Design obligatorio**: atoms → molecules → organisms → templates → pages. Lo que se repite o tiene identidad propia se componentiza. Cada carpeta tiene `index.ts` y su `.d.ts` de tipos. Los componentes del panel (`components/admin/`) siguen la misma jerarquía y se importan de forma explícita.
+- **Pixel perfect** contra `docs/brand-system.md`: espaciados, tipografía, radios, sombras, colores y estados; revisar en móvil y escritorio.
+- Tokens `brand-*` y clases Tailwind v4 canónicas. Trampa: `outline-none` y `outline-hidden` anulan `focus-visible:outline-2`.
 - Accesibilidad: `min-h-11` en objetivos táctiles, `focus-visible`, `aria-hidden` en iconos decorativos.
-- Texto de UI en español, tono cercano y orientado al negocio (no jerga técnica en el copy).
-- Imágenes en `public/` (webp); usar `NuxtImg`. Las de proyectos van en `public/projects/<slug>/` con las medidas de `docs/portfolio-guide.md` (portada 1280×720 ≤100 KB, galería 1600×900 ≤150 KB, 3–6 por proyecto, og 1200×630 jpg). `tests/publicImages.test.mjs` hace cumplir ≤150 KB y ≤1920 px.
-- Commits en español, descriptivos y cortos (ver `git log`).
+- Imágenes de `public/` en webp con `NuxtImg` (SVG de marca como `<img>`: ipx los convierte a webp). Medidas y pesos en `docs/portfolio-guide.md` y `docs/about-guide.md`; `tests/publicImages.test.mjs` hace cumplir ≤150 KB y ≤1920 px.
+- Copy cercano, en primera persona, orientado al negocio; sin jerga ni tono de búsqueda de empleo.
+- Prettier + ESLint del repositorio. No formatear en masa ni revertir cambios ajenos.
 
-## Seguridad de cabeceras
+## Identidad visual
 
-- `routeRules` en `nuxt.config.ts` añade `X-Content-Type-Options`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`, HSTS y un CSP mínimo (`frame-ancestors`, `base-uri`, `form-action`, `object-src`). Zonas privadas llevan `no-store` y `X-Robots-Tag`. El CSP completo (script/connect-src) queda pendiente.
-- El servidor de desarrollo escucha solo en `localhost` (no en toda la red).
+Detalle en `docs/brand-system.md`. Reglas que se rompen con facilidad:
 
-## Calidad antes de integrar
+- Azul marino (`brand-navy`) protagonista; superficies claras `brand-surface`; alternancia de bandas oscuras (hero, proceso, contacto) y claras.
+- Ámbar `brand-warm` (#F5B544) solo sobre oscuro y `brand-warm-ink` (#8A4B00) sobre claro, como único acento cálido y puntual: nunca fondos grandes ni botones.
+- Verde solo para estados y WhatsApp.
+- Sombras de tres niveles (plano por defecto): tokens `shadow-card`, `shadow-card-lg`, `shadow-dialog`, `shadow-header`. Ritmo vertical de bandas `py-12 md:py-16`.
+- Motivo gráfico: hexágonos. El logo del pie se conserva aunque se repita.
 
-- **Auditoría de dependencias:** el CI ejecuta `npm run audit:ci` (`scripts/audit.mjs`), que falla ante cualquier aviso alto o crítico salvo los aceptados en `scripts/audit-allowlist.json` (con motivo y fecha de vencimiento; al vencer vuelve a bloquear). Excepción vigente: `GHSA-fc5q-39xc-vjpf` (`picomatch`, ReDoS; sin parche publicado; solo herramientas de build, no está en `.output`), revisar antes del 2026-12-15. Nunca usar `npm audit fix --force` (sugiere degradar Nuxt).
-- Además de lint, build y tests: abrir la home en `npm run dev` y revisar que la consola no muestre avisos de Vue ni "Hydration mismatch". Un import perdido (p. ej. `Section`) no rompe la página a la vista pero sí genera errores de hidratación.
-- Lighthouse (referencia nov-2026, build local): móvil 68–80 (varía por corrida) / escritorio 98–99 en rendimiento; accesibilidad, buenas prácticas y SEO en 100. Imágenes de `public/` ≤ ~100 KB y ≤ 1920 px de ancho.
+## Fuentes de datos
 
-## Contrato de API
+- **Contenido público gestionado desde el panel** (portafolio, redes, políticas, Sobre mí): fuente principal la API, vía `server/utils/publicContent.ts` y `publicApiClient.ts` (`NUXT_API_BASE_URL`). Sin API, con respuesta lenta (2 s) o sin contenido publicado, se usa el respaldo del código (`constants/portfolio.ts`, `MY_SOCIAL_MEDIA`, `ABOUT_FALLBACK` en `constants/common`, `data/work.ts`). Endpoints del sitio: `/api/portfolio`, `/api/portfolio/[slug]`, `/api/social-links`, `/api/policies`, `/api/about`. Caché `swr` corta en producción, ninguna en desarrollo. El mapeo es puro y está probado en `utils/publicContent.ts`.
+- **Sobre mí**: `GET /api/about` solo se sirve publicado y con al menos una imagen. La plantilla recibe únicamente `content`, omite todo bloque sin datos y usa consultas de contenedor (`@container`) para que la vista previa del panel sea fiel. La API solo registra rutas de imagen (`/about/<slug>.webp` en `public/about/`); no sube archivos.
+- **Portafolio**: solo productos propios y trabajos reales de clientes. Los mocks (`constants/portfolio.mock.ts`) se activan solo en desarrollo; `tests/portfolioMocks.test.mjs` revisa que no lleguen a `.output`. Para ver solo datos reales: `npm run build && npm run preview`.
+- **Testimonios**: no hay sección pública hasta que exista uno real aprobado.
+- **Titular legal** (Términos, Privacidad, pie): los datos nunca van en el repositorio. Llegan por `NUXT_PUBLIC_LEGAL_NAME`, `_ID_TYPE` (`CC` | `NIT`), `_ID_NUMBER`, `_EMAIL` y `_CITY`; `useLegalHolder()` (`utils/legalHolder.ts`) los entrega y todo texto que los use se omite si faltan. Al cambiar `data/privacy.ts` o `data/terms.ts`, actualizar `PRIVACY_UPDATED_AT` / `TERMS_UPDATED_AT` (la fecha de privacidad también se guarda con cada consentimiento). Los Términos son un borrador sin revisión legal. Las páginas legales no pueden prerenderizarse: el titular es de runtime.
+- **Contacto**: `POST /api/contact` captura por dos canales: primero correo (Resend: `RESEND_API_KEY`, `MAIL_FROM`, `MAIL_TO`) y luego lead en la API (`POST /api/intake/leads` con `NUXT_INTAKE_API_KEY`, idempotente, reintenta solo fallos transitorios). Éxito si al menos uno funcionó. Exige `consent: true`. Sin API o sin clave, solo correo. Lógica en `server/utils/{contactSchema,contactFlow,leadIntake}.ts`.
+- **Modo mantenimiento** (`server/middleware/maintenance.ts`): en producción con `NUXT_API_BASE_URL`, antes de cada página consulta `GET /api/health` (caché 15 s si responde, 5 s si no, un reintento). Si cae, responde 503 con página autocontenida (`Retry-After: 60`, `noindex`). Excluye estáticos, `/api/*`, `robots.txt` y `sitemap.xml`. No actúa en desarrollo. Si la API responde pero no tiene contenido, se usa el respaldo.
 
-- La API del panel y el esquema de datos viven en el repositorio hermano **`../migueljalvarez-api`** (NestJS + PostgreSQL; ver su `AGENTS.md`, `docs/dashboard-scope.md` y `docs/openapi-panel.yaml`). Este sitio la consumirá desde el servidor (Nitro), nunca desde el navegador. El contrato de este archivo (`openapi.yaml`) sigue cubriendo solo los endpoints de `server/api`.
-- `docs/openapi.yaml` (OpenAPI 3.1) documenta todos los endpoints `/api/*` y es el contrato que debe cumplir el futuro backend Nest. Al agregar o cambiar un endpoint hay que actualizarlo: `tests/openapiContract.test.mjs` falla si un archivo de `server/api` no está documentado (o al revés).
+## Rendimiento
+
+- La home carga las secciones bajo el pliegue con `utils/lazySection.ts` (hidratación al ser visibles, el HTML sigue completo en SSR). El hook `build:manifest` de `nuxt.config.ts` quita el prefetch de zonas privadas y depende de los nombres de chunk `Services`, `ProcessSection`, `PortfolioSection`, `About` y `Contact`: si renombras esos componentes, actualiza el hook.
+- Importar plantillas por ruta directa, no por el barrel `components/templates` (arrastra zod a la home). `/` usa `swr: 60` solo en producción.
+
+## Seguridad
+
+- `routeRules` en `nuxt.config.ts` añade cabeceras (`X-Content-Type-Options`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`, HSTS) y un CSP mínimo. Las zonas privadas llevan `no-store` y `X-Robots-Tag`.
+- **Secretos**: nunca leer, imprimir ni commitear valores de `.env`; solo nombres (`.env.example`). No se leen de `process.env` en `nuxt.config.ts` (quedarían escritos en `.output`): `getServerSecret()` (`server/utils/secrets.ts`) los resuelve en ejecución, primero `NUXT_<CLAVE>` y como respaldo el nombre clásico. `tests/noSecretsInBuild.test.mjs` falla si uno aparece en `.output`.
+- `estree-walker@^2.0.2` es dependencia directa a propósito: sin ella `node .output/server/index.mjs` falla con `ERR_PACKAGE_PATH_NOT_EXPORTED`. No quitarla.
+- Dependencias: nunca `npm audit fix --force` (propone degradar Nuxt).
 
 ## SEO
 
-- Metadatos por página con `usePageSeo()` (`composables/useSiteSeo.ts`): título, descripción, canonical, Open Graph y Twitter. La URL base sale de `NUXT_PUBLIC_BASE_URL` (obligatoria en producción: `https://migueljalvarez.com`); nunca usar `window` para calcularla.
-- `/robots.txt` y `/sitemap.xml` son rutas de servidor (`server/routes/`). El robots bloquea todo si la URL base es local. El sitemap excluye proyectos `in-development`.
-- Páginas privadas (`/login`, `/dashboard/*`) llevan `noindex`. JSON-LD (Person + ProfessionalService) en la home.
+`usePageSeo()` (`composables/useSiteSeo.ts`) fija título, descripción, canonical, Open Graph y Twitter. La URL base sale de `NUXT_PUBLIC_BASE_URL` (obligatoria en producción: `https://migueljalvarez.com`); nunca usar `window` para calcularla. `robots.txt` bloquea todo si la base es local, y por eso Lighthouse mide SEO bien solo con la base de producción. Las páginas privadas llevan `noindex`.
 
-## Código retirado a propósito
+## Contrato con la API
 
-- Se eliminó todo lo que ninguna página usaba (nov-2026): componentes (Hero, Avatar, Badge, Footer, Card, AvatarCard, Blockquote, carruseles, HeroVisual, HeroCurve, Testimonial, PortfolioItem), `DynamicTable`, composables sin uso, los endpoints `/api/testimonials`, `/api/me` y `/api/socialMedia`, `firebase-admin` y todo el código/variables de Firebase, las 6 páginas del dashboard viejo, la configuración de Cloudinary, la fuente IBM Plex Mono y los logos/cursos de `public/`. Quedan en el historial de git si se necesitan.
-- **Testimonios**: no hay sección pública ni endpoint hasta que exista un testimonio real aprobado (módulo planeado en S9-S10 del plan). Entonces se reconstruyen desde cero.
-- **Flujo de testimonios (cerrado, nov-2026)**: panel `pages/admin/testimonials.vue` (`components/admin/testimonials/*`, `composables/useAdminTestimonials.ts`, `utils/admin/testimonials.ts`): lista con filtro por estado y paginación, crear solicitud, revisar (aprobar con texto editado / rechazar), renovar y eliminar; nunca muestra el token salvo una vez, como enlace copiable, si el correo no salió. Crear/renovar van por `POST /api/admin/testimonial-requests/send` (`server/api/admin/testimonial-requests/send.post.ts`, tiene prioridad sobre el proxy): valida sesión con la API, `Origin` y un límite de 10 envíos/10 min por IP, arma el enlace con `NUXT_PUBLIC_BASE_URL` (`/testimonio/<token>`) y envía el correo con Resend (`RESEND_API_KEY` y `MAIL_FROM`; sin ellos devuelve el enlace para copiar). En desarrollo no se envía correo real salvo `TESTIMONIAL_MAIL_DEV=true`. Página pública `pages/testimonial/[token].vue` (URL `/testimonio/:token`, noindex, sin referrer) con `components/templates/TestimonialSubmit`; sus llamadas van por `server/api/testimonial/[token].{get,post}.ts` (Nitro; el token no se registra en logs; 404 genérico «Enlace no válido o vencido»). Lógica pura y probada en `server/utils/{testimonialPublic,testimonialMail,testimonialSend,rateLimit}.ts` y `utils/{testimonialSubmission,admin/testimonials}.ts`. La landing sigue SIN mostrar testimonios hasta que exista uno real aprobado.
+- `docs/openapi.yaml` documenta los endpoints `/api/*` de `server/api`; `tests/openapiContract.test.mjs` falla si un endpoint no está documentado (o al revés). Al cambiar un endpoint, actualizarlo.
+- La API del panel y su contrato (`docs/openapi-panel.yaml`) viven en `../migueljalvarez-api`.
+- Panel `/admin` (layout `admin`, guarda global `middleware/auth.global.ts`): toda llamada pasa por `composables/useAdminApi.ts` (nunca `$fetch` directo) y por el proxy `server/api/admin/[...path].ts`, que reenvía solo la cookie `admin_session`, valida segmentos y `Origin`, no sigue redirecciones y responde 503 si la API cae. Las rutas del panel van en inglés. El menú y los módulos se definen en `constants/admin.ts`. El envío de solicitudes de testimonio tiene endpoint propio (`server/api/admin/testimonial-requests/send.post.ts`, prioridad sobre el proxy).
+- Los formularios del panel validan con Zod; la lógica pura vive en `utils/admin/*.ts` con pruebas.
 
-## Archivos privados
+## Agentes y skills
 
-- El CV y otros documentos personales NO se sirven públicamente. Viven en `.private/` (ignorado por git). Solo se descargarán o generarán desde el panel `/admin` con sesión válida (módulo de experiencia/CV, futuro); nunca desde `public/`.
-- El repositorio de GitHub es **público**: no subir datos personales (teléfono, correo, CV) ni secretos.
-
-## Flujo de ramas y publicación
-
-- **NO se publica nada hasta que la base de datos (Supabase) esté OK.** No hacer push, PR a `main`, merge a `main` ni deploy sin que el autor lo pida explícitamente.
-- Se trabaja en ramas `feat/*` / `fix/*` creadas desde `v2/landing-clean` y se integran de vuelta en ella con merge local (`--no-ff`). El push de `v2/landing-clean` está permitido (no afecta al despliegue); `main`, push forzado y deploy requieren petición explícita.
-- Commits y PRs sin líneas de atribución de Claude (ni `Co-Authored-By` ni "Generated with Claude Code").
+Subagentes en `.claude/agents/*.md` y skills en `.claude/skills/<name>/SKILL.md`; `.agents/` es copia idéntica (al editar uno, copiar al otro; `npm test` falla si difieren). Flujo: `frontend-dev` → `architect` + `design` → `review`; `refactor` corrige deuda de nombres o arquitectura. Si `nuxt-ui` choca con la identidad, mandan los tokens `brand-*`.
 
 ## Reglas para agentes
 
-1. No modificar nada fuera del alcance pedido; el árbol de trabajo tiene muchos cambios sin commitear de la v2 — **no revertirlos ni formatearlos en masa**.
-2. Nunca leer, imprimir ni commitear valores de `.env` (Resend, sesión admin). Solo nombres de variables.
-3. Antes de dar una tarea por cerrada: `npm run lint` y `npm test`; para cambios visuales, verificar en `npm run dev`.
-4. No crear `CLAUDE.md`. Las instrucciones para agentes se mantienen aquí.
-5. Los pendientes y el plan de trabajo se gestionan en **Notion** (ver sección siguiente).
-
-## Identidad visual (validada con la home en escritorio, nov-2026)
-
-- **Tono**: profesional sereno, consultivo y confiable; "entiendo tu problema" antes que "construyo tu app". Cercano (tuteo, primera persona), sin jerga ni tono de búsqueda de empleo.
-- **Paleta**: azul marino profundo (`brand-navy` #121e30 / `brand-mid` / `brand-accent`) como protagonista; superficies casi blancas (`brand-surface` #f5f7fa) para lectura; azul de logo (`brand-blue` #3f6bad) solo en acentos puntuales; verde solo para estados/WhatsApp; **ámbar `brand-warm` (#F5B544, solo sobre oscuro; `brand-warm-ink` #8A4B00 sobre claro) como único acento cálido y puntual** (eyebrows oscuros, marcador activo del proceso, checks oscuros, contorno tenue del hero; nunca fondos grandes ni botones). Alternancia de bandas oscuras (hero, proceso, contacto) y claras (servicios, portafolio, sobre mí).
-- **Tipografía**: Poppins (títulos, peso fuerte, tracking ajustado), Inter (cuerpo). Eyebrows en mayúsculas con tracking amplio antes de cada título.
-- **Motivo gráfico**: hexágonos (logo, fondo del hero, marcadores numerados 01–06, placeholders de proyectos).
-- **Componentes**: tarjetas blancas con esquinas muy redondeadas y sombra suave sobre fondo claro; paneles oscuros con borde sutil; botones primario (azul oscuro) y secundario (contorno); chips pequeños para etiquetas; checks para beneficios.
-- **Estructura narrativa**: hero (promesa + CTA + prueba de disponibilidad) → ¿en qué punto estás? (3 servicios por situación del cliente) → proceso → acuerdos de trabajo → portafolio → sobre mí (personal y cálido) → contacto.
-- **Contacto**: conserva el diseño original del panel oscuro con formulario. En la franja inferior, el logo completo queda a la izquierda; a la derecha van los enlaces de privacidad en una línea y el copyright debajo, centrados en su espacio. Año automático. Sin repetir nombre o descripción y sin divisores nuevos. El menú principal permanece en el encabezado.
-- Al ajustar, mantener esta identidad; las mejoras son refinamientos, no rediseños.
-
-## Datos de ejemplo (mocks)
-
-- El portafolio público solo muestra **productos propios y trabajos reales de clientes**. Los proyectos de práctica y cualquier dato inventado NO van en `constants/portfolio.ts`.
-- Para ver cómo se comporta la UI con varios proyectos, los mocks viven en un archivo aparte (`constants/portfolio.mock.ts`) y solo se activan en desarrollo (`USE_PORTFOLIO_MOCKS = import.meta.dev` en `constants/portfolio.ts`; en `npm run dev` se ve la marca "Datos de ejemplo"). Nunca deben llegar a producción, `build` ni `generate`: `tests/portfolioMocks.test.mjs` revisa `.output` tras un `npm run build`. Para ver el sitio solo con datos reales, usa `npm run build && npm run preview`.
-- Lo mismo aplica a testimonios: sin testimonios reales aprobados, la sección no se muestra en producción.
-
-## Antes de reemplazar `main` (publicar)
-
-- **NOTA (decisión del autor, 18-nov-2026): por ahora no se activa el segundo factor (OTP) del panel.** La opción sigue en el código (`AUTH_REQUIRE_TOTP`, obligatorio por defecto; la API no arranca con `false` fuera de `APP_ENV=local`). Publicar sin OTP exige antes una decisión explícita y cambiar esa regla de la API; mientras tanto, contraseña larga y única, límite de intentos y, idealmente, Cloudflare Access delante de la API. Con OTP: `true` en el servidor, administrador real con `npm run admin:create` y códigos de recuperación guardados.
-
-El checklist completo vive en Notion (página "Checklist antes de reemplazar main"). Resumen: repo público/privado decidido, variables de entorno cargadas en Netlify, `NUXT_PUBLIC_BASE_URL` definido, revisión legal de `/privacidad`, prueba real del formulario, revisión en teléfono real, Node 22.22.3, contenido de Mi Comodoro y CI en verde. Reemplazar `main` dispara el deploy de producción: solo cuando el autor lo pida.
-
-## Agentes y skills (`.claude/` y espejo `.agents/`)
-
-Subagentes con rol fijo (`.claude/agents/*.md`) y skills alineadas a cada uno (`.claude/skills/<name>/SKILL.md`). `.agents/` es una copia idéntica para otras herramientas: **al editar uno, copiar al otro** (`npm test` falla si difieren). Las skills de diseño y frontend viven solo aquí; la API (`../migueljalvarez-api`) tiene las suyas de backend.
-
-| Agente         | Rol                                                                 | Skills                                                           |
-| -------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| `architect`    | Valida Atomic Design, capas, público/privado y nombres; solo revisa | `atomic-design`                                                  |
-| `design`       | Valida identidad visual, pixel perfect y accesibilidad; solo revisa | `brand-identity`, `ui-ux-principles`, `nuxt-ui`                  |
-| `frontend-dev` | Implementa UI componentizada, pixel perfect                         | `atomic-design`, `brand-identity`, `ui-ux-principles`, `nuxt-ui` |
-| `refactor`     | Corrige violaciones y deuda de nombres de forma incremental         | `atomic-design`                                                  |
-| `review`       | Revisión final de calidad y reglas del proyecto                     | `atomic-design`, `brand-identity`, `ui-ux-principles`            |
-
-`nuxt-ui` es la skill oficial de Nuxt UI v4 (copiada de `finhub-dashboard`); si choca con la identidad, mandan los tokens `brand-*` de `brand-identity`. Flujo: `frontend-dev` → `architect` + `design` → `review`.
-
-## Gestión legal
-
-- El plugin `legal@knowledge-work-plugins` (Anthropic) está instalado a nivel de usuario: `/review-contract`, `/triage-nda`, `/legal-response`. Lee su playbook de `.claude/legal.local.md`, **ignorado por git** (posiciones de negociación del titular, marco colombiano; es un borrador sujeto a revisión de un abogado). No escribir en él documento de identidad, cuentas ni datos de clientes.
-- Los datos del titular (nombre, documento, correo, ciudad) nunca van en el repositorio: salen de `NUXT_PUBLIC_LEGAL_*` en Netlify. Los Términos y Condiciones (`data/terms.ts`) son un borrador pendiente de revisión legal.
-
-## Gestión de pendientes
-
-Plan de trabajo y backlog en Notion (workspace del autor). Base "migueljalvarez.com – Backlog": https://app.notion.com/p/41a3dd9397f681c9ba0fd839c2e4786b (sprints semanales S1–S15 desde el 16-nov-2026, ~5 h/semana; vistas Tablero, Roadmap y Por sprint).
-
-Dirección estratégica: cerrar y publicar v2/landing → endurecer seguridad → SEO/contenido → API propia NestJS + PostgreSQL (repositorio `../migueljalvarez-api`: auth, lecturas públicas, módulos del panel) → conectar el panel `/admin` de este proyecto Nuxt a esa API.
-
-## Panel administrativo (estructura hecha, sin datos reales)
-
-- `/admin/*` (layout `admin`, guarda global `middleware/auth.global.ts`): Menú agrupado: _Contenido del sitio_ (Portafolio —próximamente—, Sobre mí, Redes sociales, Políticas, Testimonios) y _Gestión_ (Leads, Proyectos, Equipo y pagos, Tarifas, Experiencia). Redes sociales y Políticas ya están conectadas a la API (`pages/admin/social-links.vue`, `pages/admin/policies.vue`), y también Sobre mí (`pages/admin/about.vue`, `composables/useAdminAbout.ts`, `utils/admin/about.ts`, `components/admin/about/`), Leads, Proyectos/Clientes y Equipo y pagos (`pages/admin/leads.vue`, `pages/admin/projects.vue`, `pages/admin/team.vue`; composables `useAdminLeads`, `useAdminProjects` y `useAdminTeam`, lógica pura probada en `utils/admin/leads.ts`, `projects.ts` y `team.ts`, componentes en `components/admin/leads/`, `projects/` y `team/`). El menú y los módulos se definen en `constants/admin.ts`. `/dashboard/**` redirige a `/admin`. `/login` usa el layout mínimo `auth`.
-- Ya no hay datos de ejemplo del panel: todos los módulos leen de la API y muestran su estado de error o vacío (se retiraron `useAdminData`, `constants/admin.samples.ts`, `types/admin.d.ts` y `AdminSampleBanner`).
-- Toda página nueva de `/admin` queda protegida automáticamente por la guarda global.
-- **Capa de datos del panel (conectada a la API):** `composables/useAdminSession.ts` (login en dos pasos, sesión, logout), `composables/useAdminApi.ts` (único punto de acceso a la API: `get/post/patch/put/del`, errores como `AdminApiError` con mensaje listo para mostrar, 401 → `/login`) y `utils/adminApiError.ts`. Las pantallas nunca llaman a `$fetch` directamente. Tarifas y Experiencia usan `useAdminRates` y `useAdminExperience`; el Resumen carga leads, proyectos, testimonios y pagos desde la API, cada indicador de forma independiente.
-- **Formularios y acciones ya construidos** (leads con pipeline y notas, testimonios, clientes y proyectos con horas y deadline, equipo con horas y pagos en USD con TRM, tarifas y políticas, experiencia). Leads, clientes, proyectos, equipo, tarifas, experiencia y testimonios usan sus composables de API. Los formularios validan con Zod; cada módulo conectado muestra su error si la API no está configurada o no responde.
-- Primitivas de UI del panel en `components/admin/` (`AdminInput`, `AdminField`, `AdminDialog` con `<dialog>` nativo, `AdminButton`, `AdminPageHeader`). Importar siempre los componentes de forma explícita.
-
-## Panel administrativo (visión)
-
-Módulos previstos en `/admin` (privado, noindex, Supabase Auth, un solo admin): leads (captura del formulario + alta manual + pipeline), testimonios (solicitud por correo con enlace único → aprobación), políticas y tarifas, clientes y proyectos, equipo (horas pactadas y pagos pendientes; solo el admin registra), experiencia profesional y, a futuro, generador de CV ATS por vacante (usa solo hechos de la base de experiencia, sin inventar).
-
-**Posicionamiento**: el sitio público proyecta a un profesional que presta servicios, no a alguien que busca empleo. No exponer CV ni experiencia laboral públicamente.
-
-## Deuda técnica conocida (a priorizar en el plan)
-
-- **Nombres en español**: deuda pagada (nov-2026): claves de `data/services.ts` y `data/work.ts` (incluido `WorkPolicyBlock`: `title`/`text`) y `PortfolioFilter` (ids `all|client|product`, etiquetas en `constants/portfolioFilters.ts`). Se conservan a propósito los ids de `SERVICE_OFFERINGS` y `WORK_POLICY_BLOCKS` y las anclas `#proceso`/`#no-acepto`/`#como-trabajo` (anclas públicas) y las URL en español por SEO.
-
-- **Auth del panel:** la resuelve la API (`../migueljalvarez-api`): contraseña (argon2id) + TOTP, sesión `admin_session` HttpOnly. El sitio ya **no guarda credenciales de administrador** (se retiraron `ADMIN_EMAIL/PASSWORD/SESSION_SECRET` y la sesión provisional). Todo `/api/admin/**` pasa por el proxy `server/api/admin/[...path].ts` (`server/utils/adminProxy.ts`): reenvía solo la cookie `admin_session` y la IP real, valida segmentos de ruta y `Origin`, no sigue redirecciones. Sin `NUXT_API_BASE_URL` o con la API caída responde 503 y el panel lo explica. El usuario se crea en el repo de la API con `npm run admin:create`.
-- `server/api/(contact)/contact.ts` ya está endurecido (escape de HTML, límites, honeypot, 5 intentos/10 min por IP en memoria, `runtimeConfig`). Pendiente: rate limit del proveedor y prueba de envío real en preview.
-- La web pública ya no depende de ninguna base de datos: puede desplegarse sin esperar a Supabase (la compuerta de publicación sigue siendo decisión del autor).
-- Netlify: el build con el preset `netlify` funciona en local (`NITRO_PRESET=netlify npm run build`); pesa 45 MB la función por los iconos de `@nuxt/icon` en modo local (valorar modo `remote` o recorte de colecciones). Falta medir en un deploy preview real.
-- Cobertura de tests básica (filtros, mocks, contrato OpenAPI, secretos).
-
-## Problemas conocidos de entorno
-
-- **Node**: Nuxt 4.6 exige Node `^22.22.3 || ^24.15.0 || >=26`. Con 22.12 compila pero avisa "unsupported". Actualizar con `nvm install 22.22.3` (Netlify usa `.nvmrc`).
-- `estree-walker@^2.0.2` es dependencia directa a propósito: sin ella `node .output/server/index.mjs` falla con `ERR_PACKAGE_PATH_NOT_EXPORTED` (Nitro no copiaba la v2 anidada de `@vue/compiler-core`). No quitarla.
-- **Secretos**: nunca se leen de `process.env` en `nuxt.config.ts` (quedarían escritos en `.output`). Los valores privados de `runtimeConfig` van vacíos y se resuelven en ejecución con `getServerSecret()` (`server/utils/secrets.ts`): primero `NUXT_<CLAVE>` (p. ej. `NUXT_RESEND_API_KEY`) y como respaldo el nombre clásico del `.env` (`RESEND_API_KEY`). `tests/noSecretsInBuild.test.mjs` falla si un secreto del `.env` aparece en `.output`.
-- El correo y teléfono de `pages/dashboard/cv.vue` viajan en un chunk JS público aunque la página esté protegida; se retirarán al reconstruir el módulo de CV.
+1. No modificar nada fuera del alcance pedido ni revertir o formatear en masa trabajo ajeno.
+2. No crear `CLAUDE.md`.
+3. Verificar UI en una copia o puerto distinto al `:3000` del autor. En un worktree con `node_modules` enlazado (junction), borrar el junction con `cmd /c rmdir` antes de `git worktree remove`.
