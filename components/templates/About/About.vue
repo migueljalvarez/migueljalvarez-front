@@ -1,187 +1,102 @@
 <script lang="ts" setup>
-  import { Card } from '~/components/atoms'
-  import { SectionHeader } from '~/components/molecules'
+  import { Button, Card } from '~/components/atoms'
+  import {
+    ChipList,
+    ImageCollage,
+    InfoCard,
+    QuoteBlock,
+    SectionHeader,
+    StatList
+  } from '~/components/molecules'
   import { HOME_COPY } from '~/constants/common'
+  import type { AboutContent } from '~/types/about'
 
-  const sectionRef = ref<HTMLElement | null>(null)
-  const highlights = HOME_COPY.about.highlights
-  const counters = ref([0, 0])
-  let counterObserver: IntersectionObserver | undefined
-  let animationFrame: number | null = null
+  // "Sobre mí": quién soy → qué me mueve → cifras → cómo trabajo / fuera del trabajo → herramientas → CTA.
+  // Solo recibe datos (la home los carga con `useAbout`; el panel pasa los del formulario). Todo bloque
+  // opcional se omite si no tiene contenido. El diseño responde al ancho del contenedor (`@container`).
+  const props = defineProps<{ content: AboutContent }>()
 
-  const setFinalCounters = () => {
-    counters.value = [10, 4]
-  }
-
-  onMounted(() => {
-    const section = sectionRef.value
-    if (!section) return
-
-    if (
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
-      typeof IntersectionObserver === 'undefined'
-    ) {
-      setFinalCounters()
-      return
-    }
-
-    counterObserver = new IntersectionObserver(
-      entries => {
-        if (!entries.some(entry => entry.isIntersecting)) return
-
-        counterObserver?.disconnect()
-        const startedAt = performance.now()
-
-        const updateCounters = (now: number) => {
-          const progress = Math.min((now - startedAt) / 900, 1)
-          const easedProgress = 1 - (1 - progress) ** 3
-          counters.value = [Math.floor(10 * easedProgress), Math.floor(4 * easedProgress)]
-
-          if (progress < 1) {
-            animationFrame = window.requestAnimationFrame(updateCounters)
-          } else {
-            setFinalCounters()
-            animationFrame = null
-          }
-        }
-
-        animationFrame = window.requestAnimationFrame(updateCounters)
-      },
-      { threshold: 0.16 }
-    )
-
-    counterObserver.observe(section)
-  })
-
-  onBeforeUnmount(() => {
-    counterObserver?.disconnect()
-    if (animationFrame !== null) window.cancelAnimationFrame(animationFrame)
-  })
+  const place = computed(() =>
+    [props.content.location, props.content.workMode].filter(Boolean).join(' · ')
+  )
+  const hasCards = computed(() => !!props.content.howIWork || !!props.content.beyondWork)
+  const cta = computed(() => props.content.cta)
+  const isInternal = computed(() => !!cta.value && cta.value.href.startsWith('/'))
+  const isWhatsapp = computed(() => /wa\.me|wa\.link|whatsapp/i.test(cta.value?.href ?? ''))
 </script>
 
 <template>
-  <section
-    id="about"
-    ref="sectionRef"
-    class="w-full bg-brand-surface px-4 py-12 text-brand-ink md:py-16"
-  >
+  <section id="about" class="@container w-full bg-brand-surface px-4 py-12 text-brand-ink md:py-16">
     <div class="mx-auto flex w-full max-w-7xl flex-col gap-8 md:gap-10">
-      <div class="grid min-w-0 grid-cols-1 items-stretch gap-8 lg:grid-cols-5 lg:gap-12">
-        <div class="relative min-w-0 min-h-80 lg:col-span-2 lg:min-h-0">
-          <div
-            class="absolute inset-2 overflow-hidden rounded-2xl border border-brand-border bg-brand-surface-card p-2 shadow-card"
-          >
-            <NuxtImg
-              src="ma.webp"
-              alt="Miguel Álvarez, ingeniero de sistemas, trabajando en remoto"
-              width="600"
-              height="400"
-              sizes="100vw sm:544px lg:460px"
-              format="webp"
-              loading="lazy"
-              class="h-full w-full rounded-xl object-cover object-center"
-            />
-          </div>
+      <SectionHeader :eyebrow="content.eyebrow" :heading="content.heading" size="lg" />
 
-          <div
-            class="absolute right-3 bottom-3 z-20 flex translate-y-1/2 items-center gap-3 rounded-full border border-brand-blue/30 bg-brand-surface-card/95 px-4 py-2 shadow-card sm:right-0 sm:bottom-0 sm:translate-x-2 sm:translate-y-2"
-          >
-            <span
-              class="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-blue/10"
-              aria-hidden="true"
+      <div class="grid min-w-0 grid-cols-1 gap-8 @4xl:grid-cols-5 @4xl:items-center @4xl:gap-12">
+        <div class="min-w-0 @4xl:col-span-2">
+          <div class="w-full max-w-md @4xl:max-w-none">
+            <ImageCollage :images="content.images" />
+            <p
+              v-if="place"
+              class="mt-4 inline-flex items-center gap-2 rounded-full border border-brand-border bg-brand-surface-card px-3 py-1.5 text-xs font-medium text-brand-ink"
             >
-              <Icon name="mdi:map-marker" size="20" class="text-brand-blue" />
-            </span>
-            <div class="leading-tight">
-              <p class="text-xs font-semibold text-brand-ink">
-                {{ HOME_COPY.about.location }}
-              </p>
-              <p class="text-xs text-brand-muted">
-                {{ HOME_COPY.about.remote }}
-              </p>
-            </div>
+              <Icon name="mdi:map-marker" size="18" class="text-brand-blue" aria-hidden="true" />
+              {{ place }}
+            </p>
           </div>
         </div>
 
-        <div
-          class="relative z-10 flex min-w-0 flex-col justify-center gap-5 py-2 md:gap-6 lg:col-span-3"
+        <div class="flex min-w-0 flex-col gap-5 @4xl:col-span-3 md:gap-6">
+          <p class="text-base leading-7 text-brand-muted md:text-lg md:leading-8">
+            {{ content.intro }}
+          </p>
+          <QuoteBlock v-if="content.quote">{{ content.quote }}</QuoteBlock>
+          <StatList v-if="content.stats.length" :items="content.stats" />
+        </div>
+      </div>
+
+      <div
+        v-if="hasCards"
+        class="grid grid-cols-1 gap-4 md:gap-5"
+        :class="content.howIWork && content.beyondWork ? '@2xl:grid-cols-2' : ''"
+      >
+        <InfoCard v-if="content.howIWork" :title="HOME_COPY.about.howIWorkTitle">
+          {{ content.howIWork }}
+        </InfoCard>
+        <InfoCard v-if="content.beyondWork" :title="HOME_COPY.about.beyondWorkTitle">
+          {{ content.beyondWork }}
+        </InfoCard>
+      </div>
+
+      <div v-if="content.tools.length">
+        <h3 class="mb-3 text-lg font-semibold leading-tight text-brand-ink">
+          {{ HOME_COPY.about.toolsTitle }}
+        </h3>
+        <ChipList :items="content.tools" :label="HOME_COPY.about.toolsTitle" />
+      </div>
+
+      <Card
+        v-if="cta || content.availability"
+        class="flex flex-col items-start gap-4 p-5 md:p-6 @2xl:flex-row @2xl:items-center @2xl:justify-between"
+      >
+        <p
+          v-if="content.availability"
+          class="min-w-0 text-sm leading-6 text-brand-muted md:text-base"
         >
-          <SectionHeader
-            :eyebrow="HOME_COPY.about.eyebrow"
-            :heading="HOME_COPY.about.heading"
-            size="lg"
-          />
-
-          <p class="text-sm leading-6 text-brand-muted md:text-base md:leading-7">
-            Hola, soy
-            <strong class="text-brand-ink">Miguel,</strong>
-            ingeniero de sistemas. Me dedico al desarrollo de software, partiendo de la necesidad
-            inicial y preparando el camino para crecer en el futuro. Trabajo con pasión por lo que
-            hago.
-          </p>
-
-          <div class="grid w-full grid-cols-1 gap-3 sm:grid-cols-3">
-            <Card
-              v-for="(item, index) in highlights"
-              :key="item.label"
-              tone="soft"
-              as="article"
-              class="flex min-w-0 flex-col justify-center px-4 py-3"
-            >
-              <p class="text-xl font-bold leading-tight text-brand-ink md:text-2xl">
-                <template v-if="index === 0">{{ counters[0] }}+</template>
-                <template v-else-if="index === 1">{{ counters[1] }}</template>
-                <template v-else>{{ item.value }}</template>
-              </p>
-              <p class="mt-1 text-xs leading-5 text-brand-muted">
-                {{ item.label }}
-              </p>
-            </Card>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-6">
-        <Card as="article" elevated class="p-6 md:p-8 lg:col-span-7">
-          <span
-            class="mb-4 flex size-10 items-center justify-center rounded-xl border border-brand-border bg-brand-surface-soft"
-            aria-hidden="true"
-          >
-            <Icon name="mdi:code-tags" size="20" class="text-brand-accent-text" />
-          </span>
-          <p class="text-sm leading-6 text-brand-muted md:text-base md:leading-7">
-            He colaborado con equipos internacionales de habla hispana en proyectos de IoT,
-            LegalTech, outsourcing y consultoría, e identidad digital. Pasar por sectores tan
-            distintos me ha permitido conocer
-            <strong class="rounded-sm bg-brand-blue/10 px-1 text-brand-accent-text">
-              los errores que casi nadie nota hasta que ya duelen.
-            </strong>
-          </p>
-          <blockquote
-            class="mt-5 border-l-2 border-brand-blue bg-brand-surface-soft px-4 py-3 text-sm leading-6 text-brand-muted md:px-5 md:py-4 md:text-base md:leading-7"
-          >
-            Por ejemplo, no dimensionar ni proyectar a futuro un proyecto lleva a mala
-            planificación, reprocesos y módulos que nadie entiende por separado.
-          </blockquote>
-        </Card>
-
-        <Card as="article" elevated class="p-6 md:p-8 lg:col-span-5">
-          <span
-            class="mb-4 flex size-10 items-center justify-center rounded-xl border border-brand-border bg-brand-surface-soft"
-            aria-hidden="true"
-          >
-            <Icon name="mdi:coffee" size="20" class="text-brand-accent-text" />
-          </span>
-          <p class="text-sm leading-6 text-brand-muted md:text-base md:leading-7">
-            Soy una persona
-            <strong class="text-brand-ink">relajada y tranquila,</strong>
-            apasionado de la tecnología y la cultura geek. Me gusta salir a caminar y olvidarme un
-            poco de las cosas, los días de pizza, las salidas con amigos y compartir siempre un buen
-            café. También relajarme viendo películas y series, y estar siempre buscando algo nuevo
-            que aprender.
-          </p>
-        </Card>
-      </div>
+          {{ content.availability }}
+        </p>
+        <Button
+          v-if="cta"
+          :to="isInternal ? cta.href : undefined"
+          :href="isInternal ? undefined : cta.href"
+          :as="isInternal ? undefined : 'a'"
+          :target="isInternal ? undefined : '_blank'"
+          :rel="isInternal ? undefined : 'noopener noreferrer'"
+          :icon="isWhatsapp ? 'mdi:whatsapp' : undefined"
+          class="w-full whitespace-nowrap @2xl:w-auto"
+          theme="primary"
+        >
+          {{ cta.label }}
+        </Button>
+      </Card>
     </div>
   </section>
 </template>

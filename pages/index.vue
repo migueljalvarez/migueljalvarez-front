@@ -53,6 +53,7 @@
     ]
   })
   const { homeCards: portfolioProjects } = await usePortfolio()
+  const { about } = await useAbout()
 </script>
 
 <template>
@@ -66,6 +67,6 @@
         <PortfolioSection title="Portafolio" :projects="portfolioProjects" />
       </div>
     </Section>
-    <About title="Sobre mí" />
+    <About :content="about" />
   </div>
 </template>

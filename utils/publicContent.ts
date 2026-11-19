@@ -1,3 +1,4 @@
+import type { AboutContent, AboutImage } from '~/types/about'
 import type { PortfolioType, SocialMediaType } from '~/types/common'
 import type { PortfolioCardProject } from '~/types/portfolio'
 
@@ -117,3 +118,89 @@ export const toPortfolioCardProject = (
 /** Tarjetas de la home: las primeras `limit`, la primera marcada como destacada. */
 export const toHomeCardProjects = (items: PortfolioType[], limit = 5): PortfolioCardProject[] =>
   items.slice(0, limit).map((item, index) => toPortfolioCardProject(item, { primary: index === 0 }))
+
+// --- Sobre mí -----------------------------------------------------------------------------------
+
+/** Forma de `GET /api/about` de la API (los opcionales vacíos vienen omitidos). */
+export type ApiAbout = {
+  eyebrow: string
+  heading: string
+  intro: string
+  quote?: string
+  howIWork?: string
+  beyondWork?: string
+  location?: string
+  workMode?: string
+  availability?: string
+  stats: { value: string; label: string }[]
+  tools: string[]
+  cta?: { label: string; href: string }
+  images: { src: string; alt: string; width?: number; height?: number }[]
+}
+
+/** El collage muestra como máximo estas imágenes (la API puede enviar hasta 4). */
+export const ABOUT_MAX_IMAGES = 3
+
+const isText = (value: unknown): value is string =>
+  typeof value === 'string' && value.trim().length > 0
+const optionalText = (value: unknown): string | undefined =>
+  isText(value) ? value.trim() : undefined
+const isDimension = (value: unknown): value is number =>
+  typeof value === 'number' && Number.isInteger(value) && value > 0
+
+/** Solo rutas del propio sitio (`/about/…`): nunca una URL externa ni una ruta rara. */
+const isSiteImage = (value: unknown): value is string =>
+  typeof value === 'string' &&
+  /^\/(?!\/)[A-Za-z0-9_\-./]+\.(webp|jpe?g|png)$/.test(value) &&
+  !value.includes('..')
+const isSafeHref = (value: unknown): value is string =>
+  typeof value === 'string' && /^(\/(?!\/)|https:\/\/)\S*$/.test(value)
+
+/**
+ * Convierte la respuesta de la API en contenido del sitio. Devuelve `null` ante cualquier forma
+ * inválida (faltan título, presentación o imágenes): el llamador usa entonces el respaldo del código.
+ * Lo opcional vacío se omite y las listas se recortan a su máximo.
+ */
+export const mapApiAbout = (raw: unknown): AboutContent | null => {
+  if (!raw || typeof raw !== 'object') return null
+  const data = raw as Partial<ApiAbout>
+  if (!isText(data.heading) || !isText(data.intro) || !Array.isArray(data.images)) return null
+
+  const images: AboutImage[] = data.images
+    .filter(item => item && isSiteImage(item.src) && isText(item.alt))
+    .slice(0, ABOUT_MAX_IMAGES)
+    .map(item => ({
+      src: item.src,
+      alt: item.alt.trim(),
+      ...(isDimension(item.width) && isDimension(item.height)
+        ? { width: item.width, height: item.height }
+        : {})
+    }))
+  if (images.length === 0) return null
+
+  const stats = (Array.isArray(data.stats) ? data.stats : [])
+    .filter(item => item && isText(item.value) && isText(item.label))
+    .slice(0, 4)
+    .map(item => ({ value: item.value.trim(), label: item.label.trim() }))
+  const tools = (Array.isArray(data.tools) ? data.tools : []).filter(isText).slice(0, 12)
+  const cta =
+    data.cta && isText(data.cta.label) && isSafeHref(data.cta.href)
+      ? { label: data.cta.label.trim(), href: data.cta.href }
+      : undefined
+
+  return {
+    eyebrow: optionalText(data.eyebrow) ?? 'Sobre mí',
+    heading: data.heading.trim(),
+    intro: data.intro.trim(),
+    quote: optionalText(data.quote),
+    howIWork: optionalText(data.howIWork),
+    beyondWork: optionalText(data.beyondWork),
+    location: optionalText(data.location),
+    workMode: optionalText(data.workMode),
+    availability: optionalText(data.availability),
+    stats,
+    tools,
+    cta,
+    images
+  }
+}

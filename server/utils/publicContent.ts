@@ -1,8 +1,10 @@
 import { PORTFOLIO_PROJECTS } from '~/constants/portfolio'
-import { MY_SOCIAL_MEDIA } from '~/constants/common'
+import { ABOUT_FALLBACK, MY_SOCIAL_MEDIA } from '~/constants/common'
 import { WORK_POLICY_BLOCKS } from '~/data/work'
+import type { AboutContent } from '~/types/about'
 import type { PortfolioType, SocialMediaType } from '~/types/common'
 import {
+  mapApiAbout,
   mapApiPolicy,
   mapApiPortfolioEntry,
   mapApiSocialLink,
@@ -49,4 +51,10 @@ export const getPolicyBlocks = async (): Promise<PolicyBlock[]> => {
   return WORK_POLICY_BLOCKS.map((block, index) =>
     mapApiPolicy({ title: block.title, body: block.text }, index)
   )
+}
+
+/** "Sobre mí": el publicado en la API (404 = sin publicar) o, si no hay o es inválido, el respaldo. */
+export const getAbout = async (): Promise<AboutContent> => {
+  const about = mapApiAbout(await apiClient().get<unknown>('/api/about'))
+  return about ?? { ...ABOUT_FALLBACK, stats: ABOUT_FALLBACK.stats.map(item => ({ ...item })) }
 }
