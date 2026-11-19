@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { LEGAL_ROUTES } from '~/constants/routes'
 
-  const { holder, sentence } = useLegalHolder()
   const linkClass =
     'inline-flex min-h-11 items-center rounded-lg text-xs text-brand-text-subtle underline-offset-4 transition-colors duration-200 hover:text-brand-text-strong hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-white motion-reduce:transition-none'
 </script>
@@ -18,15 +17,6 @@
         </li>
       </ul>
     </nav>
-    <p v-if="sentence">{{ sentence }}</p>
-    <p v-if="holder.city">{{ holder.city }}, Colombia</p>
-    <a
-      v-if="holder.email"
-      :href="`mailto:${holder.email}`"
-      class="inline-flex min-h-11 items-center rounded-lg underline underline-offset-4 hover:text-brand-text-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-white"
-    >
-      {{ holder.email }}
-    </a>
     <p>&copy; {{ new Date().getFullYear() }} · Todos los derechos reservados</p>
   </section>
 </template>

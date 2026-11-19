@@ -17,6 +17,7 @@
     title?: string
   }>()
   const { socials } = useSocialMedia()
+  const { holder } = useLegalHolder()
   // Contact Form
   const subjectOptions = HOME_COPY.contact.form.subjects
 
@@ -124,6 +125,13 @@
                 :size="32"
               />
             </div>
+            <p
+              v-if="holder.city"
+              class="-mt-1 flex items-center gap-1.5 text-sm text-brand-text-subtle"
+            >
+              <Icon name="mdi:map-marker-outline" class="size-4 shrink-0" aria-hidden="true" />
+              {{ holder.city }}, Colombia
+            </p>
           </div>
 
           <div class="flex flex-col gap-2 md:w-1/2">

@@ -42,18 +42,6 @@
     id="about"
     class="@container relative w-full overflow-hidden bg-brand-surface px-4 py-12 text-brand-ink md:py-16"
   >
-    <!-- Marca a color como fondo decorativo: opacidad baja, recortada por la sección (sin desborde) y bajo
-         el contenido. Las tarjetas blancas la tapan donde se cruzan. -->
-    <img
-      src="/only-brand-color.svg"
-      width="417"
-      height="349"
-      alt=""
-      aria-hidden="true"
-      loading="lazy"
-      decoding="async"
-      class="pointer-events-none absolute -top-6 -right-20 z-0 h-auto w-64 opacity-[0.05] select-none @4xl:-top-16 @4xl:-right-32 @4xl:w-120"
-    />
     <div class="relative z-10 mx-auto flex w-full max-w-7xl flex-col gap-8 md:gap-10">
       <SectionHeader
         :eyebrow="content.eyebrow"

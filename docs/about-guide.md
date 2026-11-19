@@ -15,9 +15,6 @@ Encabezado (sobre-título y título) con divisor fino y, debajo, dos tarjetas la
 
 Cargo, frase, nombre e intereses (`role`, `tagline`, `name`, `interests`, máx. 6 etiquetas de 30 caracteres) se editan en el panel y los guarda la API (migración 0011); texto plano, sin `<` ni `>`. Si quedan vacíos, el bloque se omite: nunca se completan con el respaldo del código (que solo se usa cuando no hay nada publicado).
 
-La marca a color (`only-brand-color.svg`) va como fondo decorativo muy tenue en la esquina superior
-derecha de esta banda clara; no es contenido ni se edita desde el panel.
-
 Todo bloque opcional se omite si está vacío. Para publicar hacen falta solo título y presentación: las
 imágenes son opcionales (la API ya no las exige).
 
@@ -27,14 +24,14 @@ tarjeta de texto ocupa todo el ancho. Así se puede publicar sin fotos y añadir
 
 ## Imágenes
 
-| Elemento   | Regla                                                                 |
-| ---------- | --------------------------------------------------------------------- |
-| Carpeta    | `public/about/`                                                       |
+| Elemento   | Regla                                                                                                                        |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Carpeta    | `public/about/`                                                                                                              |
 | Ruta       | `/about/<slug>.webp` (minúsculas, números y guiones; también jpg/png) **o** la URL https de una imagen subida desde el panel |
-| Proporción | 4:3 (se recorta para encuadrar la parte alta)                         |
-| Formato    | webp, ≤ 150 KB y ≤ 1920 px de ancho (`tests/publicImages.test.mjs`)   |
-| Cantidad   | de 1 a 4 (todas van al carrusel)                                      |
-| Alt        | obligatorio (1–140 caracteres): describe lo que se ve                 |
+| Proporción | 4:3 (se recorta para encuadrar la parte alta)                                                                                |
+| Formato    | webp, ≤ 150 KB y ≤ 1920 px de ancho (`tests/publicImages.test.mjs`)                                                          |
+| Cantidad   | de 1 a 4 (todas van al carrusel)                                                                                             |
+| Alt        | obligatorio (1–140 caracteres): describe lo que se ve                                                                        |
 
 - La primera (predeterminada) es la que se ve al cargar; el carrusel no avanza solo, con flechas, puntos y teclado (izquierda/derecha). Con una sola imagen no hay controles.
 - Lo más simple: **súbela desde el panel** (botón o arrastrar y soltar; JPEG, PNG o WebP de hasta 5 MB). La
