@@ -55,7 +55,7 @@
       <figure
         v-for="(image, index) in shown"
         :key="`${index}-${image.src}`"
-        class="relative m-0 aspect-4/3 w-full shrink-0"
+        class="relative m-0 aspect-16/10 w-full shrink-0"
         role="group"
         aria-roledescription="diapositiva"
         :aria-label="`${index + 1} de ${total}`"

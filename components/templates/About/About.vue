@@ -83,7 +83,7 @@
           <InfoCard v-if="content.howIWork" :title="HOME_COPY.about.howIWorkTitle" dot="warm">
             {{ content.howIWork }}
           </InfoCard>
-          <QuoteBlock v-if="content.quote" :label="HOME_COPY.about.principleLabel" class="mt-auto">
+          <QuoteBlock v-if="content.quote" :label="HOME_COPY.about.principleLabel">
             {{ content.quote }}
           </QuoteBlock>
         </Card>

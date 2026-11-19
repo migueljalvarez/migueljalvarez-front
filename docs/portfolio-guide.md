@@ -140,3 +140,7 @@ captura del producto), al menos una cifra verificable y, si aplica, qué incluy�
 
 Solo tarjeta con etiqueta "En desarrollo". No requiere imágenes hasta que exista un prototipo.
 Cuando lo haya: portada de 1280 × 720 y 3 capturas del prototipo; se retira `status: 'in-development'`.
+
+## Enlaces de la tarjeta
+
+Cada tarjeta muestra "Ver detalle" (hacia la ficha, salvo en proyectos en desarrollo) y, si el proyecto tiene una URL https en su ficha, "Visitar sitio" (se abre en otra pestaña). La tarjeta completa es clicable hacia la ficha mediante el enlace "Ver detalle" extendido con `::after`; el enlace externo va por encima para no anidar enlaces. Las etiquetas viven en el cuerpo de la tarjeta, no sobre la imagen, y el recorte de la imagen se ancla arriba a la izquierda (logo y título suelen estar ahí).

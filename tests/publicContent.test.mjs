@@ -121,3 +121,21 @@ test('las políticas reciben un id estable para la clave de lista, sin acentos n
     mapApiPolicy({ title: 'Igual', body: 'b' }, 1).id
   )
 })
+
+test('la tarjeta lleva el sitio externo solo si es https', () => {
+  const withUrl = toPortfolioCardProject(
+    mapApiPortfolioEntry(entry({ url: 'https://ejemplo.test/app' }))
+  )
+  assert.equal(withUrl.url, 'https://ejemplo.test/app')
+  assert.equal(
+    toPortfolioCardProject(mapApiPortfolioEntry(entry({ url: 'http://inseguro.test' }))).url,
+    undefined
+  )
+  assert.equal(toPortfolioCardProject(mapApiPortfolioEntry(entry())).url, undefined)
+  // En desarrollo no hay ficha (href vacío) pero el sitio externo, si existe, se conserva.
+  const dev = toPortfolioCardProject(
+    mapApiPortfolioEntry(entry({ status: 'in-development', url: 'https://ejemplo.test/beta' }))
+  )
+  assert.equal(dev.href, '')
+  assert.equal(dev.url, 'https://ejemplo.test/beta')
+})

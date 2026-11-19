@@ -110,6 +110,7 @@ export const toPortfolioCardProject = (
     audience: item.audience ?? '',
     image: item.urlImage,
     href: item.status === 'in-development' ? '' : `/portafolio/${slug}`,
+    url: item.url && /^https:\/\//.test(item.url) ? item.url : undefined,
     primary: options.primary,
     status: item.status,
     sample: item.sample
