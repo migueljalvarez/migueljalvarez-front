@@ -57,9 +57,28 @@ export default defineNuxtConfig({
   modules: ['@nuxt/icon', '@nuxt/image', '@nuxt/ui', '@nuxt/fonts'],
   fonts: {
     provider: 'google',
+    // Solo los pesos y estilos que usa el diseño (sin pesos 300/800/900 ni cursiva de Poppins).
     families: [
-      { name: 'Poppins', provider: 'google', display: 'swap', preload: true, subsets: ['latin'] },
-      { name: 'Inter', provider: 'google', display: 'swap', preload: true, subsets: ['latin'] }
+      {
+        name: 'Poppins',
+        provider: 'google',
+        display: 'swap',
+        // Precarga solo los titulares (hero y secciones)
+        preload: { weights: [600, 700], styles: ['normal'], subsets: ['latin'] },
+        subsets: ['latin'],
+        weights: [400, 500, 600, 700],
+        styles: ['normal']
+      },
+      {
+        name: 'Inter',
+        provider: 'google',
+        display: 'swap',
+        // Archivo variable: un solo archivo cubre 400-700
+        preload: { weights: [400], styles: ['normal'], subsets: ['latin'] },
+        subsets: ['latin'],
+        weights: [400, 500, 600, 700],
+        styles: ['normal', 'italic'] // la cursiva solo la usa QuoteBlock
+      }
     ]
   },
   imports: {
@@ -70,6 +89,33 @@ export default defineNuxtConfig({
     format: ['webp', 'avif', 'svg'],
     sizes: [300, 480, 600, 768, 1024, 1280],
     screens: { sm: 320, md: 640, lg: 1024, xl: 1280 }
+  },
+  hooks: {
+    // Menos precargas en la home: las secciones bajo el pliegue (lazySection) se descargan al acercarse y los
+    // layouts/páginas privadas no se prefetchean para visitantes públicos.
+    'build:manifest': manifest => {
+      const lazyChunks = new Set([
+        'Services',
+        'ProcessSection',
+        'PortfolioSection',
+        'About',
+        'Contact'
+      ])
+      const privateSrc =
+        /^(layouts\/(admin|auth)\.vue|pages\/(admin|login|testimonial)\/|pages\/login\.vue)/
+      for (const entry of Object.values(manifest) as Array<{
+        name?: string
+        src?: string
+        preload?: boolean
+        prefetch?: boolean
+      }>) {
+        if (entry.name && lazyChunks.has(entry.name)) entry.preload = false
+        if (entry.src && privateSrc.test(entry.src)) {
+          entry.preload = false
+          entry.prefetch = false
+        }
+      }
+    }
   },
   devServer: {
     // Solo local: no expone el servidor de desarrollo a toda la red.
@@ -91,6 +137,10 @@ export default defineNuxtConfig({
           "frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
       }
     },
+    // Home: HTML en la caché de Nitro (stale-while-revalidate) solo en producción; en desarrollo siempre fresco.
+    // No aplica a /privacidad ni /terminos-y-condiciones: el titular llega por variable en ejecución.
+    // El middleware de mantenimiento corre antes de la caché, así que con la API caída sigue devolviendo 503.
+    ...(process.env.NODE_ENV === 'production' ? { '/': { swr: 60 } } : {}),
     // Zonas privadas: sin caché compartida y fuera de buscadores.
     '/admin/**': {
       headers: { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' }
