@@ -47,6 +47,6 @@ export const getPolicyBlocks = async (): Promise<PolicyBlock[]> => {
   const policies = await apiClient().get<ApiPolicy[]>('/api/policies')
   if (policies && policies.length > 0) return policies.map(mapApiPolicy)
   return WORK_POLICY_BLOCKS.map((block, index) =>
-    mapApiPolicy({ title: block.titulo, body: block.texto }, index)
+    mapApiPolicy({ title: block.title, body: block.text }, index)
   )
 }

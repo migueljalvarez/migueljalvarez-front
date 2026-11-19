@@ -9,7 +9,7 @@
   const phaseNumber = (phase: number) => String(phase).padStart(2, '0')
 
   const phaseLabel = (phase: number) =>
-    `Fase ${phaseNumber(phase)}${offering.fases.includes(phase) ? ', incluida' : ', no incluida'}`
+    `Fase ${phaseNumber(phase)}${offering.phases.includes(phase) ? ', incluida' : ', no incluida'}`
 
   const detailsDialog = ref<HTMLDialogElement | null>(null)
 
@@ -28,19 +28,19 @@
     class="flex h-full flex-col p-5 transition-shadow hover:shadow-card motion-reduce:transition-none md:p-6"
   >
     <p class="min-h-10 text-sm font-normal leading-5 text-brand-muted">
-      {{ offering.situacion }}
+      {{ offering.situation }}
     </p>
     <h4 class="mt-2 text-lg font-semibold leading-snug text-brand-ink md:text-xl">
-      {{ offering.titulo }}
+      {{ offering.title }}
     </h4>
 
     <p class="mt-3 mb-4 text-sm leading-6 text-brand-muted">
-      {{ offering.paraQuien }}
+      {{ offering.audience }}
     </p>
 
     <div class="mt-auto border-t border-brand-border pt-3">
       <div class="mb-2 flex flex-wrap gap-2">
-        <Chip v-for="tag in offering.etiquetas" :key="tag">{{ tag }}</Chip>
+        <Chip v-for="tag in offering.tags" :key="tag">{{ tag }}</Chip>
       </div>
       <button
         type="button"
@@ -68,19 +68,19 @@
           <div class="flex items-start justify-between gap-5">
             <div class="min-w-0">
               <p class="mb-2 text-sm font-medium text-brand-muted">
-                {{ offering.situacion }}
+                {{ offering.situation }}
               </p>
               <h2
                 :id="`service-details-title-${offering.id}`"
                 class="max-w-3xl text-xl font-semibold leading-snug text-brand-ink sm:text-2xl"
               >
-                {{ offering.titulo }}
+                {{ offering.title }}
               </h2>
             </div>
             <button
               type="button"
               class="flex size-11 shrink-0 items-center justify-center rounded-full border border-brand-border bg-brand-surface text-brand-ink transition-colors hover:bg-brand-surface-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue"
-              :aria-label="`Cerrar detalles de ${offering.situacion}`"
+              :aria-label="`Cerrar detalles de ${offering.situation}`"
               @click="closeDetails"
             >
               <Icon name="mdi:close" size="20" aria-hidden="true" />
@@ -90,9 +90,9 @@
           <div class="mt-6 grid gap-4 md:grid-cols-3">
             <Card
               v-for="detail in [
-                { title: HOME_COPY.services.detailLabels.audience, text: offering.paraQuien },
-                { title: HOME_COPY.services.detailLabels.approach, text: offering.comoAyudo },
-                { title: HOME_COPY.services.detailLabels.deliverables, text: offering.queRecibes }
+                { title: HOME_COPY.services.detailLabels.audience, text: offering.audience },
+                { title: HOME_COPY.services.detailLabels.approach, text: offering.approach },
+                { title: HOME_COPY.services.detailLabels.deliverables, text: offering.deliverables }
               ]"
               :key="detail.title"
               tone="soft"
@@ -110,12 +110,12 @@
             </h3>
             <ol
               class="flex flex-wrap gap-2"
-              :aria-label="`Fases aplicables: ${offering.situacion}`"
+              :aria-label="`Fases aplicables: ${offering.situation}`"
             >
               <li v-for="(phase, index) in DEVELOPMENT_PHASES" :key="phase.title">
                 <HexMarker
                   :label="phaseNumber(index + 1)"
-                  :active="offering.fases.includes(index + 1)"
+                  :active="offering.phases.includes(index + 1)"
                   :aria-label="phaseLabel(index + 1)"
                   compact
                 />

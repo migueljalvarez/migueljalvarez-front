@@ -371,7 +371,7 @@ test('la tarjeta de vista previa sale de los valores del formulario', () => {
     })
   )
   assert.equal(card.title, 'Mi Despensa')
-  assert.equal(card.type, 'propio')
+  assert.equal(card.type, 'product')
   assert.deepEqual(card.tags, ['Hogar', 'Web'])
   assert.equal(card.audience, 'Familias')
   assert.equal(card.image, '/projects/mi-despensa/cover.webp')

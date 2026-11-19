@@ -1,53 +1,53 @@
 export type ServiceOffering = {
   id: string
-  situacion: string
-  titulo: string
-  etiquetas: string[]
-  paraQuien: string
-  comoAyudo: string
-  queRecibes: string
-  fases: number[]
+  situation: string
+  title: string
+  tags: string[]
+  audience: string
+  approach: string
+  deliverables: string
+  phases: number[]
 }
 
 // Copy provisional hasta disponer del HTML de referencia.
 export const SERVICE_OFFERINGS: ServiceOffering[] = [
   {
     id: 'construir-una-idea',
-    situacion: 'Tengo una idea o necesito construir algo',
-    titulo: 'Una idea convertida en un producto que puedas operar.',
-    etiquetas: ['MVP', 'Landing', 'SaaS', 'Software a la medida'],
-    paraQuien:
+    situation: 'Tengo una idea o necesito construir algo',
+    title: 'Una idea convertida en un producto que puedas operar.',
+    tags: ['MVP', 'Landing', 'SaaS', 'Software a la medida'],
+    audience:
       'Para emprendedores y equipos que necesitan validar una idea o construir una herramienta digital desde cero.',
-    comoAyudo:
+    approach:
       'Analizo el problema, defino un alcance viable y desarrollo la solución con una base técnica preparada para evolucionar.',
-    queRecibes:
+    deliverables:
       'Una solución funcional, una experiencia clara y una base de código documentada para seguir creciendo.',
-    fases: [1, 2, 3, 4, 5, 6]
+    phases: [1, 2, 3, 4, 5, 6]
   },
   {
     id: 'mejorar-un-producto',
-    situacion: 'Ya tengo algo y necesito que funcione mejor',
-    titulo: 'Mejoras claras sobre lo que ya tienes, sin perder de vista el negocio.',
-    etiquetas: ['Code review', 'Refactorización'],
-    paraQuien:
+    situation: 'Ya tengo algo y necesito que funcione mejor',
+    title: 'Mejoras claras sobre lo que ya tienes, sin perder de vista el negocio.',
+    tags: ['Code review', 'Refactorización'],
+    audience:
       'Para empresas y equipos con un sistema en marcha que necesitan resolver problemas que frenan su operación o añadir capacidades.',
-    comoAyudo:
+    approach:
       'Reviso el estado actual, identifico riesgos y oportunidades, y priorizo cambios que mejoren la estabilidad y el uso del producto.',
-    queRecibes:
+    deliverables:
       'Hallazgos priorizados, decisiones técnicas explicadas y mejoras implementadas con pruebas acordes al alcance.',
-    fases: [1, 2, 4, 5]
+    phases: [1, 2, 4, 5]
   },
   {
     id: 'decidir-antes-de-invertir',
-    situacion: 'Necesito decidir bien antes de invertir',
-    titulo: 'Claridad sobre el camino antes de comprometer tiempo y presupuesto.',
-    etiquetas: ['Consultoría técnica'],
-    paraQuien:
+    situation: 'Necesito decidir bien antes de invertir',
+    title: 'Claridad sobre el camino antes de comprometer tiempo y presupuesto.',
+    tags: ['Consultoría técnica'],
+    audience:
       'Para personas y organizaciones que necesitan evaluar una idea, una arquitectura o una decisión técnica importante.',
-    comoAyudo:
+    approach:
       'Analizo objetivos, restricciones y alternativas para separar lo esencial de lo accesorio y entender los riesgos.',
-    queRecibes:
+    deliverables:
       'Recomendaciones concretas, opciones comparadas y próximos pasos acordes a tus prioridades.',
-    fases: [1, 2]
+    phases: [1, 2]
   }
 ]

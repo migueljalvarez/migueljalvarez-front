@@ -103,7 +103,7 @@ export const toPortfolioCardProject = (
     slug,
     title: item.title,
     description: item.description,
-    type: item.type === 'client' ? 'cliente' : 'propio',
+    type: item.type === 'client' ? 'client' : 'product',
     tags: item.tags ?? [],
     audience: item.audience ?? '',
     image: item.urlImage,

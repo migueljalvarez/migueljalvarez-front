@@ -3,7 +3,7 @@ export type PortfolioCardProject = {
   slug: string
   title: string
   description: string
-  type: 'cliente' | 'propio'
+  type: 'client' | 'product'
   tags: string[]
   audience: string
   image: string
@@ -14,6 +14,6 @@ export type PortfolioCardProject = {
   sample?: boolean
 }
 
-export type PortfolioFilter = 'Todos' | 'Clientes' | 'Productos propios'
+export type PortfolioFilter = 'all' | 'client' | 'product'
 export type PortfolioCardVariant = 'horizontal' | 'featured' | 'default'
 export type PortfolioLayoutMode = 'empty' | 'horizontal' | 'two' | 'three' | 'bento'

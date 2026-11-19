@@ -70,10 +70,10 @@
       <div class="absolute left-4 top-4 flex flex-wrap items-center gap-2">
         <Chip
           v-if="showTypeBadge"
-          :tone="project.type === 'cliente' ? 'brand' : 'success'"
+          :tone="project.type === 'client' ? 'brand' : 'success'"
           uppercase
         >
-          {{ project.type === 'cliente' ? 'Cliente' : 'Producto propio' }}
+          {{ project.type === 'client' ? 'Cliente' : 'Producto propio' }}
         </Chip>
         <Chip v-if="project.status === 'in-development'" tone="warning">En desarrollo</Chip>
         <Chip v-if="project.tags[0]">{{ project.tags[0] }}</Chip>

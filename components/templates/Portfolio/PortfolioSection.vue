@@ -40,7 +40,7 @@
   const cardHeadingLevel = computed(() => (props.headingLevel === 'h1' ? 'h2' : 'h3'))
 
   const sectionRef = ref<HTMLElement | null>(null)
-  const selectedFilter = ref<PortfolioFilter>('Todos')
+  const selectedFilter = ref<PortfolioFilter>('all')
   if (props.reveal) useSectionReveal(sectionRef, 0.14)
 
   const availableFilters = computed(() => getAvailablePortfolioFilters(props.projects))
@@ -76,12 +76,12 @@
   })
 
   const filteredProjects = computed(() => {
-    if (selectedFilter.value === 'Clientes') {
-      return props.projects.filter(project => project.type === 'cliente')
+    if (selectedFilter.value === 'client') {
+      return props.projects.filter(project => project.type === 'client')
     }
 
-    if (selectedFilter.value === 'Productos propios') {
-      return props.projects.filter(project => project.type === 'propio')
+    if (selectedFilter.value === 'product') {
+      return props.projects.filter(project => project.type === 'product')
     }
 
     return props.projects

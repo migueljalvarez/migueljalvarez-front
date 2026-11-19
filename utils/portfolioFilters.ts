@@ -4,10 +4,10 @@ export function getAvailablePortfolioFilters(
   projects: Pick<PortfolioCardProject, 'type'>[]
 ): PortfolioFilter[] {
   const projectTypes = new Set(projects.map(project => project.type))
-  const filters: PortfolioFilter[] = ['Todos']
+  const filters: PortfolioFilter[] = ['all']
 
-  if (projectTypes.has('cliente')) filters.push('Clientes')
-  if (projectTypes.has('propio')) filters.push('Productos propios')
+  if (projectTypes.has('client')) filters.push('client')
+  if (projectTypes.has('product')) filters.push('product')
 
   return filters
 }
