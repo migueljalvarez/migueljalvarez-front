@@ -78,6 +78,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /api/legal:
+    get:
+      tags: [Público]
+      summary: Titular legal del sitio
+      description: |
+        Nombre, tipo y número de documento, correo y ciudad del titular, leídos de las variables
+        `NUXT_PUBLIC_LEGAL_*` en ejecución. Solo lo piden Términos y Privacidad; no viaja en el HTML de las
+        demás páginas. Cada dato sin configurar llega como cadena vacía. Caché de 5 minutos.
+      operationId: getLegalHolder
+      responses:
+        '200':
+          description: Titular normalizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name: { type: string }
+                  idType: { type: string, enum: ['', CC, NIT] }
+                  idNumber: { type: string }
+                  email: { type: string }
+                  city: { type: string }
   /api/social-links:
     get:
       tags: [Público]

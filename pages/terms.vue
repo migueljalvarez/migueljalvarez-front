@@ -11,7 +11,7 @@
     path: '/terminos-y-condiciones'
   })
 
-  const { holder } = useLegalHolder()
+  const { holder } = await useLegalHolder()
   const sections = computed(() => getTermsSections(holder.value))
 </script>
 

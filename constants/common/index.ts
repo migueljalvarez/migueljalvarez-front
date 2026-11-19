@@ -74,6 +74,7 @@ export const HOME_COPY = {
   },
   contact: {
     eyebrow: 'Hablemos',
+    location: 'Medellín, Colombia',
     heading: '¿Tienes algo en mente?',
     description:
       'No necesitas tener un documento técnico ni todos los requisitos definidos. Cuéntame qué quieres hacer, qué problema tienes o qué quieres mejorar. Primero hablamos; después vemos si puedo ayudarte.',

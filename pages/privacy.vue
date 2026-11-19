@@ -11,7 +11,7 @@
     path: '/privacidad'
   })
 
-  const { holder } = useLegalHolder()
+  const { holder } = await useLegalHolder()
   const sections = computed(() => getPrivacySections(holder.value))
 </script>
 
