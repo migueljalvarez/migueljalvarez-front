@@ -386,7 +386,11 @@ paths:
           de servicio de Cloudflare Access (nunca salen del servidor).
         - Solo se aceptan segmentos de ruta `[A-Za-z0-9._~-]`: no puede salirse de `/api/admin/`.
         - Las operaciones que modifican datos exigen que `Origin` (si viene) sea el del propio sitio.
-        - Cuerpo máximo 1 MB; no sigue redirecciones; respuestas `Cache-Control: no-store`.
+        - Cuerpo máximo 1 MB (JSON). Única excepción: `POST /api/admin/media` acepta `multipart/form-data`
+          (subida de imágenes, campo `file` y `folder`) de hasta 5 MB; se reenvía como bytes sin tocar,
+          exige `Content-Length` (411 si falta; 413 si supera el tope) y otro destino con multipart da 415.
+          `DELETE /api/admin/media?key=<carpeta>/<uuid>.webp` elimina una imagen.
+        - No sigue redirecciones; respuestas `Cache-Control: no-store`.
         - Sin API configurada (`NUXT_API_BASE_URL`) o caída: 503 con `{ statusCode, statusMessage, message }`.
       operationId: adminProxy
       parameters:

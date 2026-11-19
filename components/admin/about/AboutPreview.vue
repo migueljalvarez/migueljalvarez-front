@@ -17,7 +17,7 @@
       role="status"
     >
       <Icon name="mdi:alert-outline" size="20" class="shrink-0" aria-hidden="true" />
-      Sin una imagen válida (ruta correcta y texto alternativo) la sección no se puede publicar.
+      Sin una imagen válida (con texto alternativo) el sitio mostrará su imagen de marca.
     </p>
     <div class="overflow-hidden rounded-2xl border border-brand-border" inert>
       <About :content="content" />

@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import AdminButton from '~/components/admin/AdminButton.vue'
   import AdminIconButton from '~/components/admin/AdminIconButton.vue'
+  import AdminImageUpload from '~/components/admin/AdminImageUpload.vue'
   import AdminInput from '~/components/admin/AdminInput.vue'
   import PortfolioImagePreview from '~/components/admin/portfolio/PortfolioImagePreview.vue'
   import {
@@ -9,6 +10,7 @@
     type PortfolioErrors,
     type PortfolioGalleryDraft
   } from '~/utils/admin/portfolio'
+  import type { MediaResult } from '~/utils/admin/media'
 
   // Galería: hasta 6 imágenes con vista previa, texto alternativo obligatorio y pie opcional. El orden
   // de la lista es el orden de la ficha. Los cambios se aplican al guardar el proyecto.
@@ -20,6 +22,7 @@
   }>()
   const emit = defineEmits<{ 'update:modelValue': [value: PortfolioGalleryDraft[]] }>()
 
+  const { discardAfterSave } = useAdminMedia()
   const root = ref<HTMLElement | null>(null)
   const liveMessage = ref('')
   const atLimit = computed(() => props.modelValue.length >= PORTFOLIO_LIMITS.gallery)
@@ -36,12 +39,19 @@
     emit('update:modelValue', [...props.modelValue, { path: '', alt: '', caption: '' }])
     liveMessage.value = `Imagen ${props.modelValue.length + 1} añadida.`
     await nextTick()
-    root.value
-      ?.querySelector<HTMLElement>(`[data-row="${props.modelValue.length - 1}"] input`)
-      ?.focus()
+    document.getElementById(`${props.id}-${props.modelValue.length - 1}-upload`)?.focus()
+  }
+
+  const uploaded = (index: number, media: MediaResult) => {
+    const previous = props.modelValue[index]?.path
+    if (previous) discardAfterSave(previous)
+    set(index, 'path', media.url)
+    liveMessage.value = `Imagen ${index + 1} subida. Escribe su texto alternativo y guarda.`
   }
 
   const remove = async (index: number) => {
+    const gone = props.modelValue[index]?.path
+    if (gone) discardAfterSave(gone)
     emit(
       'update:modelValue',
       props.modelValue.filter((_, i) => i !== index)
@@ -108,11 +118,17 @@
         <div class="grid gap-4 md:grid-cols-[16rem_minmax(0,1fr)]">
           <PortfolioImagePreview :src="item.path" :label="`Imagen ${index + 1}`" />
           <div class="space-y-4">
+            <AdminImageUpload
+              :id="`${id}-${index}-upload`"
+              folder="projects"
+              :label="item.path ? 'Reemplazar imagen' : 'Elegir imagen'"
+              @uploaded="uploaded(index, $event)"
+            />
             <AdminInput
               :id="`${id}-${index}-path`"
               :model-value="item.path"
-              label="Ruta de la imagen"
-              :placeholder="`/projects/${folder}/0${index + 1}-inicio.webp`"
+              label="Dirección de la imagen"
+              :placeholder="`https://… o /projects/${folder}/0${index + 1}-inicio.webp`"
               required
               autocomplete="off"
               :error="errors[`gallery.${index}.path`]"

@@ -2,6 +2,7 @@
   import AdminBadge from '~/components/admin/AdminBadge.vue'
   import AdminButton from '~/components/admin/AdminButton.vue'
   import AdminConfirmDialog from '~/components/admin/AdminConfirmDialog.vue'
+  import AdminImageUpload from '~/components/admin/AdminImageUpload.vue'
   import AdminIconButton from '~/components/admin/AdminIconButton.vue'
   import AdminInput from '~/components/admin/AdminInput.vue'
   import PortfolioImagePreview from '~/components/admin/portfolio/PortfolioImagePreview.vue'
@@ -13,9 +14,12 @@
     type AboutErrors,
     type AboutImageDraft
   } from '~/utils/admin/about'
+  import { mediaKeyFromUrl, type MediaResult } from '~/utils/admin/media'
 
-  // Imágenes de "Sobre mí": hasta 4 registradas por ruta (el archivo debe estar en public/about/ del
-  // sitio: la API no sube archivos). La primera es la predeterminada (la que se ve al cargar el carrusel). Los cambios se aplican al guardar.
+  // Imágenes de "Sobre mí": hasta 4. Cada una se sube desde el panel (queda en el almacenamiento y se registra
+  // su URL) o se registra por una dirección/ruta escrita a mano (archivo de public/about/ del sitio). La
+  // primera es la predeterminada (la que se ve al cargar el carrusel). Los cambios se aplican al guardar; el
+  // archivo subido que se reemplaza o se quita se borra del almacenamiento solo después de guardar.
   const props = defineProps<{
     id: string
     modelValue: AboutImageDraft[]
@@ -23,6 +27,7 @@
   }>()
   const emit = defineEmits<{ 'update:modelValue': [value: AboutImageDraft[]] }>()
 
+  const { discardAfterSave } = useAdminMedia()
   const root = ref<HTMLElement | null>(null)
   const liveMessage = ref('')
   const atLimit = computed(() => props.modelValue.length >= ABOUT_LIMITS.images)
@@ -41,9 +46,22 @@
     ])
     liveMessage.value = `Imagen ${props.modelValue.length + 1} añadida.`
     await nextTick()
-    root.value
-      ?.querySelector<HTMLElement>(`[data-row="${props.modelValue.length - 1}"] input`)
-      ?.focus()
+    document.getElementById(`${props.id}-${props.modelValue.length - 1}-upload`)?.focus()
+  }
+
+  // Subir una imagen: en una fila sin registrar rellena su dirección; en una ya registrada (la dirección no
+  // cambia) la sustituye por una fila nueva con el mismo texto alternativo y lugar.
+  const uploaded = (index: number, media: MediaResult) => {
+    const item = props.modelValue[index]
+    if (!item) return
+    if (item.path) discardAfterSave(item.path)
+    emit(
+      'update:modelValue',
+      props.modelValue.map((current, i) =>
+        i === index ? { path: media.url, alt: current.alt, isDefault: current.isDefault } : current
+      )
+    )
+    liveMessage.value = `Imagen ${index + 1} subida. Escribe su texto alternativo y guarda.`
   }
 
   const move = async (index: number, direction: -1 | 1) => {
@@ -66,14 +84,21 @@
 
   // Quitar pide confirmación: nombra la imagen y avisa de que se elimina al guardar.
   const removing = ref<number | null>(null)
-  const removingLabel = computed(() => {
-    const item = removing.value === null ? null : props.modelValue[removing.value]
-    return item ? item.path.trim() || `la imagen ${(removing.value ?? 0) + 1}` : ''
-  })
+  const removingItem = computed(() =>
+    removing.value === null ? null : (props.modelValue[removing.value] ?? null)
+  )
+  const removingLabel = computed(() =>
+    removingItem.value
+      ? removingItem.value.path.trim() || `la imagen ${(removing.value ?? 0) + 1}`
+      : ''
+  )
+  const removingUploaded = computed(() => !!mediaKeyFromUrl(removingItem.value?.path ?? ''))
   const confirmRemove = async () => {
     const index = removing.value
     removing.value = null
     if (index === null) return
+    const gone = props.modelValue[index]
+    if (gone?.path) discardAfterSave(gone.path)
     emit('update:modelValue', removeImageAt(props.modelValue, index))
     liveMessage.value = `Imagen ${index + 1} quitada. Guarda para aplicar el cambio.`
     await nextTick()
@@ -138,25 +163,31 @@
             :label="`Imagen ${index + 1}`"
           />
           <div class="space-y-4">
+            <AdminImageUpload
+              :id="`${id}-${index}-upload`"
+              folder="about"
+              :label="item.path ? 'Reemplazar imagen' : 'Elegir imagen'"
+              @uploaded="uploaded(index, $event)"
+            />
             <AdminInput
               v-if="!item.id"
               :id="`${id}-${index}-path`"
               :model-value="item.path"
-              label="Ruta de la imagen"
-              placeholder="/about/miguel.webp"
+              label="Dirección de la imagen"
+              placeholder="https://… o /about/miguel.webp"
               required
               counter
               :maxlength="ABOUT_LIMITS.imagePath"
               autocomplete="off"
-              hint="El archivo debe estar en la carpeta public/about/ del sitio antes de registrarlo."
+              hint="Se rellena sola al subir una imagen. También puedes pegar una URL https o la ruta de un archivo de public/about/ del sitio."
               :error="errors[`images.${index}.path`]"
               @update:model-value="set(index, 'path', String($event))"
             />
             <div v-else>
-              <p class="mb-1 text-sm font-medium text-brand-ink">Ruta de la imagen</p>
+              <p class="mb-1 text-sm font-medium text-brand-ink">Dirección de la imagen</p>
               <p class="break-all text-sm text-brand-ink">{{ item.path }}</p>
               <p class="mt-1 text-xs text-brand-muted">
-                La ruta no se puede cambiar: quita la imagen y registra otra.
+                La dirección no se puede cambiar: usa «Reemplazar imagen» o quita esta imagen.
               </p>
             </div>
             <AdminInput
@@ -211,8 +242,7 @@
       </p>
     </div>
     <p v-if="!modelValue.length" class="mt-2 text-sm text-brand-muted">
-      Todavía no hay imágenes. Sin al menos una, la sección no se puede publicar y el sitio usa su
-      contenido de respaldo.
+      Todavía no hay imágenes. Puedes publicar sin ellas: el sitio mostrará una imagen de marca.
     </p>
     <p class="sr-only" role="status" aria-live="polite">{{ liveMessage }}</p>
 
@@ -226,8 +256,12 @@
       <p>
         Vas a quitar
         <strong class="font-semibold text-brand-ink break-all">{{ removingLabel }}</strong>
-        de la sección. Se elimina de verdad cuando guardes los cambios; el archivo de la carpeta
-        public/about/ no se borra.
+        de la sección. Se elimina de verdad cuando guardes los cambios;
+        {{
+          removingUploaded
+            ? 'el archivo subido también se borra del almacenamiento en ese momento.'
+            : 'el archivo, si es de la carpeta public/about/, no se borra.'
+        }}
       </p>
     </AdminConfirmDialog>
   </div>

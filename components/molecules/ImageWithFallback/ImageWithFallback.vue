@@ -1,5 +1,6 @@
 <script lang="ts" setup>
   import { ImagePlaceholder } from '~/components/atoms'
+  import { isRemoteImageUrl } from '~/utils/imageSource'
   import type { ImageWithFallbackProps } from '../molecule'
 
   // Imagen con respaldo: si no hay `src` (vacío o solo espacios) o la carga falla, muestra el placeholder de
@@ -10,6 +11,9 @@
   const props = withDefaults(defineProps<ImageWithFallbackProps>(), { loading: 'lazy' })
 
   const path = computed(() => props.src?.trim() ?? '')
+  // Las subidas desde el panel (URL https del almacenamiento) ya vienen normalizadas a WebP: se muestran tal
+  // cual (`provider="none"`), sin pasar por el optimizador, que solo procesa archivos del propio sitio.
+  const remote = computed(() => isRemoteImageUrl(path.value))
   const failed = ref(false)
   const showPlaceholder = computed(() => !path.value || failed.value)
   const placeholderLabel = computed(() =>
@@ -35,6 +39,7 @@
       ref="image"
       :key="path"
       :src="path"
+      :provider="remote ? 'none' : undefined"
       :alt="alt"
       :width="width"
       :height="height"

@@ -3,6 +3,7 @@ import { createServer } from 'node:http'
 import test, { after, before } from 'node:test'
 import {
   extractSessionCookie,
+  isMultipartType,
   isSafeSegments,
   proxyAdminRequest
 } from '../server/utils/adminProxy.ts'
@@ -13,14 +14,16 @@ const received = []
 
 before(async () => {
   server = createServer((request, response) => {
-    let raw = ''
-    request.on('data', chunk => (raw += chunk))
+    const chunks = []
+    request.on('data', chunk => chunks.push(chunk))
     request.on('end', () => {
+      const bytes = Buffer.concat(chunks)
       received.push({
         url: request.url,
         method: request.method,
         headers: request.headers,
-        body: raw
+        body: bytes.toString('utf8'),
+        bytes
       })
       if (request.url.startsWith('/api/admin/login/totp')) {
         response.statusCode = 204
@@ -191,4 +194,86 @@ test('extrae la cookie de sesión de una cabecera con varias cookies', () => {
   assert.equal(extractSessionCookie('fake_admin_session=abc'), undefined)
   assert.equal(extractSessionCookie('admin_session='), undefined)
   assert.equal(extractSessionCookie(undefined), undefined)
+})
+
+const BOUNDARY = '----formboundary7MA4YWxkTrZu0gW'
+const MULTIPART = `multipart/form-data; boundary=${BOUNDARY}`
+
+// Cuerpo multipart con un "archivo" que contiene los 256 valores de byte (lo que un decodificado
+// como texto UTF-8 corrompería).
+const CRLF = '\r\n'
+const multipartBody = () => {
+  const file = Buffer.from(Array.from({ length: 1024 }, (_, i) => i % 256))
+  const head = [
+    `--${BOUNDARY}`,
+    'Content-Disposition: form-data; name="folder"',
+    '',
+    'about',
+    `--${BOUNDARY}`,
+    'Content-Disposition: form-data; name="file"; filename="a.png"',
+    'Content-Type: image/png',
+    '',
+    ''
+  ].join(CRLF)
+  return {
+    file,
+    body: Buffer.concat([Buffer.from(head), file, Buffer.from(`${CRLF}--${BOUNDARY}--${CRLF}`)])
+  }
+}
+
+test('multipart hacia media: reenvía los bytes intactos y la frontera original', async () => {
+  const { file, body } = multipartBody()
+  const result = await proxyAdminRequest(
+    { baseUrl },
+    { ...base, method: 'POST', segments: ['media'], body, contentType: MULTIPART }
+  )
+  assert.equal(result.status, 200)
+  const last = received.at(-1)
+  assert.equal(last.url, '/api/admin/media')
+  assert.equal(last.headers['content-type'], MULTIPART)
+  assert.ok(last.bytes.equals(body), 'el cuerpo debe llegar byte a byte')
+  assert.ok(last.bytes.includes(file))
+})
+
+test('multipart solo se acepta por POST hacia media (sin hacer ninguna petición)', async () => {
+  const before = received.length
+  const { body } = multipartBody()
+  for (const [method, segments] of [
+    ['POST', ['leads']],
+    ['POST', ['about', 'images']],
+    ['PUT', ['media']],
+    ['PATCH', ['media']]
+  ]) {
+    const result = await proxyAdminRequest(
+      { baseUrl },
+      { ...base, method, segments, body, contentType: MULTIPART }
+    )
+    assert.equal(result.status, 415, `${method} ${segments.join('/')}`)
+  }
+  assert.equal(received.length, before)
+})
+
+test('otros tipos de contenido no se reenvían: el cuerpo sigue siendo JSON', async () => {
+  await proxyAdminRequest(
+    { baseUrl },
+    { ...base, method: 'POST', segments: ['leads'], body: '{"a":1}', contentType: 'text/plain' }
+  )
+  assert.equal(received.at(-1).headers['content-type'], 'application/json')
+  for (const contentType of ['multipart/form-data', 'multipart/mixed; boundary=x', undefined]) {
+    assert.equal(isMultipartType(contentType), false, String(contentType))
+  }
+  assert.equal(isMultipartType(MULTIPART), true)
+  assert.equal(isMultipartType('multipart/form-data; boundary=a b'), false)
+})
+
+test('eliminar una imagen por clave viaja en la query y sin cuerpo', async () => {
+  const key = 'about/0b6f1c2e-3d4a-4b5c-8d6e-7f8091a2b3c4.webp'
+  const result = await proxyAdminRequest(
+    { baseUrl },
+    { ...base, method: 'DELETE', segments: ['media'], query: { key } }
+  )
+  assert.equal(result.status, 200)
+  assert.equal(received.at(-1).method, 'DELETE')
+  assert.equal(received.at(-1).url, `/api/admin/media?key=${encodeURIComponent(key)}`)
+  assert.equal(received.at(-1).headers['content-type'], undefined)
 })

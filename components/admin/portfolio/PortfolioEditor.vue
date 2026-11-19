@@ -3,6 +3,7 @@
   import AdminButton from '~/components/admin/AdminButton.vue'
   import AdminChipList from '~/components/admin/AdminChipList.vue'
   import AdminConfirmDialog from '~/components/admin/AdminConfirmDialog.vue'
+  import AdminImageUpload from '~/components/admin/AdminImageUpload.vue'
   import AdminInput from '~/components/admin/AdminInput.vue'
   import AdminNotice from '~/components/admin/AdminNotice.vue'
   import AdminPageHeader from '~/components/admin/AdminPageHeader.vue'
@@ -19,6 +20,7 @@
     publishRequirements
   } from '~/utils/admin/portfolio'
   import type { PortfolioDetailRecord } from '~/utils/admin/portfolio'
+  import type { MediaResult } from '~/utils/admin/media'
 
   // Editor de un proyecto del portafolio (crear y editar). La lógica vive en `usePortfolioEditor`; aquí
   // solo se ordena la pantalla: secciones, barra de acciones, confirmaciones y foco.
@@ -45,6 +47,7 @@
     allowLeave
   } = usePortfolioEditor(props.entry)
 
+  const { discardAfterSave, flushDiscards, clearDiscards } = useAdminMedia()
   const formEl = ref<HTMLFormElement | null>(null)
   const folder = computed(() => values.value.slug || 'mi-proyecto')
   const requirements = computed(() => publishRequirements(values.value))
@@ -59,7 +62,10 @@
     }
     window.addEventListener('beforeunload', warnBeforeUnload)
   })
-  onBeforeUnmount(() => window.removeEventListener('beforeunload', warnBeforeUnload))
+  onBeforeUnmount(() => {
+    window.removeEventListener('beforeunload', warnBeforeUnload)
+    clearDiscards()
+  })
 
   // Un campo muestra su error al salir de él: el id del control dice de qué campo se trata.
   const TOUCH_BY_ID: [string, string][] = [
@@ -95,8 +101,26 @@
     formEl.value?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus()
   }
 
+  // Subir portada o imagen para redes: la dirección se rellena sola y el archivo subido que se reemplaza se
+  // borra del almacenamiento solo después de guardar.
+  const onCoverUploaded = (media: MediaResult) => {
+    discardAfterSave(values.value.coverPath)
+    values.value.coverPath = media.url
+  }
+  const onOgUploaded = (media: MediaResult) => {
+    discardAfterSave(values.value.ogPath)
+    values.value.ogPath = media.url
+  }
+
   const onSave = async () => {
     const result = await save()
+    if (result === 'created' || result === 'saved') {
+      void flushDiscards([
+        values.value.coverPath,
+        values.value.ogPath,
+        ...values.value.gallery.map(item => item.path)
+      ])
+    }
     if (result === 'created' && record.value) {
       await navigateTo(`/admin/portfolio/${record.value.id}`)
     } else if (result === 'invalid' || (result === 'failed' && errors.value.slug)) {
@@ -120,6 +144,7 @@
     const kind = confirmKind.value
     confirmKind.value = null
     if (kind === 'discard') {
+      clearDiscards()
       discard()
       announce('Cambios descartados.')
     }
@@ -408,15 +433,17 @@
             <div class="rounded-xl bg-brand-surface-soft p-4 text-sm leading-6 text-brand-muted">
               <p class="font-semibold text-brand-ink">Cómo añadir una imagen</p>
               <p class="mt-1">
-                Todavía no se suben desde el panel. Copia el archivo a
+                Súbela desde aquí (JPEG, PNG o WebP de hasta 5 MB; se guarda como WebP) y la
+                dirección se rellena sola. También puedes pegar una URL https o la ruta de un
+                archivo que ya esté en
                 <code class="rounded bg-brand-surface-card px-1 py-0.5 text-xs text-brand-ink">
                   public/projects/{{ folder }}/
                 </code>
-                en el código del sitio y escribe aquí su ruta, como
+                , como
                 <code class="rounded bg-brand-surface-card px-1 py-0.5 text-xs text-brand-ink">
                   /projects/{{ folder }}/cover.webp
                 </code>
-                . La vista previa te dice si el sitio la encuentra.
+                . La vista previa te dice si se encuentra.
               </p>
               <ul class="mt-2 space-y-1 text-xs tabular-nums">
                 <li>
@@ -441,9 +468,15 @@
                   v-model="values.coverPath"
                   label="Portada"
                   autocomplete="off"
-                  :placeholder="`/projects/${folder}/cover.webp`"
+                  :placeholder="`https://… o /projects/${folder}/cover.webp`"
                   hint="La imagen de la tarjeta y de la cabecera de la ficha."
                   :error="errors.coverPath"
+                />
+                <AdminImageUpload
+                  id="portfolio-cover-upload"
+                  folder="projects"
+                  :label="values.coverPath ? 'Reemplazar portada' : 'Elegir portada'"
+                  @uploaded="onCoverUploaded"
                 />
                 <PortfolioImagePreview :src="values.coverPath" label="Portada" />
               </div>
@@ -453,9 +486,15 @@
                   v-model="values.ogPath"
                   label="Imagen para redes (opcional)"
                   autocomplete="off"
-                  :placeholder="`/projects/${folder}/og.jpg`"
+                  :placeholder="`https://… o /projects/${folder}/og.jpg`"
                   hint="La que se ve al compartir el enlace. Si falta, se usa la del sitio."
                   :error="errors.ogPath"
+                />
+                <AdminImageUpload
+                  id="portfolio-og-upload"
+                  folder="projects"
+                  :label="values.ogPath ? 'Reemplazar imagen' : 'Elegir imagen'"
+                  @uploaded="onOgUploaded"
                 />
                 <PortfolioImagePreview
                   :src="values.ogPath"

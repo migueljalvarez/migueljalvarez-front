@@ -1,6 +1,7 @@
 import type { AboutContent, AboutImage } from '~/types/about'
 import type { PortfolioType, SocialMediaType } from '~/types/common'
 import type { PortfolioCardProject } from '~/types/portfolio'
+import { isImageSource } from './imageSource.ts'
 
 /**
  * Forma de las respuestas públicas de la API (migueljalvarez-api, docs/openapi-panel.yaml) y su
@@ -152,11 +153,6 @@ const optionalText = (value: unknown): string | undefined =>
 const isDimension = (value: unknown): value is number =>
   typeof value === 'number' && Number.isInteger(value) && value > 0
 
-/** Solo rutas del propio sitio (`/about/…`): nunca una URL externa ni una ruta rara. */
-const isSiteImage = (value: unknown): value is string =>
-  typeof value === 'string' &&
-  /^\/(?!\/)[A-Za-z0-9_\-./]+\.(webp|jpe?g|png)$/.test(value) &&
-  !value.includes('..')
 const isSafeHref = (value: unknown): value is string =>
   typeof value === 'string' && /^(\/(?!\/)|https:\/\/)\S*$/.test(value)
 
@@ -171,7 +167,7 @@ export const mapApiAbout = (raw: unknown): AboutContent | null => {
   if (!isText(data.heading) || !isText(data.intro) || !Array.isArray(data.images)) return null
 
   const images: AboutImage[] = data.images
-    .filter(item => item && isSiteImage(item.src) && isText(item.alt))
+    .filter(item => item && isImageSource(item.src) && isText(item.alt))
     .slice(0, ABOUT_MAX_IMAGES)
     .map(item => ({
       src: item.src,

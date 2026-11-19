@@ -176,7 +176,9 @@ test('rutas de imagen: absolutas, sin puntos extra y con extensión permitida', 
     '/projects/../cover.webp',
     '/projects/a b/cover.webp',
     '/projects/a/cover.v2.webp',
-    'https://x.co/a.webp'
+    'http://x.co/a.webp',
+    'https://x.co/a.webp?x=1',
+    'https://x.co/a b.webp'
   ]) {
     assert.ok(validatePortfolioForm(valid({ coverPath })).errors.coverPath, coverPath)
   }
@@ -184,7 +186,8 @@ test('rutas de imagen: absolutas, sin puntos extra y con extensión permitida', 
     '',
     '/projects/a/cover.webp',
     '/projects/a/og.jpg',
-    '/a/b_c-d.PNG'.replace('PNG', 'png')
+    '/a/b_c-d.PNG'.replace('PNG', 'png'),
+    'https://pub-abc.r2.dev/projects/0b6f1c2e-3d4a-4b5c-8d6e-7f8091a2b3c4.webp'
   ]) {
     assert.equal(validatePortfolioForm(valid({ coverPath })).errors.coverPath, undefined, coverPath)
   }

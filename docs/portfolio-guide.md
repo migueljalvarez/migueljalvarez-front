@@ -41,8 +41,10 @@ Los proyectos "en desarrollo" (`status: 'in-development'`) solo aparecen como ta
 
 ## 3. Imágenes: medidas, formato y cantidad
 
-Todas las imágenes de un proyecto viven en `public/projects/<slug>/` y se referencian desde
-`constants/portfolio.ts`. Se usa siempre **WebP** (excepto la imagen para redes, que es JPG).
+Las imágenes de un proyecto se **suben desde el panel** (portada, imagen para redes y galería: JPEG, PNG o
+WebP de hasta 5 MB, que la API guarda como WebP en el almacenamiento y el panel registra por su URL https) o,
+para el respaldo del código, viven en `public/projects/<slug>/` y se referencian desde `constants/portfolio.ts`.
+Las medidas de abajo valen para ambas; el almacenamiento reduce a 1920 px de lado mayor pero no recorta. Se usa siempre **WebP** (excepto la imagen para redes, que es JPG).
 
 | Imagen                             | Archivo                         | Medida                | Formato           | Peso máx.      | Cantidad                                   |
 | ---------------------------------- | ------------------------------- | --------------------- | ----------------- | -------------- | ------------------------------------------ |

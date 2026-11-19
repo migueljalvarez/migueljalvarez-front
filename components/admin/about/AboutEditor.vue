@@ -27,6 +27,7 @@
   const clone = (value: unknown) => JSON.parse(JSON.stringify(value))
 
   const { save: saveAbout } = useAdminAbout()
+  const { flushDiscards, clearDiscards } = useAdminMedia()
   const { status, announce } = useAdminStatus()
 
   const record = ref<AboutAdminRecord>(clone(props.record))
@@ -90,6 +91,7 @@
     submitted.value = false
     touched.clear()
     saveError.value = ''
+    clearDiscards()
   }
 
   const onSave = async () => {
@@ -110,6 +112,8 @@
       submitted.value = false
       touched.clear()
       announce('Cambios guardados.')
+      // Ya guardado: los archivos subidos que se reemplazaron o quitaron se borran del almacenamiento.
+      void flushDiscards(outcome.record.images.map(item => item.path))
       return
     }
     if (outcome.record) {
@@ -157,7 +161,10 @@
     event.returnValue = ''
   }
   onMounted(() => window.addEventListener('beforeunload', warnBeforeUnload))
-  onBeforeUnmount(() => window.removeEventListener('beforeunload', warnBeforeUnload))
+  onBeforeUnmount(() => {
+    window.removeEventListener('beforeunload', warnBeforeUnload)
+    clearDiscards()
+  })
 </script>
 
 <template>
