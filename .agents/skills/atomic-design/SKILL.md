@@ -18,14 +18,14 @@ components/
   admin/        AdminInput, AdminField, AdminDialog… — primitivas del panel (misma jerarquía)
 pages/          solo ensamblan templates y definen SEO/ruta
 layouts/        default, admin, auth
-composables/    acceso a datos y lógica reutilizable (useAdminData, useEmail, usePageSeo…)
+composables/    acceso a datos y lógica reutilizable (useAdminApi, useEmail, usePageSeo…)
 ```
 
 - Cada capa tiene `index.ts` (exports) y `.d.ts` de tipos. Un componente por carpeta: `Button/Button.vue`.
 - Un componente solo importa de su misma capa o de las inferiores (átomo ← molécula ← organismo ← template ← página). Nunca hacia arriba.
 - **Componentizar** cuando: el marcado se repite, tiene identidad propia o tiene estados propios. No crear abstracciones para un uso único sin identidad.
 - Importar siempre de forma **explícita**; un import perdido no rompe la vista pero provoca "Hydration mismatch".
-- Datos: `$fetch`/`useFetch` no van en componentes; viven en composables o `server/api`. En el panel, solo a través de `useAdminData`.
+- Datos: `$fetch`/`useFetch` no van en componentes; viven en composables o `server/api`. En el panel, solo a través de `useAdminApi` (vía los composables `useAdmin*`).
 - Vue 3 `<script setup lang="ts">`; `<script>` indentado dentro de `.vue`; respetar `.prettierrc`.
 
 ## Nombres: siempre en inglés

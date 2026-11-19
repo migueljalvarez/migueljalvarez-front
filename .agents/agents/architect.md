@@ -25,7 +25,7 @@ Revisar SOLO:
 - Componente repetido en vez de componentizado (marcado duplicado entre templates).
 - Falta `index.ts` o el `.d.ts` de tipos en una carpeta de capa.
 - `$fetch`/`useFetch` dentro de componentes: el acceso a datos va en composables (`composables/`) o en `server/api`.
-- En el panel: acceso a datos fuera de `composables/useAdminData.ts`; páginas `/admin` que no pasen por la guarda global (`middleware/auth.global.ts`).
+- En el panel: acceso a datos fuera de `composables/useAdminApi.ts` (y los composables `useAdmin*` que lo usan); páginas `/admin` que no pasen por la guarda global (`middleware/auth.global.ts`).
 - Importar componentes de `components/admin/` desde páginas públicas (o al revés).
 - Secretos: valores privados en `runtimeConfig.public` o leídos de `process.env` en `nuxt.config.ts` (deben resolverse en ejecución con `getServerSecret()`).
 - SEO: página pública sin `usePageSeo()`; página privada sin `noindex`.

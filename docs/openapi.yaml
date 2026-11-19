@@ -27,6 +27,8 @@ tags:
   - name: Público
     description: Lectura de contenido del sitio
   - name: Contacto
+  - name: Testimonios
+    description: Enlace único del cliente y envío del correo desde el panel
   - name: Admin
     description: Panel privado /admin (proxy hacia la API propia con contraseña + TOTP)
   - name: SEO
@@ -158,6 +160,194 @@ paths:
                 $ref: '#/components/schemas/Error'
         '500':
           description: No se pudo enviar el correo o falta configuración
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/testimonial/{token}:
+    get:
+      tags: [Testimonios]
+      summary: Abre el formulario de testimonio con el enlace único del correo
+      description: |
+        Enlace `/testimonio/<token>` (noindex, sin referrer). El sitio llama a la API desde Nitro
+        (`GET /api/testimonials/requests/{token}`) y reenvía la IP real del visitante para el límite de
+        fallos. Un token mal formado nunca llega a la API. Token inexistente, vencido o ya usado: el MISMO
+        404 genérico «Enlace no válido o vencido». Respuesta `Cache-Control: no-store`; el token no se
+        escribe en logs.
+      operationId: openTestimonialForm
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9_-]{43}$'
+      responses:
+        '200':
+          description: Datos mínimos para mostrar el formulario (sin correo ni identificadores)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicTestimonialForm'
+        '404':
+          description: Enlace no válido o vencido (mismo mensaje en todos los casos)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Demasiados intentos fallidos desde esta IP
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: La API no está configurada o no responde
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags: [Testimonios]
+      summary: El cliente envía su testimonio (una sola vez por enlace)
+      description: |
+        Valida en el servidor (texto 10-3000 caracteres sin `<` ni `>`, `consentPublish: true` obligatorio
+        según la Ley 1581, cuerpo máximo 16 KB) y reenvía a la API, que vuelve a validar y deja la solicitud
+        `respondida` pendiente de aprobación (no aparece en la web hasta que el administrador la apruebe).
+        Responde 204 sin cuerpo y `Cache-Control: no-store`.
+      operationId: submitTestimonial
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9_-]{43}$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestimonialSubmission'
+      responses:
+        '204':
+          description: Recibido; queda pendiente de aprobación
+        '400':
+          description: Validación (texto, campos extra o consentimiento ausente)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Enlace no válido, vencido o ya usado (mismo mensaje genérico)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '413':
+          description: Cuerpo demasiado grande
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Demasiados intentos fallidos desde esta IP
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: La API no está configurada o no responde
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/admin/testimonial-requests/send:
+    post:
+      tags: [Testimonios]
+      summary: Crea o renueva una solicitud de testimonio y envía el correo con el enlace único
+      description: |
+        Archivo específico: tiene prioridad sobre el proxy `/api/admin/{...path}`. Pasos:
+
+        1. Exige `Origin` del propio sitio y una sesión de administrador válida (se comprueba en la API con la
+           cookie `admin_session`); sin sesión, 401.
+        2. Límite de 10 envíos cada 10 minutos por IP (en memoria).
+        3. Crea la solicitud (`mode: create`) o la renueva (`mode: renew`, 409 si ya fue respondida) en la API,
+           que entrega el token en claro una sola vez.
+        4. Arma el enlace con `NUXT_PUBLIC_BASE_URL` (`/testimonio/<token>`; nunca con datos de la petición).
+        5. Envía el correo al cliente con Resend (remitente `MAIL_FROM`; HTML escapado, texto plano alterno,
+           sin pixeles de seguimiento).
+
+        La respuesta NUNCA lleva el token en `request`. Si el correo salió (`mail: sent`) no hay `link`; si
+        no (`not-configured` o `failed`) llega `link` una sola vez para copiarlo y enviarlo por otro canal.
+        En desarrollo no se envía correo real salvo que `TESTIMONIAL_MAIL_DEV=true`. El token y la clave de
+        Resend no se escriben en logs. Respuesta `Cache-Control: no-store`.
+      operationId: sendTestimonialRequest
+      security:
+        - adminCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestimonialSendRequest'
+      responses:
+        '200':
+          description: Solicitud creada o renovada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestimonialSendResponse'
+        '400':
+          description: Datos inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Sin sesión válida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Origen no permitido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: La solicitud a renovar no existe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: El cliente indicado no existe o la solicitud ya fue respondida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '413':
+          description: Cuerpo demasiado grande
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Demasiados envíos seguidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Falta configurar la URL pública del sitio
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: La API no está configurada o no responde
           content:
             application/json:
               schema:
@@ -399,3 +589,103 @@ components:
           type: string
           maxLength: 200
           description: Campo trampa (honeypot). Debe enviarse vacío.
+    TestimonialSubmission:
+      type: object
+      required: [answer, consentPublish]
+      additionalProperties: false
+      properties:
+        answer:
+          type: string
+          minLength: 10
+          maxLength: 3000
+          description: Texto plano, sin `<` ni `>`
+        authorName:
+          type: string
+          maxLength: 100
+          description: Reemplaza el nombre de la solicitud (opcional; vacío = no se envía)
+        authorRole:
+          type: string
+          maxLength: 120
+        authorCompany:
+          type: string
+          maxLength: 120
+        consentPublish:
+          type: boolean
+          enum: [true]
+          description: Autorización expresa para publicar texto, nombre, cargo y empresa (Ley 1581)
+    PublicTestimonialForm:
+      type: object
+      required: [clientName, projectName, message, expiresAt]
+      properties:
+        clientName:
+          type: string
+        projectName:
+          type: string
+          description: Cadena vacía si la solicitud no tiene proyecto
+        message:
+          type: string
+          description: Mensaje personal (cadena vacía si no hay)
+        expiresAt:
+          type: string
+          format: date-time
+    TestimonialSendRequest:
+      oneOf:
+        - type: object
+          required: [mode, clientName, email]
+          properties:
+            mode:
+              type: string
+              const: create
+            clientId:
+              type: string
+              format: uuid
+              description: Cliente existente (opcional)
+            clientName:
+              type: string
+              minLength: 1
+              maxLength: 100
+            email:
+              type: string
+              format: email
+              maxLength: 254
+            projectName:
+              type: string
+              maxLength: 150
+            message:
+              type: string
+              maxLength: 1000
+            expiresInDays:
+              type: integer
+              minimum: 1
+              maximum: 60
+              default: 14
+        - type: object
+          required: [mode, id]
+          properties:
+            mode:
+              type: string
+              const: renew
+            id:
+              type: string
+              format: uuid
+            expiresInDays:
+              type: integer
+              minimum: 1
+              maximum: 60
+              default: 14
+    TestimonialSendResponse:
+      type: object
+      required: [request, mail, notice]
+      properties:
+        request:
+          type: object
+          description: La solicitud (ver `TestimonialRequest` en docs/openapi-panel.yaml de la API) SIN token
+        mail:
+          type: string
+          enum: [sent, not-configured, failed]
+        link:
+          type: string
+          description: Enlace único con el token. Solo llega si el correo NO salió, y solo esta vez
+        notice:
+          type: string
+          description: Mensaje listo para mostrar

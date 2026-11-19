@@ -133,12 +133,6 @@ export const ADMIN_NAV: AdminNavItem[] = [
   }
 ]
 
-/**
- * ¿Está conectada la API del panel? Mientras sea `false`, en producción el panel no permite guardar
- * cambios (solo en desarrollo, con datos de ejemplo en memoria). Pasa a `true` al conectar la API.
- */
-export const ADMIN_API_CONNECTED = false
-
 export const LEAD_STATUSES = [
   { value: 'nuevo', label: 'Nuevo', tone: 'blue' },
   { value: 'contactado', label: 'Contactado', tone: 'amber' },

@@ -100,7 +100,17 @@ export default defineNuxtConfig({
     '/login': {
       headers: { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' }
     },
-    '/api/admin/**': { headers: { 'Cache-Control': 'no-store' } }
+    '/api/admin/**': { headers: { 'Cache-Control': 'no-store' } },
+    // Enlace único del correo de testimonios: el token viaja en la URL, así que sin caché, sin
+    // indexar y sin enviar el referrer a otros sitios.
+    '/testimonio/**': {
+      headers: {
+        'Cache-Control': 'no-store',
+        'X-Robots-Tag': 'noindex, nofollow',
+        'Referrer-Policy': 'no-referrer'
+      }
+    },
+    '/api/testimonial/**': { headers: { 'Cache-Control': 'no-store' } }
   },
   nitro: {
     // Comprime (gzip/brotli) los estáticos al compilar; reemplaza a vite-plugin-compression (sin mantenimiento).

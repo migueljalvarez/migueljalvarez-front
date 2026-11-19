@@ -36,6 +36,10 @@ export type CheckboxProps = {
   modelValue?: boolean
   required?: boolean
   disabled?: boolean
+  /** `light` para superficies claras (por defecto `dark`, el panel de contacto). */
+  tone?: 'dark' | 'light'
+  invalid?: boolean
+  describedby?: string
 }
 export type TitleProps = {
   text: string
