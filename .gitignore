@@ -38,3 +38,4 @@ backups/
 *.bundle
 shots/
 .scannerwork/
+*.stackdump
