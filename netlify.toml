@@ -2,10 +2,8 @@
 # y el servidor (SSR + /api) como función en `.netlify/functions-internal`. No cambiar `publish`
 # a `.output` (esa carpeta es del preset `node-server` que se usa solo en local).
 #
-# IMPORTANTE: no se publica nada hasta que la base de datos esté lista (ver AGENTS.md).
-# Variables de entorno necesarias en Netlify (ver .env.example): NUXT_PUBLIC_BASE_URL,
-# RESEND_API_KEY, MAIL_FROM, MAIL_TO, ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_SESSION_SECRET.
-# Los secretos se leen en ejecución; defínelos con alcance de funciones/runtime.
+# Variables de entorno en Netlify: ver .env.example (NUXT_PUBLIC_BASE_URL se lee al compilar; los secretos,
+# en ejecución, con alcance Functions/Runtime). Reemplazar la rama de producción dispara el deploy público.
 
 [build]
   publish = "dist"
