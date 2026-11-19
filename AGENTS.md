@@ -38,6 +38,7 @@ Antes de cerrar una tarea: `npm run lint`, `npm test` y `npm run build`. Si toca
 - No hacer push a `main`, push forzado, PR a `main` ni deploy sin petición explícita: reemplazar `main` dispara el deploy de producción en Netlify.
 - Commits en español, cortos. Sin líneas de atribución de Claude (`Co-Authored-By`, "Generated with Claude Code").
 - El repositorio de GitHub es público: nada de datos personales (teléfono, correo, CV) ni secretos. El CV y documentos personales viven en `.private/` (ignorado) y no se sirven desde `public/`.
+- **Nunca versionar:** `.env` con valores reales, credenciales (R2, intake, claves, tokens), datos personales (CV, teléfono, correo, documento), respaldos y volcados (`*.dump`, `backups/`), paquetes (`*.bundle`, `*.zip`), capturas (`shots/`), imágenes de prueba, logs y cookies de sesión. Tests y ejemplos usan valores inventados (`ejemplo@example.com`, `573000000000`). Antes de cada commit: `git status` y `git diff --staged --stat`. Lo que ya esté en el historial se reporta, no se reescribe.
 
 ## Convenciones
 
