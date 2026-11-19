@@ -25,6 +25,10 @@
   --color-brand-muted: #4d5868;
   --color-brand-helper: #7e8897;
 
+  /* ámbar: único acento cálido, solo énfasis puntual. warm = sobre fondos oscuros (9,88:1 sobre navy, 8,61:1 sobre panel); warm-ink = sobre claros (6,80:1 sobre blanco, 6,34:1 sobre surface). NO usar warm sobre blanco (1,81:1) */
+  --color-brand-warm: #f5b544;
+  --color-brand-warm-ink: #8a4b00;
+
   /* surfaces: fondo principal y contenedores claros */
   --color-brand-surface: #f5f7fa;
   --color-brand-surface-soft: #eef2f7;
@@ -59,8 +63,8 @@
   --color-brand-error-text: #7a1f2a;
   --color-brand-error-border: #fda4af;
 
-  /* sombras de marca (usar shadow-card, shadow-card-lg, shadow-dialog, shadow-header) */
-  --shadow-card: 0 8px 22px var(--color-brand-shadow-card);
+  /* sombras de marca en 3 niveles: 0 = plano (por defecto); 1 = shadow-card (tarjetas destacadas/clicables); 2 = shadow-card-lg/shadow-dialog/shadow-header (lo que flota) */
+  --shadow-card: 0 4px 16px #0f172721; /* ~13 % de alfa */
   --shadow-card-lg: 0 18px 40px var(--color-brand-shadow-card);
   --shadow-dialog: 0 20px 60px var(--color-brand-shadow-card);
   --shadow-header: 0 10px 30px var(--color-brand-shadow-card);

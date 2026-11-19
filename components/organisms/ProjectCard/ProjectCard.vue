@@ -81,11 +81,8 @@
     </div>
 
     <div
-      class="relative z-10 flex flex-1 flex-col p-4 md:p-5"
-      :class="[
-        layoutMode === 'horizontal' ? 'md:flex-1 md:justify-center' : '',
-        layoutMode === 'three' && variant === 'default' ? 'md:p-3' : ''
-      ]"
+      class="relative z-10 flex flex-1 flex-col p-5 md:p-6"
+      :class="[layoutMode === 'horizontal' ? 'md:flex-1 md:justify-center' : '']"
     >
       <component :is="headingLevel" class="text-lg font-semibold leading-tight sm:text-xl">
         {{ project.title }}
@@ -93,16 +90,7 @@
       <p class="mt-2 text-sm leading-5 text-brand-muted">
         {{ project.description }}
       </p>
-      <div class="mt-auto flex items-center justify-between gap-3 pt-4">
-        <p class="min-w-0 flex-1 text-sm text-brand-muted">Dirigido a {{ project.audience }}</p>
-        <Icon
-          v-if="project.href"
-          name="mdi:arrow-right"
-          size="16"
-          class="shrink-0 text-brand-blue"
-          aria-hidden="true"
-        />
-      </div>
+      <p class="mt-auto pt-4 text-sm text-brand-muted">Dirigido a {{ project.audience }}</p>
     </div>
   </component>
 </template>

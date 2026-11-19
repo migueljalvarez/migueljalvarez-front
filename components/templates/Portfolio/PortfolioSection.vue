@@ -173,27 +173,18 @@
         key="portfolio-all-projects"
         tone="dark"
         as="article"
-        elevated
         class="col-span-full flex min-h-0 flex-col items-start justify-between gap-5 overflow-hidden rounded-2xl border-brand-border-strong bg-brand-surface-contrast p-5 text-left sm:flex-row sm:items-center sm:gap-6 md:p-6"
       >
-        <div class="flex min-w-0 items-center gap-4">
-          <span
-            class="flex size-12 shrink-0 items-center justify-center rounded-xl bg-brand-surface-panel"
-            aria-hidden="true"
+        <div class="min-w-0">
+          <component
+            :is="cardHeadingLevel"
+            class="text-base font-semibold leading-snug text-brand-text-strong md:text-xl"
           >
-            <Icon name="mdi:folder-multiple-outline" size="24" class="text-brand-text-soft" />
-          </span>
-          <div class="min-w-0">
-            <component
-              :is="cardHeadingLevel"
-              class="text-base font-semibold leading-snug text-brand-text-strong md:text-xl"
-            >
-              {{ HOME_COPY.portfolio.allHeading }}
-            </component>
-            <p class="mt-1 text-sm leading-6 text-brand-text-subtle">
-              {{ HOME_COPY.portfolio.allDescription }}
-            </p>
-          </div>
+            {{ HOME_COPY.portfolio.allHeading }}
+          </component>
+          <p class="mt-1 text-sm leading-6 text-brand-text-subtle">
+            {{ HOME_COPY.portfolio.allDescription }}
+          </p>
         </div>
         <Button to="/portafolio" theme="primary" size="md" on-dark>
           {{ HOME_COPY.portfolio.allCta }}

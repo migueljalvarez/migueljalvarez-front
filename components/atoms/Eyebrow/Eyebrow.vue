@@ -8,7 +8,7 @@
   <component
     :is="as"
     class="text-xs font-semibold uppercase tracking-[0.14em]"
-    :class="tone === 'dark' ? 'text-brand-text-soft' : 'text-brand-accent-text'"
+    :class="tone === 'dark' ? 'text-brand-warm' : 'text-brand-accent-text'"
   >
     <slot />
   </component>

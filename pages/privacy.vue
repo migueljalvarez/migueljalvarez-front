@@ -2,7 +2,7 @@
   import { LegalDocument } from '~/components/templates'
   import { getPrivacySections, PRIVACY_UPDATED_AT } from '~/data/privacy'
 
-  definePageMeta({ path: '/privacidad' })
+  definePageMeta({ path: '/privacidad', contact: 'compact' })
 
   usePageSeo({
     title: 'Política de tratamiento de datos',

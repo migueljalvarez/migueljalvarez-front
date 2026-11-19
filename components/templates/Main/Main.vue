@@ -6,7 +6,7 @@
 
 <template>
   <section
-    class="hero-section relative -mt-20 flex min-h-170 w-full items-center overflow-hidden px-4 pt-24 pb-24 text-brand-text-strong sm:px-6 sm:pt-28 md:min-h-180 md:pb-28 lg:px-8"
+    class="hero-section relative -mt-20 flex min-h-170 w-full items-center overflow-hidden px-4 pt-24 pb-16 text-brand-text-strong sm:px-6 sm:pt-28 md:min-h-180 md:pb-20 lg:px-8"
   >
     <svg
       class="hero-hexagons pointer-events-none absolute right-[-18%] top-1/2 z-0 w-[78vw] max-w-190 -translate-y-1/2 sm:right-[-8%] md:right-[2%] md:w-[54vw]"
@@ -33,7 +33,7 @@
     </svg>
 
     <div class="relative z-10 mx-auto flex w-full max-w-7xl">
-      <div class="flex w-full max-w-160 flex-col items-start gap-5 text-brand-text-strong md:gap-6">
+      <div class="flex w-full max-w-160 flex-col items-start gap-5 text-brand-text-strong">
         <p
           class="inline-flex w-fit items-center gap-2 rounded-2xl border border-brand-border-strong bg-brand-surface-contrast/90 px-4 py-2 text-xs font-semibold sm:rounded-full text-brand-text-soft"
         >
@@ -119,23 +119,23 @@
 
   .hero-hexagon {
     fill: none;
-    stroke: var(--color-brand-blue);
+    stroke: var(--color-brand-warm);
     stroke-width: 1.5;
-    opacity: 0.24;
+    opacity: 0.2;
     stroke-dasharray: 1000;
     stroke-dashoffset: 1000;
     animation: draw-hexagon 1.8s ease-out forwards;
   }
 
   .hero-hexagon-middle {
-    opacity: 0.2;
+    opacity: 0.14;
     animation-delay: 180ms;
   }
 
   .hero-hexagon-inner {
     fill: var(--color-brand-blue);
     fill-opacity: 0.035;
-    opacity: 0.17;
+    opacity: 0.12;
     animation-delay: 360ms;
   }
 

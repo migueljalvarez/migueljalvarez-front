@@ -6,13 +6,10 @@
 </script>
 
 <template>
-  <section
-    aria-labelledby="work-teaser-heading"
-    class="relative z-10 mx-auto w-full max-w-7xl border-t border-brand-border-strong/70 pt-8"
-  >
+  <section aria-labelledby="work-teaser-heading" class="relative z-10 mx-auto w-full max-w-7xl">
     <Card
       tone="dark"
-      class="relative flex flex-col gap-5 overflow-hidden bg-brand-surface-panel/95 p-6 md:p-8"
+      class="relative flex flex-col gap-5 overflow-hidden bg-brand-surface-panel/95 p-5 md:p-8"
     >
       <NuxtImg
         src="only-brand-color.svg"

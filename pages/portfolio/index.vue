@@ -19,9 +19,9 @@
 </script>
 
 <template>
-  <div class="bg-brand-surface px-4 py-8 md:py-12">
+  <div class="bg-brand-surface px-4 py-12 md:py-16">
     <div class="mx-auto w-full max-w-7xl">
-      <BackLink to="/" class="mb-8">Volver al inicio</BackLink>
+      <BackLink to="/" class="mb-6">Volver al inicio</BackLink>
 
       <PortfolioSection
         title="Portafolio"

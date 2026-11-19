@@ -80,6 +80,8 @@ export type HexMarkerProps = {
   label: string
   active?: boolean
   compact?: boolean
+  /** `dark`: sobre fondos oscuros, el activo lleva el ámbar de marca (texto navy). */
+  tone?: 'light' | 'dark'
   /** Texto accesible; si se omite el marcador es decorativo. */
   ariaLabel?: string
 }

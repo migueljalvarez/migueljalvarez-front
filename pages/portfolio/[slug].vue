@@ -76,13 +76,11 @@
 </script>
 
 <template>
-  <section class="w-full bg-brand-surface px-4 py-8 md:py-12">
+  <section class="w-full bg-brand-surface px-4 py-12 md:py-16">
     <div v-if="project" class="mx-auto w-full max-w-5xl">
       <BackLink to="/portafolio">Volver al portafolio</BackLink>
 
-      <article
-        class="overflow-hidden rounded-3xl border border-brand-border bg-brand-surface-card shadow-card-lg"
-      >
+      <article class="overflow-hidden rounded-2xl border border-brand-border bg-brand-surface-card">
         <header class="p-5 md:p-8">
           <Chip pill uppercase class="mb-4 tracking-[0.12em] text-brand-accent-text">
             {{ project.portfolioType }}
@@ -138,7 +136,7 @@
         <div class="space-y-10 px-5 pb-8 md:px-8 md:pb-10">
           <ul
             v-if="project.highlights?.length"
-            class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+            class="grid gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3"
             aria-label="Cifras destacadas"
           >
             <li v-for="item in project.highlights" :key="item.label">
@@ -172,7 +170,7 @@
 
           <section v-if="gallery.length">
             <h2 class="mb-4 text-xl font-semibold text-brand-accent-text md:text-2xl">Así se ve</h2>
-            <ul class="grid gap-5 sm:grid-cols-2">
+            <ul class="grid gap-4 sm:grid-cols-2 md:gap-5">
               <li
                 v-for="(image, index) in gallery"
                 :key="`${image.src}-${index}`"
@@ -218,7 +216,7 @@
           </section>
 
           <aside
-            class="rounded-2xl bg-brand-navy p-6 text-brand-text-strong md:p-8"
+            class="rounded-2xl bg-brand-navy p-5 text-brand-text-strong md:p-8"
             aria-labelledby="cta-heading"
           >
             <h2 id="cta-heading" class="text-xl font-semibold md:text-2xl">
@@ -253,7 +251,7 @@
 
     <div
       v-else
-      class="mx-auto max-w-2xl rounded-2xl border border-brand-border bg-brand-surface-card p-8 text-center shadow-sm"
+      class="mx-auto max-w-2xl rounded-2xl border border-brand-border bg-brand-surface-card p-8 text-center"
     >
       <h1 class="text-2xl font-semibold text-brand-ink">Proyecto no encontrado</h1>
       <p class="mt-3 text-brand-muted">No existe un detalle disponible para esta ruta.</p>

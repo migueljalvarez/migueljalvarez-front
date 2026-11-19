@@ -23,14 +23,13 @@
       props.size === 'sm' && 'min-h-11 py-2 px-4 text-xs leading-none',
       props.size === 'md' && 'min-h-11 py-2 px-4 text-sm leading-none',
       props.size === 'lg' && 'min-h-12.5 py-3.5 px-7 text-sm leading-none',
-      props.theme === 'primary' && 'bg-brand-accent text-brand-white hover:bg-brand-mid shadow-sm',
+      props.theme === 'primary' && 'bg-brand-accent text-brand-white hover:bg-brand-mid',
       props.theme === 'secondary' &&
         (props.onDark
           ? 'border border-brand-text-soft bg-transparent text-brand-text-strong hover:bg-brand-white/10'
           : 'border border-brand-border bg-transparent text-brand-ink hover:bg-brand-surface-soft'),
       props.theme === 'tertiary' && 'bg-brand-accent text-brand-white hover:bg-brand-mid',
-      props.theme === 'whatsapp' &&
-        'bg-brand-whatsapp text-brand-white hover:bg-brand-whatsapp/90 shadow-sm',
+      props.theme === 'whatsapp' && 'bg-brand-whatsapp text-brand-white hover:bg-brand-whatsapp/90',
       typeof attrs.class === 'string' ? attrs.class : undefined
     )
   )
