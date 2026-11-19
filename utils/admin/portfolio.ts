@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import type { PortfolioCardProject } from '../../types/portfolio'
 import { mapApiPortfolioEntry, toPortfolioCardProject } from '../publicContent.ts'
+import { isRemoteImageUrl } from '../imageSource.ts'
 import { moveItem } from './siteContent.ts'
 
 /**
@@ -43,8 +44,9 @@ export const PORTFOLIO_KIND_LABEL = { client: 'Cliente', product: 'Producto prop
 const SLUG_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/
 const IMAGE_RE = /^\/[A-Za-z0-9_-]+(\/[A-Za-z0-9_-]+)*\.(webp|jpe?g|png)$/
 const URL_RE = /^https:\/\/\S+$/
+const isImage = (value: string) => IMAGE_RE.test(value) || isRemoteImageUrl(value)
 const IMAGE_MESSAGE =
-  'Escribe una ruta del sitio como /projects/mi-app/cover.webp (webp, jpg, jpeg o png; sin espacios ni puntos extra).'
+  'Sube una imagen, o escribe una ruta del sitio como /projects/mi-app/cover.webp (webp, jpg, jpeg o png) o una URL https de la imagen.'
 
 // --- Tipos --------------------------------------------------------------------------------------
 
@@ -312,16 +314,16 @@ const portfolioSchema = z
       PORTFOLIO_LIMITS.listItems,
       `Puedes listar hasta ${PORTFOLIO_LIMITS.listItems} tecnologías.`
     ),
-    coverPath: z.string().refine(value => value === '' || IMAGE_RE.test(value), IMAGE_MESSAGE),
-    ogPath: z.string().refine(value => value === '' || IMAGE_RE.test(value), IMAGE_MESSAGE),
+    coverPath: z.string().refine(value => value === '' || isImage(value), IMAGE_MESSAGE),
+    ogPath: z.string().refine(value => value === '' || isImage(value), IMAGE_MESSAGE),
     gallery: z
       .array(
         z.object({
           id: z.string().optional(),
           path: z
             .string()
-            .min(1, 'Escribe la ruta de la imagen, p. ej. /projects/mi-app/01-inicio.webp.')
-            .regex(IMAGE_RE, IMAGE_MESSAGE),
+            .min(1, 'Sube una imagen o escribe su ruta, p. ej. /projects/mi-app/01-inicio.webp.')
+            .refine(isImage, IMAGE_MESSAGE),
           alt: z
             .string()
             .min(1, 'Describe lo que se ve en la imagen: es el texto alternativo.')

@@ -5,11 +5,14 @@
  */
 export class AdminApiError extends Error {
   readonly status: number
+  /** Mensaje original de la API (ya en español), aunque `message` sea genérico; no se muestra tal cual. */
+  readonly detail?: string
 
-  constructor(status: number, message: string) {
+  constructor(status: number, message: string, detail?: string) {
     super(message)
     this.name = 'AdminApiError'
     this.status = status
+    this.detail = detail
   }
 }
 
@@ -55,7 +58,7 @@ export const toAdminApiError = (error: unknown): AdminApiError => {
   if ((status === 400 || status === 409 || status === 422) && apiMessage) {
     return new AdminApiError(status, apiMessage)
   }
-  if (status >= 500 && status !== 503) return new AdminApiError(status, FALLBACK)
+  if (status >= 500 && status !== 503) return new AdminApiError(status, FALLBACK, apiMessage)
   if (status === 0) return new AdminApiError(0, GENERIC[503])
-  return new AdminApiError(status, GENERIC[status] ?? FALLBACK)
+  return new AdminApiError(status, GENERIC[status] ?? FALLBACK, apiMessage)
 }

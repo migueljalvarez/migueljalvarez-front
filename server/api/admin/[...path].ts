@@ -2,9 +2,12 @@
  * Proxy del panel hacia la API (ver server/utils/adminProxy.ts). Toda la autenticación (contraseña,
  * segundo factor, sesión) la resuelve la API; el sitio solo reenvía y mantiene la cookie del mismo origen.
  */
-import { proxyAdminRequest } from '../../utils/adminProxy'
-
-const MAX_BODY_BYTES = 1024 * 1024
+import {
+  isMultipartType,
+  MAX_JSON_BYTES,
+  MAX_UPLOAD_BYTES,
+  proxyAdminRequest
+} from '../../utils/adminProxy'
 
 export default defineEventHandler(async event => {
   const method = event.method
@@ -22,11 +25,28 @@ export default defineEventHandler(async event => {
     }
   }
 
-  let body: string | undefined
+  const contentType = getRequestHeader(event, 'content-type')
+  let body: string | Uint8Array | undefined
   if (method === 'POST' || method === 'PUT' || method === 'PATCH') {
-    body = (await readRawBody(event, 'utf8')) || undefined
-    if (body && Buffer.byteLength(body) > MAX_BODY_BYTES) {
-      throw createError({ statusCode: 413, statusMessage: 'Cuerpo demasiado grande' })
+    if (isMultipartType(contentType)) {
+      // Subida de imagen: se lee como bytes, con tope. Exigir Content-Length evita leer un cuerpo sin límite.
+      const length = Number(getRequestHeader(event, 'content-length'))
+      if (!Number.isFinite(length) || length <= 0) {
+        throw createError({ statusCode: 411, statusMessage: 'Se requiere Content-Length' })
+      }
+      if (length > MAX_UPLOAD_BYTES) {
+        throw createError({ statusCode: 413, statusMessage: 'Cuerpo demasiado grande' })
+      }
+      body = (await readRawBody(event, false)) || undefined
+      if (body && body.byteLength > MAX_UPLOAD_BYTES) {
+        throw createError({ statusCode: 413, statusMessage: 'Cuerpo demasiado grande' })
+      }
+    } else {
+      const text = (await readRawBody(event, 'utf8')) || undefined
+      if (text && Buffer.byteLength(text) > MAX_JSON_BYTES) {
+        throw createError({ statusCode: 413, statusMessage: 'Cuerpo demasiado grande' })
+      }
+      body = text
     }
   }
 
@@ -43,6 +63,7 @@ export default defineEventHandler(async event => {
       segments: (event.context.params?.path ?? '').split('/').filter(Boolean),
       query: getQuery(event) as Record<string, string | string[] | undefined>,
       body,
+      contentType,
       cookie: getRequestHeader(event, 'cookie'),
       clientIp: getClientIp(event),
       userAgent: getRequestHeader(event, 'user-agent')

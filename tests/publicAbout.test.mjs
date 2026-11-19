@@ -92,20 +92,25 @@ test('about: sin imágenes válidas, sin título o con forma rara devuelve null 
   assert.equal(mapApiAbout({ statusCode: 404, message: 'Contenido no publicado' }), null)
 })
 
-test('about: descarta imágenes externas, con ".." o sin alt', () => {
+test('about: descarta imágenes inseguras, con ".." o sin alt y acepta la URL https de una subida', () => {
   const about = mapApiAbout(
     api({
       images: [
-        { src: 'https://evil.example/x.webp', alt: 'X' },
+        { src: 'http://evil.example/x.webp', alt: 'X' },
+        { src: 'https://evil.example/x.webp?q=1', alt: 'X' },
+        { src: 'https://user@evil.example/x.webp', alt: 'X' },
+        { src: 'https://evil.example/../x.webp', alt: 'X' },
+        { src: 'javascript:alert(1)', alt: 'X' },
         { src: '/about/../secreto.webp', alt: 'X' },
         { src: '/about/sin-alt.webp', alt: ' ' },
-        { src: '/about/ok.webp', alt: 'Bien' }
+        { src: '/about/ok.webp', alt: 'Bien' },
+        { src: 'https://pub-abc.r2.dev/about/0b6f1c2e-3d4a-4b5c-8d6e-7f8091a2b3c4.webp', alt: 'R2' }
       ]
     })
   )
   assert.deepEqual(
     about.images.map(item => item.src),
-    ['/about/ok.webp']
+    ['/about/ok.webp', 'https://pub-abc.r2.dev/about/0b6f1c2e-3d4a-4b5c-8d6e-7f8091a2b3c4.webp']
   )
   assert.equal(mapApiAbout(api({ images: [{ src: '//evil.example/x.webp', alt: 'X' }] })), null)
 })

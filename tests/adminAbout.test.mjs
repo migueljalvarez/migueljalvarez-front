@@ -187,15 +187,43 @@ test('la ruta de la imagen debe ser /about/<slug>.<ext>, con alt y sin repetir',
   assert.ok(repeated.errors['images.1.path'])
 })
 
-test('publicar sin imágenes es un error y los requisitos lo dicen', () => {
+test('publicar sin imágenes es válido: los requisitos son solo título y presentación', () => {
   const values = form({ isPublished: true, images: [] })
-  assert.ok(validateAboutForm(values).errors.isPublished)
-  const requirements = aboutPublishRequirements(values)
-  assert.equal(requirements.find(item => item.id === 'image').met, false)
+  assert.equal(validateAboutForm(values).valid, true)
+  assert.deepEqual(
+    aboutPublishRequirements(values).map(item => item.id),
+    ['heading', 'intro']
+  )
   assert.equal(
     aboutPublishRequirements(form()).every(item => item.met),
     true
   )
+  assert.equal(
+    aboutPublishRequirements(form({ heading: '' })).every(item => item.met),
+    false
+  )
+})
+
+test('la imagen puede ser la URL https de una subida (no http, no con consulta ni espacios)', () => {
+  const url = 'https://pub-abc123.r2.dev/about/0b6f1c2e-3d4a-4b5c-8d6e-7f8091a2b3c4.webp'
+  const ok = validateAboutForm(form({ images: [{ path: url, alt: 'Foto', isDefault: true }] }))
+  assert.equal(ok.valid, true)
+  for (const path of [
+    'http://pub-abc.r2.dev/about/a.webp',
+    'https://pub-abc.r2.dev/about/a.webp?x=1',
+    'https://user@pub-abc.r2.dev/about/a.webp',
+    'https://pub-abc.r2.dev/about/a b.webp',
+    'https://pub-abc.r2.dev/about/a.gif',
+    'javascript:alert(1)'
+  ]) {
+    const bad = validateAboutForm(form({ images: [{ path, alt: 'x', isDefault: true }] }))
+    assert.ok(bad.errors['images.0.path'], path)
+  }
+  // La vista previa también la muestra.
+  const preview = formToAboutContent(
+    form({ images: [{ path: url, alt: 'Foto', isDefault: true }] })
+  )
+  assert.equal(preview.images[0].src, url)
 })
 
 test('el PUT omite los opcionales vacíos y recorta espacios', () => {

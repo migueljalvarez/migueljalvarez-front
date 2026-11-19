@@ -11,9 +11,19 @@ import { normalizeBaseUrl } from './publicApiClient.ts'
  *   prefijo `/api/admin/` de la API (sin `..`, sin barras, sin esquemas).
  * - Solo viaja la cookie `admin_session` (no se reenvían las demás cookies del sitio).
  * - La IP real del visitante se envía en `x-client-ip` (la API la usa para limitar intentos).
+ * - Cuerpos: JSON en general; `multipart/form-data` (subida de imágenes) solo hacia `media` y por POST. El
+ *   cuerpo viaja como bytes (nunca como texto) para no corromper la imagen, y la ruta lo limita a 5 MB.
  */
 export const ALLOWED_METHODS = ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'] as const
 export type AdminProxyMethod = (typeof ALLOWED_METHODS)[number]
+
+/** Recursos de la API que reciben `multipart/form-data` (solo POST). */
+export const MULTIPART_RESOURCES = ['media'] as const
+/** JSON: 1 MB. Subida de imagen: 5 MB del archivo (tope de la API) más el margen del multipart. */
+export const MAX_JSON_BYTES = 1024 * 1024
+export const MAX_UPLOAD_BYTES = 5 * 1024 * 1024 + 64 * 1024
+const UPLOAD_TIMEOUT_MS = 30_000
+const MULTIPART_TYPE = /^multipart\/form-data;\s*boundary=[A-Za-z0-9'()+_,./:=?-]{1,200}$/i
 
 export const SESSION_COOKIE = 'admin_session'
 const SEGMENT = /^[A-Za-z0-9._~-]{1,100}$/
@@ -31,8 +41,10 @@ export type AdminProxyRequest = {
   method: string
   segments: string[]
   query?: Record<string, string | string[] | undefined>
-  /** Cuerpo JSON ya leído (texto). */
-  body?: string
+  /** Cuerpo ya leído: texto JSON, o los bytes de un `multipart/form-data` (ver `contentType`). */
+  body?: string | Uint8Array
+  /** `Content-Type` de la petición del navegador; solo se reenvía el JSON o el multipart permitido. */
+  contentType?: string
   /** Cabecera `cookie` completa de la petición del navegador. */
   cookie?: string
   clientIp: string
@@ -63,6 +75,10 @@ export const extractSessionCookie = (header: string | undefined): string | undef
   return undefined
 }
 
+/** `true` si el tipo es `multipart/form-data` con una frontera válida. */
+export const isMultipartType = (contentType: string | undefined): boolean =>
+  MULTIPART_TYPE.test((contentType ?? '').trim())
+
 export const isSafeSegments = (segments: string[]): boolean =>
   segments.length > 0 && segments.every(segment => SEGMENT.test(segment) && segment !== '..')
 
@@ -83,6 +99,14 @@ export const proxyAdminRequest = async (
     return jsonError(404, 'Not Found', 'Recurso no encontrado.')
   }
 
+  const multipart = isMultipartType(request.contentType)
+  if (
+    multipart &&
+    (method !== 'POST' || !(MULTIPART_RESOURCES as readonly string[]).includes(request.segments[0]))
+  ) {
+    return jsonError(415, 'Unsupported Media Type', 'Tipo de contenido no permitido.')
+  }
+
   const url = new URL(`${baseUrl}/api/admin/${request.segments.join('/')}`)
   for (const [key, value] of Object.entries(request.query ?? {})) {
     for (const item of Array.isArray(value) ? value : value === undefined ? [] : [value]) {
@@ -96,7 +120,9 @@ export const proxyAdminRequest = async (
     'x-client-ip': request.clientIp.slice(0, 64),
     ...(request.userAgent ? { 'user-agent': request.userAgent.slice(0, MAX_USER_AGENT) } : {}),
     ...(session ? { cookie: `${SESSION_COOKIE}=${session}` } : {}),
-    ...(request.body ? { 'content-type': 'application/json' } : {}),
+    ...(request.body
+      ? { 'content-type': multipart ? (request.contentType as string).trim() : 'application/json' }
+      : {}),
     ...options.headers
   }
 
@@ -105,7 +131,7 @@ export const proxyAdminRequest = async (
       method,
       headers,
       body: request.body || undefined,
-      signal: AbortSignal.timeout(options.timeoutMs ?? 10_000),
+      signal: AbortSignal.timeout(options.timeoutMs ?? (multipart ? UPLOAD_TIMEOUT_MS : 10_000)),
       redirect: 'manual'
     })
     return {

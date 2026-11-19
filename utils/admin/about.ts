@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import type { AboutContent } from '../../types/about'
+import { isRemoteImageUrl } from '../imageSource.ts'
 import { moveItem } from './siteContent.ts'
 
 /**
@@ -32,19 +33,21 @@ export const ABOUT_LIMITS = {
   ctaLabel: 40,
   ctaHref: 200,
   images: 4,
-  imagePath: 200,
+  imagePath: 300,
   alt: 140
 } as const
 
 export const ABOUT_DEFAULT_EYEBROW = 'Sobre mí'
 
 const IMAGE_PATH_RE = /^\/about\/[a-z0-9]+(-[a-z0-9]+)*\.(webp|jpg|jpeg|png)$/
+/** Ruta `/about/<slug>.<ext>` del sitio o URL https de una imagen subida (la API acepta ambas). */
+const isAboutImage = (value: string) => IMAGE_PATH_RE.test(value) || isRemoteImageUrl(value)
 /** La API es de texto plano: rechaza `<` y `>` en los campos de presentación. */
 const PLAIN_TEXT_RE = /^[^<>]*$/
 const PLAIN_TEXT_MESSAGE = 'No se permiten los caracteres < y >.'
 const HREF_RE = /^(\/(?!\/)|https:\/\/)\S*$/
 const IMAGE_PATH_MESSAGE =
-  'Escribe una ruta como /about/miguel.webp (minúsculas, números y guiones; webp, jpg, jpeg o png).'
+  'Sube una imagen, o escribe una ruta como /about/miguel.webp (minúsculas, números y guiones) o una URL https de la imagen.'
 
 // --- Tipos --------------------------------------------------------------------------------------
 
@@ -212,9 +215,9 @@ const imageSchema = z.object({
   id: z.string().optional(),
   path: z
     .string()
-    .min(1, 'Escribe la ruta de la imagen.')
+    .min(1, 'Sube una imagen o escribe su ruta.')
     .max(ABOUT_LIMITS.imagePath, IMAGE_PATH_MESSAGE)
-    .regex(IMAGE_PATH_RE, IMAGE_PATH_MESSAGE),
+    .refine(isAboutImage, IMAGE_PATH_MESSAGE),
   alt: z
     .string()
     .min(1, 'Describe lo que se ve en la imagen (texto alternativo).')
@@ -316,13 +319,6 @@ const aboutSchema = z
       }
       seen.add(image.path)
     })
-    if (value.isPublished && value.images.length === 0) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['isPublished'],
-        message: 'Para publicar necesitas al menos una imagen con texto alternativo.'
-      })
-    }
   })
 
 const errorMap = (error: z.ZodError): AboutErrors => {
@@ -345,18 +341,13 @@ export const validateAboutForm = (raw: AboutFormValues): AboutValidation => {
 }
 
 /** Requisitos para publicar, en el orden en que se leen en el panel. */
-export type PublishRequirement = { id: 'heading' | 'intro' | 'image'; label: string; met: boolean }
+export type PublishRequirement = { id: 'heading' | 'intro'; label: string; met: boolean }
 
 export const aboutPublishRequirements = (raw: AboutFormValues): PublishRequirement[] => {
   const values = normalizeAboutForm(raw)
   return [
     { id: 'heading', label: 'Título de la sección', met: values.heading !== '' },
-    { id: 'intro', label: 'Presentación', met: values.intro !== '' },
-    {
-      id: 'image',
-      label: 'Al menos una imagen con texto alternativo',
-      met: values.images.some(item => item.path !== '' && item.alt !== '')
-    }
+    { id: 'intro', label: 'Presentación', met: values.intro !== '' }
   ]
 }
 
@@ -547,7 +538,7 @@ export const formToAboutContent = (raw: AboutFormValues): AboutContent => {
     tools: values.tools.filter(Boolean),
     cta,
     images: values.images
-      .filter(item => IMAGE_PATH_RE.test(item.path) && item.alt)
+      .filter(item => isAboutImage(item.path) && item.alt)
       .slice(0, ABOUT_LIMITS.images)
       .map(item => ({ src: item.path, alt: item.alt }))
   }

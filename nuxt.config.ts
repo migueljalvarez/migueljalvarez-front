@@ -88,7 +88,10 @@ export default defineNuxtConfig({
     dir: 'public',
     format: ['webp', 'avif', 'svg'],
     sizes: [300, 480, 600, 768, 1024, 1280],
-    screens: { sm: 320, md: 640, lg: 1024, xl: 1280 }
+    screens: { sm: 320, md: 640, lg: 1024, xl: 1280 },
+    // Imágenes subidas desde el panel (URL https del almacenamiento R2): ya vienen en WebP y se muestran tal
+    // cual con `provider="none"` (ver ImageWithFallback); el optimizador solo procesa archivos del sitio.
+    providers: { none: { provider: 'none' } }
   },
   hooks: {
     // Menos precargas en la home: las secciones bajo el pliegue (lazySection) se descargan al acercarse y los
