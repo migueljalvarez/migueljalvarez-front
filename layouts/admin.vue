@@ -137,10 +137,22 @@
     <main id="admin-main" class="min-w-0 p-5 md:p-8">
       <nav v-if="current && current.to !== '/admin'" aria-label="Ruta" class="mb-4 text-sm">
         <ol class="flex items-center gap-2 text-brand-muted">
-          <li><NuxtLink to="/admin" class="hover:text-brand-ink">Panel</NuxtLink></li>
+          <li class="flex items-center">
+            <NuxtLink
+              to="/admin"
+              class="-mx-1 inline-flex min-h-11 items-center rounded px-1 hover:text-brand-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue"
+            >
+              Panel
+            </NuxtLink>
+          </li>
           <li aria-hidden="true">/</li>
           <li v-if="crumb">
-            <NuxtLink :to="current.to" class="hover:text-brand-ink">{{ current.label }}</NuxtLink>
+            <NuxtLink
+              :to="current.to"
+              class="-mx-1 inline-flex min-h-11 items-center rounded px-1 hover:text-brand-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue"
+            >
+              {{ current.label }}
+            </NuxtLink>
           </li>
           <li v-if="crumb" aria-hidden="true">/</li>
           <li aria-current="page" class="font-medium text-brand-ink">

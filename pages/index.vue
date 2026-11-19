@@ -1,12 +1,5 @@
 <script setup lang="ts">
-  import {
-    About,
-    Contact,
-    Main,
-    PortfolioSection,
-    ProcessSection,
-    Services
-  } from '~/components/templates'
+  import { About, Main, PortfolioSection, ProcessSection, Services } from '~/components/templates'
 
   import { META, MY_SOCIAL_MEDIA } from '~/constants/common'
   import { Section } from '~/components/organisms'
@@ -74,6 +67,5 @@
       </div>
     </Section>
     <About title="Sobre mí" />
-    <Contact title="Hablemos" />
   </div>
 </template>

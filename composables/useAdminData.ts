@@ -12,12 +12,9 @@ const newId = () => `${Date.now().toString(36)}${Math.random().toString(36).slic
 const today = () => new Date().toISOString().slice(0, 10)
 
 /**
- * Capa de datos en memoria de los módulos del panel que aún no hablan con la API (testimonios, tarifas,
- * experiencia). Leads, clientes, proyectos y equipo ya usan la API: `useAdminLeads`, `useAdminProjects`
- * y `useAdminTeam`.
- * HOY guarda en memoria (se pierde al recargar) y solo se puede escribir en
- * desarrollo con datos de ejemplo. Cuando exista la API, solo cambia el interior de estas funciones
- * (cada acción pasará a llamar a un endpoint documentado en docs/openapi.yaml); las pantallas no cambian.
+ * Capa de datos en memoria del módulo de testimonios, que aún no consume la API.
+ * Leads, clientes, proyectos, equipo, tarifas y experiencia usan sus composables de API.
+ * Esta capa solo permite escribir en desarrollo con datos de ejemplo.
  */
 export const useAdminData = () => {
   const data = useState<AdminData>('admin-data', () => buildSampleData())
