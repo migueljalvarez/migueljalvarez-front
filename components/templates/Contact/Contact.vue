@@ -127,7 +127,7 @@
           </div>
 
           <div class="flex flex-col gap-2 md:w-1/2">
-            <Card tone="dark" elevated class="p-5">
+            <Card tone="dark" class="p-5">
               <Form
                 :successful="isSendedSuccessful"
                 :validation-message="
