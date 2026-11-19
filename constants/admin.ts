@@ -41,6 +41,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
     planned: []
   },
   {
+    label: 'Sobre mí',
+    to: '/admin/about',
+    icon: 'mdi:account-circle-outline',
+    group: 'content',
+    summary: 'La sección de la home donde cuentas quién eres: textos, cifras e imágenes.',
+    planned: []
+  },
+  {
     label: 'Redes sociales',
     to: '/admin/social-links',
     icon: 'mdi:share-variant-outline',

@@ -95,6 +95,24 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SocialLink'
+  /api/about:
+    get:
+      tags: [Público]
+      summary: Sección "Sobre mí" de la home
+      description: |
+        API de contenido (`GET /api/about`, solo si está publicada y con imágenes) con respaldo en
+        `ABOUT_FALLBACK` (`constants/common`): se usa el respaldo si la API no está configurada, no
+        responde (2 s), da 404 o devuelve algo inválido, así que siempre responde 200. Los opcionales
+        vacíos se omiten y las imágenes se recortan a 3. Caché corta (60 s, stale-while-revalidate;
+        sin caché en desarrollo).
+      operationId: getAbout
+      responses:
+        '200':
+          description: Contenido de la sección
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AboutContent'
   /api/policies:
     get:
       tags: [Público]
@@ -478,6 +496,71 @@ components:
         isHovered:
           type: boolean
           description: Estado local de la interfaz (siempre false al llegar)
+    AboutContent:
+      type: object
+      required: [eyebrow, heading, intro, stats, tools, images]
+      properties:
+        eyebrow:
+          type: string
+        heading:
+          type: string
+        intro:
+          type: string
+        quote:
+          type: string
+        howIWork:
+          type: string
+        beyondWork:
+          type: string
+        location:
+          type: string
+        workMode:
+          type: string
+        availability:
+          type: string
+        stats:
+          type: array
+          maxItems: 4
+          items:
+            type: object
+            required: [value, label]
+            properties:
+              value:
+                type: string
+              label:
+                type: string
+        tools:
+          type: array
+          maxItems: 12
+          items:
+            type: string
+        cta:
+          type: object
+          required: [label, href]
+          properties:
+            label:
+              type: string
+            href:
+              type: string
+              description: 'Ruta del sitio (/#contacto) o URL https://'
+        images:
+          type: array
+          minItems: 1
+          maxItems: 3
+          description: La primera es la predeterminada
+          items:
+            type: object
+            required: [src, alt]
+            properties:
+              src:
+                type: string
+                description: 'Ruta de public/about/ (o /ma.webp en el respaldo)'
+              alt:
+                type: string
+              width:
+                type: integer
+              height:
+                type: integer
     PolicyBlock:
       type: object
       required: [id, title, body]

@@ -35,3 +35,23 @@ export type SocialMediaProps = {
   /** Para fondos claros (menú móvil); por defecto, fondos oscuros. */
   onLight?: boolean
 }
+
+export type StatListProps = {
+  items: { value: string; label: string }[]
+}
+
+export type ChipListProps = {
+  items: string[]
+  /** Nombre accesible de la lista. */
+  label: string
+}
+
+export type InfoCardProps = {
+  title: string
+  level?: 'h2' | 'h3' | 'h4'
+}
+
+export type ImageCollageProps = {
+  /** De 1 a 3 imágenes; si llegan más, se muestran las 3 primeras. */
+  images: { src: string; alt: string; width?: number; height?: number }[]
+}

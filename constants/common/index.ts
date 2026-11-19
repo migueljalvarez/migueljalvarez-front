@@ -1,3 +1,4 @@
+import type { AboutContent } from '~/types/about'
 import type { SocialMediaType } from '~/types/common'
 
 export const REGEX_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -48,6 +49,18 @@ export const HOME_COPY = {
     heading: 'Un poco más sobre mí',
     location: 'Medellín, Colombia',
     remote: 'Trabajo en remoto',
+    intro:
+      'Hola, soy Miguel, ingeniero de sistemas. Me dedico al desarrollo de software, partiendo de la necesidad inicial y preparando el camino para crecer en el futuro. Trabajo con pasión por lo que hago.',
+    quote:
+      'Por ejemplo, no dimensionar ni proyectar a futuro un proyecto lleva a mala planificación, reprocesos y módulos que nadie entiende por separado.',
+    howIWorkTitle: 'Cómo trabajo',
+    howIWork:
+      'He colaborado con equipos internacionales de habla hispana en proyectos de IoT, LegalTech, outsourcing y consultoría, e identidad digital. Pasar por sectores tan distintos me ha permitido conocer los errores que casi nadie nota hasta que ya duelen.',
+    beyondWorkTitle: 'Fuera del trabajo',
+    beyondWork:
+      'Soy una persona relajada y tranquila, apasionado de la tecnología y la cultura geek. Me gusta salir a caminar y olvidarme un poco de las cosas, los días de pizza, las salidas con amigos y compartir siempre un buen café. También relajarme viendo películas y series, y estar siempre buscando algo nuevo que aprender.',
+    toolsTitle: 'Herramientas',
+    imageAlt: 'Miguel Álvarez, ingeniero de sistemas, trabajando en remoto',
     highlights: [
       { value: '10+', label: 'años haciendo software' },
       { value: '4', label: 'sectores distintos' },
@@ -137,4 +150,22 @@ export const META = {
   TITLE: 'Miguel Álvarez',
   DESCRIPTION:
     'Desarrollo de Software y Soluciones Digitales. Ayudo a emprendedores y empresas a convertir ideas en sitios, sistemas y MVPs sostenibles. Con 10+ años de experiencia, construyo soluciones digitales eficientes y escalables.'
+}
+
+/**
+ * Respaldo de la sección "Sobre mí": se usa cuando la API no está configurada, no responde, no tiene
+ * nada publicado o devuelve algo inválido. Mismo contenido que se veía antes de gestionarlo desde el panel.
+ */
+export const ABOUT_FALLBACK: AboutContent = {
+  eyebrow: HOME_COPY.about.eyebrow,
+  heading: HOME_COPY.about.heading,
+  intro: HOME_COPY.about.intro,
+  quote: HOME_COPY.about.quote,
+  howIWork: HOME_COPY.about.howIWork,
+  beyondWork: HOME_COPY.about.beyondWork,
+  location: HOME_COPY.about.location,
+  workMode: HOME_COPY.about.remote,
+  stats: HOME_COPY.about.highlights.map(item => ({ ...item })),
+  tools: [],
+  images: [{ src: '/ma.webp', alt: HOME_COPY.about.imageAlt, width: 1536, height: 1024 }]
 }
