@@ -143,18 +143,30 @@
     <div
       class="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"
     >
-      <Transition name="logo-fade" mode="out-in">
-        <!-- SVG directo: ipx lo rasterizaba a webp y pesaba más que el vector. -->
+      <!-- Dos logos superpuestos con fundido cruzado de 200 ms (igual que el fondo del header): así no hay un
+           fotograma intermedio con el logo blanco sobre fondo claro. SVG directo: ipx lo rasterizaba a webp. -->
+      <span class="relative block h-10 w-62.5 shrink-0">
         <img
-          :key="isHeroTop ? 'contact-logo' : 'brand-logo'"
-          :src="isHeroTop ? '/brand_white_v2.svg' : '/brand.svg'"
+          src="/brand_white_v2.svg"
           width="250"
           height="40"
-          alt="Miguel Álvarez"
+          :alt="isHeroTop ? 'Miguel Álvarez' : ''"
+          :aria-hidden="isHeroTop ? undefined : 'true'"
           decoding="async"
-          class="flex object-contain px-2"
+          class="absolute inset-0 size-full object-contain px-2 transition-opacity duration-200 motion-reduce:transition-none"
+          :class="isHeroTop ? 'opacity-100' : 'opacity-0'"
         />
-      </Transition>
+        <img
+          src="/brand.svg"
+          width="250"
+          height="40"
+          :alt="isHeroTop ? '' : 'Miguel Álvarez'"
+          :aria-hidden="isHeroTop ? 'true' : undefined"
+          decoding="async"
+          class="absolute inset-0 size-full object-contain px-2 transition-opacity duration-200 motion-reduce:transition-none"
+          :class="isHeroTop ? 'opacity-0' : 'opacity-100'"
+        />
+      </span>
 
       <nav
         class="hidden w-auto shrink-0 items-center justify-end gap-4 font-bold uppercase md:gap-5 xl:flex"
@@ -181,10 +193,7 @@
             {{ item.name }}
           </span>
           <span
-            :class="[
-              'nav-indicator h-0.5 w-full origin-center rounded-full bg-brand-blue transition-transform duration-300 motion-reduce:transition-none',
-              isContactNavLink(item.name) ? 'invisible' : ''
-            ]"
+            class="nav-indicator h-0.5 w-full origin-center rounded-full bg-brand-blue transition-[transform,opacity] duration-300 motion-reduce:transition-none"
             aria-hidden="true"
           />
         </nuxt-link>
@@ -288,7 +297,7 @@
           <span
             v-if="!isContactNavLink(item.name)"
             :class="[
-              'nav-indicator h-0.5 w-full origin-left rounded-full bg-brand-blue transition-transform duration-300 motion-reduce:transition-none'
+              'nav-indicator h-0.5 w-full origin-left rounded-full bg-brand-blue transition-[transform,opacity] duration-300 motion-reduce:transition-none'
             ]"
             aria-hidden="true"
           />
@@ -318,13 +327,16 @@
 </template>
 
 <style scoped>
+  /* Inactivo: sin ancho y sin opacidad, para que no quede ni un punto de la animación. */
   .nav-indicator {
     transform: scaleX(0);
+    opacity: 0;
   }
 
   .nav-link:hover .nav-indicator,
   .nav-link[aria-current='page'] .nav-indicator {
     transform: scaleX(1);
+    opacity: 1;
   }
 
   .header-top {
@@ -333,16 +345,6 @@
       color-mix(in srgb, var(--color-brand-surface-contrast) 65%, transparent),
       transparent
     );
-  }
-
-  .logo-fade-enter-active,
-  .logo-fade-leave-active {
-    transition: opacity 180ms ease;
-  }
-
-  .logo-fade-enter-from,
-  .logo-fade-leave-to {
-    opacity: 0;
   }
 
   @media (prefers-reduced-motion: reduce) {
