@@ -33,7 +33,7 @@ Antes de cerrar una tarea: `npm run lint`, `npm test` y `npm run build`. Si toca
 
 ## Ramas y publicación
 
-- **`main` es producción**: cada push a `main` despliega el sitio en Netlify. **`develop`** es la rama de integración y nace de `main`. Toda funcionalidad o corrección sale de `develop` en una rama `feat/*` o `fix/*`, se integra de vuelta en `develop` con merge local `--no-ff` y de `develop` pasa a `main` (merge sin forzar) solo cuando el autor lo pida.
+- **`main` es producción**: cada push a `main` despliega el sitio en Netlify. **`develop`** es la rama de integración y nace de `main`. Toda funcionalidad o corrección sale de `develop` en una rama `feat/*` o `fix/*`, se integra de vuelta en `develop` con merge local `--no-ff` y de `develop` pasa a `main` (merge sin forzar) solo cuando el autor lo pida. **Tras integrar una rama `feat/*` o `fix/*` en `develop`, se borra** (local y, si se subió, remota; `git branch -d`, que se niega si faltara algo).
 - El push de `develop` y de las ramas `feat/*` / `fix/*` está permitido. No hacer push a `main`, push forzado, PR a `main` ni deploy sin petición explícita. Una urgencia en producción sale de `main` como `fix/*`, se integra en `main` y se trae de vuelta a `develop`.
 - Commits en español, cortos. Sin líneas de atribución de Claude (`Co-Authored-By`, "Generated with Claude Code").
 - El repositorio de GitHub es público: nada de datos personales (teléfono, correo, CV) ni secretos. El CV y documentos personales viven en `.private/` (ignorado) y no se sirven desde `public/`.
