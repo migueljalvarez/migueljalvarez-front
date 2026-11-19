@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import Contact from '~/components/templates/Contact/Contact.vue'
   import HowWorkContent from '~/components/templates/HowWork/HowWorkContent.vue'
 
   const { policies } = await usePolicies()
@@ -17,6 +16,5 @@
 <template>
   <div>
     <HowWorkContent :policies="policies" />
-    <Contact title="Hablemos" />
   </div>
 </template>

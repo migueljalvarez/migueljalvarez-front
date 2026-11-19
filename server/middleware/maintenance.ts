@@ -5,7 +5,8 @@ import { MAINTENANCE_RETRY_SECONDS, maintenanceHtml } from '../utils/maintenance
  * Modo mantenimiento: antes de renderizar una página se comprueba que la API (que alimenta el contenido
  * del sitio desde el panel) responde. Si está caída, se responde 503 con una página de mantenimiento:
  * los buscadores lo tratan como temporal (Retry-After) y nadie ve contenido de respaldo desactualizado.
- * Sin API configurada (desarrollo, previews) no hace nada.
+ * En desarrollo no hace nada: el sitio usa el contenido de respaldo aunque la API local esté caída.
+ * En producción, sin API configurada, tampoco hace nada.
  */
 const monitor = createApiHealthMonitor({
   check: () => {
@@ -19,6 +20,8 @@ const monitor = createApiHealthMonitor({
 })
 
 export default defineEventHandler(async event => {
+  if (import.meta.dev) return
+
   const { method, path } = event
   const pathname = path.split('?')[0] ?? '/'
   if (!needsHealthCheck(method, pathname, getRequestHeader(event, 'accept') ?? '')) return

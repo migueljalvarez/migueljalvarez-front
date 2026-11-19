@@ -6,7 +6,8 @@ export const useAdminLeads = () => {
 
   return {
     // La API devuelve como máximo 100 por página; el panel carga la primera (los más recientes).
-    list: () => api.get<{ items: LeadRecord[]; total: number }>('leads', { limit: 100, offset: 0 }),
+    list: (query: { limit: number; offset: number; status?: string } = { limit: 100, offset: 0 }) =>
+      api.get<{ items: LeadRecord[]; total: number }>('leads', query),
     get: (id: string) => api.get<LeadDetailRecord>(`leads/${id}`),
     create: (payload: LeadPayload) => api.post<LeadRecord>('leads', payload),
     update: (

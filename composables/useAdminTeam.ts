@@ -25,7 +25,7 @@ export const useAdminTeam = () => {
   const first = { limit: 100, offset: 0 }
 
   return {
-    listMembers: () => api.get<Page<TeamMemberRecord>>('team', first),
+    listMembers: (query = first) => api.get<Page<TeamMemberRecord>>('team', query),
     createMember: (payload: MemberPayload) => api.post<TeamMemberRecord>('team', payload),
     updateMember: (id: string, payload: Partial<MemberPayload>) =>
       api.patch<TeamMemberRecord>(`team/${id}`, payload),

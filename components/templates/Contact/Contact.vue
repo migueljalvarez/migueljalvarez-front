@@ -2,7 +2,7 @@
   import { Button, Card, Checkbox, Eyebrow, Input, Select } from '~/components/atoms'
   import Form from '~/components/Form/Form.vue'
   import { CheckList, SocialMedia } from '~/components/molecules'
-  import { Section } from '~/components/organisms'
+  import { ContactDetails, Section } from '~/components/organisms'
 
   import {
     HOME_COPY,
@@ -113,6 +113,7 @@
             </Button>
 
             <CheckList :items="HOME_COPY.contact.benefits" tone="dark" class="p-4" />
+
             <div class="flex gap-3">
               <SocialMedia
                 v-for="item in socials"
@@ -219,15 +220,7 @@
                 </Button>
               </Form>
             </Card>
-
-            <p
-              class="mt-auto flex w-full flex-col pt-2 text-right font-sans text-xs text-brand-text-subtle"
-            >
-              <span class="font-sans font-bold text-brand-text-strong">
-                &copy; {{ new Date().getFullYear() }} Miguel Álvarez
-              </span>
-              <span class="font-sans">{{ HOME_COPY.contact.serviceDescription }}</span>
-            </p>
+            <ContactDetails />
           </div>
         </div>
       </div>

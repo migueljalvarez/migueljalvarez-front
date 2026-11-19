@@ -13,8 +13,9 @@ export const useAdminProjects = () => {
     // La API devuelve como máximo 100 por página; el panel carga la primera.
     listClients: () =>
       api.get<{ items: ClientRecord[]; total: number }>('clients', { limit: 100, offset: 0 }),
-    listProjects: () =>
-      api.get<{ items: ProjectRecord[]; total: number }>('projects', { limit: 100, offset: 0 }),
+    listProjects: (
+      query: { limit: number; offset: number; status?: string } = { limit: 100, offset: 0 }
+    ) => api.get<{ items: ProjectRecord[]; total: number }>('projects', query),
     createClient: (payload: ClientPayload) => api.post<ClientRecord>('clients', payload),
     updateClient: (id: string, payload: ClientPayload) =>
       api.patch<ClientRecord>(`clients/${id}`, payload),
