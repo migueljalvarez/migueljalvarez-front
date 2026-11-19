@@ -286,3 +286,12 @@ test('la vista previa usa solo imágenes válidas, máximo 3, y omite lo vacío'
   assert.equal(content.quote, undefined)
   assert.deepEqual(content.cta, { label: 'Ir', href: '/#contacto' })
 })
+
+test('about: las cifras del respaldo caben en los límites del panel (se pueden guardar)', async () => {
+  const { ABOUT_FALLBACK } = await import('../constants/common/index.ts')
+  assert.ok(ABOUT_FALLBACK.stats.length <= ABOUT_LIMITS.stats)
+  for (const { value, label } of ABOUT_FALLBACK.stats) {
+    assert.ok(value.length <= ABOUT_LIMITS.statValue, `cifra demasiado larga: ${value}`)
+    assert.ok(label.length <= ABOUT_LIMITS.statLabel, `etiqueta demasiado larga: ${label}`)
+  }
+})

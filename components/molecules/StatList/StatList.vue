@@ -1,33 +1,36 @@
 <script lang="ts" setup>
-  import { Card } from '~/components/atoms'
   import type { StatListProps } from '../molecule'
 
   const props = defineProps<StatListProps>()
 
-  // Columnas según cuántas cifras haya (sin filas con huecos). Las variantes `@…` responden al ancho del
-  // contenedor (`@container` de la sección), no al de la ventana: la vista previa del panel es fiel.
-  const columns = computed(() =>
-    props.items.length === 3
-      ? 'grid-cols-2 @lg:grid-cols-3'
-      : props.items.length === 1
-        ? 'grid-cols-1'
-        : 'grid-cols-2'
-  )
+  // Una sola franja con separadores finos (el "gap-px" deja ver el fondo `brand-border` entre celdas), en
+  // lugar de una tarjeta por cifra. Columnas según cuántas haya (sin celdas vacías). Las variantes `@…`
+  // responden al ancho del contenedor (`@container` de la sección), no al de la ventana.
+  const columns = computed(() => {
+    const count = props.items.length
+    if (count === 1) return 'grid-cols-1'
+    if (count === 3) return 'grid-cols-3'
+    return count === 4 ? 'grid-cols-2 @lg:grid-cols-4' : 'grid-cols-2'
+  })
 </script>
 
 <template>
-  <dl class="grid gap-4 @2xl:gap-5" :class="columns">
+  <dl
+    class="grid gap-px overflow-hidden rounded-2xl border border-brand-border bg-brand-border"
+    :class="columns"
+  >
     <!-- La etiqueta va primero en el DOM (término) y la cifra se ve arriba (flex-col-reverse). -->
-    <Card
-      v-for="(item, index) in items"
+    <div
+      v-for="item in items"
       :key="`${item.value}-${item.label}`"
-      class="flex min-w-0 flex-col-reverse justify-end gap-1 p-4"
-      :class="items.length === 3 && index === 2 ? 'col-span-2 @lg:col-span-1' : ''"
+      class="flex min-w-0 flex-col-reverse justify-end gap-1 bg-brand-surface-card p-3 @lg:p-5"
     >
-      <dt class="text-xs leading-5 text-brand-muted">{{ item.label }}</dt>
-      <dd class="font-display text-2xl leading-tight font-bold break-words text-brand-warm-ink">
+      <dt class="text-xs leading-5 text-brand-muted @lg:text-sm">{{ item.label }}</dt>
+      <dd
+        class="font-display text-2xl leading-tight font-bold break-words text-brand-warm-ink @lg:text-3xl"
+      >
         {{ item.value }}
       </dd>
-    </Card>
+    </div>
   </dl>
 </template>
