@@ -506,6 +506,15 @@ components:
           type: string
         intro:
           type: string
+        role:
+          type: string
+          description: Cargo (opcional; el bloque se omite si falta)
+        tagline:
+          type: string
+          description: Frase destacada (opcional)
+        name:
+          type: string
+          description: Nombre bajo la foto (opcional)
         quote:
           type: string
         howIWork:
@@ -534,6 +543,12 @@ components:
           maxItems: 12
           items:
             type: string
+        interests:
+          type: array
+          maxItems: 6
+          description: Intereses como etiquetas (opcional; se omite si está vacío)
+          items:
+            type: string
         cta:
           type: object
           required: [label, href]
@@ -546,7 +561,7 @@ components:
         images:
           type: array
           minItems: 1
-          maxItems: 3
+          maxItems: 4
           description: La primera es la predeterminada
           items:
             type: object

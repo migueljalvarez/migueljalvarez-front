@@ -58,9 +58,13 @@
     ['about-eyebrow', 'eyebrow'],
     ['about-heading', 'heading'],
     ['about-intro', 'intro'],
+    ['about-role', 'role'],
+    ['about-tagline', 'tagline'],
     ['about-quote', 'quote'],
     ['about-how', 'howIWork'],
     ['about-beyond', 'beyondWork'],
+    ['about-interests', 'interests'],
+    ['about-name', 'name'],
     ['about-location', 'location'],
     ['about-mode', 'workMode'],
     ['about-availability', 'availability'],
@@ -192,6 +196,29 @@
               :error="errors.heading"
             />
           </div>
+          <div class="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+            <AdminInput
+              id="about-role"
+              v-model="values.role"
+              label="Cargo (opcional)"
+              counter
+              :maxlength="ABOUT_LIMITS.role"
+              autocomplete="off"
+              placeholder="Ingeniero de sistemas"
+              hint="Va sobre la frase destacada."
+              :error="errors.role"
+            />
+            <AdminInput
+              id="about-tagline"
+              v-model="values.tagline"
+              label="Frase destacada (opcional)"
+              counter
+              :maxlength="ABOUT_LIMITS.tagline"
+              autocomplete="off"
+              hint="Una línea que resume lo que haces; la presentación queda debajo."
+              :error="errors.tagline"
+            />
+          </div>
           <AdminInput
             id="about-intro"
             v-model="values.intro"
@@ -244,15 +271,36 @@
             :maxlength="ABOUT_LIMITS.beyondWork"
             :error="errors.beyondWork"
           />
+          <AdminChipList
+            id="about-interests"
+            v-model="values.interests"
+            label="Intereses (opcional)"
+            :max="ABOUT_LIMITS.interests"
+            :max-length="ABOUT_LIMITS.interest"
+            placeholder="Café, ciclismo…"
+            hint="Hasta 6 etiquetas junto a «Fuera del trabajo»."
+            :error="errors.interests"
+          />
         </div>
       </PortfolioFormSection>
 
       <PortfolioFormSection
         id="about-data"
         title="Datos"
-        description="La ubicación y el modo de trabajo van juntos bajo las imágenes; la disponibilidad, junto al botón."
+        description="El nombre, la ubicación y el modo de trabajo van bajo las imágenes; la disponibilidad, junto al botón."
       >
         <div class="grid gap-4 md:grid-cols-2">
+          <div class="md:col-span-2">
+            <AdminInput
+              id="about-name"
+              v-model="values.name"
+              label="Nombre bajo la foto (opcional)"
+              counter
+              :maxlength="ABOUT_LIMITS.name"
+              autocomplete="off"
+              :error="errors.name"
+            />
+          </div>
           <AdminInput
             id="about-location"
             v-model="values.location"
@@ -355,7 +403,7 @@
       <PortfolioFormSection
         id="about-images-section"
         title="Imágenes"
-        description="De 1 a 3 imágenes forman el collage (la cuarta queda de reserva). Proporción vertical 4:5, recomendado 1200×1500 en webp; guía en docs/about-guide.md."
+        description="De 1 a 4 imágenes forman el carrusel (la primera se ve al cargar). Proporción 4:3, webp de hasta 150 KB; guía en docs/about-guide.md."
       >
         <AboutImagesField id="about-images" v-model="values.images" :errors="errors" />
       </PortfolioFormSection>

@@ -31,6 +31,9 @@ const record = (over = {}) => ({
   eyebrow: 'Sobre mí',
   heading: 'Título',
   intro: 'Presentación',
+  role: '',
+  tagline: '',
+  name: '',
   quote: '',
   howIWork: '',
   beyondWork: '',
@@ -39,6 +42,7 @@ const record = (over = {}) => ({
   availability: '',
   stats: [],
   tools: [],
+  interests: [],
   ctaLabel: '',
   ctaHref: '',
   isPublished: false,
@@ -101,6 +105,51 @@ test('máximo 4 cifras, 12 herramientas y 4 imágenes', () => {
   assert.ok(result.errors.stats)
   assert.ok(result.errors.tools)
   assert.ok(result.errors.images)
+})
+
+test('cargo, frase, nombre e intereses: límites, texto plano y máximo de etiquetas', () => {
+  const ok = validateAboutForm(
+    form({ role: 'Ingeniero', tagline: 'Frase', name: 'Miguel', interests: ['Café', 'Ciclismo'] })
+  )
+  assert.equal(ok.valid, true)
+  const bad = validateAboutForm(
+    form({
+      role: 'x'.repeat(ABOUT_LIMITS.role + 1),
+      tagline: 'x'.repeat(ABOUT_LIMITS.tagline + 1),
+      name: '<b>Miguel</b>',
+      interests: Array.from({ length: ABOUT_LIMITS.interests + 1 }, (_, n) => `i${n}`)
+    })
+  )
+  for (const key of ['role', 'tagline', 'name', 'interests']) {
+    assert.ok(bad.errors[key], `debería fallar ${key}`)
+  }
+  assert.ok(
+    validateAboutForm(form({ interests: ['x'.repeat(ABOUT_LIMITS.interest + 1)] })).errors[
+      'interests.0'
+    ]
+  )
+  assert.ok(validateAboutForm(form({ interests: ['<i>'] })).errors['interests.0'])
+})
+
+test('el PUT envía cargo, frase y nombre solo si tienen texto, e intereses siempre', () => {
+  const empty = buildAboutPayload(form())
+  for (const key of ['role', 'tagline', 'name']) assert.equal(key in empty, false)
+  assert.deepEqual(empty.interests, [])
+  const full = buildAboutPayload(
+    form({ role: ' Dev ', tagline: 'Frase', name: 'Miguel', interests: [' Café '] })
+  )
+  assert.equal(full.role, 'Dev')
+  assert.equal(full.name, 'Miguel')
+  assert.deepEqual(full.interests, ['Café'])
+})
+
+test('un registro de una API anterior (sin los campos nuevos) se carga con valores vacíos', () => {
+  const legacy = record()
+  delete legacy.role
+  delete legacy.interests
+  const values = formFromAboutRecord(legacy)
+  assert.equal(values.role, '')
+  assert.deepEqual(values.interests, [])
 })
 
 test('el botón exige etiqueta y enlace juntos, y un enlace seguro', () => {
@@ -271,7 +320,7 @@ test('pasos: cambiar alt, orden y predeterminada solo toca lo que cambió', () =
   assert.deepEqual(byId['id-2'], { alt: 'Nuevo alt', sortOrder: 2 })
 })
 
-test('la vista previa usa solo imágenes válidas, máximo 3, y omite lo vacío', () => {
+test('la vista previa usa solo imágenes válidas, máximo 4, y omite lo vacío', () => {
   const images = [1, 2, 3, 4].map(n => ({
     path: `/about/f-${n}.webp`,
     alt: `F${n}`,
@@ -281,9 +330,11 @@ test('la vista previa usa solo imágenes válidas, máximo 3, y omite lo vacío'
   const content = formToAboutContent(
     form({ images, stats: [{ value: '1', label: '' }], ctaLabel: 'Ir', ctaHref: '/#contacto' })
   )
-  assert.equal(content.images.length, 3)
+  assert.equal(content.images.length, 4)
   assert.deepEqual(content.stats, [])
   assert.equal(content.quote, undefined)
+  assert.equal(content.role, undefined)
+  assert.equal(content.interests, undefined)
   assert.deepEqual(content.cta, { label: 'Ir', href: '/#contacto' })
 })
 

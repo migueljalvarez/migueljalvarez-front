@@ -13,7 +13,7 @@ Encabezado (sobre-título y título) con divisor fino y, debajo, dos tarjetas la
 3. Herramientas (hasta 12 etiquetas).
 4. Cierre: texto de disponibilidad y botón (en el respaldo, el de la home y WhatsApp).
 
-Cargo, frase, nombre e intereses (`role`, `tagline`, `name`, `interests`) hoy solo salen del respaldo del código; la API no los guarda, así que con contenido de la API esos bloques se omiten.
+Cargo, frase, nombre e intereses (`role`, `tagline`, `name`, `interests`, máx. 6 etiquetas de 30 caracteres) se editan en el panel y los guarda la API (migración 0011); texto plano, sin `<` ni `>`. Si quedan vacíos, el bloque se omite: nunca se completan con el respaldo del código (que solo se usa cuando no hay nada publicado).
 
 La marca a color (`only-brand-color.svg`) va como fondo decorativo muy tenue en la esquina superior
 derecha de esta banda clara; no es contenido ni se edita desde el panel.
@@ -29,7 +29,7 @@ menos una imagen con texto alternativo.
 | Ruta       | `/about/<slug>.webp` (minúsculas, números y guiones; también jpg/png) |
 | Proporción | 4:3 (se recorta para encuadrar la parte alta)                         |
 | Formato    | webp, ≤ 150 KB y ≤ 1920 px de ancho (`tests/publicImages.test.mjs`)   |
-| Cantidad   | hasta 3 en la API (el carrusel admite 4)                              |
+| Cantidad   | de 1 a 4 (todas van al carrusel)                                      |
 | Alt        | obligatorio (1–140 caracteres): describe lo que se ve                 |
 
 - La primera (predeterminada) es la que se ve al cargar; el carrusel no avanza solo, con flechas, puntos y teclado (izquierda/derecha). Con una sola imagen no hay controles.
