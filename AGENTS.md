@@ -33,9 +33,8 @@ Antes de cerrar una tarea: `npm run lint`, `npm test` y `npm run build`. Si toca
 
 ## Ramas y publicación
 
-- Rama de trabajo: `v2/landing-clean` (historial limpio). No mezclar con `origin/v2/landing`, `main` ni `develop`; no usar `git pull` desde ellas.
-- Ramas `feat/*` y `fix/*` desde `v2/landing-clean`, integradas con merge local `--no-ff`. El push de `v2/landing-clean` está permitido.
-- No hacer push a `main`, push forzado, PR a `main` ni deploy sin petición explícita: reemplazar `main` dispara el deploy de producción en Netlify.
+- **`main` es producción**: cada push a `main` despliega el sitio en Netlify. **`develop`** es la rama de integración y nace de `main`. Toda funcionalidad o corrección sale de `develop` en una rama `feat/*` o `fix/*`, se integra de vuelta en `develop` con merge local `--no-ff` y de `develop` pasa a `main` (merge sin forzar) solo cuando el autor lo pida.
+- El push de `develop` y de las ramas `feat/*` / `fix/*` está permitido. No hacer push a `main`, push forzado, PR a `main` ni deploy sin petición explícita. Una urgencia en producción sale de `main` como `fix/*`, se integra en `main` y se trae de vuelta a `develop`.
 - Commits en español, cortos. Sin líneas de atribución de Claude (`Co-Authored-By`, "Generated with Claude Code").
 - El repositorio de GitHub es público: nada de datos personales (teléfono, correo, CV) ni secretos. El CV y documentos personales viven en `.private/` (ignorado) y no se sirven desde `public/`.
 - **Nunca versionar:** `.env` con valores reales, credenciales (R2, intake, claves, tokens), datos personales (CV, teléfono, correo, documento), respaldos y volcados (`*.dump`, `backups/`), paquetes (`*.bundle`, `*.zip`), capturas (`shots/`), imágenes de prueba, logs y cookies de sesión. Tests y ejemplos usan valores inventados (`ejemplo@example.com`, `573000000000`). Antes de cada commit: `git status` y `git diff --staged --stat`. Lo que ya esté en el historial se reporta, no se reescribe.
