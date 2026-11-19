@@ -128,7 +128,7 @@
 <template>
   <div
     ref="topSentinel"
-    class="pointer-events-none absolute top-0 left-0 h-2.5 w-px"
+    class="pointer-events-none absolute top-0 left-0 h-px w-px"
     aria-hidden="true"
   />
   <header

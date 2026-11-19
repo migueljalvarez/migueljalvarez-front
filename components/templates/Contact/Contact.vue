@@ -74,7 +74,7 @@
     class="gap-4 bg-[linear-gradient(180deg,var(--color-brand-surface)_0%,var(--color-brand-surface)_22%,var(--color-brand-surface-contrast)_22%,var(--color-brand-surface-contrast)_100%)] px-0 sm:px-4"
   >
     <div
-      class="relative mx-auto mb-0 w-full max-w-none overflow-hidden rounded-none border-y border-brand-border-strong/50 bg-brand-surface-contrast p-5 shadow-none sm:mb-8 sm:max-w-7xl sm:rounded-2xl sm:border sm:p-8 sm:shadow-card-lg"
+      class="relative mx-auto mb-0 w-full max-w-none overflow-hidden rounded-none border-y border-brand-border-strong bg-brand-surface-contrast p-5 shadow-none sm:mb-8 sm:max-w-7xl sm:rounded-2xl sm:border sm:p-8 sm:shadow-[0_18px_40px_rgb(0_0_0/0.45)]"
     >
       <!-- Logo decorativo asomando desde la esquina — placeholder mientras subes el SVG real a public/ -->
       <NuxtImg
@@ -206,7 +206,7 @@
                   type="submit"
                   :disabled="disabledButton"
                   size="md"
-                  class="w-full whitespace-nowrap py-2"
+                  class="w-full whitespace-nowrap bg-brand-white py-2 font-bold text-brand-navy hover:bg-brand-surface-soft disabled:border disabled:border-dashed disabled:border-brand-border-strong disabled:bg-brand-white/10 disabled:text-brand-text-subtle disabled:hover:bg-brand-white/10"
                   on-dark
                   theme="primary"
                 >

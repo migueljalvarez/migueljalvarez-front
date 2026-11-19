@@ -17,6 +17,6 @@
         </li>
       </ul>
     </nav>
-    <p>&copy; {{ new Date().getFullYear() }} · Todos los derechos reservados</p>
+    <p>&copy; {{ new Date().getFullYear() }} Miguel Álvarez · Todos los derechos reservados</p>
   </section>
 </template>

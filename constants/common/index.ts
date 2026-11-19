@@ -48,7 +48,7 @@ export const HOME_COPY = {
     eyebrow: 'Sobre mí',
     heading: 'Un poco más sobre mí',
     role: 'Ingeniero de sistemas',
-    tagline: 'Desarrollo software que parte de tu necesidad y está listo para crecer.',
+    tagline: 'Desarrollo de software que parte de tu necesidad y está listo para crecer.',
     name: 'Miguel Álvarez',
     interests: ['Cultura geek', 'Café & charlas', 'Aprendizaje continuo'],
     principleLabel: 'Principio clave',
@@ -57,8 +57,8 @@ export const HOME_COPY = {
     intro:
       'Hola, soy Miguel, ingeniero de sistemas. Me dedico al desarrollo de software, partiendo de la necesidad inicial y preparando el camino para crecer en el futuro. Trabajo con pasión por lo que hago.',
     quote:
-      'Por ejemplo, no dimensionar ni proyectar a futuro un proyecto lleva a mala planificación, reprocesos y módulos que nadie entiende por separado.',
-    howIWorkTitle: 'Cómo trabajo',
+      'No dimensionar ni proyectar a futuro un proyecto lleva a mala planificación, reprocesos y módulos que nadie entiende por separado.',
+    howIWorkTitle: 'Cómo pienso mi trabajo',
     howIWork:
       'He colaborado con equipos internacionales de habla hispana en proyectos de IoT, LegalTech, outsourcing y consultoría, e identidad digital. Pasar por sectores tan distintos me ha permitido conocer los errores que casi nadie nota hasta que ya duelen.',
     beyondWorkTitle: 'Fuera del trabajo',
@@ -86,7 +86,7 @@ export const HOME_COPY = {
     },
     privacy: 'Uso tus datos solo para responderte.',
     consent: 'Acepto el tratamiento de mis datos personales según la',
-    privacyLink: 'Política de tratamiento de datos',
+    privacyLink: 'Política de privacidad',
     serviceDescription: 'Servicios de consultoría y desarrollo de software',
     sendError: 'Error al enviar el mensaje. Por favor, inténtalo de nuevo más tarde.',
     form: {

@@ -3,6 +3,7 @@
   import { NuxtLink } from '#components'
   import { Chip } from '~/components/atoms'
   import { ImageWithFallback } from '~/components/molecules'
+  import { withFinalPeriod } from '~/utils/text'
   import type { ProjectCardProps } from '../organism'
 
   const props = withDefaults(defineProps<ProjectCardProps>(), { headingLevel: 'h3' })
@@ -86,13 +87,13 @@
         class="mt-2 text-sm leading-5 text-brand-muted"
         :class="layoutMode === 'horizontal' ? 'md:mt-3 md:text-base md:leading-7' : ''"
       >
-        {{ project.description }}
+        {{ withFinalPeriod(project.description) }}
       </p>
       <p
         class="mt-auto pt-4 text-sm text-brand-muted"
         :class="layoutMode === 'horizontal' ? 'md:mt-6 md:pt-0' : ''"
       >
-        Dirigido a {{ project.audience }}
+        Dirigido a {{ withFinalPeriod(project.audience) }}
       </p>
       <span
         v-if="layoutMode === 'horizontal' && project.href"

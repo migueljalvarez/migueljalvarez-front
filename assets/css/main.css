@@ -23,7 +23,7 @@
   --color-brand-blue: #3f6bad;
   --color-brand-ink: #030507;
   --color-brand-muted: #4d5868;
-  --color-brand-helper: #7e8897;
+  --color-brand-helper: #667182;
 
   /* ámbar: único acento cálido, solo énfasis puntual. warm = sobre fondos oscuros (9,88:1 sobre navy, 8,61:1 sobre panel); warm-ink = sobre claros (6,80:1 sobre blanco, 6,34:1 sobre surface). NO usar warm sobre blanco (1,81:1) */
   --color-brand-warm: #f5b544;
@@ -83,6 +83,11 @@
 @layer base {
   * {
     box-sizing: border-box;
+  }
+
+  /* Anclas del menú (#services, #portfolio, #about, #contact, #proceso): el header fijo mide 5 rem. */
+  :where(section[id]) {
+    scroll-margin-top: 5rem;
   }
 
   html {

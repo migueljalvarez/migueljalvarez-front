@@ -2,7 +2,7 @@
 // BORRADOR: debe ser revisado por una persona con conocimiento legal antes de depender de él.
 import { PRIVACY_CONTACT_EMAIL } from '~/data/privacy'
 import type { LegalSection } from '~/types/legal'
-import { legalHolderSentence, type LegalHolder } from '~/utils/legalHolder'
+import { cityWithCountry, legalHolderSentence, type LegalHolder } from '~/utils/legalHolder'
 
 export const TERMS_UPDATED_AT = '2026-11-18'
 
@@ -11,7 +11,7 @@ export type TermsSection = LegalSection
 export const getTermsSections = (holder: LegalHolder): TermsSection[] => {
   const contactEmail = holder.email || PRIVACY_CONTACT_EMAIL
   const holderSentence = legalHolderSentence(holder)
-  const where = holder.city ? `${holder.city}, Colombia` : 'Colombia'
+  const where = holder.city ? cityWithCountry(holder.city) : 'Colombia'
 
   return [
     {

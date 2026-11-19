@@ -56,3 +56,9 @@ export const legalHolderSentence = (holder: LegalHolder) => {
     ? `Este sitio web es operado por ${holder.name}, identificado con ${id}.`
     : `Este sitio web es operado por ${holder.name}.`
 }
+
+/** Ciudad con el país al final, sin duplicarlo si la variable ya lo incluye ("Medellín, Colombia"). */
+export const cityWithCountry = (city: string) => {
+  const value = city.trim()
+  return /colombia/i.test(value) ? value : `${value}, Colombia`
+}

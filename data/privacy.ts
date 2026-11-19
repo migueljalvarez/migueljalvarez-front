@@ -1,7 +1,7 @@
 // Política de tratamiento de datos personales (Ley 1581 de 2012 y Decreto 1377 de 2013, compilado en el Decreto 1074 de 2015).
 // BORRADOR: debe ser revisado por una persona con conocimiento legal antes de publicarse.
 import type { LegalSection } from '~/types/legal'
-import { legalIdText, type LegalHolder } from '~/utils/legalHolder'
+import { cityWithCountry, legalIdText, type LegalHolder } from '~/utils/legalHolder'
 
 export const PRIVACY_UPDATED_AT = '2026-11-18'
 // Correo de respaldo (ejemplo): el real sale de NUXT_PUBLIC_LEGAL_EMAIL y nunca se escribe en el repositorio público.
@@ -15,7 +15,7 @@ const buildResponsibleParagraph = (holder: LegalHolder) => {
   const who = holder.name
     ? `${holder.name}, persona natural${idText ? `, identificado con ${idText}` : ''}`
     : 'Miguel Álvarez, persona natural'
-  const where = holder.city ? `${holder.city}, Colombia` : 'Medellín, Colombia'
+  const where = holder.city ? cityWithCountry(holder.city) : 'Medellín, Colombia'
   return `${who}, con domicilio en ${where}, es el responsable del tratamiento de los datos personales que recibe a través de este sitio web (migueljalvarez.com).`
 }
 

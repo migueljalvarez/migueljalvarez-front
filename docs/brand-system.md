@@ -75,7 +75,7 @@ Esto comunica tecnología, solidez y confianza. Lo que falta es equilibrarla con
 - #EEF2F7
 - #E9EEF5
 - #C9D1DC
-- #7E8897
+- #667182
 - #4D5868
 - #1D2430
 
@@ -86,7 +86,7 @@ Esto comunica tecnología, solidez y confianza. Lo que falta es equilibrarla con
 - #243B62: CTA principal, foco visual y botón principal
 - #030507: texto principal en lectura directa
 - #4D5868: texto secundario
-- #7E8897: texto auxiliar y placeholders
+- #667182: texto auxiliar y placeholders
 - #F5F7FA / #F7F9FC: fondos suaves de secciones y paneles
 - #E9EEF5: borde y separación sutil
 - #FFFFFF: limpieza, cards y inputs
@@ -115,8 +115,8 @@ El formulario es una buena referencia porque reúne todos los niveles de texto y
 - Subtítulo: 16–18px / 400–500 / #4D5868
 - Label: 12–14px / 500–600 / #1C2F4C
 - Input: 16px / 400 / #030507
-- Placeholder: 14px / 400 / #7E8897
-- Texto de ayuda: 12–13px / 400 / #7E8897
+- Placeholder: 14px / 400 / #667182
+- Texto de ayuda: 12–13px / 400 / #667182
 - Botón: 16px / 600 / #FFFFFF sobre #243B62
 
 ### Colores del formulario
@@ -128,7 +128,7 @@ El formulario es una buena referencia porque reúne todos los niveles de texto y
 - Texto principal: #030507
 - Texto secundario: #4D5868
 - Label: #1C2F4C
-- Placeholder: #7E8897
+- Placeholder: #667182
 
 ### Regla importante
 
@@ -148,7 +148,7 @@ Debes mantener esta lógica en toda la interfaz:
 - #121E30 y #030507 para la jerarquía principal
 - #1C2F4C para apoyo semioficial
 - #4D5868 para texto secundario
-- #7E8897 para ayuda y metadata
+- #667182 para ayuda y metadata
 - #243B62 para CTA y elementos de acción
 - #F5F7FA y #E9EEF5 para respiración visual y soporte
 
@@ -169,7 +169,7 @@ Debes mantener esta lógica en toda la interfaz:
 - Subtítulos: #1C2F4C
 - Cuerpo: #030507
 - Texto secundario: #4D5868
-- ayuda: #7E8897
+- ayuda: #667182
 
 ### Paleta
 
