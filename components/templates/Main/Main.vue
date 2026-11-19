@@ -1,7 +1,27 @@
 <script lang="ts" setup>
+  import { computed } from 'vue'
   import Button from '~/components/atoms/Button/Button.vue'
   import { CheckList } from '~/components/molecules'
-  import { HOME_COPY, HOME_HERO_COPY, PRIMARY_CTA_LABEL, WHATSAPP_URL } from '~/constants/common'
+  import {
+    ABOUT_FALLBACK,
+    HOME_COPY,
+    HOME_HERO_COPY,
+    PRIMARY_CTA_LABEL,
+    WHATSAPP_URL
+  } from '~/constants/common'
+  import type { AboutContent } from '~/types/about'
+
+  /** Misma fuente que "Sobre mí": la primera cifra y la ubicación salen de `content`. */
+  const props = withDefaults(defineProps<{ content?: AboutContent }>(), {
+    content: () => ABOUT_FALLBACK
+  })
+
+  const proofLine = computed(() => {
+    const [firstStat] = props.content.stats
+    return [firstStat && `${firstStat.value} ${firstStat.label}`, props.content.location]
+      .filter(Boolean)
+      .join(' · ')
+  })
 </script>
 
 <template>
@@ -96,8 +116,8 @@
             <p class="text-sm font-semibold leading-6 text-brand-text-strong">
               Miguel Álvarez, ingeniero de sistemas
             </p>
-            <p class="text-sm leading-6 text-brand-text-soft">
-              10+ años haciendo software · Medellín, Colombia
+            <p v-if="proofLine" class="text-sm leading-6 text-brand-text-soft">
+              {{ proofLine }}
             </p>
           </div>
         </div>

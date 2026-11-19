@@ -1,9 +1,18 @@
 <script lang="ts" setup>
+  import { computed } from 'vue'
   import { NuxtLink } from '#components'
   import { Chip } from '~/components/atoms'
   import type { ProjectCardProps } from '../organism'
 
-  withDefaults(defineProps<ProjectCardProps>(), { headingLevel: 'h3' })
+  const props = withDefaults(defineProps<ProjectCardProps>(), { headingLevel: 'h3' })
+
+  /** La imagen absorbe la altura sobrante cuando la tarjeta es más alta que su contenido (evita huecos en blanco). */
+  const growImage = computed(
+    () =>
+      (props.layoutMode === 'three' && props.variant === 'featured') ||
+      (props.layoutMode === 'two' && props.variant !== 'featured') ||
+      (props.layoutMode === 'bento' && props.variant !== 'featured')
+  )
 </script>
 
 <template>
@@ -29,8 +38,14 @@
     :aria-label="project.href ? `${project.title}: ver proyecto` : project.title"
   >
     <div
-      class="relative aspect-video w-full shrink-0 md:aspect-16/10 overflow-hidden bg-brand-surface-panel"
-      :class="layoutMode === 'horizontal' ? 'md:w-1/2' : ''"
+      class="relative aspect-video w-full overflow-hidden bg-brand-surface-panel"
+      :class="
+        layoutMode === 'horizontal'
+          ? 'shrink-0 md:aspect-auto md:min-h-80 md:w-3/5'
+          : growImage
+            ? 'shrink-0 md:aspect-auto md:min-h-60 md:flex-1'
+            : 'shrink-0 md:aspect-16/10'
+      "
     >
       <NuxtImg
         v-if="project.image"
@@ -41,11 +56,13 @@
         format="webp"
         :quality="90"
         class="h-full w-full object-cover"
+        :class="growImage ? 'md:absolute md:inset-0' : ''"
         loading="lazy"
       />
       <div
         v-else
         class="relative flex h-full w-full items-center justify-center overflow-hidden bg-[linear-gradient(135deg,var(--color-brand-surface-contrast),var(--color-brand-navy),var(--color-brand-mid))] text-brand-text-soft"
+        :class="growImage ? 'md:absolute md:inset-0' : ''"
       >
         <svg
           class="absolute inset-0 h-full w-full opacity-30"
@@ -81,16 +98,43 @@
     </div>
 
     <div
-      class="relative z-10 flex flex-1 flex-col p-5 md:p-6"
-      :class="[layoutMode === 'horizontal' ? 'md:flex-1 md:justify-center' : '']"
+      class="relative z-10 flex flex-col p-5 md:p-6"
+      :class="[
+        growImage ? 'shrink-0' : 'flex-1',
+        layoutMode === 'horizontal' ? 'md:justify-center md:gap-0 md:p-10' : ''
+      ]"
     >
-      <component :is="headingLevel" class="text-lg font-semibold leading-tight sm:text-xl">
+      <component
+        :is="headingLevel"
+        class="font-semibold leading-tight"
+        :class="layoutMode === 'horizontal' ? 'text-xl md:text-3xl' : 'text-lg sm:text-xl'"
+      >
         {{ project.title }}
       </component>
-      <p class="mt-2 text-sm leading-5 text-brand-muted">
+      <p
+        class="mt-2 text-sm leading-5 text-brand-muted"
+        :class="layoutMode === 'horizontal' ? 'md:mt-3 md:text-base md:leading-7' : ''"
+      >
         {{ project.description }}
       </p>
-      <p class="mt-auto pt-4 text-sm text-brand-muted">Dirigido a {{ project.audience }}</p>
+      <p
+        class="mt-auto pt-4 text-sm text-brand-muted"
+        :class="layoutMode === 'horizontal' ? 'md:mt-6 md:pt-0' : ''"
+      >
+        Dirigido a {{ project.audience }}
+      </p>
+      <span
+        v-if="layoutMode === 'horizontal' && project.href"
+        class="mt-4 inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-brand-accent-text md:mt-5"
+        aria-hidden="true"
+      >
+        Ver proyecto
+        <Icon
+          name="mdi:arrow-right"
+          size="16"
+          class="transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none"
+        />
+      </span>
     </div>
   </component>
 </template>
