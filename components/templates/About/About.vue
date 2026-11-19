@@ -2,7 +2,7 @@
   import { Button, Card } from '~/components/atoms'
   import {
     ChipList,
-    ImageCollage,
+    ImageCarousel,
     InfoCard,
     QuoteBlock,
     SectionHeader,
@@ -11,17 +11,22 @@
   import { HOME_COPY } from '~/constants/common'
   import type { AboutContent } from '~/types/about'
 
-  // "Sobre mí": quién soy (título, ubicación y presentación junto a la foto) → qué me mueve (cita) → cifras →
-  // cómo trabajo / fuera del trabajo → herramientas → cierre con disponibilidad y botón.
+  // "Sobre mí": encabezado con divisor y dos tarjetas lado a lado (texto 7/12 y foto 5/12 desde `@4xl`;
+  // apiladas debajo). Texto: cargo → frase de presentación → cifras → cómo trabajo → principio clave.
+  // Foto: carrusel con la cifra principal como etiqueta, nombre y ubicación, y "Fuera del trabajo" con
+  // etiquetas. Luego herramientas y cierre con disponibilidad y botón.
   // Solo recibe datos (la home los carga con `useAbout`; el panel pasa los del formulario). Todo bloque
-  // opcional se omite si no tiene contenido. El diseño responde al ancho del contenedor (`@container`).
+  // sin datos se omite. El diseño responde al ancho del contenedor (`@container`).
   const props = defineProps<{ content: AboutContent }>()
 
   const place = computed(() =>
     [props.content.location, props.content.workMode].filter(Boolean).join(' · ')
   )
   const hasImages = computed(() => props.content.images.length > 0)
-  const hasCards = computed(() => !!props.content.howIWork || !!props.content.beyondWork)
+  const mainStat = computed(() => props.content.stats[0])
+  const interests = computed(() => props.content.interests ?? [])
+  const hasProfile = computed(() => !!props.content.name || !!place.value)
+  const hasBeyondWork = computed(() => !!props.content.beyondWork || interests.value.length > 0)
   const cta = computed(() => props.content.cta)
   const isInternal = computed(() => !!cta.value && cta.value.href.startsWith('/'))
   const isWhatsapp = computed(() => /wa\.me|wa\.link|whatsapp/i.test(cta.value?.href ?? ''))
@@ -45,61 +50,94 @@
       class="pointer-events-none absolute -top-6 -right-20 z-0 h-auto w-64 opacity-[0.05] select-none @4xl:-top-16 @4xl:-right-32 @4xl:w-120"
     />
     <div class="relative z-10 mx-auto flex w-full max-w-7xl flex-col gap-8 md:gap-10">
-      <div class="grid min-w-0 grid-cols-1 gap-x-12 gap-y-6 @4xl:grid-cols-5 @4xl:gap-y-5">
-        <div
-          class="min-w-0 @4xl:row-start-1"
-          :class="hasImages ? '@4xl:col-span-3 @4xl:col-start-3' : '@4xl:col-span-5'"
-        >
-          <SectionHeader :eyebrow="content.eyebrow" :heading="content.heading" size="lg" />
-          <p v-if="place" class="mt-4 flex items-center gap-2 text-sm font-medium text-brand-muted">
-            <Icon
-              name="mdi:map-marker"
-              size="18"
-              class="shrink-0 text-brand-blue"
-              aria-hidden="true"
-            />
-            {{ place }}
-          </p>
-        </div>
+      <SectionHeader
+        :eyebrow="content.eyebrow"
+        :heading="content.heading"
+        size="lg"
+        class="border-b border-brand-border pb-6 md:pb-8"
+      />
 
-        <div
-          v-if="hasImages"
-          class="min-w-0 @4xl:col-span-2 @4xl:col-start-1 @4xl:row-span-2 @4xl:row-start-1"
+      <div class="grid min-w-0 grid-cols-1 gap-6 @4xl:grid-cols-12">
+        <Card
+          class="flex min-w-0 flex-col gap-6 p-5 md:p-8"
+          :class="hasImages ? '@4xl:col-span-7' : '@4xl:col-span-12'"
         >
-          <ImageCollage :images="content.images" />
-        </div>
-
-        <div
-          class="flex min-w-0 flex-col gap-5 @4xl:row-start-2 md:gap-6"
-          :class="hasImages ? '@4xl:col-span-3 @4xl:col-start-3' : '@4xl:col-span-5'"
-        >
-          <p
-            class="text-lg leading-7 text-brand-ink md:text-xl md:leading-8"
-            :class="hasImages ? '' : 'max-w-3xl'"
-          >
-            {{ content.intro }}
-          </p>
-          <QuoteBlock v-if="content.quote">{{ content.quote }}</QuoteBlock>
+          <div>
+            <p
+              v-if="content.role"
+              class="mb-3 text-xs font-semibold tracking-[0.14em] text-brand-warm-ink uppercase"
+            >
+              {{ content.role }}
+            </p>
+            <p
+              v-if="content.tagline"
+              class="font-display text-2xl leading-tight font-semibold text-balance text-brand-ink md:text-[1.75rem] md:leading-9"
+            >
+              {{ content.tagline }}
+            </p>
+            <p
+              class="text-sm leading-6 md:text-base md:leading-7"
+              :class="
+                content.tagline
+                  ? 'mt-3 text-brand-muted'
+                  : 'font-display text-xl leading-8 font-semibold text-brand-ink'
+              "
+            >
+              {{ content.intro }}
+            </p>
+          </div>
           <StatList v-if="content.stats.length" :items="content.stats" />
-        </div>
-      </div>
+          <InfoCard v-if="content.howIWork" :title="HOME_COPY.about.howIWorkTitle" dot="warm">
+            {{ content.howIWork }}
+          </InfoCard>
+          <QuoteBlock v-if="content.quote" :label="HOME_COPY.about.principleLabel">
+            {{ content.quote }}
+          </QuoteBlock>
+        </Card>
 
-      <Card
-        v-if="hasCards"
-        class="grid grid-cols-1 divide-y divide-brand-border overflow-hidden"
-        :class="
-          content.howIWork && content.beyondWork
-            ? '@2xl:grid-cols-2 @2xl:divide-x @2xl:divide-y-0'
-            : ''
-        "
-      >
-        <InfoCard v-if="content.howIWork" :title="HOME_COPY.about.howIWorkTitle">
-          {{ content.howIWork }}
-        </InfoCard>
-        <InfoCard v-if="content.beyondWork" :title="HOME_COPY.about.beyondWorkTitle">
-          {{ content.beyondWork }}
-        </InfoCard>
-      </Card>
+        <Card v-if="hasImages" class="flex min-w-0 flex-col gap-5 p-5 @4xl:col-span-5 md:p-6">
+          <ImageCarousel :images="content.images">
+            <template v-if="mainStat" #overlay>
+              <span
+                class="inline-flex items-center gap-2 rounded-full bg-brand-surface-card/95 px-3 py-1.5 text-xs font-semibold text-brand-ink"
+              >
+                <span class="size-2 rounded-full bg-brand-warm-ink" aria-hidden="true" />
+                {{ mainStat.value }} {{ mainStat.label }}
+              </span>
+            </template>
+          </ImageCarousel>
+          <div
+            v-if="hasProfile"
+            class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2"
+          >
+            <p v-if="content.name" class="font-display text-lg leading-tight font-semibold">
+              {{ content.name }}
+            </p>
+            <p
+              v-if="place"
+              class="inline-flex items-center gap-1.5 rounded-full border border-brand-border bg-brand-surface px-3 py-1.5 text-xs font-medium text-brand-muted @lg:text-sm"
+            >
+              <Icon
+                name="mdi:map-marker"
+                size="16"
+                class="shrink-0 text-brand-blue"
+                aria-hidden="true"
+              />
+              {{ place }}
+            </p>
+          </div>
+          <div v-if="hasBeyondWork" class="flex flex-col gap-4 border-t border-brand-border pt-5">
+            <InfoCard v-if="content.beyondWork" :title="HOME_COPY.about.beyondWorkTitle">
+              {{ content.beyondWork }}
+            </InfoCard>
+            <ChipList
+              v-if="interests.length"
+              :items="interests"
+              :label="HOME_COPY.about.beyondWorkTitle"
+            />
+          </div>
+        </Card>
+      </div>
 
       <div v-if="content.tools.length">
         <h3 class="mb-3 text-lg font-semibold leading-tight text-brand-ink">

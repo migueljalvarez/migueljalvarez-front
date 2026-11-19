@@ -3,31 +3,36 @@
 
   const props = defineProps<StatListProps>()
 
-  // Una sola franja con separadores finos (el "gap-px" deja ver el fondo `brand-border` entre celdas), en
-  // lugar de una tarjeta por cifra. Columnas según cuántas haya (sin celdas vacías). Las variantes `@…`
-  // responden al ancho del contenedor (`@container` de la sección), no al de la ventana.
+  // Franja en un recuadro tenue con divisores verticales finos entre cifras. Hasta 3 van en una fila; con 4,
+  // dos filas en pantallas estrechas y una desde `@lg`. Las variantes `@…` responden al ancho del
+  // contenedor (`@container` de la sección), no al de la ventana.
   const columns = computed(() => {
     const count = props.items.length
     if (count === 1) return 'grid-cols-1'
-    if (count === 3) return 'grid-cols-3'
-    return count === 4 ? 'grid-cols-2 @lg:grid-cols-4' : 'grid-cols-2'
+    if (count === 2) return 'grid-cols-2'
+    return count === 4 ? 'grid-cols-2 @lg:grid-cols-4' : 'grid-cols-3'
   })
+  const divider = (index: number) => {
+    if (index === 0) return ''
+    if (props.items.length !== 4) return 'border-l border-brand-border'
+    if (index === 1) return 'border-l border-brand-border'
+    if (index === 2) return 'border-t border-brand-border @lg:border-t-0 @lg:border-l'
+    return 'border-t border-l border-brand-border @lg:border-t-0'
+  }
 </script>
 
 <template>
-  <dl
-    class="grid gap-px overflow-hidden rounded-2xl border border-brand-border bg-brand-border"
-    :class="columns"
-  >
+  <dl class="m-0 grid rounded-xl border border-brand-border bg-brand-surface" :class="columns">
     <!-- La etiqueta va primero en el DOM (término) y la cifra se ve arriba (flex-col-reverse). -->
     <div
-      v-for="item in items"
+      v-for="(item, index) in items"
       :key="`${item.value}-${item.label}`"
-      class="flex min-w-0 flex-col-reverse justify-end gap-1 bg-brand-surface-card p-3 @lg:p-5"
+      class="flex min-w-0 flex-col-reverse justify-end gap-1 px-3 py-4 @lg:px-4"
+      :class="divider(index)"
     >
-      <dt class="text-xs leading-5 text-brand-muted @lg:text-sm">{{ item.label }}</dt>
+      <dt class="text-xs leading-4 text-brand-muted first-letter:uppercase">{{ item.label }}</dt>
       <dd
-        class="font-display text-2xl leading-tight font-bold break-words text-brand-warm-ink @lg:text-3xl"
+        class="font-display text-xl leading-tight font-bold break-words text-brand-warm-ink @lg:text-3xl"
       >
         {{ item.value }}
       </dd>

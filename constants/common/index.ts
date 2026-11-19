@@ -47,6 +47,11 @@ export const HOME_COPY = {
   about: {
     eyebrow: 'Sobre mí',
     heading: 'Un poco más sobre mí',
+    role: 'Ingeniero de sistemas',
+    tagline: 'Desarrollo software que parte de tu necesidad y está listo para crecer.',
+    name: 'Miguel Álvarez',
+    interests: ['Cultura geek', 'Café & charlas', 'Aprendizaje continuo'],
+    principleLabel: 'Principio clave',
     location: 'Medellín, Colombia',
     remote: 'Trabajo en remoto',
     intro:
@@ -160,6 +165,10 @@ export const ABOUT_FALLBACK: AboutContent = {
   eyebrow: HOME_COPY.about.eyebrow,
   heading: HOME_COPY.about.heading,
   intro: HOME_COPY.about.intro,
+  role: HOME_COPY.about.role,
+  tagline: HOME_COPY.about.tagline,
+  name: HOME_COPY.about.name,
+  interests: [...HOME_COPY.about.interests],
   quote: HOME_COPY.about.quote,
   howIWork: HOME_COPY.about.howIWork,
   beyondWork: HOME_COPY.about.beyondWork,

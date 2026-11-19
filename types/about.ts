@@ -12,6 +12,14 @@ export type AboutContent = {
   eyebrow: string
   heading: string
   intro: string
+  /** Cargo que se muestra sobre la presentación (p. ej. Ingeniero de sistemas). */
+  role?: string
+  /** Frase de presentación destacada; la presentación (`intro`) va debajo como subtítulo. */
+  tagline?: string
+  /** Nombre que se muestra bajo la foto. */
+  name?: string
+  /** Intereses fuera del trabajo, como etiquetas. */
+  interests?: string[]
   quote?: string
   howIWork?: string
   beyondWork?: string
@@ -21,6 +29,6 @@ export type AboutContent = {
   stats: AboutStat[]
   tools: string[]
   cta?: { label: string; href: string }
-  /** De 1 a 3: el collage nunca muestra más. La primera es la predeterminada. */
+  /** De 1 a 4: el carrusel nunca muestra más. La primera es la predeterminada. */
   images: AboutImage[]
 }
