@@ -129,3 +129,11 @@ test('about: recorta cifras (4) y herramientas (12) y limpia vacíos', () => {
   assert.equal(about.stats.length, 4)
   assert.equal(about.tools.length, 12)
 })
+
+test('about: sin imágenes se acepta solo con cargo o nombre (placeholder de marca)', () => {
+  assert.deepEqual(mapApiAbout(api({ images: [], role: 'Desarrollador' })).images, [])
+  assert.deepEqual(mapApiAbout(api({ images: [], name: 'Miguel Alvarez' })).images, [])
+  assert.equal(mapApiAbout(api({ images: [], role: '  ', name: '' })), null)
+  const external = [{ src: '//evil.example/x.webp', alt: 'X' }]
+  assert.equal(mapApiAbout(api({ images: external })), null)
+})

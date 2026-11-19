@@ -85,3 +85,8 @@ export type HexMarkerProps = {
   /** Texto accesible; si se omite el marcador es decorativo. */
   ariaLabel?: string
 }
+
+export type ImagePlaceholderProps = {
+  /** Texto accesible; sin él el placeholder es decorativo (`aria-hidden`). */
+  label?: string
+}

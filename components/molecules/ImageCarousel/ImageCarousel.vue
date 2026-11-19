@@ -1,14 +1,18 @@
 <script lang="ts" setup>
   import type { ImageCarouselProps } from '../molecule'
+  import ImageWithFallback from '../ImageWithFallback/ImageWithFallback.vue'
 
-  // Carrusel de 1 a 4 imágenes, sin autoplay. Cada diapositiva reserva su proporción (4:3), así que nada
+  // Carrusel de 1 a 4 imágenes, sin autoplay. Sin imágenes (o si una falla) muestra el placeholder de marca. Cada diapositiva reserva su proporción (4:3), así que nada
   // salta al cargar. Con una sola imagen no hay flechas ni puntos. Accesible: región con descripción de
   // carrusel, botones con nombre, objetivos de 44 px, flechas del teclado, anuncio de posición para lector
   // de pantalla y diapositivas inactivas ocultas (`inert`). El slot `overlay` pinta lo que va sobre la foto.
   const props = defineProps<ImageCarouselProps>()
 
   const MAX_IMAGES = 4
-  const shown = computed(() => props.images.slice(0, MAX_IMAGES))
+  // Sin imágenes se reserva una diapositiva con el placeholder (el marco no desaparece ni cambia de alto).
+  const shown = computed(() =>
+    props.images.length ? props.images.slice(0, MAX_IMAGES) : [{ src: '', alt: '' }]
+  )
   const total = computed(() => shown.value.length)
   const current = ref(0)
   const multiple = computed(() => total.value > 1)
@@ -58,14 +62,13 @@
         :aria-hidden="index === current ? undefined : 'true'"
         :inert="index !== current"
       >
-        <NuxtImg
+        <ImageWithFallback
           :src="image.src"
           :alt="image.alt"
           :width="960"
           sizes="100vw lg:560px"
-          format="webp"
-          loading="lazy"
-          class="absolute inset-0 size-full object-cover object-[50%_30%]"
+          image-class="object-cover object-[50%_30%]"
+          class="absolute inset-0"
         />
       </figure>
     </div>

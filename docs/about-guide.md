@@ -18,8 +18,12 @@ Cargo, frase, nombre e intereses (`role`, `tagline`, `name`, `interests`, máx. 
 La marca a color (`only-brand-color.svg`) va como fondo decorativo muy tenue en la esquina superior
 derecha de esta banda clara; no es contenido ni se edita desde el panel.
 
-Todo bloque opcional se omite si está vacío. Para publicar hacen falta título, presentación y al
-menos una imagen con texto alternativo.
+Todo bloque opcional se omite si está vacío. Para publicar hacen falta título y presentación, y al
+menos una imagen con texto alternativo **o** un cargo/nombre. La API de hoy sigue exigiendo una imagen.
+
+Sin fotos (o si la ruta falla) la tarjeta de foto se mantiene con la **imagen de ejemplo de marca**
+(hexágonos sobre azul marino, 4:3, sin texto) solo si hay cargo o nombre; sin ninguno se omite y la
+tarjeta de texto ocupa todo el ancho. Así se puede publicar sin fotos y añadirlas después desde el panel.
 
 ## Imágenes
 

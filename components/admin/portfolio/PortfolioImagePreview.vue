@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { ImagePlaceholder } from '~/components/atoms'
   // Vista previa de una imagen del propio sitio (ruta absoluta). Dice con texto si no hay ruta o si el
   // archivo no se encuentra, para detectar a tiempo una ruta mal escrita o un archivo sin copiar.
   const props = withDefaults(defineProps<{ src: string; ratioClass?: string; label: string }>(), {
@@ -40,17 +41,8 @@
         @load="state = 'ok'"
         @error="state = 'missing'"
       />
-      <div
-        v-if="!isValid || state === 'missing'"
-        class="absolute inset-0 flex flex-col items-center justify-center gap-1 p-3 text-center text-xs text-brand-muted"
-      >
-        <Icon
-          :name="isValid ? 'mdi:image-broken-variant' : 'mdi:image-outline'"
-          size="22"
-          aria-hidden="true"
-        />
-        <span>{{ isValid ? 'No se encuentra la imagen' : 'Sin imagen' }}</span>
-      </div>
+      <!-- Así se verá en el sitio mientras no haya imagen; el motivo lo explica el pie. -->
+      <ImagePlaceholder v-if="!isValid || state === 'missing'" class="absolute inset-0" />
     </div>
     <figcaption class="mt-1 text-xs text-brand-muted" role="status">
       <template v-if="!path">{{ label }}: aún no hay ruta.</template>

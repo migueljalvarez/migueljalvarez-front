@@ -7,4 +7,5 @@ import Eyebrow from './Eyebrow/Eyebrow.vue'
 import Chip from './Chip/Chip.vue'
 import Card from './Card/Card.vue'
 import HexMarker from './HexMarker/HexMarker.vue'
-export { Title, Button, Input, Select, Checkbox, Eyebrow, Chip, Card, HexMarker }
+import ImagePlaceholder from './ImagePlaceholder/ImagePlaceholder.vue'
+export { Title, Button, Input, Select, Checkbox, Eyebrow, Chip, Card, HexMarker, ImagePlaceholder }

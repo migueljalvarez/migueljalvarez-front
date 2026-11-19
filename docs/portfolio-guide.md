@@ -86,6 +86,14 @@ await sharp('original.png')
 
 `tests/publicImages.test.mjs` falla si alguna imagen de `public/` supera 150 KB o 1920 px de ancho.
 
+### Imagen de ejemplo (respaldo)
+
+Si un proyecto no tiene portada o una ruta falla (archivo sin copiar, ruta mal escrita), la tarjeta, la
+cabecera del detalle y la galería muestran un **placeholder de marca** (fondo azul marino con los
+hexágonos del hero, proporción 16:9, sin texto) en lugar de una imagen rota; el layout no se mueve. Sirve
+para publicar sin fotos y reemplazarlas después, pero no sustituye a las capturas reales: una portada de
+ejemplo no vende el proyecto. Implementación: `ImageWithFallback` (molécula) + `ImagePlaceholder` (átomo).
+
 ## 4. Plantilla para completar un proyecto
 
 ```ts
