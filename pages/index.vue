@@ -58,7 +58,7 @@
 
 <template>
   <div>
-    <Main />
+    <Main :content="about" />
 
     <Services />
     <ProcessSection />
