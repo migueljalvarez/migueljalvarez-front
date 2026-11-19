@@ -8,7 +8,7 @@
   // contenedor (`@container` de la sección), no al de la ventana: la vista previa del panel es fiel.
   const columns = computed(() =>
     props.items.length === 3
-      ? 'grid-cols-1 @lg:grid-cols-3'
+      ? 'grid-cols-2 @lg:grid-cols-3'
       : props.items.length === 1
         ? 'grid-cols-1'
         : 'grid-cols-2'
@@ -19,9 +19,10 @@
   <dl class="grid gap-4 @2xl:gap-5" :class="columns">
     <!-- La etiqueta va primero en el DOM (término) y la cifra se ve arriba (flex-col-reverse). -->
     <Card
-      v-for="item in items"
+      v-for="(item, index) in items"
       :key="`${item.value}-${item.label}`"
       class="flex min-w-0 flex-col-reverse justify-end gap-1 p-4"
+      :class="items.length === 3 && index === 2 ? 'col-span-2 @lg:col-span-1' : ''"
     >
       <dt class="text-xs leading-5 text-brand-muted">{{ item.label }}</dt>
       <dd class="font-display text-2xl leading-tight font-bold break-words text-brand-warm-ink">
