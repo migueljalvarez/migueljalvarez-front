@@ -120,7 +120,7 @@
     class="w-full max-w-md rounded-2xl border border-brand-border bg-brand-surface-card p-5 shadow-card md:p-6"
   >
     <div class="mb-6">
-      <p class="text-xs font-semibold uppercase tracking-[0.14em] text-brand-accent-text">
+      <p class="text-xs font-semibold uppercase tracking-[0.14em] text-logo-blue">
         Panel privado · Paso {{ step === 'password' ? 1 : 2 }} de 2
       </p>
       <h1 class="mt-2 text-2xl font-semibold leading-tight text-brand-ink md:text-3xl">

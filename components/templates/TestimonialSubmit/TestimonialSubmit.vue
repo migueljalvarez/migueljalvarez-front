@@ -88,7 +88,7 @@
         />
 
         <Card v-if="message" tone="soft" class="mt-6 p-5">
-          <p class="text-xs font-semibold uppercase tracking-[0.14em] text-brand-accent-text">
+          <p class="text-xs font-semibold uppercase tracking-[0.14em] text-logo-blue">
             Un mensaje mío
           </p>
           <blockquote class="mt-2 whitespace-pre-line text-base leading-7 text-brand-ink">
@@ -163,7 +163,7 @@
                   to="/privacidad"
                   target="_blank"
                   rel="noopener"
-                  class="font-medium text-brand-accent-text underline underline-offset-4 hover:text-brand-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue"
+                  class="font-medium text-logo-blue underline underline-offset-4 hover:text-brand-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue"
                 >
                   política de tratamiento de datos
                 </NuxtLink>

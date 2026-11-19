@@ -33,7 +33,7 @@
           <li v-for="section in sections" :key="section.id">
             <a
               :href="`#${section.id}`"
-              class="inline-flex min-h-11 items-center text-brand-accent-text underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
+              class="inline-flex min-h-11 items-center text-logo-blue underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
             >
               {{ section.title }}
             </a>
@@ -60,7 +60,7 @@
           <NuxtLink
             v-if="section.link"
             :to="section.link.to"
-            class="mt-2 inline-flex min-h-11 items-center text-base font-medium text-brand-accent-text underline underline-offset-4 hover:text-brand-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
+            class="mt-2 inline-flex min-h-11 items-center text-base font-medium text-logo-blue underline underline-offset-4 hover:text-brand-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
           >
             {{ section.link.label }}
           </NuxtLink>

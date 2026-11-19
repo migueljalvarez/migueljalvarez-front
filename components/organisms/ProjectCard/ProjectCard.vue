@@ -25,14 +25,14 @@
   )
 
   const ctaClass =
-    'inline-flex min-h-11 items-center gap-1.5 rounded-lg text-sm font-semibold text-brand-accent-text underline-offset-4 transition-colors duration-200 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent-text motion-reduce:transition-none'
+    'inline-flex min-h-11 items-center gap-1.5 rounded-lg text-sm font-semibold text-logo-blue underline-offset-4 transition-colors duration-200 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-logo-blue motion-reduce:transition-none'
 </script>
 
 <template>
   <!-- Tarjeta completa clicable hacia la ficha mediante el enlace "Ver detalle" (se extiende con ::after);
        el enlace externo va por encima (z-20) para no anidar enlaces. -->
   <article
-    class="group relative isolate flex min-h-65 min-w-0 flex-col overflow-hidden rounded-2xl border border-brand-border bg-brand-surface-card text-brand-ink shadow-card has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-4 has-[a:focus-visible]:outline-brand-accent-text"
+    class="group relative isolate flex min-h-65 min-w-0 flex-col overflow-hidden rounded-2xl border border-brand-border bg-brand-surface-card text-brand-ink shadow-card has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-4 has-[a:focus-visible]:outline-logo-blue"
     :class="[
       { 'cursor-pointer': project.href },
       layoutMode === 'horizontal' ? 'md:flex-row' : '',

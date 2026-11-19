@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import AppLogo from '~/components/atoms/AppLogo/AppLogo.vue'
   import { ADMIN_NAV, ADMIN_NAV_GROUPS } from '~/constants/admin'
 
   useSeoMeta({ title: 'Panel', robots: 'noindex, nofollow' })
@@ -63,13 +64,7 @@
         class="mb-6 hidden items-center gap-2 px-2 lg:flex"
         aria-label="Inicio del panel"
       >
-        <NuxtImg
-          src="brand_white_v2.svg"
-          width="200"
-          height="32"
-          alt="Miguel Álvarez"
-          class="h-8 w-auto object-contain"
-        />
+        <AppLogo variant="compact" surface="dark" :height="32" />
       </NuxtLink>
       <p
         class="mb-2 hidden px-3 text-xs font-semibold uppercase tracking-[0.14em] text-brand-text-subtle lg:block"
