@@ -21,7 +21,7 @@ info:
 servers:
   - url: http://localhost:3000
     description: Desarrollo local (el puerto puede cambiar con PORT)
-  - url: https://migueljalvarez.com
+  - url: https://www.migueljalvarez.com
     description: Producción (aún no publicada)
 tags:
   - name: Público

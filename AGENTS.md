@@ -85,7 +85,7 @@ Detalle en `docs/brand-system.md`. Reglas que se rompen con facilidad:
 
 ## SEO
 
-`usePageSeo()` (`composables/useSiteSeo.ts`) fija título, descripción, canonical, Open Graph y Twitter. La URL base sale de `NUXT_PUBLIC_BASE_URL` (obligatoria en producción: `https://migueljalvarez.com`); nunca usar `window` para calcularla. `robots.txt` bloquea todo si la base es local, y por eso Lighthouse mide SEO bien solo con la base de producción. Las páginas privadas llevan `noindex`.
+`usePageSeo()` (`composables/useSiteSeo.ts`) fija título, descripción, canonical, Open Graph y Twitter. La URL base sale de `NUXT_PUBLIC_BASE_URL` (obligatoria en producción: debe ser la dirección que Netlify sirve como dominio principal, hoy `https://www.migueljalvarez.com`; el proxy del panel y el envío de testimonios comparan `Origin` con ella, y el canonical y el sitemap la usan); nunca usar `window` para calcularla. `robots.txt` bloquea todo si la base es local, y por eso Lighthouse mide SEO bien solo con la base de producción. Las páginas privadas llevan `noindex`.
 
 ## Contrato con la API
 
