@@ -10,7 +10,7 @@ import QuoteBlock from './QuoteBlock/QuoteBlock.vue'
 import StatList from './StatList/StatList.vue'
 import ChipList from './ChipList/ChipList.vue'
 import InfoCard from './InfoCard/InfoCard.vue'
-import ImageCollage from './ImageCollage/ImageCollage.vue'
+import ImageCarousel from './ImageCarousel/ImageCarousel.vue'
 export {
   Header,
   SocialMedia,
@@ -24,5 +24,5 @@ export {
   StatList,
   ChipList,
   InfoCard,
-  ImageCollage
+  ImageCarousel
 }

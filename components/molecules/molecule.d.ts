@@ -36,6 +36,11 @@ export type SocialMediaProps = {
   onLight?: boolean
 }
 
+export type QuoteBlockProps = {
+  /** Etiqueta en mayúsculas sobre la cita (p. ej. Principio clave). */
+  label?: string
+}
+
 export type StatListProps = {
   items: { value: string; label: string }[]
 }
@@ -49,9 +54,11 @@ export type ChipListProps = {
 export type InfoCardProps = {
   title: string
   level?: 'h2' | 'h3' | 'h4'
+  /** Color del punto junto al título. */
+  dot?: 'warm' | 'blue'
 }
 
-export type ImageCollageProps = {
-  /** De 1 a 3 imágenes; si llegan más, se muestran las 3 primeras. */
+export type ImageCarouselProps = {
+  /** De 1 a 4 imágenes; si llegan más, se muestran las 4 primeras. */
   images: { src: string; alt: string; width?: number; height?: number }[]
 }
