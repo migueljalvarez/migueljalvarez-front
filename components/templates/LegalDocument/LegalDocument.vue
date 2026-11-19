@@ -15,9 +15,9 @@
 </script>
 
 <template>
-  <div class="bg-brand-surface px-4 py-8 md:py-12">
+  <div class="bg-brand-surface px-4 py-12 md:py-16">
     <div class="mx-auto w-full max-w-3xl">
-      <BackLink to="/" class="mb-8">Volver al inicio</BackLink>
+      <BackLink to="/" class="mb-6">Volver al inicio</BackLink>
 
       <Eyebrow class="mb-3">{{ eyebrow }}</Eyebrow>
       <h1 class="text-3xl font-semibold leading-tight text-brand-ink md:text-4xl">
@@ -27,7 +27,7 @@
 
       <nav
         :aria-label="navLabel"
-        class="mt-8 rounded-2xl border border-brand-border bg-brand-surface-card p-5"
+        class="mt-6 rounded-2xl border border-brand-border bg-brand-surface-card p-5"
       >
         <ul class="grid gap-2 text-sm sm:grid-cols-2">
           <li v-for="section in sections" :key="section.id">
@@ -41,7 +41,7 @@
         </ul>
       </nav>
 
-      <article class="mt-8 space-y-8">
+      <article class="mt-6 space-y-8">
         <section
           v-for="section in sections"
           :id="section.id"

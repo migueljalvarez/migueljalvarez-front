@@ -1,5 +1,6 @@
 import Main from './Main/Main.vue'
 import Contact from './Contact/Contact.vue'
+import ContactCompact from './ContactCompact/ContactCompact.vue'
 import About from './About/About.vue'
 import PortfolioSection from './Portfolio/PortfolioSection.vue'
 import Services from './Services/Services.vue'
@@ -14,6 +15,7 @@ export {
   Main,
   About,
   Contact,
+  ContactCompact,
   PortfolioSection,
   PortfolioSection as Portfolio,
   Services,

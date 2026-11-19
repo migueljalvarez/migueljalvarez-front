@@ -76,7 +76,7 @@
 </script>
 
 <template>
-  <div class="bg-brand-surface px-4 py-8 md:py-12">
+  <div class="bg-brand-surface px-4 py-12 md:py-16">
     <div class="mx-auto w-full max-w-2xl">
       <template v-if="phase === 'form'">
         <SectionHeader

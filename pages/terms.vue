@@ -2,7 +2,7 @@
   import { LegalDocument } from '~/components/templates'
   import { getTermsSections, TERMS_UPDATED_AT } from '~/data/terms'
 
-  definePageMeta({ path: '/terminos-y-condiciones' })
+  definePageMeta({ path: '/terminos-y-condiciones', contact: 'compact' })
 
   usePageSeo({
     title: 'Términos y condiciones',

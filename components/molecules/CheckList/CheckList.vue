@@ -30,7 +30,7 @@
         class="shrink-0"
         :class="[
           size === 'md' ? 'mt-1' : 'mt-0.5',
-          iconClass ?? (tone === 'dark' ? 'text-brand-text-soft' : 'text-brand-blue')
+          iconClass ?? (tone === 'dark' ? 'text-brand-warm' : 'text-brand-blue')
         ]"
         aria-hidden="true"
       />

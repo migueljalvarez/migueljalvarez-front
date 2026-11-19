@@ -60,6 +60,11 @@ export const HOME_COPY = {
     description:
       'No necesitas tener un documento técnico ni todos los requisitos definidos. Cuéntame qué quieres hacer, qué problema tienes o qué quieres mejorar. Primero hablamos; después vemos si puedo ayudarte.',
     benefits: ['Respuesta en menos de 24 horas', 'Primera consulta sin costo'],
+    compact: {
+      heading: '¿Tienes dudas sobre este documento?',
+      description: 'Escríbeme y te respondo en menos de 24 horas.',
+      cta: 'Escríbeme'
+    },
     privacy: 'Uso tus datos solo para responderte.',
     consent: 'Acepto el tratamiento de mis datos personales según la',
     privacyLink: 'Política de tratamiento de datos',
@@ -104,33 +109,27 @@ export const MY_SOCIAL_MEDIA: SocialMediaType[] = [
 export const DEVELOPMENT_PHASES = [
   {
     title: 'Descubrimiento y análisis',
-    description: 'Definimos el problema, los usuarios y el alcance del producto.',
-    icon: 'mdi:magnify'
+    description: 'Definimos el problema, los usuarios y el alcance del producto.'
   },
   {
     title: 'Planificación y arquitectura',
-    description: 'Priorizamos el alcance y elegimos una solución técnica adecuada.',
-    icon: 'mdi:clipboard-text-outline'
+    description: 'Priorizamos el alcance y elegimos una solución técnica adecuada.'
   },
   {
     title: 'Diseño de experiencia',
-    description: 'Organizamos los flujos y la interfaz para que el producto sea claro y usable.',
-    icon: 'mdi:palette-outline'
+    description: 'Organizamos los flujos y la interfaz para que el producto sea claro y usable.'
   },
   {
     title: 'Desarrollo e integración',
-    description: 'Construimos el producto y conectamos sus componentes y servicios.',
-    icon: 'mdi:code-tags'
+    description: 'Construimos el producto y conectamos sus componentes y servicios.'
   },
   {
     title: 'Pruebas y validación',
-    description: 'Comprobamos que la solución funcione y cumpla los objetivos acordados.',
-    icon: 'mdi:bug-check-outline'
+    description: 'Comprobamos que la solución funcione y cumpla los objetivos acordados.'
   },
   {
     title: 'Despliegue y evolución',
-    description: 'Publicamos el producto y lo mejoramos a partir de su uso real.',
-    icon: 'mdi:rocket-launch-outline'
+    description: 'Publicamos el producto y lo mejoramos a partir de su uso real.'
   }
 ]
 

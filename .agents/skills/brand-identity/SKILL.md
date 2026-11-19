@@ -20,6 +20,7 @@ Sitio personal de Miguel Alvarez que **capta clientes**: transmite "antes de esc
 - **Superficies:** casi blancas para lectura — `brand-surface` `#f5f7fa`, `brand-surface-soft`, `brand-border`; tarjetas `brand-surface-card` (blanco).
 - **Texto:** `brand-ink` (principal), `brand-muted` (secundario), `brand-helper` (auxiliar/placeholder).
 - **`brand-blue` `#3f6bad`** (azul del logo): solo acentos puntuales (iconos, estado activo, hover). No para fondos grandes ni párrafos.
+- **Ámbar `brand-warm` `#F5B544`** (solo sobre fondos oscuros; `brand-warm-ink` `#8A4B00` sobre claros): único acento cálido, puntual (eyebrows oscuros, marcador activo del proceso, checks oscuros). Nunca fondos grandes ni botones.
 - **Verde:** solo estados y WhatsApp. Estados `success|warning|danger|error` con sus variantes `-bg/-text/-border`.
 - Nunca colores hardcodeados ni paleta cruda de Tailwind si existe un token. Usa clases canónicas de Tailwind v4.
 

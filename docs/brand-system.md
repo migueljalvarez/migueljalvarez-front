@@ -91,6 +91,18 @@ Esto comunica tecnología, solidez y confianza. Lo que falta es equilibrarla con
 - #E9EEF5: borde y separación sutil
 - #FFFFFF: limpieza, cards y inputs
 
+#### Acento cálido: ámbar (único, solo puntual)
+
+- `brand-warm` #F5B544: **solo sobre fondos oscuros** (9,88:1 sobre navy #0F1727; 8,61:1 sobre panel #1A2433). Nunca sobre blanco (1,81:1).
+- `brand-warm-ink` #8A4B00: ámbar para fondos claros (6,80:1 sobre blanco; 6,34:1 sobre #F5F7FA). Texto navy sobre ámbar: ≈ 9,4:1.
+- Uso permitido: eyebrows sobre fondo oscuro, marcador hexagonal activo del proceso (`HexMarker tone="dark"`), checks sobre oscuro (`CheckList tone="dark"`) y el contorno tenue de los hexágonos del hero.
+- Prohibido: fondos grandes, botones, párrafos o más de un énfasis ámbar por bloque. El azul sigue siendo protagonista y el verde queda solo para estados y WhatsApp.
+
+#### Espaciado y sombras (estándar)
+
+- Banda: `py-12 md:py-16`; cabecera → contenido `gap-8 md:gap-10`; eyebrow → título `mb-3`; título → párrafo `mt-3`; párrafo → CTA `mt-6`; tarjetas `p-5 md:p-6`; paneles `p-5 md:p-8`; rejillas `gap-4 md:gap-5`.
+- Sombras de 3 niveles: 0 = plano (tarjetas con borde, inputs, botones, chips); 1 = `shadow-card` (tarjetas destacadas o clicables, hover de servicio); 2 = `shadow-card-lg`/`shadow-dialog`/`shadow-header` (lo que flota o se solapa).
+
 ---
 
 ## 3) Sistema para el formulario de contacto

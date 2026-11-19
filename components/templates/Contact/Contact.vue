@@ -2,7 +2,7 @@
   import { Button, Card, Checkbox, Eyebrow, Input, Select } from '~/components/atoms'
   import Form from '~/components/Form/Form.vue'
   import { CheckList, SocialMedia } from '~/components/molecules'
-  import { ContactDetails, Section } from '~/components/organisms'
+  import { LegalFooter, Section } from '~/components/organisms'
 
   import {
     HOME_COPY,
@@ -74,7 +74,7 @@
     class="gap-4 bg-[linear-gradient(180deg,var(--color-brand-surface)_0%,var(--color-brand-surface)_22%,var(--color-brand-surface-contrast)_22%,var(--color-brand-surface-contrast)_100%)] px-0 sm:px-4"
   >
     <div
-      class="relative mx-auto mb-0 w-full max-w-none overflow-hidden rounded-none border-y border-brand-border-strong/50 bg-brand-surface-contrast p-5 shadow-none sm:mb-8 sm:max-w-7xl sm:rounded-2xl sm:border sm:p-9 sm:shadow-card-lg"
+      class="relative mx-auto mb-0 w-full max-w-none overflow-hidden rounded-none border-y border-brand-border-strong/50 bg-brand-surface-contrast p-5 shadow-none sm:mb-8 sm:max-w-7xl sm:rounded-2xl sm:border sm:p-8 sm:shadow-card-lg"
     >
       <!-- Logo decorativo asomando desde la esquina — placeholder mientras subes el SVG real a public/ -->
       <NuxtImg
@@ -87,7 +87,7 @@
       />
 
       <div class="relative z-10">
-        <Eyebrow tone="dark" class="mb-4">{{ title || HOME_COPY.contact.eyebrow }}</Eyebrow>
+        <Eyebrow tone="dark" class="mb-3">{{ title || HOME_COPY.contact.eyebrow }}</Eyebrow>
 
         <div class="flex flex-col md:flex-row gap-8 items-stretch">
           <div class="flex flex-col gap-4 md:w-1/2">
@@ -127,7 +127,7 @@
           </div>
 
           <div class="flex flex-col gap-2 md:w-1/2">
-            <Card tone="dark" elevated class="p-4">
+            <Card tone="dark" class="p-5">
               <Form
                 :successful="isSendedSuccessful"
                 :validation-message="
@@ -213,16 +213,7 @@
           </div>
         </div>
 
-        <div class="mt-8 flex flex-col items-center gap-4 md:flex-row md:justify-between">
-          <NuxtImg
-            src="brand_white_v2.svg"
-            width="250"
-            height="40"
-            alt="Miguel Álvarez"
-            class="object-contain"
-          />
-          <ContactDetails />
-        </div>
+        <LegalFooter class="mt-8" />
       </div>
     </div>
   </Section>

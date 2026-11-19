@@ -74,7 +74,7 @@
           class="h-full bg-brand-surface-panel/95 p-5 backdrop-blur-sm transition duration-200 hover:border-brand-blue/70 hover:bg-brand-surface-panel-strong motion-reduce:transition-none md:p-6"
         >
           <div class="mb-4 flex items-center gap-3">
-            <HexMarker :label="String(index + 1).padStart(2, '0')" />
+            <HexMarker :label="String(index + 1).padStart(2, '0')" tone="dark" />
             <h3 class="text-base font-semibold text-brand-text-strong">{{ phase.title }}</h3>
           </div>
 

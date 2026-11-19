@@ -19,7 +19,7 @@
       class="min-h-11 flex-1 whitespace-nowrap rounded-lg border px-3 py-2 text-sm font-medium transition-colors duration-200 motion-reduce:transition-none focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue"
       :class="
         modelValue === filter
-          ? 'border-brand-accent bg-brand-accent text-brand-white shadow-sm'
+          ? 'border-brand-accent bg-brand-accent text-brand-white'
           : 'border-transparent bg-transparent text-brand-ink hover:bg-brand-surface-card hover:text-brand-accent-text'
       "
       :aria-pressed="modelValue === filter"

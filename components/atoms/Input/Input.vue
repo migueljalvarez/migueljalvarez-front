@@ -72,7 +72,7 @@
       :type="type"
       :name="name"
       :class="inputClass"
-      class="w-full min-h-11 px-3 py-2 text-base font-normal rounded-lg border shadow-sm transition-colors duration-200 motion-reduce:transition-none"
+      class="w-full min-h-11 px-3 py-2 text-base font-normal rounded-lg border transition-colors duration-200 motion-reduce:transition-none"
       :placeholder="placeHolder"
       :required="required"
       :disabled="disabled"

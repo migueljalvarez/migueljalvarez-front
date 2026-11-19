@@ -27,7 +27,7 @@
       <select
         :id="name"
         :name="name"
-        class="w-full min-h-11 px-3 py-2 pr-10 text-base font-normal text-brand-ink bg-brand-surface-card border border-brand-border rounded-lg appearance-none shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-brand-text-soft focus:border-brand-white motion-reduce:transition-none"
+        class="w-full min-h-11 px-3 py-2 pr-10 text-base font-normal text-brand-ink bg-brand-surface-card border border-brand-border rounded-lg appearance-none transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-brand-text-soft focus:border-brand-white motion-reduce:transition-none"
         :required="required"
         :value="modelValue"
         @change="onChange"

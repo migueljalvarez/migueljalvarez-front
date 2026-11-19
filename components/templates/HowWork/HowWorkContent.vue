@@ -22,12 +22,12 @@
       />
     </div>
 
-    <div class="mx-auto grid w-full max-w-7xl gap-5 md:grid-cols-2">
-      <Card as="article" elevated class="p-6">
+    <div class="mx-auto grid w-full max-w-7xl gap-4 md:grid-cols-2 md:gap-5">
+      <Card as="article" class="p-5 md:p-6">
         <h2 class="text-xl font-semibold text-brand-ink">Me comprometo a</h2>
         <CheckList :items="WORK_COMMITMENTS" class="mt-4" />
       </Card>
-      <Card id="no-acepto" as="article" elevated class="p-6">
+      <Card id="no-acepto" as="article" class="p-5 md:p-6">
         <h2 class="text-xl font-semibold text-brand-ink">Lo que no hago</h2>
         <CheckList
           :items="WORK_NON_NEGOTIABLES.map(item => ({ text: item.text, note: item.note }))"
@@ -38,8 +38,8 @@
       </Card>
     </div>
 
-    <div class="mx-auto grid w-full max-w-7xl gap-4 md:grid-cols-3">
-      <Card v-for="block in policies" :key="block.id" as="article" elevated class="p-5 md:p-6">
+    <div class="mx-auto grid w-full max-w-7xl gap-4 md:grid-cols-3 md:gap-5">
+      <Card v-for="block in policies" :key="block.id" as="article" class="p-5 md:p-6">
         <h2 class="text-lg font-semibold text-brand-ink">{{ block.title }}</h2>
         <p class="mt-3 text-sm leading-6 text-brand-muted">{{ block.body }}</p>
       </Card>
