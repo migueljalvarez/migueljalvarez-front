@@ -7,8 +7,10 @@ import ProcessSection from './Services/ProcessSection.vue'
 import HowWorkTeaser from './HowWork/HowWorkTeaser.vue'
 import HowWorkContent from './HowWork/HowWorkContent.vue'
 import LegalDocument from './LegalDocument/LegalDocument.vue'
+import TestimonialSubmit from './TestimonialSubmit/TestimonialSubmit.vue'
 export {
   LegalDocument,
+  TestimonialSubmit,
   Main,
   About,
   Contact,

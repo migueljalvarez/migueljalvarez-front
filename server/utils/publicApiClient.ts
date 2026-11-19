@@ -75,6 +75,29 @@ export const createPublicApiClient = (options: PublicApiClientOptions) => {
       }
     },
 
+    /**
+     * GET que conserva el estado HTTP (como `post`) y permite cabeceras por llamada. `status` 0 = fallo de
+     * red o tiempo agotado. Para flujos donde el 404 y el 429 significan algo distinto (enlaces de un solo uso).
+     */
+    async getResult<T>(
+      path: string,
+      headers: Record<string, string> = {}
+    ): Promise<ApiPostResult<T>> {
+      if (!baseUrl) return { ok: false, status: 0, data: null }
+      try {
+        const response = await fetchImpl(`${baseUrl}${path}`, {
+          headers: { accept: 'application/json', ...options.headers, ...headers },
+          signal: AbortSignal.timeout(timeoutMs)
+        })
+        const data = (await response.json().catch(() => null)) as T | null
+        if (!response.ok) options.onError?.(path, `HTTP ${response.status}`)
+        return { ok: response.ok, status: response.status, data }
+      } catch (error) {
+        options.onError?.(path, error instanceof Error ? error.name : 'error')
+        return { ok: false, status: 0, data: null }
+      }
+    },
+
     async get<T>(path: string): Promise<T | null> {
       if (!baseUrl) return null
       try {

@@ -18,7 +18,7 @@ Implementar la funcionalidad de UI solicitada respetando la arquitectura y las c
 Centrarse SOLO en:
 
 - Componentes y páginas (Vue 3 `<script setup lang="ts">`).
-- Integración con composables existentes y con la capa de datos (`useAdminData` en el panel).
+- Integración con composables existentes y con la capa de datos (`useAdminApi` y los composables `useAdmin*` en el panel).
 - Estilos con tokens `brand-*` y Tailwind canónico v4.
 
 ## Instrucciones
