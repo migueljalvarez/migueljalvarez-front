@@ -62,3 +62,18 @@ export type ImageCarouselProps = {
   /** De 1 a 4 imágenes; si llegan más, se muestran las 4 primeras. */
   images: { src: string; alt: string; width?: number; height?: number }[]
 }
+
+export type ImageWithFallbackProps = {
+  /** Ruta de la imagen; vacía o ausente muestra el placeholder de marca. */
+  src?: string
+  /** Texto alternativo; vacío = imagen decorativa. */
+  alt: string
+  width?: number
+  height?: number
+  sizes?: string
+  quality?: number
+  loading?: 'lazy' | 'eager'
+  fetchpriority?: 'high' | 'low' | 'auto'
+  /** Clases de la imagen (por defecto `object-cover`). */
+  imageClass?: string
+}

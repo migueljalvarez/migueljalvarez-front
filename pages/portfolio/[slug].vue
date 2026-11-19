@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { Button, Card, Chip } from '~/components/atoms'
-  import { BackLink, CheckList } from '~/components/molecules'
+  import { BackLink, CheckList, ImageWithFallback } from '~/components/molecules'
   import { WHATSAPP_URL } from '~/constants/common'
   import type { PortfolioType } from '~/types/common'
 
@@ -121,15 +121,15 @@
           </div>
         </header>
 
-        <div v-if="project.urlImage" class="px-5 pb-6 md:px-8 md:pb-8">
-          <NuxtImg
+        <div class="px-5 pb-6 md:px-8 md:pb-8">
+          <ImageWithFallback
             :src="project.urlImage"
             :alt="`Portada del proyecto ${project.title}`"
-            width="1280"
-            height="720"
-            format="webp"
-            class="aspect-video w-full rounded-2xl object-cover"
+            :width="1280"
+            :height="720"
+            loading="eager"
             fetchpriority="high"
+            class="relative aspect-video w-full rounded-2xl"
           />
         </div>
 
@@ -177,15 +177,13 @@
                 :class="index === 0 && featureFirst ? 'sm:col-span-2' : ''"
               >
                 <figure>
-                  <NuxtImg
+                  <ImageWithFallback
                     :src="image.src"
                     :alt="image.alt"
-                    width="1600"
-                    height="900"
-                    format="webp"
+                    :width="1600"
+                    :height="900"
                     sizes="100vw sm:50vw"
-                    class="aspect-video w-full rounded-2xl border border-brand-border object-cover"
-                    loading="lazy"
+                    class="relative aspect-video w-full rounded-2xl border border-brand-border"
                   />
                   <figcaption v-if="image.caption" class="mt-2 text-sm text-brand-muted">
                     {{ image.caption }}

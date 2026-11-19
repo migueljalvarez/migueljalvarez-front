@@ -162,7 +162,7 @@ const isSafeHref = (value: unknown): value is string =>
 
 /**
  * Convierte la respuesta de la API en contenido del sitio. Devuelve `null` ante cualquier forma
- * inválida (faltan título, presentación o imágenes): el llamador usa entonces el respaldo del código.
+ * inválida (faltan título o presentación, o no hay imágenes ni cargo/nombre): el llamador usa entonces el respaldo del código.
  * Lo opcional vacío se omite y las listas se recortan a su máximo.
  */
 export const mapApiAbout = (raw: unknown): AboutContent | null => {
@@ -180,7 +180,8 @@ export const mapApiAbout = (raw: unknown): AboutContent | null => {
         ? { width: item.width, height: item.height }
         : {})
     }))
-  if (images.length === 0) return null
+  // Sin fotos válidas el sitio muestra el placeholder de marca, pero solo si hay quién la presente.
+  if (images.length === 0 && !isText(data.role) && !isText(data.name)) return null
 
   const stats = (Array.isArray(data.stats) ? data.stats : [])
     .filter(item => item && isText(item.value) && isText(item.label))

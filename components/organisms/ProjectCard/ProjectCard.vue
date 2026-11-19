@@ -2,6 +2,7 @@
   import { computed } from 'vue'
   import { NuxtLink } from '#components'
   import { Chip } from '~/components/atoms'
+  import { ImageWithFallback } from '~/components/molecules'
   import type { ProjectCardProps } from '../organism'
 
   const props = withDefaults(defineProps<ProjectCardProps>(), { headingLevel: 'h3' })
@@ -47,43 +48,13 @@
             : 'shrink-0 md:aspect-16/10'
       "
     >
-      <NuxtImg
-        v-if="project.image"
+      <ImageWithFallback
         :src="project.image"
-        :alt="''"
-        aria-hidden="true"
+        alt=""
         :sizes="variant === 'featured' ? '100vw md:66vw xl:66vw' : '100vw md:50vw xl:33vw'"
-        format="webp"
         :quality="90"
-        class="h-full w-full object-cover"
-        :class="growImage ? 'md:absolute md:inset-0' : ''"
-        loading="lazy"
+        class="absolute inset-0"
       />
-      <div
-        v-else
-        class="relative flex h-full w-full items-center justify-center overflow-hidden bg-[linear-gradient(135deg,var(--color-brand-surface-contrast),var(--color-brand-navy),var(--color-brand-mid))] text-brand-text-soft"
-        :class="growImage ? 'md:absolute md:inset-0' : ''"
-      >
-        <svg
-          class="absolute inset-0 h-full w-full opacity-30"
-          viewBox="0 0 320 200"
-          fill="none"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <g stroke="currentColor" stroke-width="1.5">
-            <path
-              d="M80 8h40l20 35-20 35H80L60 43 80 8Zm120 0h40l20 35-20 35h-40l-20-35 20-35ZM20 78h40l20 35-20 35H20L0 113l20-35Zm120 0h40l20 35-20 35h-40l-20-35 20-35Zm120 0h40l20 35-20 35h-40l-20-35 20-35Z"
-            />
-          </g>
-        </svg>
-        <p
-          aria-hidden="true"
-          class="relative z-10 max-w-[80%] text-center text-lg font-semibold leading-tight text-brand-text-strong md:text-xl"
-        >
-          {{ project.title }}
-        </p>
-      </div>
       <div class="absolute left-4 top-4 flex flex-wrap items-center gap-2">
         <Chip
           v-if="showTypeBadge"

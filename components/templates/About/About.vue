@@ -15,6 +15,7 @@
   // apiladas debajo). Texto: cargo → frase de presentación → cifras → cómo trabajo → principio clave.
   // Foto: carrusel con la cifra principal como etiqueta, nombre y ubicación, y "Fuera del trabajo" con
   // etiquetas. Luego herramientas y cierre con disponibilidad y botón.
+  // Sin fotos, el carrusel muestra el placeholder de marca (si hay cargo o nombre; si no, se omite la tarjeta).
   // Solo recibe datos (la home los carga con `useAbout`; el panel pasa los del formulario). Todo bloque
   // sin datos se omite. El diseño responde al ancho del contenedor (`@container`).
   const props = defineProps<{ content: AboutContent }>()
@@ -22,10 +23,14 @@
   const place = computed(() =>
     [props.content.location, props.content.workMode].filter(Boolean).join(' · ')
   )
-  const hasImages = computed(() => props.content.images.length > 0)
   const mainStat = computed(() => props.content.stats[0])
   const interests = computed(() => props.content.interests ?? [])
   const hasProfile = computed(() => !!props.content.name || !!place.value)
+  // Sin fotos, la tarjeta se mantiene (con el placeholder de marca) solo si hay quién la presente:
+  // cargo o nombre. Sin ninguno sería un recuadro vacío y la tarjeta de texto ocupa todo el ancho.
+  const showPhotoCard = computed(
+    () => props.content.images.length > 0 || !!props.content.name || !!props.content.role
+  )
   const hasBeyondWork = computed(() => !!props.content.beyondWork || interests.value.length > 0)
   const cta = computed(() => props.content.cta)
   const isInternal = computed(() => !!cta.value && cta.value.href.startsWith('/'))
@@ -60,7 +65,7 @@
       <div class="grid min-w-0 grid-cols-1 gap-6 @4xl:grid-cols-12">
         <Card
           class="flex min-w-0 flex-col gap-6 p-5 md:p-8"
-          :class="hasImages ? '@4xl:col-span-7' : '@4xl:col-span-12'"
+          :class="showPhotoCard ? '@4xl:col-span-7' : '@4xl:col-span-12'"
         >
           <div>
             <p
@@ -95,7 +100,7 @@
           </QuoteBlock>
         </Card>
 
-        <Card v-if="hasImages" class="flex min-w-0 flex-col gap-5 p-5 @4xl:col-span-5 md:p-6">
+        <Card v-if="showPhotoCard" class="flex min-w-0 flex-col gap-5 p-5 @4xl:col-span-5 md:p-6">
           <ImageCarousel :images="content.images">
             <template v-if="mainStat" #overlay>
               <span

@@ -11,6 +11,7 @@ import StatList from './StatList/StatList.vue'
 import ChipList from './ChipList/ChipList.vue'
 import InfoCard from './InfoCard/InfoCard.vue'
 import ImageCarousel from './ImageCarousel/ImageCarousel.vue'
+import ImageWithFallback from './ImageWithFallback/ImageWithFallback.vue'
 export {
   Header,
   SocialMedia,
@@ -24,5 +25,6 @@ export {
   StatList,
   ChipList,
   InfoCard,
-  ImageCarousel
+  ImageCarousel,
+  ImageWithFallback
 }
