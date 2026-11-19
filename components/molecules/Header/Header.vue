@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+  import AppLogo from '~/components/atoms/AppLogo/AppLogo.vue'
   import Button from '~/components/atoms/Button/Button.vue'
   import { useSocialMedia } from '~/composables/useSocialMedia'
   import { PUBLIC_ROUTES } from '~/constants/routes'
@@ -133,37 +134,29 @@
   />
   <header
     :class="[
-      'fixed top-0 left-0 z-50 w-full backdrop-blur-md transition-all duration-200',
-      isHeroTop
-        ? 'header-top text-brand-white backdrop-blur-none'
-        : 'bg-brand-surface/95 text-brand-ink',
+      'fixed top-0 left-0 z-50 w-full transition-all duration-200',
+      isHeroTop ? 'header-top text-brand-white' : 'bg-brand-surface text-brand-ink',
       isScrolled ? 'shadow-header border-b border-brand-border/80' : 'border-b-0 shadow-none'
     ]"
   >
     <div
       class="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"
     >
-      <!-- Dos logos superpuestos con fundido cruzado de 200 ms (igual que el fondo del header): así no hay un
-           fotograma intermedio con el logo blanco sobre fondo claro. SVG directo: ipx lo rasterizaba a webp. -->
-      <span class="relative block h-10 w-62.5 shrink-0">
-        <img
-          src="/brand_white_v2.svg"
-          width="250"
-          height="40"
-          :alt="isHeroTop ? 'Miguel Álvarez' : ''"
-          :aria-hidden="isHeroTop ? undefined : 'true'"
-          decoding="async"
-          class="absolute inset-0 size-full object-contain px-2 transition-opacity duration-200 motion-reduce:transition-none"
+      <!-- Logo compacto: blanco sobre el hero (transparente) y a color con el header sólido. Dos imágenes con
+           fundido cruzado de 200 ms (igual que el fondo): sin fotograma con logo blanco sobre fondo claro. -->
+      <span class="relative block h-10 w-61.25 shrink-0">
+        <AppLogo
+          variant="compact"
+          surface="dark"
+          :decorative="!isHeroTop"
+          class="absolute inset-0 size-full px-2 transition-opacity duration-200 motion-reduce:transition-none"
           :class="isHeroTop ? 'opacity-100' : 'opacity-0'"
         />
-        <img
-          src="/brand.svg"
-          width="250"
-          height="40"
-          :alt="isHeroTop ? '' : 'Miguel Álvarez'"
-          :aria-hidden="isHeroTop ? 'true' : undefined"
-          decoding="async"
-          class="absolute inset-0 size-full object-contain px-2 transition-opacity duration-200 motion-reduce:transition-none"
+        <AppLogo
+          variant="compact"
+          surface="light"
+          :decorative="isHeroTop"
+          class="absolute inset-0 size-full px-2 transition-opacity duration-200 motion-reduce:transition-none"
           :class="isHeroTop ? 'opacity-0' : 'opacity-100'"
         />
       </span>
@@ -186,7 +179,12 @@
           <span
             :class="
               isContactNavLink(item.name)
-                ? 'rounded-lg bg-brand-accent px-4 py-2 text-brand-white transition-colors hover:bg-brand-mid'
+                ? [
+                    'rounded-lg px-4 py-2 transition-colors',
+                    isHeroTop
+                      ? 'bg-brand-warm text-brand-navy hover:bg-brand-warm/85'
+                      : 'bg-brand-accent text-brand-white hover:bg-brand-mid'
+                  ]
                 : ''
             "
           >

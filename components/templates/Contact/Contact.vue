@@ -74,7 +74,7 @@
     class="gap-4 bg-[linear-gradient(180deg,var(--color-brand-surface)_0%,var(--color-brand-surface)_22%,var(--color-brand-surface-contrast)_22%,var(--color-brand-surface-contrast)_100%)] px-0 sm:px-4"
   >
     <div
-      class="relative mx-auto mb-0 w-full max-w-none overflow-hidden rounded-none border-y border-brand-border-strong bg-brand-surface-contrast p-5 shadow-none sm:mb-8 sm:max-w-7xl sm:rounded-2xl sm:border sm:p-8 sm:shadow-[0_18px_40px_rgb(0_0_0/0.45)]"
+      class="relative mx-auto mb-0 w-full max-w-none overflow-hidden rounded-none border-y border-brand-border-strong bg-brand-surface-contrast p-5 shadow-none sm:mb-8 sm:max-w-7xl sm:rounded-2xl sm:border sm:p-8 sm:shadow-inverse"
     >
       <!-- Logo decorativo asomando desde la esquina — placeholder mientras subes el SVG real a public/ -->
       <NuxtImg
@@ -202,25 +202,17 @@
                   </NuxtLink>
                   <span class="mt-1 block">{{ HOME_COPY.contact.privacy }}</span>
                 </Checkbox>
-                <!-- Estados: activo = azul de marca (blanco sobre #3f6bad, 5,4:1); deshabilitado = tenue con borde
-                     discontinuo; enviando = mismo azul, con indicador y cursor de espera. -->
+                <!-- Estados del átomo Button sobre fondo oscuro: activo = ámbar; deshabilitado = tenue con borde
+                     discontinuo; hover = ámbar más suave con halo; foco = contorno blanco; enviando = ámbar con indicador. -->
                 <Button
                   type="submit"
                   :disabled="disabledButton"
-                  :data-loading="isSubmitting ? 'true' : undefined"
-                  :aria-busy="isSubmitting ? 'true' : undefined"
+                  :loading="isSubmitting"
                   size="md"
-                  class="w-full whitespace-nowrap border border-white/25 bg-brand-blue py-2 font-bold text-brand-white hover:bg-[color-mix(in_srgb,var(--color-brand-blue)_86%,black)] hover:ring-4 hover:ring-brand-blue/30 disabled:border-dashed disabled:border-brand-border-strong disabled:bg-brand-blue/15 disabled:text-brand-text-subtle disabled:ring-0 disabled:hover:bg-brand-blue/15 disabled:data-[loading=true]:cursor-progress disabled:data-[loading=true]:border-solid disabled:data-[loading=true]:border-white/25 disabled:data-[loading=true]:bg-brand-blue disabled:data-[loading=true]:text-brand-white disabled:data-[loading=true]:hover:bg-brand-blue"
+                  class="w-full whitespace-nowrap py-2 font-bold"
                   on-dark
                   theme="primary"
                 >
-                  <Icon
-                    v-if="isSubmitting"
-                    name="mdi:loading"
-                    size="18"
-                    class="motion-safe:animate-spin"
-                    aria-hidden="true"
-                  />
                   {{ HOME_COPY.contact.form.submit }}
                 </Button>
               </Form>

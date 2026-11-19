@@ -138,7 +138,7 @@
       <NuxtLink
         v-else-if="layout.showViewAllLink"
         to="/portafolio"
-        class="inline-flex min-h-11 items-center gap-1 self-end text-sm font-semibold text-brand-accent-text focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-accent-text md:ml-auto md:mt-7"
+        class="inline-flex min-h-11 items-center gap-1 self-end text-sm font-semibold text-logo-blue focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-accent-text md:ml-auto md:mt-7"
       >
         Ver todos los proyectos
         <Icon name="mdi:arrow-right" size="16" aria-hidden="true" />

@@ -16,6 +16,8 @@ export type ButtonProps = {
   target?: string
   rel?: string
   as?: 'button' | 'a'
+  /** Enviando: mantiene el aspecto principal, muestra un indicador y marca `aria-busy`. */
+  loading?: boolean
 }
 
 export type InputProps = {
@@ -89,4 +91,16 @@ export type HexMarkerProps = {
 export type ImagePlaceholderProps = {
   /** Texto accesible; sin él el placeholder es decorativo (`aria-hidden`). */
   label?: string
+}
+
+export type AppLogoProps = {
+  /** Fondo donde se coloca: `light` = logo a color, `dark` = logo blanco. */
+  surface?: 'light' | 'dark'
+  /** `full` lleva el tagline; `compact` es solo hexágono + nombre. */
+  variant?: 'full' | 'compact'
+  /** Alto en píxeles (el ancho sale de la proporción del SVG). */
+  height?: number
+  alt?: string
+  /** Decorativo: sin texto alternativo (p. ej. el logo oculto de un fundido cruzado). */
+  decorative?: boolean
 }

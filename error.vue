@@ -40,7 +40,7 @@
           <Button theme="primary" size="md" @click="goHome">Volver al inicio</Button>
           <NuxtLink
             to="/#contact"
-            class="inline-flex min-h-11 items-center text-sm font-semibold text-brand-accent-text underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
+            class="inline-flex min-h-11 items-center text-sm font-semibold text-logo-blue underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
             @click="clearError()"
           >
             Escríbeme
