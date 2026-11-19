@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+  import { PORTFOLIO_FILTER_LABEL } from '~/constants/portfolioFilters'
   import type { PortfolioFilter } from '~/types/portfolio'
 
   defineProps<{ modelValue: PortfolioFilter; filters: PortfolioFilter[] }>()
@@ -24,7 +25,7 @@
       :aria-pressed="modelValue === filter"
       @click="emit('update:modelValue', filter)"
     >
-      {{ filter }}
+      {{ PORTFOLIO_FILTER_LABEL[filter] }}
     </button>
   </div>
 </template>

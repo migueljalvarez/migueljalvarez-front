@@ -63,7 +63,7 @@ test('las listas vacías se omiten para que la ficha no muestre secciones sin co
 test('la tarjeta enlaza a la ficha, salvo en los proyectos en desarrollo', () => {
   const published = toPortfolioCardProject(mapApiPortfolioEntry(entry()))
   assert.equal(published.href, '/portafolio/mi-app')
-  assert.equal(published.type, 'propio')
+  assert.equal(published.type, 'product')
   assert.deepEqual(published.tags, ['Aplicación', 'Finanzas'])
   assert.equal(published.audience, 'personas que ahorran')
   assert.equal(published.image, '/projects/mi-app/cover.webp')
@@ -74,7 +74,7 @@ test('la tarjeta enlaza a la ficha, salvo en los proyectos en desarrollo', () =>
   assert.equal(inDevelopment.href, '')
   assert.equal(
     toPortfolioCardProject(mapApiPortfolioEntry(entry({ type: 'client' }))).type,
-    'cliente'
+    'client'
   )
 })
 
