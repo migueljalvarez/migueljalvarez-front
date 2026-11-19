@@ -124,16 +124,6 @@
                 :size="32"
               />
             </div>
-
-            <div class="mt-auto pt-4">
-              <NuxtImg
-                src="brand_white_v2.svg"
-                width="250"
-                height="40"
-                alt="Miguel Álvarez"
-                class="object-contain"
-              />
-            </div>
           </div>
 
           <div class="flex flex-col gap-2 md:w-1/2">
@@ -202,7 +192,7 @@
                   <NuxtLink
                     to="/privacidad"
                     target="_blank"
-                    class="inline-block py-2 underline underline-offset-4 hover:text-brand-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
+                    class="inline-flex min-h-11 items-center rounded-lg underline underline-offset-4 hover:text-brand-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
                   >
                     {{ HOME_COPY.contact.privacyLink }}
                   </NuxtLink>
@@ -220,8 +210,18 @@
                 </Button>
               </Form>
             </Card>
-            <ContactDetails />
           </div>
+        </div>
+
+        <div class="mt-8 flex flex-col items-center gap-4 md:flex-row md:justify-between">
+          <NuxtImg
+            src="brand_white_v2.svg"
+            width="250"
+            height="40"
+            alt="Miguel Álvarez"
+            class="object-contain"
+          />
+          <ContactDetails />
         </div>
       </div>
     </div>
