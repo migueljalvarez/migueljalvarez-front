@@ -31,3 +31,10 @@ logs
 
 # Playbook legal privado (posiciones de negociacion del titular)
 .claude/legal.local.md
+
+# Nunca versionar: respaldos, volcados, paquetes, capturas y salidas de análisis
+backups/
+*.dump
+*.bundle
+shots/
+.scannerwork/
