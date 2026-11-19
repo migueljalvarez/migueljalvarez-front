@@ -159,7 +159,7 @@
           :rel="isInternal ? undefined : 'noopener noreferrer'"
           :icon="isWhatsapp ? 'mdi:whatsapp' : undefined"
           class="w-full whitespace-nowrap @2xl:w-auto"
-          theme="primary"
+          :theme="isWhatsapp ? 'whatsapp' : 'primary'"
         >
           {{ cta.label }}
         </Button>

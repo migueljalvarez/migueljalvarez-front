@@ -84,7 +84,7 @@
             size="md"
             icon="mdi:whatsapp"
             icon-position="left"
-            theme="primary"
+            theme="whatsapp"
           >
             {{ PRIMARY_CTA_LABEL }}
           </Button>

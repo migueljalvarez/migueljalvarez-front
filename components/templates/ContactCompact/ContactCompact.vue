@@ -30,7 +30,7 @@
           :href="WHATSAPP_URL"
           target="_blank"
           rel="noopener noreferrer"
-          theme="secondary"
+          theme="whatsapp"
           size="md"
           on-dark
           icon="mdi:whatsapp"
