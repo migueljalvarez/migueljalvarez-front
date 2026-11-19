@@ -64,7 +64,7 @@ export const HOME_COPY = {
     highlights: [
       { value: '10+', label: 'años haciendo software' },
       { value: '4', label: 'sectores distintos' },
-      { value: 'Internacional', label: 'equipos de habla hispana' }
+      { value: 'LATAM', label: 'equipos de habla hispana' }
     ]
   },
   contact: {
@@ -166,6 +166,8 @@ export const ABOUT_FALLBACK: AboutContent = {
   location: HOME_COPY.about.location,
   workMode: HOME_COPY.about.remote,
   stats: HOME_COPY.about.highlights.map(item => ({ ...item })),
+  availability: HOME_COPY.hero.availability,
+  cta: { label: WHATSAPP_CTA_LABEL, href: WHATSAPP_URL },
   tools: [],
   images: [{ src: '/ma.webp', alt: HOME_COPY.about.imageAlt, width: 1536, height: 1024 }]
 }

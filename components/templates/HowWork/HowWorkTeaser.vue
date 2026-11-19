@@ -11,13 +11,15 @@
       tone="dark"
       class="relative flex flex-col gap-5 overflow-hidden bg-brand-surface-panel/95 p-5 md:p-8"
     >
-      <NuxtImg
-        src="only-brand-color.svg"
+      <img
+        src="/only-brand.svg"
         width="256"
-        height="256"
+        height="214"
         alt=""
         aria-hidden="true"
-        class="pointer-events-none absolute -right-20 -bottom-10 z-0 size-64 select-none opacity-[0.08]"
+        loading="lazy"
+        decoding="async"
+        class="pointer-events-none absolute -right-20 -bottom-10 z-0 h-auto w-64 select-none opacity-[0.08]"
       />
       <div class="relative z-10">
         <SectionHeader
