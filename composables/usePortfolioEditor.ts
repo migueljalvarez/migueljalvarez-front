@@ -183,6 +183,7 @@ export const usePortfolioEditor = (initial: PortfolioDetailRecord | null) => {
   }
 
   return {
+    validation,
     record,
     savedForm,
     values,
