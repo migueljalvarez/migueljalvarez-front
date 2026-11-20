@@ -133,10 +133,23 @@ export default defineNuxtConfig({
           "frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
       }
     },
-    // Home: HTML en la caché de Nitro (stale-while-revalidate) solo en producción; en desarrollo siempre fresco.
+    // Home: el HTML lo guarda el CDN de Netlify (no la memoria de la función) solo en producción; en desarrollo siempre
+    // fresco. s-maxage=60 + stale-while-revalidate=60: pasado el minuto puede servir la copia vencida hasta 60 s más
+    // mientras el propio CDN la renueva (esa renovación sí es fiable, a diferencia del swr de Nitro en serverless).
+    // Antes era `swr: 60` sin tope (`stale-while-revalidate` a secas): servía copias vencidas durante horas.
+    // Retraso máximo esperado tras publicar en el panel ≈ 3 min (60 s de caché de contenido + hasta 120 s del CDN).
     // No aplica a /privacidad ni /terminos-y-condiciones: el titular llega por variable en ejecución.
     // El middleware de mantenimiento corre antes de la caché, así que con la API caída sigue devolviendo 503.
-    ...(process.env.NODE_ENV === 'production' ? { '/': { swr: 60 } } : {}),
+    ...(process.env.NODE_ENV === 'production'
+      ? {
+          '/': {
+            headers: {
+              'Cache-Control': 'public, max-age=0, must-revalidate',
+              'Netlify-CDN-Cache-Control': 'public, s-maxage=60, stale-while-revalidate=60'
+            }
+          }
+        }
+      : {}),
     // Zonas privadas: sin caché compartida y fuera de buscadores.
     '/admin/**': {
       headers: { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' }
