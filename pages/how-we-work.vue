@@ -11,6 +11,7 @@
       'Mis compromisos, lo que no hago y cómo trabajamos juntos: acuerdos claros, código y accesos tuyos, y respuestas a las preguntas frecuentes.',
     path: '/como-trabajo'
   })
+  useBreadcrumbJsonLd([{ name: 'Cómo trabajo', path: '/como-trabajo' }])
 </script>
 
 <template>

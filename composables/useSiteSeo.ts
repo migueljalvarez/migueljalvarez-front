@@ -1,3 +1,5 @@
+import { buildBreadcrumbList, type BreadcrumbItem } from '~/utils/seo'
+
 const DEFAULT_OG_IMAGE = '/og-image.jpg'
 
 /** URL base del sitio sin barra final. Viene de NUXT_PUBLIC_BASE_URL (igual en servidor y cliente). */
@@ -47,5 +49,18 @@ export const usePageSeo = (options: PageSeoOptions) => {
 
   useHead({
     link: [{ rel: 'canonical', href: url }]
+  })
+}
+
+/** Migas de pan en JSON-LD para una página interior (la portada ya lleva sus propios datos). */
+export const useBreadcrumbJsonLd = (items: BreadcrumbItem[]) => {
+  const siteUrl = useSiteUrl()
+  useHead({
+    script: [
+      {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify(buildBreadcrumbList(siteUrl, items))
+      }
+    ]
   })
 }

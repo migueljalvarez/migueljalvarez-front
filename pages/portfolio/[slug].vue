@@ -3,6 +3,7 @@
   import { BackLink, CheckList, ImageWithFallback } from '~/components/molecules'
   import { WHATSAPP_URL } from '~/constants/common'
   import type { PortfolioType } from '~/types/common'
+  import { buildBreadcrumbList, buildProjectSchema } from '~/utils/seo'
 
   definePageMeta({
     path: '/portafolio/:slug()',
@@ -52,6 +53,28 @@
     twitterImage: seoImage
   })
   useHead({ link: [{ rel: 'canonical', href: () => `${siteUrl}/portafolio/${slug.value}` }] })
+  // Datos estructurados: migas de pan y la ficha como obra del autor (solo si el proyecto existe).
+  useHead({
+    script: computed(() =>
+      project.value
+        ? [
+            {
+              type: 'application/ld+json',
+              innerHTML: JSON.stringify(
+                buildBreadcrumbList(siteUrl, [
+                  { name: 'Portafolio', path: '/portafolio' },
+                  { name: project.value.title, path: `/portafolio/${slug.value}` }
+                ])
+              )
+            },
+            {
+              type: 'application/ld+json',
+              innerHTML: JSON.stringify(buildProjectSchema(siteUrl, project.value))
+            }
+          ]
+        : []
+    )
+  })
 
   // Respuesta 404 real (no un "soft 404") cuando el proyecto no existe o no tiene ficha pública.
   if (!project.value && import.meta.server) {
