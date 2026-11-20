@@ -8,9 +8,6 @@
 
   const phaseNumber = (phase: number) => String(phase).padStart(2, '0')
 
-  const phaseLabel = (phase: number) =>
-    `Fase ${phaseNumber(phase)}${offering.phases.includes(phase) ? ', incluida' : ', no incluida'}`
-
   const detailsDialog = ref<HTMLDialogElement | null>(null)
 
   const openDetails = () => detailsDialog.value?.showModal()
@@ -109,16 +106,33 @@
               {{ HOME_COPY.services.detailLabels.phases }}
             </h3>
             <ol
-              class="flex flex-wrap gap-2"
+              class="grid gap-x-6 gap-y-3 sm:grid-cols-2 md:grid-cols-3"
               :aria-label="`Fases aplicables: ${offering.situation}`"
             >
-              <li v-for="(phase, index) in DEVELOPMENT_PHASES" :key="phase.title">
+              <li
+                v-for="(phase, index) in DEVELOPMENT_PHASES"
+                :key="phase.title"
+                class="flex items-center gap-3"
+              >
+                <!-- El marcador es decorativo: el nombre visible y el texto para lectores dicen la fase y si aplica. -->
                 <HexMarker
                   :label="phaseNumber(index + 1)"
                   :active="offering.phases.includes(index + 1)"
-                  :aria-label="phaseLabel(index + 1)"
                   compact
                 />
+                <span
+                  class="text-sm leading-5"
+                  :class="
+                    offering.phases.includes(index + 1)
+                      ? 'font-medium text-brand-ink'
+                      : 'text-brand-muted'
+                  "
+                >
+                  {{ phase.title }}
+                  <span class="sr-only">
+                    {{ offering.phases.includes(index + 1) ? ', incluida' : ', no incluida' }}
+                  </span>
+                </span>
               </li>
             </ol>
           </section>
