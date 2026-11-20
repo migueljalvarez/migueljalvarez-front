@@ -11,7 +11,8 @@ export const TRACK_BUTTON_IDS = [
   'wa_como_trabajo',
   'nav_hablemos',
   'cta_ver_como_trabajo',
-  'cta_ver_proyecto'
+  'cta_ver_proyecto',
+  'cta_hero_card'
 ] as const
 
 export const FORM_SUBMIT_OK = 'form_submit_ok'

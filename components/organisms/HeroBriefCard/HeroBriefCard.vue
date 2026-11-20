@@ -213,11 +213,11 @@
           >
             <p class="text-sm text-brand-text-soft">{{ scenario.nextStep }}</p>
             <Button
+              v-track="HERO_BRIEF.ctaTrackId"
               as="a"
               :href="WHATSAPP_URL"
               target="_blank"
               rel="noopener noreferrer"
-              :data-track-id="HERO_BRIEF.ctaTrackId"
               :on-dark="true"
               size="sm"
               class="whitespace-nowrap"
