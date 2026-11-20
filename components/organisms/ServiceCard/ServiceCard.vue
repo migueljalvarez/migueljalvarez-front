@@ -51,7 +51,8 @@
       </button>
     </div>
 
-    <Teleport to="body">
+    <!-- Al destino de teleports de Nuxt (al final del HTML): con «body» las ventanas salían ANTES del h1 en el código fuente. -->
+    <Teleport to="#teleports">
       <dialog
         :id="`service-details-${offering.id}`"
         ref="detailsDialog"
