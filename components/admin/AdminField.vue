@@ -6,6 +6,8 @@
     error?: string
     hint?: string
     required?: boolean
+    /** Oculta la etiqueta a la vista (sigue leyéndola el lector de pantalla): filas compactas con encabezado propio. */
+    labelHidden?: boolean | 'desktop'
     /** Contador "actual/máximo" junto a la etiqueta (p. ej. textos con límite). */
     count?: { current: number; max: number }
   }>()
@@ -20,7 +22,17 @@
 <template>
   <div>
     <div class="mb-1 flex items-end justify-between gap-3">
-      <label :for="id" class="block text-sm font-medium text-brand-ink">
+      <label
+        :for="id"
+        class="text-sm font-medium text-brand-ink"
+        :class="
+          labelHidden === true
+            ? 'sr-only'
+            : labelHidden === 'desktop'
+              ? 'block md:sr-only'
+              : 'block'
+        "
+      >
         {{ label }}
         <span v-if="required" class="text-brand-error-text" aria-hidden="true">*</span>
       </label>

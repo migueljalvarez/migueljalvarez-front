@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import type { AboutContent } from '../../types/about'
 import { isRemoteImageUrl } from '../imageSource.ts'
+import { editorSectionStatus, type EditorSectionItem } from './editorIndex.ts'
 import { moveItem } from './siteContent.ts'
 
 /**
@@ -342,6 +343,62 @@ export const validateAboutForm = (raw: AboutFormValues): AboutValidation => {
 
 /** Requisitos para publicar, en el orden en que se leen en el panel. */
 export type PublishRequirement = { id: 'heading' | 'intro'; label: string; met: boolean }
+
+/** Secciones del editor de Sobre mí, en el orden en que se ve la sección en el sitio. */
+export const aboutSectionIndex = (
+  raw: AboutFormValues,
+  errors: AboutErrors
+): EditorSectionItem[] => {
+  const v = normalizeAboutForm(raw)
+  const status = (prefixes: string[], filled: boolean) =>
+    editorSectionStatus(errors, prefixes, filled)
+  return [
+    {
+      id: 'about-intro-section',
+      label: 'Presentación',
+      status: status(
+        ['eyebrow', 'heading', 'intro', 'role', 'tagline', 'quote'],
+        v.heading !== '' && v.intro !== ''
+      )
+    },
+    {
+      id: 'about-stats-section',
+      label: 'Cifras',
+      status: status(['stats'], v.stats.length > 0),
+      count: `${v.stats.length}/${ABOUT_LIMITS.stats}`
+    },
+    {
+      id: 'about-how-section',
+      label: 'Cómo pienso mi trabajo',
+      status: status(['howIWork'], v.howIWork !== '')
+    },
+    {
+      id: 'about-beyond-section',
+      label: 'Fuera del trabajo',
+      status: status(['beyondWork', 'interests'], v.beyondWork !== '' || v.interests.length > 0)
+    },
+    {
+      id: 'about-photo-section',
+      label: 'Foto y datos',
+      status: status(
+        ['images', 'name', 'location', 'workMode', 'availability'],
+        v.images.length > 0
+      ),
+      count: `${v.images.length}/${ABOUT_LIMITS.images}`
+    },
+    {
+      id: 'about-tools-section',
+      label: 'Herramientas',
+      status: status(['tools'], v.tools.length > 0),
+      count: `${v.tools.length}/${ABOUT_LIMITS.tools}`
+    },
+    {
+      id: 'about-cta-section',
+      label: 'Llamada a la acción',
+      status: status(['ctaLabel', 'ctaHref'], v.ctaLabel !== '' && v.ctaHref !== '')
+    }
+  ]
+}
 
 export const aboutPublishRequirements = (raw: AboutFormValues): PublishRequirement[] => {
   const values = normalizeAboutForm(raw)

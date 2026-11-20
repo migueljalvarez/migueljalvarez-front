@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import AdminBadge from '~/components/admin/AdminBadge.vue'
-  import AdminInput from '~/components/admin/AdminInput.vue'
+  import AdminButton from '~/components/admin/AdminButton.vue'
   import {
     formatAboutDate,
     type AboutAdminRecord,
@@ -32,60 +32,78 @@
 </script>
 
 <template>
-  <div class="space-y-6">
-    <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
-      <p class="text-sm font-medium text-brand-ink">Estado actual</p>
+  <div class="space-y-3">
+    <div class="flex flex-wrap items-center justify-between gap-2">
       <AdminBadge
         :tone="record.isPublished ? 'success' : 'neutral'"
         :icon="record.isPublished ? 'mdi:eye-outline' : 'mdi:eye-off-outline'"
       >
         {{ record.isPublished ? 'Publicado' : 'Borrador' }}
       </AdminBadge>
-      <p class="text-xs text-brand-muted">
-        Última actualización: {{ formatAboutDate(record.updatedAt) }}.
-      </p>
+      <a
+        href="/#about"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex min-h-11 items-center gap-1 rounded-lg px-1 text-sm font-medium text-logo-blue underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue"
+      >
+        Ver sitio
+        <Icon name="mdi:open-in-new" size="16" aria-hidden="true" />
+        <span class="sr-only">(se abre en otra pestaña)</span>
+      </a>
     </div>
+    <p class="-mt-1 text-xs text-brand-muted">
+      Última actualización: {{ formatAboutDate(record.updatedAt) }}
+    </p>
 
-    <div>
-      <p class="mb-2 text-sm font-medium text-brand-ink">Requisitos para publicar</p>
-      <ul class="space-y-1">
-        <li
-          v-for="item in requirements"
-          :key="item.id"
-          class="flex items-center gap-2 text-sm"
-          :class="item.met ? 'text-brand-success-text' : 'text-brand-error-text'"
-        >
-          <Icon
-            :name="item.met ? 'mdi:check-circle-outline' : 'mdi:close-circle-outline'"
-            size="20"
-            class="shrink-0"
-            aria-hidden="true"
-          />
-          <span>{{ item.label }}</span>
-          <span class="sr-only">{{ item.met ? ': cumplido' : ': falta' }}</span>
-        </li>
-      </ul>
-    </div>
+    <!-- Con todo cumplido basta una línea; si falta algo, se listan los requisitos. -->
+    <p v-if="canPublish" class="flex items-center gap-2 text-sm text-brand-success-text">
+      <Icon name="mdi:check-circle-outline" size="20" class="shrink-0" aria-hidden="true" />
+      Requisitos para publicar cumplidos
+    </p>
+    <ul v-else class="space-y-1" aria-label="Requisitos para publicar">
+      <li
+        v-for="item in requirements"
+        :key="item.id"
+        class="flex items-center gap-2 text-sm"
+        :class="item.met ? 'text-brand-success-text' : 'text-brand-error-text'"
+      >
+        <Icon
+          :name="item.met ? 'mdi:check-circle-outline' : 'mdi:close-circle-outline'"
+          size="20"
+          class="shrink-0"
+          aria-hidden="true"
+        />
+        <span>{{ item.label }}</span>
+        <span class="sr-only">{{ item.met ? ': cumplido' : ': falta' }}</span>
+      </li>
+    </ul>
 
-    <AdminInput
+    <AdminButton
       id="about-published"
-      v-model="published"
-      type="checkbox"
-      label="Publicar en el sitio"
+      :variant="published ? 'secondary' : 'primary'"
+      class="w-full"
       :disabled="!canPublish && !published"
-      :hint="hint"
-      :error="error"
-    />
-    <p v-if="error" role="alert" class="-mt-4 text-xs font-medium text-brand-error-text">
+      :aria-describedby="'about-published-hint'"
+      @click="published = !published"
+    >
+      <Icon
+        :name="published ? 'mdi:eye-off-outline' : 'mdi:eye-outline'"
+        size="20"
+        aria-hidden="true"
+      />
+      {{ published ? 'Despublicar' : 'Publicar' }}
+    </AdminButton>
+    <p id="about-published-hint" class="-mt-2 text-xs leading-5 text-brand-muted">{{ hint }}</p>
+    <p v-if="error" role="alert" class="text-xs font-medium text-brand-error-text">
       {{ error }}
     </p>
 
     <p
       v-if="pending"
-      class="flex items-center gap-2 text-sm font-medium text-brand-warning-text"
+      class="flex items-start gap-2 text-sm font-medium text-brand-warning-text"
       role="status"
     >
-      <Icon name="mdi:circle-edit-outline" size="20" class="shrink-0" aria-hidden="true" />
+      <Icon name="mdi:circle-edit-outline" size="20" class="mt-0.5 shrink-0" aria-hidden="true" />
       Al guardar quedará como «{{ published ? 'Publicado' : 'Borrador' }}».
     </p>
   </div>
