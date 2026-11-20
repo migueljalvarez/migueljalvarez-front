@@ -24,6 +24,8 @@
       counter?: boolean
       inputmode?: 'text' | 'numeric' | 'decimal' | 'email' | 'url'
       autocomplete?: string
+      /** Solo en contraseñas: botón para mostrar u ocultar lo escrito. */
+      revealable?: boolean
       /** Id de un `<datalist>` con sugerencias. */
       list?: string
       /** Clases extra del control (p. ej. el campo grande del código de verificación). */
@@ -32,6 +34,12 @@
     { type: 'text', rows: 3 }
   )
   const emit = defineEmits<{ 'update:modelValue': [value: string | number | boolean] }>()
+
+  const revealed = ref(false)
+  const inputType = computed(() =>
+    props.type === 'password' && props.revealable && revealed.value ? 'text' : props.type
+  )
+  const canReveal = computed(() => props.type === 'password' && props.revealable)
 
   const stateClass = computed(() => adminControlState(!!props.error))
   // `cn` resuelve conflictos: `inputClass` (p. ej. `text-2xl`) gana sobre `text-sm` de la base.
@@ -115,22 +123,39 @@
       </select>
       <div v-else class="flex items-start gap-3">
         <slot name="prefix" />
-        <input
-          :id="id"
-          :type="type"
-          :value="String(modelValue)"
-          :placeholder="placeholder"
-          :step="step"
-          :maxlength="maxlength"
-          :inputmode="inputmodeAttr"
-          :autocomplete="autocomplete"
-          :list="list"
-          :required="required"
-          :aria-describedby="describedBy"
-          :aria-invalid="invalid"
-          :class="cn(controlClass, 'min-w-0 flex-1')"
-          @input="onInput"
-        />
+        <div class="relative min-w-0 flex-1">
+          <input
+            :id="id"
+            :type="inputType"
+            :value="String(modelValue)"
+            :placeholder="placeholder"
+            :step="step"
+            :maxlength="maxlength"
+            :inputmode="inputmodeAttr"
+            :autocomplete="autocomplete"
+            :list="list"
+            :required="required"
+            :aria-describedby="describedBy"
+            :aria-invalid="invalid"
+            :class="cn(controlClass, 'w-full min-w-0', canReveal && 'pr-12')"
+            @input="onInput"
+          />
+          <button
+            v-if="canReveal"
+            type="button"
+            :aria-label="revealed ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+            :aria-pressed="revealed"
+            :title="revealed ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+            class="absolute top-0 right-0 inline-flex size-11 items-center justify-center rounded-lg text-brand-muted transition-colors hover:text-brand-ink focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-blue motion-reduce:transition-none"
+            @click="revealed = !revealed"
+          >
+            <Icon
+              :name="revealed ? 'mdi:eye-off-outline' : 'mdi:eye-outline'"
+              size="22"
+              aria-hidden="true"
+            />
+          </button>
+        </div>
       </div>
     </template>
   </AdminField>
