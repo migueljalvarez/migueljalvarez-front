@@ -83,7 +83,6 @@
           eyebrow="Tu testimonio"
           heading="Cuéntame cómo fue trabajar juntos"
           level="h1"
-          size="lg"
           :description="intro"
         />
 

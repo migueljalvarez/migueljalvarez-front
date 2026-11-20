@@ -6,8 +6,6 @@ export type SectionHeaderProps = {
   level?: 'h1' | 'h2' | 'h3'
   /** `dark` para bandas oscuras (hero, proceso, contacto). */
   tone?: 'light' | 'dark'
-  /** `lg` para el h1 de páginas interiores. */
-  size?: 'md' | 'lg'
   headingId?: string
 }
 
@@ -55,7 +53,6 @@ export type InfoCardProps = {
   title: string
   level?: 'h2' | 'h3' | 'h4'
   /** Color del punto junto al título. */
-  dot?: 'warm' | 'blue'
 }
 
 export type ImageCarouselProps = {

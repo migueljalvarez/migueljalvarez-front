@@ -46,7 +46,6 @@
       <SectionHeader
         :eyebrow="content.eyebrow"
         :heading="content.heading"
-        size="lg"
         class="border-b border-brand-border pb-6 md:pb-8"
       />
 
@@ -58,7 +57,7 @@
           <div>
             <p
               v-if="content.role"
-              class="mb-3 text-xs font-semibold tracking-[0.14em] text-brand-warm-ink uppercase"
+              class="mb-3 text-xs font-semibold tracking-[0.14em] text-logo-blue uppercase"
             >
               {{ content.role }}
             </p>
@@ -80,7 +79,7 @@
             </p>
           </div>
           <StatList v-if="content.stats.length" :items="content.stats" />
-          <InfoCard v-if="content.howIWork" :title="HOME_COPY.about.howIWorkTitle" dot="warm">
+          <InfoCard v-if="content.howIWork" :title="HOME_COPY.about.howIWorkTitle">
             {{ content.howIWork }}
           </InfoCard>
           <QuoteBlock v-if="content.quote" :label="HOME_COPY.about.principleLabel">
@@ -94,7 +93,7 @@
               <span
                 class="inline-flex items-center gap-2 rounded-full bg-brand-surface-card/95 px-3 py-1.5 text-xs font-semibold text-brand-ink"
               >
-                <span class="size-2 rounded-full bg-brand-warm-ink" aria-hidden="true" />
+                <span class="size-2 rounded-full bg-brand-blue" aria-hidden="true" />
                 {{ mainStat.value }} {{ mainStat.label }}
               </span>
             </template>

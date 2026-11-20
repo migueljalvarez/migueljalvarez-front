@@ -1,4 +1,4 @@
-import Title from './Title/Title.vue'
+import Heading from './Heading/Heading.vue'
 import Button from './Button/Button.vue'
 import Input from './Input/Input.vue'
 import Select from './Select/Select.vue'
@@ -10,7 +10,7 @@ import HexMarker from './HexMarker/HexMarker.vue'
 import ImagePlaceholder from './ImagePlaceholder/ImagePlaceholder.vue'
 import AppLogo from './AppLogo/AppLogo.vue'
 export {
-  Title,
+  Heading,
   Button,
   Input,
   Select,
