@@ -79,3 +79,10 @@ test('la política de privacidad cubre el flujo de testimonios', () => {
   assert.ok(privacy.includes("id: 'testimonios'") && privacy.includes("id: 'testimonios-publicacion'"))
   assert.ok(privacy.includes('autorización expresa'))
 })
+
+test('la política explica las prórrogas de los plazos y la conversación por WhatsApp', () => {
+  const privacy = read('data/privacy.ts')
+  assert.ok(privacy.includes('5 días hábiles más') && privacy.includes('8 días hábiles más'))
+  assert.ok(privacy.includes('WhatsApp (Meta)'))
+  assert.ok(read('data/terms.ts').includes('WhatsApp, mis perfiles profesionales'))
+})
