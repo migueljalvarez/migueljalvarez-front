@@ -133,19 +133,19 @@ export default defineNuxtConfig({
           "frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
       }
     },
-    // Home: el HTML lo guarda el CDN de Netlify (no la memoria de la función) solo en producción; en desarrollo siempre
-    // fresco. s-maxage=60 + stale-while-revalidate=60: pasado el minuto puede servir la copia vencida hasta 60 s más
-    // mientras el propio CDN la renueva (esa renovación sí es fiable, a diferencia del swr de Nitro en serverless).
-    // Antes era `swr: 60` sin tope (`stale-while-revalidate` a secas): servía copias vencidas durante horas.
-    // Retraso máximo esperado tras publicar en el panel ≈ 3 min (60 s de caché de contenido + hasta 120 s del CDN).
+    // Home: SIN caché del HTML ni en Nitro ni en el CDN de Netlify. Antes era `swr: 60` (caché de Nitro en memoria de
+    // cada instancia + `stale-while-revalidate` sin tope en el CDN) y servía copias vencidas durante horas. Se probó
+    // en una vista previa de Netlify con `s-maxage=60, stale-while-revalidate=60` y el CDN servió copias vencidas hasta
+    // 431 s después del tope, alternando miss/stale/hit según el nodo: no es predecible. Medido en Netlify, el TTFB
+    // sin caché del CDN (~0,37 s) es igual que con ella (~0,42 s), así que no se pierde rendimiento.
+    // La frescura la fija solo la caché del contenido (publicContentHandler.ts, 60 s por instancia): el retraso máximo
+    // esperado entre guardar en el panel y verlo en la home es de ~1 minuto. No hay webhooks ni purgas.
     // No aplica a /privacidad ni /terminos-y-condiciones: el titular llega por variable en ejecución.
-    // El middleware de mantenimiento corre antes de la caché, así que con la API caída sigue devolviendo 503.
+    // El middleware de mantenimiento corre antes, así que con la API caída sigue devolviendo 503.
     ...(process.env.NODE_ENV === 'production'
       ? {
           '/': {
-            headers: {
-              'Cache-Control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=60'
-            }
+            headers: { 'Cache-Control': 'public, max-age=0, must-revalidate' }
           }
         }
       : {}),
