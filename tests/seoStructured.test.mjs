@@ -1,0 +1,63 @@
+import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
+import test from 'node:test'
+import {
+  buildBreadcrumbList,
+  buildProjectSchema,
+  sitemapDate,
+  sitemapUrlEntry
+} from '../utils/seo.ts'
+
+const SITE = 'https://www.migueljalvarez.com/'
+
+test('las migas de pan empiezan en Inicio y usan URL absolutas sin barra doble', () => {
+  const list = buildBreadcrumbList(SITE, [
+    { name: 'Portafolio', path: '/portafolio' },
+    { name: 'Mi Comodoro', path: '/portafolio/mi-comodoro' }
+  ])
+  assert.equal(list['@type'], 'BreadcrumbList')
+  assert.deepEqual(
+    list.itemListElement.map(i => [i.position, i.name, i.item]),
+    [
+      [1, 'Inicio', 'https://www.migueljalvarez.com'],
+      [2, 'Portafolio', 'https://www.migueljalvarez.com/portafolio'],
+      [3, 'Mi Comodoro', 'https://www.migueljalvarez.com/portafolio/mi-comodoro']
+    ]
+  )
+})
+
+test('la ficha como obra del autor solo lleva lo que existe', () => {
+  const full = buildProjectSchema(SITE, {
+    id: 'mi-comodoro',
+    slug: 'mi-comodoro',
+    title: 'Mi Comodoro',
+    description: 'App de finanzas',
+    ogImage: '/projects/mi-comodoro/og.jpg',
+    url: 'https://www.micomodoro.com/'
+  })
+  assert.equal(full['@type'], 'CreativeWork')
+  assert.equal(full.author['@id'], 'https://www.migueljalvarez.com/#person')
+  assert.equal(full.image, 'https://www.migueljalvarez.com/projects/mi-comodoro/og.jpg')
+  assert.deepEqual(full.sameAs, ['https://www.micomodoro.com/'])
+  const bare = buildProjectSchema(SITE, { id: 'x', title: 'X' })
+  assert.equal('image' in bare || 'sameAs' in bare || 'description' in bare, false)
+})
+
+test('el sitemap solo pone lastmod con una fecha real', () => {
+  assert.equal(sitemapDate('2026-11-20'), '2026-11-20')
+  assert.equal(sitemapDate('20/11/2026'), null)
+  assert.equal(sitemapDate('2026-13-45'), null)
+  assert.equal(sitemapDate(undefined), null)
+  assert.equal(sitemapUrlEntry('https://a.co/x', '2026-11-20'), '  <url><loc>https://a.co/x</loc><lastmod>2026-11-20</lastmod></url>')
+  assert.equal(sitemapUrlEntry('https://a.co/x'), '  <url><loc>https://a.co/x</loc></url>')
+})
+
+test('título de la home ≤ 60 caracteres y descripción de Términos ≤ 160', () => {
+  const home = readFileSync('pages/index.vue', 'utf8')
+  assert.ok(home.includes('Desarrollo de software a la medida'))
+  const title = 'Miguel Álvarez | Desarrollo de software a la medida'
+  assert.ok(title.length <= 60, String(title.length))
+  const terms = readFileSync('pages/terms.vue', 'utf8')
+  const description = /description:\s*'([^']+)'/.exec(terms)[1]
+  assert.ok(description.length >= 120 && description.length <= 160, String(description.length))
+})

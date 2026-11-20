@@ -25,8 +25,8 @@
   useHead({
     titleTemplate: titleChunk =>
       titleChunk
-        ? `${titleChunk} | Desarrollo de Software y Soluciones Digitales`
-        : 'Desarrollo de Software y Soluciones Digitales',
+        ? `${titleChunk} | Desarrollo de software a la medida`
+        : 'Desarrollo de software a la medida',
     script: [
       {
         type: 'application/ld+json',
