@@ -65,3 +65,17 @@ test('los títulos usan el átomo Heading (escala única) y no quedan h1 a mano 
   assert.equal(/<h1\b/.test(read('components/templates/LegalDocument/LegalDocument.vue')), false)
   assert.equal(/<h1\b/.test(read('pages/portfolio/[slug].vue')), false)
 })
+
+test('las promesas del sitio coinciden con los Términos (24 horas hábiles, consulta sin costo ni compromiso)', () => {
+  const copy = read('constants/common/index.ts')
+  assert.ok(copy.includes("'Te respondo en menos de 24 horas hábiles'"))
+  assert.ok(copy.includes("'Primera consulta sin costo ni compromiso'"))
+  assert.equal(/menos de 24 horas['.]/.test(copy), false) // ninguna promesa de «24 horas» sin «hábiles»
+  assert.ok(read('data/terms.ts').includes('24 horas hábiles'))
+})
+
+test('la política de privacidad cubre el flujo de testimonios', () => {
+  const privacy = read('data/privacy.ts')
+  assert.ok(privacy.includes("id: 'testimonios'") && privacy.includes("id: 'testimonios-publicacion'"))
+  assert.ok(privacy.includes('autorización expresa'))
+})

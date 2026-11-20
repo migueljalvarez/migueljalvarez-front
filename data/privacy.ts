@@ -78,6 +78,27 @@ export const getPrivacySections = (holder: LegalHolder): PrivacySection[] => {
       ]
     },
     {
+      id: 'testimonios',
+      title: 'Testimonios de clientes',
+      paragraphs: [
+        'Si trabajamos juntos, puedo pedirte un testimonio sobre cómo fue la experiencia. Para eso te envío un correo con un enlace único y personal, que solo sirve para enviarlo y deja de funcionar pasados unos días. Con esa solicitud trato los siguientes datos:'
+      ],
+      items: [
+        'Tu nombre y tu correo electrónico, para enviarte la solicitud.',
+        'El nombre del proyecto y, si lo incluyo, un mensaje mío para ti.',
+        'Lo que escribas en el formulario: tu testimonio y, si quieres, tu nombre, cargo y empresa.',
+        'Tu autorización expresa para publicarlo.'
+      ]
+    },
+    {
+      id: 'testimonios-publicacion',
+      title: 'Publicación y retiro de un testimonio',
+      paragraphs: [
+        'Uso tu testimonio para valorar mi trabajo y, solo si lo autorizas de forma expresa al enviarlo, para publicarlo en este sitio con el nombre, el cargo y la empresa que hayas indicado. Nada se publica sin esa autorización, y antes de hacerlo lo reviso y lo apruebo yo.',
+        `Puedes pedirme en cualquier momento que retire tu testimonio escribiendo a ${contactEmail}; lo quitaré del sitio. Conservo la solicitud y tu respuesta el tiempo necesario para estas finalidades.`
+      ]
+    },
+    {
       id: 'terceros',
       title: 'Proveedores que intervienen',
       paragraphs: [
