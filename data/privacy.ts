@@ -78,10 +78,32 @@ export const getPrivacySections = (holder: LegalHolder): PrivacySection[] => {
       ]
     },
     {
+      id: 'testimonios',
+      title: 'Testimonios de clientes',
+      paragraphs: [
+        'Si trabajamos juntos, puedo pedirte un testimonio sobre cómo fue la experiencia. Para eso te envío un correo con un enlace único y personal, que solo sirve para enviarlo y deja de funcionar pasados unos días. Con esa solicitud trato los siguientes datos:'
+      ],
+      items: [
+        'Tu nombre y tu correo electrónico, para enviarte la solicitud.',
+        'El nombre del proyecto y, si lo incluyo, un mensaje mío para ti.',
+        'Lo que escribas en el formulario: tu testimonio y, si quieres, tu nombre, cargo y empresa.',
+        'Tu autorización expresa para publicarlo.'
+      ]
+    },
+    {
+      id: 'testimonios-publicacion',
+      title: 'Publicación y retiro de un testimonio',
+      paragraphs: [
+        'Uso tu testimonio para valorar mi trabajo y, solo si lo autorizas de forma expresa al enviarlo, para publicarlo en este sitio con el nombre, el cargo y la empresa que hayas indicado. Nada se publica sin esa autorización, y antes de hacerlo lo reviso y lo apruebo yo.',
+        `Puedes pedirme en cualquier momento que retire tu testimonio escribiendo a ${contactEmail}; lo quitaré del sitio. Conservo la solicitud y tu respuesta el tiempo necesario para estas finalidades.`
+      ]
+    },
+    {
       id: 'terceros',
       title: 'Proveedores que intervienen',
       paragraphs: [
-        'Para prestar el servicio utilizo proveedores tecnológicos que pueden tratar datos en mi nombre, por ejemplo para el alojamiento del sitio, el envío de correos y el almacenamiento de la información del panel de gestión. Algunos pueden estar ubicados fuera de Colombia, por lo que tus datos podrían ser transferidos o transmitidos a otros países. Procuro elegir proveedores con medidas de seguridad adecuadas.'
+        'Para prestar el servicio utilizo proveedores tecnológicos que pueden tratar datos en mi nombre, por ejemplo para el alojamiento del sitio, el envío de correos y el almacenamiento de la información del panel de gestión. Algunos pueden estar ubicados fuera de Colombia, por lo que tus datos podrían ser transferidos o transmitidos a otros países. Procuro elegir proveedores con medidas de seguridad adecuadas.',
+        'Si me escribes por WhatsApp, esa conversación se rige además por los términos y la política de privacidad de WhatsApp (Meta). Yo solo trato lo que me compartas por ese medio para las mismas finalidades descritas en esta política.'
       ]
     },
     {
@@ -108,7 +130,9 @@ export const getPrivacySections = (holder: LegalHolder): PrivacySection[] => {
       id: 'ejercer',
       title: 'Cómo ejercer tus derechos',
       paragraphs: [
-        `Envía tu consulta o reclamo a ${contactEmail} indicando tu nombre, el correo con el que me escribiste y lo que solicitas. Responderé las consultas dentro de los plazos legales (10 días hábiles, prorrogables) y los reclamos dentro de 15 días hábiles, prorrogables conforme a la ley.`
+        `Envía tu consulta o reclamo a ${contactEmail} indicando tu nombre, el correo con el que me escribiste y lo que solicitas. En un reclamo cuéntame además qué hechos lo motivan y adjunta los documentos que quieras hacer valer.`,
+        'Responderé las consultas en un máximo de 10 días hábiles; si no puedo hacerlo en ese plazo, te lo avisaré antes de que venza, te diré el motivo y te daré una nueva fecha, que no pasará de 5 días hábiles más.',
+        'Responderé los reclamos en un máximo de 15 días hábiles; si no puedo hacerlo en ese plazo, te lo avisaré antes de que venza, te diré el motivo y te daré una nueva fecha, que no pasará de 8 días hábiles más. Si tu reclamo llega incompleto, te pediré lo que falta.'
       ]
     },
     {
