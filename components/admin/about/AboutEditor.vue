@@ -5,6 +5,7 @@
   import AdminBadge from '~/components/admin/AdminBadge.vue'
   import AdminButton from '~/components/admin/AdminButton.vue'
   import AdminChipList from '~/components/admin/AdminChipList.vue'
+  import AdminEditorLayout from '~/components/admin/AdminEditorLayout.vue'
   import AdminConfirmDialog from '~/components/admin/AdminConfirmDialog.vue'
   import AdminInput from '~/components/admin/AdminInput.vue'
   import AdminNotice from '~/components/admin/AdminNotice.vue'
@@ -13,6 +14,7 @@
   import {
     ABOUT_LIMITS,
     aboutPublishRequirements,
+    aboutSectionIndex,
     formFromAboutRecord,
     hasAboutChanges,
     validateAboutForm,
@@ -42,6 +44,8 @@
   const isDirty = computed(() => hasAboutChanges(savedForm.value, values.value))
   const validation = computed(() => validateAboutForm(values.value))
   const requirements = computed(() => aboutPublishRequirements(values.value))
+  // El índice muestra siempre los errores reales (un obligatorio vacío o inválido se ve sin tocar el campo).
+  const sections = computed(() => aboutSectionIndex(values.value, validation.value.errors))
 
   // Un error se ve al salir del campo o, tras intentar guardar, en todos.
   const errors = computed(() => {
@@ -175,7 +179,16 @@
     @submit.prevent="onSave"
     @focusout="onFocusOut"
   >
-    <div class="max-w-4xl space-y-6">
+    <AdminEditorLayout :sections="sections">
+      <template #publish>
+        <AboutPublishPanel
+          v-model:published="values.isPublished"
+          :record="record"
+          :requirements="requirements"
+          :error="errors.isPublished"
+        />
+      </template>
+
       <PortfolioFormSection
         id="about-intro-section"
         title="Presentación"
@@ -253,27 +266,54 @@
       </PortfolioFormSection>
 
       <PortfolioFormSection
-        id="about-stories"
-        title="Cómo trabajo y fuera del trabajo"
-        description="Dos tarjetas cortas. Si dejas una vacía, no se muestra."
+        id="about-stats-section"
+        title="Cifras"
+        description="Hasta 4 cifras que puedas comprobar. Si no tienes ninguna, déjalo vacío: es mejor no mostrar nada que inventarla."
+      >
+        <PortfolioHighlightsField
+          id="about-stats"
+          v-model="values.stats"
+          compact
+          :errors="errors"
+          :max="ABOUT_LIMITS.stats"
+          :value-max="ABOUT_LIMITS.statValue"
+          :label-max="ABOUT_LIMITS.statLabel"
+          error-prefix="stats"
+          value-placeholder="10+"
+          label-placeholder="años haciendo software"
+          list-label="Cifras"
+        />
+      </PortfolioFormSection>
+
+      <PortfolioFormSection
+        id="about-how-section"
+        title="Cómo pienso mi trabajo"
+        description="Una tarjeta corta. Si la dejas vacía, no se muestra."
+      >
+        <AdminInput
+          id="about-how"
+          v-model="values.howIWork"
+          type="textarea"
+          :rows="5"
+          label="Texto"
+          counter
+          :maxlength="ABOUT_LIMITS.howIWork"
+          :error="errors.howIWork"
+        />
+      </PortfolioFormSection>
+
+      <PortfolioFormSection
+        id="about-beyond-section"
+        title="Fuera del trabajo"
+        description="Una tarjeta corta con tus intereses como etiquetas. Si dejas ambos vacíos, no se muestra."
       >
         <div class="space-y-4">
-          <AdminInput
-            id="about-how"
-            v-model="values.howIWork"
-            type="textarea"
-            :rows="5"
-            label="Cómo trabajo"
-            counter
-            :maxlength="ABOUT_LIMITS.howIWork"
-            :error="errors.howIWork"
-          />
           <AdminInput
             id="about-beyond"
             v-model="values.beyondWork"
             type="textarea"
             :rows="5"
-            label="Fuera del trabajo"
+            label="Texto"
             counter
             :maxlength="ABOUT_LIMITS.beyondWork"
             :error="errors.beyondWork"
@@ -292,73 +332,58 @@
       </PortfolioFormSection>
 
       <PortfolioFormSection
-        id="about-data"
-        title="Datos"
-        description="El nombre, la ubicación y el modo de trabajo van bajo las imágenes; la disponibilidad, junto al botón."
+        id="about-photo-section"
+        title="Foto y datos"
+        description="De 1 a 4 imágenes forman el carrusel; la primera se ve al cargar. Proporción 4:3, webp de hasta 150 KB."
       >
-        <div class="grid gap-4 md:grid-cols-2">
-          <div class="md:col-span-2">
+        <div class="space-y-6">
+          <AboutImagesField id="about-images" v-model="values.images" :errors="errors" />
+
+          <div class="grid gap-4 border-t border-brand-border pt-6 md:grid-cols-2">
+            <div class="md:col-span-2">
+              <AdminInput
+                id="about-name"
+                v-model="values.name"
+                label="Nombre bajo la foto (opcional)"
+                counter
+                :maxlength="ABOUT_LIMITS.name"
+                autocomplete="off"
+                :error="errors.name"
+              />
+            </div>
             <AdminInput
-              id="about-name"
-              v-model="values.name"
-              label="Nombre bajo la foto (opcional)"
+              id="about-location"
+              v-model="values.location"
+              label="Ubicación"
               counter
-              :maxlength="ABOUT_LIMITS.name"
+              :maxlength="ABOUT_LIMITS.location"
               autocomplete="off"
-              :error="errors.name"
+              placeholder="Medellín, Colombia"
+              :error="errors.location"
             />
-          </div>
-          <AdminInput
-            id="about-location"
-            v-model="values.location"
-            label="Ubicación"
-            counter
-            :maxlength="ABOUT_LIMITS.location"
-            autocomplete="off"
-            placeholder="Medellín, Colombia"
-            :error="errors.location"
-          />
-          <AdminInput
-            id="about-mode"
-            v-model="values.workMode"
-            label="Modo de trabajo"
-            counter
-            :maxlength="ABOUT_LIMITS.workMode"
-            autocomplete="off"
-            placeholder="Trabajo en remoto"
-            :error="errors.workMode"
-          />
-          <div class="md:col-span-2">
             <AdminInput
-              id="about-availability"
-              v-model="values.availability"
-              label="Disponibilidad"
+              id="about-mode"
+              v-model="values.workMode"
+              label="Modo de trabajo"
               counter
-              :maxlength="ABOUT_LIMITS.availability"
+              :maxlength="ABOUT_LIMITS.workMode"
               autocomplete="off"
-              :error="errors.availability"
+              placeholder="Trabajo en remoto"
+              :error="errors.workMode"
             />
+            <div class="md:col-span-2">
+              <AdminInput
+                id="about-availability"
+                v-model="values.availability"
+                label="Disponibilidad"
+                counter
+                :maxlength="ABOUT_LIMITS.availability"
+                autocomplete="off"
+                :error="errors.availability"
+              />
+            </div>
           </div>
         </div>
-      </PortfolioFormSection>
-
-      <PortfolioFormSection
-        id="about-stats-section"
-        title="Cifras"
-        description="Hasta 4 cifras que puedas comprobar. Si no tienes ninguna, déjalo vacío: es mejor no mostrar nada que inventarla."
-      >
-        <PortfolioHighlightsField
-          id="about-stats"
-          v-model="values.stats"
-          :errors="errors"
-          :max="ABOUT_LIMITS.stats"
-          :value-max="ABOUT_LIMITS.statValue"
-          :label-max="ABOUT_LIMITS.statLabel"
-          error-prefix="stats"
-          value-placeholder="10+"
-          label-placeholder="años haciendo software"
-          list-label="Cifras"
-        />
       </PortfolioFormSection>
 
       <PortfolioFormSection
@@ -378,8 +403,8 @@
       </PortfolioFormSection>
 
       <PortfolioFormSection
-        id="about-cta"
-        title="Botón"
+        id="about-cta-section"
+        title="Llamada a la acción"
         description="Opcional. Con enlace a WhatsApp (https://wa.me/…) muestra su icono; con una ruta del sitio (/#contacto) navega dentro de la página."
       >
         <div class="grid gap-4 md:grid-cols-2">
@@ -408,35 +433,13 @@
       </PortfolioFormSection>
 
       <PortfolioFormSection
-        id="about-images-section"
-        title="Imágenes"
-        description="De 1 a 4 imágenes forman el carrusel (la primera se ve al cargar). Proporción 4:3, webp de hasta 150 KB; guía en docs/about-guide.md."
+        id="about-preview"
+        title="Vista previa"
+        description="Así se verá la sección en la home con lo que hay ahora en el formulario (aunque no esté guardado ni publicado)."
       >
-        <AboutImagesField id="about-images" v-model="values.images" :errors="errors" />
+        <AboutPreview :values="values" />
       </PortfolioFormSection>
-
-      <PortfolioFormSection
-        id="about-publish"
-        title="Publicación"
-        description="Mientras no esté publicado, la home muestra el contenido de respaldo del código."
-      >
-        <AboutPublishPanel
-          v-model:published="values.isPublished"
-          :record="record"
-          :requirements="requirements"
-          :error="errors.isPublished"
-        />
-      </PortfolioFormSection>
-    </div>
-
-    <PortfolioFormSection
-      id="about-preview"
-      class="mt-6"
-      title="Vista previa"
-      description="Así se verá la sección en la home con lo que hay ahora en el formulario (aunque no esté guardado ni publicado)."
-    >
-      <AboutPreview :values="values" />
-    </PortfolioFormSection>
+    </AdminEditorLayout>
 
     <!-- Barra de acciones: fija abajo desde md porque el formulario es largo -->
     <div

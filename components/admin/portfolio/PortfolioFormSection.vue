@@ -7,12 +7,13 @@
   <section
     :id="id"
     :aria-labelledby="`${id}-title`"
-    class="rounded-2xl border bg-brand-surface-card p-5 md:p-6"
+    class="scroll-mt-6 rounded-2xl border bg-brand-surface-card p-5 md:p-6"
     :class="tone === 'danger' ? 'border-brand-error-border' : 'border-brand-border'"
   >
     <h2
       :id="`${id}-title`"
-      class="text-xl font-semibold"
+      tabindex="-1"
+      class="text-xl font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
       :class="tone === 'danger' ? 'text-brand-error-text' : 'text-brand-ink'"
     >
       {{ title }}
