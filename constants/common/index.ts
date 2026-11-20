@@ -170,7 +170,7 @@ export const DEVELOPMENT_PHASES = [
 export const META = {
   TITLE: 'Miguel Álvarez',
   DESCRIPTION:
-    'Desarrollo de Software y Soluciones Digitales. Ayudo a emprendedores y empresas a convertir ideas en sitios, sistemas y MVPs sostenibles. Con 10+ años de experiencia, construyo soluciones digitales eficientes y escalables.'
+    'Desarrollo de software a la medida para emprendedores y empresas. Primero entiendo tu problema; después construyo una solución que crece con tu negocio.'
 }
 
 /**
