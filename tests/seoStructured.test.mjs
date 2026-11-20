@@ -94,3 +94,9 @@ test('la guía está en el sitemap, tiene su página y usa el template propio', 
   assert.ok(page.includes("path: '/guias/rehacer-o-mejorar-software'") && page.includes('<GuideArticle'))
   assert.equal((page.match(/<h1/g) || []).length, 0) // el h1 lo pone el template con Heading
 })
+
+test('la guía tiene enlaces internos: desde el detalle del servicio «decidir» y desde Cómo trabajo', () => {
+  assert.ok(readFileSync('data/services.ts', 'utf8').includes('GUIDE_REWRITE_OR_IMPROVE.path'))
+  assert.ok(readFileSync('components/organisms/ServiceCard/ServiceCard.vue', 'utf8').includes('offering.guide'))
+  assert.ok(readFileSync('components/templates/HowWork/HowWorkContent.vue', 'utf8').includes('guide.path'))
+})

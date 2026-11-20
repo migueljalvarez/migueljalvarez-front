@@ -2,6 +2,7 @@
   import { Card } from '~/components/atoms'
   import { CheckList, SectionHeader } from '~/components/molecules'
   import { Section } from '~/components/organisms'
+  import { GUIDE_REWRITE_OR_IMPROVE as guide } from '~/data/guides'
   import { WORK_FAQ, WORK_NON_NEGOTIABLES, WORK_COMMITMENTS } from '~/data/work'
   import type { PolicyBlock } from '~/utils/publicContent'
 
@@ -68,6 +69,24 @@
           <p class="pt-3 text-sm leading-6 text-brand-muted">{{ item.answer }}</p>
         </Card>
       </div>
+    </div>
+
+    <div class="mx-auto w-full max-w-7xl">
+      <Card as="aside" aria-labelledby="work-guide-title" class="p-5 md:p-6">
+        <h2 id="work-guide-title" class="text-xl font-semibold text-brand-ink">
+          ¿Decidiendo entre mejorar o rehacer tu software?
+        </h2>
+        <p class="mt-3 max-w-3xl text-base leading-7 text-brand-muted">
+          Escribí una guía corta con las señales y las preguntas que reviso antes de recomendar una
+          cosa u otra.
+        </p>
+        <NuxtLink
+          :to="guide.path"
+          class="mt-2 inline-flex min-h-11 items-center text-base font-medium text-logo-blue underline underline-offset-4 hover:text-brand-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
+        >
+          Leer la guía
+        </NuxtLink>
+      </Card>
     </div>
   </Section>
 </template>

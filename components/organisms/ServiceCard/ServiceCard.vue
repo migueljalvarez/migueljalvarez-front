@@ -137,6 +137,17 @@
               </li>
             </ol>
           </section>
+
+          <section v-if="offering.guide" class="mt-6 border-t border-brand-border pt-5">
+            <h3 class="mb-1 text-sm font-semibold text-brand-muted">Guía relacionada</h3>
+            <NuxtLink
+              :to="offering.guide.to"
+              class="inline-flex min-h-11 items-center text-base font-medium text-logo-blue underline underline-offset-4 hover:text-brand-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
+              @click="closeDetails"
+            >
+              {{ offering.guide.label }}
+            </NuxtLink>
+          </section>
         </div>
       </dialog>
     </Teleport>
