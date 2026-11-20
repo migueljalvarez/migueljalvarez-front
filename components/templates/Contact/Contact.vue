@@ -85,7 +85,7 @@
         aria-hidden="true"
         width="256"
         height="256"
-        class="pointer-events-none select-none absolute -bottom-10 -right-20 w-64 h-64 opacity-[0.06] z-0"
+        class="pointer-events-none select-none absolute -bottom-10 -right-20 z-0 h-64 w-64 object-contain opacity-[0.06]"
       />
 
       <div class="relative z-10">
