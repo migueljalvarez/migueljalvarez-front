@@ -68,3 +68,28 @@ test('el layout es genérico y el editor de Sobre mí lo usa con la caja Publica
   assert.equal(editor.includes('docs/about-guide.md'), false)
   assert.equal(editor.includes('van bajo las imágenes'), false)
 })
+
+test('el índice del Portafolio sigue el orden de la página y marca lo que falta', async () => {
+  const { portfolioSectionIndex, validatePortfolioForm } = await import('../utils/admin/portfolio.ts')
+  const empty = {
+    title: '', slug: '', kind: 'product', status: 'published', description: '', url: '', tags: ['a'],
+    audience: '', role: '', year: '', duration: '', problem: '', decision: '', result: '',
+    highlights: [], scope: [], technologies: [], coverPath: '', ogPath: '', gallery: [],
+    isPublished: false, featured: false, sortOrder: '0'
+  }
+  const index = portfolioSectionIndex(empty, validatePortfolioForm(empty).errors)
+  assert.deepEqual(index.map(item => item.id), [
+    'portfolio-basic', 'portfolio-card', 'portfolio-story', 'portfolio-highlights',
+    'portfolio-scope', 'portfolio-images', 'portfolio-publication'
+  ])
+  assert.equal(index.find(i => i.id === 'portfolio-basic').status, 'error') // título obligatorio
+  assert.equal(index.find(i => i.id === 'portfolio-card').count, '1/4')
+  assert.equal(index.find(i => i.id === 'portfolio-highlights').status, 'empty')
+})
+
+test('el editor del Portafolio usa el layout y deja publicar solo en la caja lateral', () => {
+  const editor = read('components/admin/portfolio/PortfolioEditor.vue')
+  assert.ok(editor.includes('<AdminEditorLayout') && editor.includes('part="status"') && editor.includes('part="settings"'))
+  const panel = read('components/admin/portfolio/PortfolioPublishPanel.vue')
+  assert.equal((panel.match(/id="portfolio-published"/g) || []).length, 1)
+})

@@ -2,6 +2,7 @@ import { z } from 'zod'
 import type { PortfolioCardProject } from '../../types/portfolio'
 import { mapApiPortfolioEntry, toPortfolioCardProject } from '../publicContent.ts'
 import { isRemoteImageUrl } from '../imageSource.ts'
+import { editorSectionStatus, type EditorSectionItem } from './editorIndex.ts'
 import { moveItem } from './siteContent.ts'
 
 /**
@@ -496,6 +497,65 @@ export const publishRequirements = (values: PortfolioFormValues): PublishRequire
   { id: 'cover', label: 'Tiene portada', met: values.coverPath.trim() !== '' },
   { id: 'description', label: 'Tiene descripción', met: values.description.trim() !== '' }
 ]
+
+/** Secciones del editor del proyecto, en el orden de la página, con su estado y contadores. */
+export const portfolioSectionIndex = (
+  values: PortfolioFormValues,
+  errors: PortfolioErrors
+): EditorSectionItem[] => {
+  const filled = (...texts: string[]) => texts.some(text => text.trim() !== '')
+  const status = (prefixes: string[], hasContent: boolean) =>
+    editorSectionStatus(errors, prefixes, hasContent)
+  return [
+    {
+      id: 'portfolio-basic',
+      label: 'Información básica',
+      status: status(
+        ['title', 'slug', 'kind', 'description', 'url'],
+        filled(values.title) && filled(values.description)
+      )
+    },
+    {
+      id: 'portfolio-card',
+      label: 'Tarjeta',
+      status: status(['tags', 'audience'], values.tags.length > 0 || filled(values.audience)),
+      count: `${values.tags.length}/${PORTFOLIO_LIMITS.tags}`
+    },
+    {
+      id: 'portfolio-story',
+      label: 'Historia',
+      status: status(
+        ['role', 'year', 'duration', 'problem', 'decision', 'result'],
+        filled(values.problem, values.decision, values.result)
+      )
+    },
+    {
+      id: 'portfolio-highlights',
+      label: 'Cifras destacadas',
+      status: status(['highlights'], values.highlights.length > 0),
+      count: `${values.highlights.length}/${PORTFOLIO_LIMITS.highlights}`
+    },
+    {
+      id: 'portfolio-scope',
+      label: 'Alcance y tecnologías',
+      status: status(
+        ['scope', 'technologies'],
+        values.scope.length + values.technologies.length > 0
+      )
+    },
+    {
+      id: 'portfolio-images',
+      label: 'Imágenes',
+      status: status(['coverPath', 'ogPath', 'gallery'], filled(values.coverPath)),
+      count: `${values.gallery.length}/${PORTFOLIO_LIMITS.gallery}`
+    },
+    {
+      id: 'portfolio-publication',
+      label: 'Visibilidad',
+      status: status(['sortOrder', 'status', 'featured'], true)
+    }
+  ]
+}
 
 export const canPublish = (values: PortfolioFormValues) =>
   publishRequirements(values).every(item => item.met)
