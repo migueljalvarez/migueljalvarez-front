@@ -46,6 +46,10 @@
   --color-brand-text-strong: #f5f7fa;
   --color-brand-text-soft: #ddeafb;
   --color-brand-text-subtle: #c9d1dc;
+  /* gris azulado apagado para una palabra de un titular grande sobre surface-contrast (5,2:1; mínimo AA 4,5:1) */
+  --color-brand-text-dim: #7f8da3;
+  /* azul claro para etiquetas e iconos pequeños sobre paneles oscuros (4,9:1 sobre surface-panel) */
+  --color-brand-blue-light: #6f94d1;
   --color-brand-border-soft: #334155;
   --color-brand-border-strong: #2f4469;
   --color-brand-label: #eaf1ff;
