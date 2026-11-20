@@ -63,7 +63,7 @@
       mode,
       showFilters: count >= 4 && availableFilters.value.length > 2,
       showViewAllCard: count >= 4 && props.showViewAll,
-      showViewAllLink: count > 0 && count < 4 && props.showViewAll,
+      showViewAllLink: count >= 2 && count < 4 && props.showViewAll,
       gridClass:
         mode === 'horizontal'
           ? 'md:grid-cols-1'
