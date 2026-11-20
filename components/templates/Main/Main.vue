@@ -26,7 +26,7 @@
 
 <template>
   <section
-    class="hero-section relative -mt-20 flex min-h-170 w-full items-center overflow-hidden px-4 pt-24 pb-16 text-brand-text-strong sm:px-6 sm:pt-28 md:min-h-180 md:pb-20 lg:px-8"
+    class="hero-section relative -mt-24 flex min-h-170 w-full items-center overflow-hidden px-4 pt-28 pb-16 text-brand-text-strong sm:px-6 sm:pt-32 md:min-h-180 md:pb-20 lg:px-8"
   >
     <svg
       class="hero-hexagons pointer-events-none absolute right-[-18%] top-1/2 z-0 w-[78vw] max-w-190 -translate-y-1/2 sm:right-[-8%] md:right-[2%] md:w-[54vw]"
