@@ -93,10 +93,13 @@ export const HOME_COPY = {
     heading: '¿Tienes algo en mente?',
     description:
       'No necesitas tener un documento técnico ni todos los requisitos definidos. Cuéntame qué quieres hacer, qué problema tienes o qué quieres mejorar. Primero hablamos; después vemos si puedo ayudarte.',
-    benefits: ['Respuesta en menos de 24 horas', 'Primera consulta sin costo'],
+    benefits: [
+      'Te respondo en menos de 24 horas hábiles',
+      'Primera consulta sin costo ni compromiso'
+    ],
     compact: {
       heading: '¿Tienes dudas sobre este documento?',
-      description: 'Escríbeme y te respondo en menos de 24 horas.',
+      description: 'Escríbeme y te respondo en menos de 24 horas hábiles.',
       cta: 'Escríbeme'
     },
     privacy: 'Uso tus datos solo para responderte.',

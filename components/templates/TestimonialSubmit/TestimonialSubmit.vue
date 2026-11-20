@@ -156,7 +156,7 @@
                 :describedby="errors.consentPublish ? 'testimonial-consent-error' : undefined"
               >
                 Autorizo de forma expresa que se publique mi testimonio, junto con mi nombre, cargo
-                y empresa, en el sitio de Miguel Alvarez. Puedo pedir que lo retire cuando quiera.
+                y empresa, en el sitio de Miguel Álvarez. Puedo pedir que lo retire cuando quiera.
                 Más información en la
                 <NuxtLink
                   to="/privacidad"
