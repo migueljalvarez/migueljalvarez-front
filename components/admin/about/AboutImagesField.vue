@@ -169,27 +169,46 @@
               :label="item.path ? 'Reemplazar imagen' : 'Elegir imagen'"
               @uploaded="uploaded(index, $event)"
             />
-            <AdminInput
-              v-if="!item.id"
-              :id="`${id}-${index}-path`"
-              :model-value="item.path"
-              label="Dirección de la imagen"
-              placeholder="https://… o /about/miguel.webp"
-              required
-              counter
-              :maxlength="ABOUT_LIMITS.imagePath"
-              autocomplete="off"
-              hint="Se rellena sola al subir una imagen. También puedes pegar una URL https o la ruta de un archivo de public/about/ del sitio."
-              :error="errors[`images.${index}.path`]"
-              @update:model-value="set(index, 'path', String($event))"
-            />
-            <div v-else>
-              <p class="mb-1 text-sm font-medium text-brand-ink">Dirección de la imagen</p>
-              <p class="break-all text-sm text-brand-ink">{{ item.path }}</p>
-              <p class="mt-1 text-xs text-brand-muted">
-                La dirección no se puede cambiar: usa «Reemplazar imagen» o quita esta imagen.
-              </p>
-            </div>
+            <!-- Lo técnico (la dirección de la imagen) va plegado; se abre solo si hay que escribirla o tiene un error. -->
+            <details
+              class="group rounded-lg border border-brand-border"
+              :open="!item.id || !!errors[`images.${index}.path`]"
+            >
+              <summary
+                class="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-lg px-3 text-sm font-medium text-brand-muted hover:text-brand-ink focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-blue [&::-webkit-details-marker]:hidden"
+              >
+                <Icon
+                  name="mdi:chevron-right"
+                  size="18"
+                  class="transition-transform group-open:rotate-90 motion-reduce:transition-none"
+                  aria-hidden="true"
+                />
+                Detalles
+              </summary>
+              <div class="px-3 pb-3">
+                <AdminInput
+                  v-if="!item.id"
+                  :id="`${id}-${index}-path`"
+                  :model-value="item.path"
+                  label="Dirección de la imagen"
+                  placeholder="https://… o /about/miguel.webp"
+                  required
+                  counter
+                  :maxlength="ABOUT_LIMITS.imagePath"
+                  autocomplete="off"
+                  hint="Se rellena sola al subir una imagen. También puedes pegar una URL https o la ruta de un archivo de public/about/ del sitio."
+                  :error="errors[`images.${index}.path`]"
+                  @update:model-value="set(index, 'path', String($event))"
+                />
+                <div v-else>
+                  <p class="mb-1 text-sm font-medium text-brand-ink">Dirección de la imagen</p>
+                  <p class="break-all text-sm text-brand-ink">{{ item.path }}</p>
+                  <p class="mt-1 text-xs text-brand-muted">
+                    La dirección no se puede cambiar: usa «Reemplazar imagen» o quita esta imagen.
+                  </p>
+                </div>
+              </div>
+            </details>
             <AdminInput
               :id="`${id}-${index}-alt`"
               :model-value="item.alt"

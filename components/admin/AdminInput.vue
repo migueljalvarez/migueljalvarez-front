@@ -24,6 +24,8 @@
       counter?: boolean
       inputmode?: 'text' | 'numeric' | 'decimal' | 'email' | 'url'
       autocomplete?: string
+      /** Oculta la etiqueta a la vista (la lee el lector de pantalla). */
+      labelHidden?: boolean | 'desktop'
       /** Solo en contraseñas: botón para mostrar u ocultar lo escrito. */
       revealable?: boolean
       /** Id de un `<datalist>` con sugerencias. */
@@ -90,6 +92,7 @@
     :error="error"
     :hint="hint"
     :required="required"
+    :label-hidden="labelHidden"
     :count="count"
   >
     <template #default="{ describedBy, invalid }">
