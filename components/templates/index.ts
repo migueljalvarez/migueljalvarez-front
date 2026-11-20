@@ -7,9 +7,11 @@ import Services from './Services/Services.vue'
 import ProcessSection from './Services/ProcessSection.vue'
 import HowWorkTeaser from './HowWork/HowWorkTeaser.vue'
 import HowWorkContent from './HowWork/HowWorkContent.vue'
+import GuideArticle from './GuideArticle/GuideArticle.vue'
 import LegalDocument from './LegalDocument/LegalDocument.vue'
 import TestimonialSubmit from './TestimonialSubmit/TestimonialSubmit.vue'
 export {
+  GuideArticle,
   LegalDocument,
   TestimonialSubmit,
   Main,

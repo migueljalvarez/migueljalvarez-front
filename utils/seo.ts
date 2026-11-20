@@ -48,3 +48,28 @@ export const sitemapUrlEntry = (loc: string, lastmod?: string | null) => {
   const date = sitemapDate(lastmod)
   return `  <url><loc>${loc}</loc>${date ? `<lastmod>${date}</lastmod>` : ''}</url>`
 }
+
+type ArticleLike = {
+  path: string
+  title: string
+  description: string
+  publishedAt: string
+  updatedAt: string
+}
+
+/** Guía como artículo del autor (`#person` es el de la portada). Fechas ISO AAAA-MM-DD. */
+export const buildArticleSchema = (siteUrl: string, article: ArticleLike) => {
+  const url = absolute(siteUrl, article.path)
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    description: article.description,
+    inLanguage: 'es',
+    datePublished: article.publishedAt,
+    dateModified: article.updatedAt,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    url,
+    author: { '@id': `${siteUrl.replace(/\/+$/, '')}/#person` }
+  }
+}
