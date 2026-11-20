@@ -134,10 +134,10 @@ export default defineNuxtConfig({
       }
     },
     // Home: SIN caché del HTML ni en Nitro ni en el CDN de Netlify. Antes era `swr: 60` (caché de Nitro en memoria de
-    // cada instancia + `stale-while-revalidate` sin tope en el CDN) y servía copias vencidas durante horas. Se probó
-    // en una vista previa de Netlify con `s-maxage=60, stale-while-revalidate=60` y el CDN servió copias vencidas hasta
-    // 431 s después del tope, alternando miss/stale/hit según el nodo: no es predecible. Medido en Netlify, el TTFB
-    // sin caché del CDN (~0,37 s) es igual que con ella (~0,42 s), así que no se pierde rendimiento.
+    // cada instancia + `stale-while-revalidate` sin tope en el CDN) y servía copias vencidas durante horas. Un CDN con
+    // `s-maxage=60, stale-while-revalidate=60` también habría cumplido el tope (en una vista previa de Netlify solo hubo
+    // `hit` con copias vencidas dentro de ese margen), pero no se justifica: medido en Netlify, el TTFB sin caché del CDN
+    // (~0,37 s) es igual que con la caché de producción (~0,42 s) y sin ella la frescura es determinista.
     // La frescura la fija solo la caché del contenido (publicContentHandler.ts, 60 s por instancia): el retraso máximo
     // esperado entre guardar en el panel y verlo en la home es de ~1 minuto. No hay webhooks ni purgas.
     // No aplica a /privacidad ni /terminos-y-condiciones: el titular llega por variable en ejecución.
