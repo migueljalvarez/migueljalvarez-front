@@ -1,3 +1,5 @@
+import { GUIDE_REWRITE_OR_IMPROVE } from './guides'
+
 export type ServiceOffering = {
   id: string
   situation: string
@@ -7,6 +9,8 @@ export type ServiceOffering = {
   approach: string
   deliverables: string
   phases: number[]
+  /** Guía relacionada (enlace interno que se muestra en el detalle del servicio). */
+  guide?: { label: string; to: string }
 }
 
 // Copy provisional hasta disponer del HTML de referencia.
@@ -48,6 +52,10 @@ export const SERVICE_OFFERINGS: ServiceOffering[] = [
       'Analizo objetivos, restricciones y alternativas para separar lo esencial de lo accesorio y entender los riesgos.',
     deliverables:
       'Recomendaciones concretas, opciones comparadas y próximos pasos acordes a tus prioridades.',
-    phases: [1, 2]
+    phases: [1, 2],
+    guide: {
+      label: '¿Rehacer o mejorar tu software? Cómo decido antes de invertir',
+      to: GUIDE_REWRITE_OR_IMPROVE.path
+    }
   }
 ]
