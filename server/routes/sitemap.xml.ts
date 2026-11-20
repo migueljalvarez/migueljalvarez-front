@@ -1,3 +1,4 @@
+import { GUIDES } from '~/data/guides'
 import { PRIVACY_UPDATED_AT } from '~/data/privacy'
 import { TERMS_UPDATED_AT } from '~/data/terms'
 import { sitemapUrlEntry } from '~/utils/seo'
@@ -22,6 +23,7 @@ export default defineEventHandler(async event => {
     { path: '/portafolio' },
     { path: '/privacidad', lastmod: PRIVACY_UPDATED_AT },
     { path: '/terminos-y-condiciones', lastmod: TERMS_UPDATED_AT },
+    ...GUIDES.map(guide => ({ path: guide.path, lastmod: guide.updatedAt })),
     ...projects
       .filter(project => project.status !== 'in-development')
       .map(project => ({ path: `/portafolio/${project.slug || project.id}` }))

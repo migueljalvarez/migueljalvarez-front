@@ -1,4 +1,9 @@
+import type { Guide } from '~/types/guide'
 import type { LegalSection } from '~/types/legal'
+
+export type GuideArticleProps = {
+  guide: Guide
+}
 
 export type LegalDocumentProps = {
   eyebrow: string
