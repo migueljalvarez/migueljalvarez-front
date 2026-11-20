@@ -218,7 +218,7 @@ Con esto, el formulario y el resto del sitio hablan el mismo idioma visual.
 **Logos** (componente `AppLogo`)
 
 - `surface="light"` → logo a color; `surface="dark"` → logo blanco. Sobre foto o degradado: solo blanco y con capa oscura.
-- `variant="full"` (con tagline) o `"compact"` (hexágono + nombre). Header y pie usan `compact`.
+- Siempre el logo original (con tagline); no hay variante recortada. Header, pie y panel usan el mismo.
 - Header: transparente con logo blanco solo sobre el hero; sólido (`surface`) con logo a color desde el primer píxel de scroll, con fundido cruzado de 200 ms.
 - Espacio libre mínimo alrededor del logo: la altura del hexágono. Favicon: solo el hexágono (`public/favicon.svg`).
 - Hexágonos numerados del proceso: ámbar sobre fondo oscuro; si la sección pasara a fondo claro, `logo-blue` con el número en blanco.

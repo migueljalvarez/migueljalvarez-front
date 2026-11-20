@@ -64,7 +64,7 @@
         class="mb-6 hidden items-center gap-2 px-2 lg:flex"
         aria-label="Inicio del panel"
       >
-        <AppLogo variant="compact" surface="dark" :height="32" />
+        <AppLogo surface="dark" :height="40" />
       </NuxtLink>
       <p
         class="mb-2 hidden px-3 text-xs font-semibold uppercase tracking-[0.14em] text-brand-text-subtle lg:block"

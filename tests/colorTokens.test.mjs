@@ -20,7 +20,7 @@ test('no hay colores hex sueltos en los componentes públicos (se usan tokens)',
 test('los logos de AppLogo existen en public/', () => {
   const source = readFileSync('components/atoms/AppLogo/AppLogo.vue', 'utf8')
   const paths = [...source.matchAll(/'(\/[a-z0-9_-]+\.svg)'/g)].map(m => m[1])
-  assert.equal(paths.length, 4)
+  assert.equal(paths.length, 2)
   for (const p of paths) assert.ok(existsSync(join('public', p)), `falta public${p}`)
 })
 

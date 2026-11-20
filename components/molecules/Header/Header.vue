@@ -140,20 +140,18 @@
     ]"
   >
     <div
-      class="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"
+      class="mx-auto flex h-24 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"
     >
-      <!-- Logo compacto: blanco sobre el hero (transparente) y a color con el header sólido. Dos imágenes con
+      <!-- Logo original: blanco sobre el hero (transparente) y a color con el header sólido. Dos imágenes con
            fundido cruzado de 200 ms (igual que el fondo): sin fotograma con logo blanco sobre fondo claro. -->
-      <span class="relative block h-10 w-61.25 shrink-0">
+      <span class="relative block h-12 w-71 shrink-0">
         <AppLogo
-          variant="compact"
           surface="dark"
           :decorative="!isHeroTop"
           class="absolute inset-0 size-full px-2 transition-opacity duration-200 motion-reduce:transition-none"
           :class="isHeroTop ? 'opacity-100' : 'opacity-0'"
         />
         <AppLogo
-          variant="compact"
           surface="light"
           :decorative="isHeroTop"
           class="absolute inset-0 size-full px-2 transition-opacity duration-200 motion-reduce:transition-none"
@@ -175,7 +173,7 @@
               : 'text-brand-ink focus-visible:outline-brand-blue'
           "
           :aria-current="isActive(item.link) ? 'page' : undefined"
-          class="nav-link group inline-flex h-11 shrink-0 flex-col items-center justify-center gap-2 whitespace-nowrap text-xs font-bold leading-none tracking-[0.12em] transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none"
+          class="nav-link group inline-flex h-11 shrink-0 flex-col items-center justify-center gap-2 whitespace-nowrap text-sm font-bold leading-none tracking-[0.1em] transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none"
         >
           <span
             :class="
@@ -192,6 +190,7 @@
             {{ item.name }}
           </span>
           <span
+            v-if="!isContactNavLink(item.name)"
             class="nav-indicator h-0.5 w-full origin-center rounded-full bg-brand-blue transition-[transform,opacity] duration-300 motion-reduce:transition-none"
             aria-hidden="true"
           />

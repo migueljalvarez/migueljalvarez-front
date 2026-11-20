@@ -96,8 +96,6 @@ export type ImagePlaceholderProps = {
 export type AppLogoProps = {
   /** Fondo donde se coloca: `light` = logo a color, `dark` = logo blanco. */
   surface?: 'light' | 'dark'
-  /** `full` lleva el tagline; `compact` es solo hexágono + nombre. */
-  variant?: 'full' | 'compact'
   /** Alto en píxeles (el ancho sale de la proporción del SVG). */
   height?: number
   alt?: string

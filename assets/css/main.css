@@ -112,7 +112,7 @@
 
   /* Anclas del menú (#services, #portfolio, #about, #contact, #proceso): el header fijo mide 5 rem. */
   :where(section[id]) {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: 6rem;
   }
 
   html {
