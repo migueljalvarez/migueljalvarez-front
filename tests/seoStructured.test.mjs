@@ -61,3 +61,42 @@ test('título de la home ≤ 60 caracteres y descripción de Términos ≤ 160',
   const description = /description:\s*'([^']+)'/.exec(terms)[1]
   assert.ok(description.length >= 120 && description.length <= 160, String(description.length))
 })
+
+test('el artículo de la guía lleva autor, fechas y URL absoluta', async () => {
+  const { buildArticleSchema } = await import('../utils/seo.ts')
+  const schema = buildArticleSchema(SITE, {
+    path: '/guias/x',
+    title: 'T',
+    description: 'D',
+    publishedAt: '2026-11-20',
+    updatedAt: '2026-11-21'
+  })
+  assert.equal(schema['@type'], 'Article')
+  assert.equal(schema.url, 'https://www.migueljalvarez.com/guias/x')
+  assert.equal(schema.author['@id'], 'https://www.migueljalvarez.com/#person')
+  assert.equal(schema.datePublished, '2026-11-20')
+  assert.equal(schema.dateModified, '2026-11-21')
+})
+
+test('la guía cumple los límites de SEO y no deja marcas de borrador ni promesas sin confirmar', () => {
+  const source = readFileSync('data/guides.ts', 'utf8')
+  const title = /seoTitle: '([^']+)'/.exec(source)[1]
+  const description = /description:\s*'([^']+)'/.exec(source)[1]
+  assert.ok(title.length + ' | Desarrollo de Software'.length <= 60, String(title.length))
+  assert.ok(description.length >= 120 && description.length <= 160, String(description.length))
+  assert.equal(/\[(PONER|CONFIRMAR)/.test(source), false)
+  assert.equal(/24 horas|sin costo/i.test(source), false)
+})
+
+test('la guía está en el sitemap, tiene su página y usa el template propio', () => {
+  assert.ok(readFileSync('server/routes/sitemap.xml.ts', 'utf8').includes('GUIDES.map'))
+  const page = readFileSync('pages/guides/rewrite-or-improve.vue', 'utf8')
+  assert.ok(page.includes("path: '/guias/rehacer-o-mejorar-software'") && page.includes('<GuideArticle'))
+  assert.equal((page.match(/<h1/g) || []).length, 0) // el h1 lo pone el template con Heading
+})
+
+test('la guía tiene enlaces internos: desde el detalle del servicio «decidir» y desde Cómo trabajo', () => {
+  assert.ok(readFileSync('data/services.ts', 'utf8').includes('GUIDE_REWRITE_OR_IMPROVE.path'))
+  assert.ok(readFileSync('components/organisms/ServiceCard/ServiceCard.vue', 'utf8').includes('offering.guide'))
+  assert.ok(readFileSync('components/templates/HowWork/HowWorkContent.vue', 'utf8').includes('guide.path'))
+})
