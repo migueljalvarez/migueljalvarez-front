@@ -3,7 +3,7 @@
 import type { LegalSection } from '~/types/legal'
 import { cityWithCountry, legalIdText, type LegalHolder } from '~/utils/legalHolder'
 
-export const PRIVACY_UPDATED_AT = '2026-11-18'
+export const PRIVACY_UPDATED_AT = '2026-11-20'
 // Correo de respaldo (ejemplo): el real sale de NUXT_PUBLIC_LEGAL_EMAIL y nunca se escribe en el repositorio público.
 export const PRIVACY_CONTACT_EMAIL = 'correo@example.com'
 
@@ -33,11 +33,21 @@ export const getPrivacySections = (holder: LegalHolder): PrivacySection[] => {
     {
       id: 'datos',
       title: 'Qué datos recojo',
-      paragraphs: ['Solo recojo los datos que tú me envías al usar el formulario de contacto:'],
+      paragraphs: [
+        'Los datos personales que recojo son los que tú me envías al usar el formulario de contacto. Aparte, cuento de forma anónima los clics en los botones de contacto, como explico en la sección siguiente:'
+      ],
       items: [
         'Nombre y correo electrónico.',
         'El asunto que eliges y el mensaje que escribes.',
         'De forma técnica y transitoria, tu dirección IP, únicamente para limitar envíos repetidos y evitar abusos (no se usa para identificarte).'
+      ]
+    },
+    {
+      id: 'clics',
+      title: 'Conteo anónimo de clics',
+      paragraphs: [
+        'Para saber qué canal de contacto prefieren las personas, cuento de forma anónima y agregada qué botones de contacto se pulsan en este sitio (por ejemplo, el de WhatsApp o «Ver cómo trabajo»). Cada clic se guarda solo con la página donde ocurre, si usas móvil o escritorio y, si llegas desde un enlace con campaña, el origen de ese enlace.',
+        'No uso cookies para esto, no guardo tu dirección IP (solo se usa un instante, en memoria, para limitar abusos) ni ningún dato que te identifique, y no relaciono estos conteos con lo que escribes en el formulario. Los conteos se conservan 13 meses.'
       ]
     },
     {
