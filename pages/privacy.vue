@@ -4,6 +4,7 @@
 
   definePageMeta({ path: '/privacidad', contact: 'compact' })
 
+  useBreadcrumbJsonLd([{ name: 'Política de tratamiento de datos', path: '/privacidad' }])
   usePageSeo({
     title: 'Política de tratamiento de datos',
     description:

@@ -16,6 +16,7 @@
       'Productos y plataformas digitales, propios y de clientes, construidos para resolver problemas concretos. Mira el contexto y la solución de cada proyecto.',
     path: '/portafolio'
   })
+  useBreadcrumbJsonLd([{ name: 'Portafolio', path: '/portafolio' }])
 </script>
 
 <template>

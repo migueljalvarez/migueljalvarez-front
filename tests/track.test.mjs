@@ -93,7 +93,10 @@ test('detecta bots por user agent y trata la ausencia como bot', () => {
 test('límite de frecuencia: 30 por minuto y por IP; la clave es un HMAC, no la IP', () => {
   const limiter = createRateLimiter({ ...TRACK_RATE })
   const key = hashIp('203.0.113.7')
-  assert.doesNotMatch(key, /203/)
+  // La sal es aleatoria por proceso: un trozo de la IP ("203") puede aparecer en el hex por azar, así que se
+  // comprueba la IP completa (los puntos nunca están en un resumen hexadecimal), no un fragmento.
+  assert.equal(key.includes('203.0.113.7'), false)
+  assert.notEqual(key, '203.0.113.7')
   assert.match(key, /^[0-9a-f]{64}$/)
   assert.notEqual(key, hashIp('203.0.113.7', new Uint8Array([1, 2, 3])))
   for (let i = 0; i < 30; i++) assert.equal(limiter.isLimited(key, 1000), false)

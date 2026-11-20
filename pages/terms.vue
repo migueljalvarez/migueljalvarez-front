@@ -4,10 +4,11 @@
 
   definePageMeta({ path: '/terminos-y-condiciones', contact: 'compact' })
 
+  useBreadcrumbJsonLd([{ name: 'Términos y condiciones', path: '/terminos-y-condiciones' }])
   usePageSeo({
     title: 'Términos y condiciones',
     description:
-      'Condiciones de uso de este sitio y cómo se acuerdan los servicios de desarrollo de software: propiedad intelectual, uso aceptable, responsabilidad y ley aplicable.',
+      'Condiciones de uso de este sitio y de los servicios de desarrollo de software: propiedad intelectual, uso aceptable, responsabilidad y ley aplicable.',
     path: '/terminos-y-condiciones'
   })
 

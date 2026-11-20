@@ -1,3 +1,7 @@
+import { PRIVACY_UPDATED_AT } from '~/data/privacy'
+import { TERMS_UPDATED_AT } from '~/data/terms'
+import { sitemapUrlEntry } from '~/utils/seo'
+
 const escapeXml = (value: string) =>
   value
     .replace(/&/g, '&amp;')
@@ -11,19 +15,22 @@ export default defineEventHandler(async event => {
 
   // Rutas públicas fijas + proyectos con ficha de detalle (los "en desarrollo" no la tienen).
   const projects = await getPortfolioItems()
-  const paths = [
-    '/',
-    '/como-trabajo',
-    '/portafolio',
-    '/privacidad',
-    '/terminos-y-condiciones',
+  // `lastmod` solo donde hay una fecha real (las páginas legales tienen la suya); una inventada no ayuda.
+  const entries: { path: string; lastmod?: string }[] = [
+    { path: '/' },
+    { path: '/como-trabajo' },
+    { path: '/portafolio' },
+    { path: '/privacidad', lastmod: PRIVACY_UPDATED_AT },
+    { path: '/terminos-y-condiciones', lastmod: TERMS_UPDATED_AT },
     ...projects
       .filter(project => project.status !== 'in-development')
-      .map(project => `/portafolio/${project.slug || project.id}`)
+      .map(project => ({ path: `/portafolio/${project.slug || project.id}` }))
   ]
 
-  const urls = paths
-    .map(path => `  <url><loc>${escapeXml(`${baseUrl}${path === '/' ? '' : path}`)}</loc></url>`)
+  const urls = entries
+    .map(({ path, lastmod }) =>
+      sitemapUrlEntry(escapeXml(`${baseUrl}${path === '/' ? '' : path}`), lastmod)
+    )
     .join('\n')
 
   setHeader(event, 'Content-Type', 'application/xml; charset=utf-8')
