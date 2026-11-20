@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { Eyebrow } from '~/components/atoms'
+  import { Eyebrow, Heading } from '~/components/atoms'
   import { BackLink, CheckList } from '~/components/molecules'
   import type { LegalDocumentProps } from '../template'
 
@@ -20,9 +20,7 @@
       <BackLink to="/" class="mb-6">Volver al inicio</BackLink>
 
       <Eyebrow class="mb-3">{{ eyebrow }}</Eyebrow>
-      <h1 class="text-3xl font-semibold leading-tight text-brand-ink md:text-4xl">
-        {{ title }}
-      </h1>
+      <Heading level="h1">{{ title }}</Heading>
       <p class="mt-3 text-sm text-brand-muted">Última actualización: {{ updatedAtLabel }}</p>
 
       <nav

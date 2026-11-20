@@ -49,3 +49,17 @@ test('la tarjeta es accesible y no anima el texto para lectores de pantalla', ()
     assert.ok(card.includes(needle), needle)
   assert.ok(card.includes('prefers-reduced-motion'))
 })
+
+test('los títulos usan el átomo Heading (escala única) y no quedan h1 a mano fuera de la portada', () => {
+  const heading = read('components/atoms/Heading/Heading.vue')
+  assert.ok(heading.includes('text-3xl md:text-4xl') && heading.includes('text-2xl md:text-3xl'))
+  for (const file of [
+    'components/templates/LegalDocument/LegalDocument.vue',
+    'pages/portfolio/[slug].vue',
+    'pages/login.vue',
+    'components/molecules/SectionHeader/SectionHeader.vue'
+  ])
+    assert.ok(read(file).includes('Heading'), file)
+  assert.equal(/<h1\b/.test(read('components/templates/LegalDocument/LegalDocument.vue')), false)
+  assert.equal(/<h1\b/.test(read('pages/portfolio/[slug].vue')), false)
+})

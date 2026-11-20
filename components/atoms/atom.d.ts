@@ -43,9 +43,13 @@ export type CheckboxProps = {
   invalid?: boolean
   describedby?: string
 }
-export type TitleProps = {
-  text: string
-  variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+export type HeadingProps = {
+  /** Nivel semántico del título. */
+  level?: 'h1' | 'h2' | 'h3' | 'h4'
+  /** Tamaño visual; por defecto sale del nivel (h1 → page, h2 → section, h3/h4 → card). */
+  variant?: 'page' | 'section' | 'card'
+  /** `dark` sobre bandas oscuras. */
+  tone?: 'light' | 'dark'
 }
 
 export type SelectProps = {
