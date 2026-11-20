@@ -50,7 +50,7 @@ export const HERO_BRIEF = {
     { key: 'risk', label: 'Riesgo a resolver antes', icon: 'mdi:alert-outline' }
   ] satisfies { key: HeroBriefRowKey; label: string; icon: string }[],
   cta: 'Contarme tu caso',
-  /** ID reservado para el conteo de clics; aún no está en la lista cerrada (requiere cambio en la API). */
+  /** ID del conteo de clics (lista cerrada en constants/track.ts y en la API, migración 0016). */
   ctaTrackId: 'cta_hero_card',
   caption: 'Ejemplos ilustrativos de cómo arranco cada conversación.'
 } as const

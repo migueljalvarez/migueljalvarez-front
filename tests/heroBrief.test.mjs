@@ -41,6 +41,8 @@ test('el enlace de WhatsApp del hero no cambia y la tarjeta lleva su ID de conte
   const main = read('components/templates/Main/Main.vue')
   assert.ok(main.includes(`v-track="'wa_hero'"`) && main.includes(`v-track="'cta_ver_como_trabajo'"`))
   assert.ok(read('constants/heroBrief.ts').includes("ctaTrackId: 'cta_hero_card'"))
+  assert.ok(read('constants/track.ts').includes("'cta_hero_card'"))
+  assert.ok(read('components/organisms/HeroBriefCard/HeroBriefCard.vue').includes('v-track="HERO_BRIEF.ctaTrackId"'))
 })
 
 test('la tarjeta es accesible y no anima el texto para lectores de pantalla', () => {
