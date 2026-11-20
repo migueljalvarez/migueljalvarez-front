@@ -21,6 +21,11 @@
     record: PortfolioDetailRecord | null
     requirements: PublishRequirement[]
     errors: PortfolioErrors
+    /**
+     * `status`: estado, requisitos, botón de publicar y enlace al sitio (columna lateral del editor).
+     * `settings`: cómo se muestra, destacado y orden (sección del formulario).
+     */
+    part: 'status' | 'settings'
   }>()
   const published = defineModel<boolean>('published', { required: true })
   const status = defineModel<PortfolioStatus>('status', { required: true })
@@ -71,60 +76,88 @@
 </script>
 
 <template>
-  <div class="space-y-6">
-    <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
-      <p class="text-sm font-medium text-brand-ink">Estado actual</p>
+  <div v-if="part === 'status'" class="space-y-3">
+    <div class="flex flex-wrap items-center gap-2">
       <AdminBadge :tone="savedBadge.tone">{{ savedBadge.label }}</AdminBadge>
       <AdminBadge v-if="record?.featured" tone="neutral" icon="mdi:star-outline">
         Destacado
       </AdminBadge>
-      <p class="text-xs text-brand-muted">
-        <template v-if="record?.publishedAt">
-          Publicado por primera vez el {{ formatPortfolioDate(record.publishedAt) }}.
-        </template>
-        <template v-else>Aún no se ha publicado.</template>
-      </p>
     </div>
+    <p class="-mt-1 text-xs text-brand-muted">
+      <template v-if="record?.publishedAt">
+        Publicado por primera vez el {{ formatPortfolioDate(record.publishedAt) }}.
+      </template>
+      <template v-else>Aún no se ha publicado.</template>
+    </p>
 
-    <div>
-      <p class="mb-2 text-sm font-medium text-brand-ink">Requisitos para publicar</p>
-      <ul class="space-y-1">
-        <li
-          v-for="item in requirements"
-          :key="item.id"
-          class="flex items-center gap-2 text-sm"
-          :class="item.met ? 'text-brand-success-text' : 'text-brand-error-text'"
-        >
-          <Icon
-            :name="item.met ? 'mdi:check-circle-outline' : 'mdi:close-circle-outline'"
-            size="20"
-            class="shrink-0"
-            aria-hidden="true"
-          />
-          <span>{{ item.label }}</span>
-          <span class="sr-only">{{ item.met ? ': cumplido' : ': falta' }}</span>
-        </li>
-      </ul>
-    </div>
+    <!-- Con todo cumplido basta una línea; si falta algo, se listan los requisitos. -->
+    <p v-if="canPublish" class="flex items-center gap-2 text-sm text-brand-success-text">
+      <Icon name="mdi:check-circle-outline" size="20" class="shrink-0" aria-hidden="true" />
+      Requisitos para publicar cumplidos
+    </p>
+    <ul v-else class="space-y-1" aria-label="Requisitos para publicar">
+      <li
+        v-for="item in requirements"
+        :key="item.id"
+        class="flex items-center gap-2 text-sm"
+        :class="item.met ? 'text-brand-success-text' : 'text-brand-error-text'"
+      >
+        <Icon
+          :name="item.met ? 'mdi:check-circle-outline' : 'mdi:close-circle-outline'"
+          size="20"
+          class="shrink-0"
+          aria-hidden="true"
+        />
+        <span>{{ item.label }}</span>
+        <span class="sr-only">{{ item.met ? ': cumplido' : ': falta' }}</span>
+      </li>
+    </ul>
 
-    <AdminInput
+    <AdminButton
       id="portfolio-published"
-      v-model="published"
-      type="checkbox"
-      label="Publicar en el sitio"
+      :variant="published ? 'secondary' : 'primary'"
+      class="w-full"
       :disabled="!record || (!canPublish && !published)"
-      :hint="publishHint"
-    />
+      aria-describedby="portfolio-published-hint"
+      @click="published = !published"
+    >
+      <Icon
+        :name="published ? 'mdi:eye-off-outline' : 'mdi:eye-outline'"
+        size="20"
+        aria-hidden="true"
+      />
+      {{ published ? 'Despublicar' : 'Publicar' }}
+    </AdminButton>
+    <p id="portfolio-published-hint" class="-mt-1 text-xs leading-5 text-brand-muted">
+      {{ publishHint }}
+    </p>
 
     <p
       v-if="pending"
-      class="flex items-center gap-2 text-sm font-medium text-brand-warning-text"
+      class="flex items-start gap-2 text-sm font-medium text-brand-warning-text"
       role="status"
     >
-      <Icon name="mdi:circle-edit-outline" size="20" class="shrink-0" aria-hidden="true" />
+      <Icon name="mdi:circle-edit-outline" size="20" class="mt-0.5 shrink-0" aria-hidden="true" />
       Al guardar quedará como «{{ targetBadge.label }}».
     </p>
 
+    <div v-if="record" class="border-t border-brand-border pt-3">
+      <AdminButton v-if="sitePath" :href="sitePath" class="w-full">
+        <Icon name="mdi:open-in-new" size="20" aria-hidden="true" />
+        Ver en el sitio
+        <span class="sr-only">(se abre en una pestaña nueva)</span>
+      </AdminButton>
+      <p v-else class="text-sm text-brand-muted">
+        {{
+          record.isPublished
+            ? 'Este proyecto aparece como tarjeta «En desarrollo»; no tiene ficha para abrir.'
+            : 'Cuando lo publiques como proyecto completo, aquí tendrás el enlace a su ficha en el sitio.'
+        }}
+      </p>
+    </div>
+  </div>
+
+  <div v-else class="space-y-6">
     <AdminRadioGroup
       v-model="status"
       legend="Cómo se muestra cuando está publicado"
@@ -151,21 +184,6 @@
         :hint="`Número de 0 a ${PORTFOLIO_LIMITS.sortOrder}. De menor a mayor; con el mismo número va primero el publicado más reciente.`"
         :error="errors.sortOrder"
       />
-    </div>
-
-    <div v-if="record" class="border-t border-brand-border pt-4">
-      <AdminButton v-if="sitePath" :href="sitePath">
-        <Icon name="mdi:open-in-new" size="20" aria-hidden="true" />
-        Ver en el sitio
-        <span class="sr-only">(se abre en una pestaña nueva)</span>
-      </AdminButton>
-      <p v-else class="text-sm text-brand-muted">
-        {{
-          record.isPublished
-            ? 'Este proyecto aparece como tarjeta «En desarrollo»; no tiene ficha para abrir.'
-            : 'Cuando lo publiques como proyecto completo, aquí tendrás el enlace a su ficha en el sitio.'
-        }}
-      </p>
     </div>
   </div>
 </template>

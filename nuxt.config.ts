@@ -2,6 +2,37 @@
 
 import { META } from './constants/common'
 
+// CSP: en producción todo solo desde el propio origen. En desarrollo se deja el mínimo porque Nuxt Icon pide los iconos
+// a api.iconify.design y Vite usa HMR y eval. `'unsafe-inline'` en scripts y
+// estilos es necesario hoy: Nuxt incrusta su estado (`__NUXT__`) y los datos estructurados como scripts en línea y
+// Vue/Tailwind escriben estilos en línea; quitarlo exige nonces o hashes por petición (fase siguiente). Las imágenes
+// admiten `https:` porque las del panel salen del almacenamiento (R2) y las de proyectos pueden ser externas.
+const buildCsp = (connectSrc: string) =>
+  [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline'",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: blob: https:",
+    "font-src 'self' data:",
+    `connect-src ${connectSrc}`,
+    "frame-ancestors 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "object-src 'none'",
+    'upgrade-insecure-requests'
+  ].join('; ')
+
+const IS_PRODUCTION = process.env.NODE_ENV === 'production'
+const CONTENT_SECURITY_POLICY = IS_PRODUCTION
+  ? buildCsp("'self'")
+  : "frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+// El panel y el acceso (la sesión navega del acceso al panel sin recargar, así que comparten CSP) admiten además la API de
+// iconos: los iconos que se muestran tras una acción (avisos, estados) los pide el navegador a Iconify. El sitio público
+// no los necesita (van en el HTML y el CSS) y se queda en `connect-src 'self'`.
+const ADMIN_CONTENT_SECURITY_POLICY = IS_PRODUCTION
+  ? buildCsp("'self' https://*.iconify.design")
+  : CONTENT_SECURITY_POLICY
+
 export default defineNuxtConfig({
   ssr: true,
   app: {
@@ -119,9 +150,7 @@ export default defineNuxtConfig({
     port: 3000
   },
   routeRules: {
-    // Cabeceras de seguridad para todo el sitio. El CSP completo (script-src, connect-src...) se
-    // activará más adelante; por ahora solo directivas que no
-    // pueden romper la hidratación de Nuxt.
+    // Cabeceras de seguridad para todo el sitio (el CSP se define arriba).
     '/**': {
       headers: {
         'X-Content-Type-Options': 'nosniff',
@@ -129,8 +158,7 @@ export default defineNuxtConfig({
         'Referrer-Policy': 'strict-origin-when-cross-origin',
         'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=()',
         'Strict-Transport-Security': 'max-age=31536000',
-        'Content-Security-Policy':
-          "frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+        'Content-Security-Policy': CONTENT_SECURITY_POLICY
       }
     },
     // Home: SIN caché del HTML ni en Nitro ni en el CDN de Netlify. Antes era `swr: 60` (caché de Nitro en memoria de
@@ -151,12 +179,20 @@ export default defineNuxtConfig({
       : {}),
     // Zonas privadas: sin caché compartida y fuera de buscadores.
     '/admin/**': {
-      headers: { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' }
+      headers: {
+        'Cache-Control': 'no-store',
+        'X-Robots-Tag': 'noindex, nofollow',
+        'Content-Security-Policy': ADMIN_CONTENT_SECURITY_POLICY
+      }
     },
     // Enlaces antiguos del panel viejo.
     '/dashboard/**': { redirect: '/admin' },
     '/login': {
-      headers: { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' }
+      headers: {
+        'Cache-Control': 'no-store',
+        'X-Robots-Tag': 'noindex, nofollow',
+        'Content-Security-Policy': ADMIN_CONTENT_SECURITY_POLICY
+      }
     },
     '/api/admin/**': { headers: { 'Cache-Control': 'no-store' } },
     // Enlace único del correo de testimonios: el token viaja en la URL, así que sin caché, sin

@@ -2,6 +2,7 @@
   import AdminBadge from '~/components/admin/AdminBadge.vue'
   import AdminButton from '~/components/admin/AdminButton.vue'
   import AdminChipList from '~/components/admin/AdminChipList.vue'
+  import AdminEditorLayout from '~/components/admin/AdminEditorLayout.vue'
   import AdminConfirmDialog from '~/components/admin/AdminConfirmDialog.vue'
   import AdminImageUpload from '~/components/admin/AdminImageUpload.vue'
   import AdminInput from '~/components/admin/AdminInput.vue'
@@ -17,6 +18,7 @@
     PORTFOLIO_KIND_OPTIONS,
     PORTFOLIO_LIMITS,
     formatPortfolioDate,
+    portfolioSectionIndex,
     publishRequirements
   } from '~/utils/admin/portfolio'
   import type { PortfolioDetailRecord } from '~/utils/admin/portfolio'
@@ -30,6 +32,7 @@
     record,
     values,
     errors,
+    validation,
     isNew,
     isDirty,
     isSaving,
@@ -51,6 +54,8 @@
   const formEl = ref<HTMLFormElement | null>(null)
   const folder = computed(() => values.value.slug || 'mi-proyecto')
   const requirements = computed(() => publishRequirements(values.value))
+  // El índice muestra siempre los errores reales (un obligatorio vacío o inválido se ve sin tocar el campo).
+  const sections = computed(() => portfolioSectionIndex(values.value, validation.value.errors))
   const slugChanged = computed(
     () => !!record.value && values.value.slug.trim() !== record.value.slug
   )
@@ -192,11 +197,24 @@
     <form
       ref="formEl"
       novalidate
-      class="portfolio-editor max-w-4xl"
+      class="portfolio-editor"
       @submit.prevent="onSave"
       @focusout="onFocusOut"
     >
-      <div class="space-y-6">
+      <AdminEditorLayout :sections="sections">
+        <template #publish>
+          <PortfolioPublishPanel
+            v-model:published="values.isPublished"
+            v-model:status="values.status"
+            v-model:featured="values.featured"
+            v-model:sort-order="values.sortOrder"
+            part="status"
+            :record="record"
+            :requirements="requirements"
+            :errors="errors"
+          />
+        </template>
+
         <PortfolioFormSection
           id="portfolio-basic"
           title="Información básica"
@@ -523,20 +541,21 @@
 
         <PortfolioFormSection
           id="portfolio-publication"
-          title="Publicación"
-          description="Decide qué ve el público. Mientras no esté publicado, solo lo ves tú."
+          title="Visibilidad"
+          description="Cómo se muestra cuando está publicado y en qué orden. Publicar o despublicar se hace desde la caja «Publicar»."
         >
           <PortfolioPublishPanel
             v-model:published="values.isPublished"
             v-model:status="values.status"
             v-model:featured="values.featured"
             v-model:sort-order="values.sortOrder"
+            part="settings"
             :record="record"
             :requirements="requirements"
             :errors="errors"
           />
         </PortfolioFormSection>
-      </div>
+      </AdminEditorLayout>
 
       <!-- Barra de acciones: fija abajo desde md porque el formulario es largo -->
       <div
@@ -578,7 +597,7 @@
     <PortfolioFormSection
       v-if="record"
       id="portfolio-danger"
-      class="mt-6 max-w-4xl"
+      class="mt-6"
       title="Zona de peligro"
       tone="danger"
     >
