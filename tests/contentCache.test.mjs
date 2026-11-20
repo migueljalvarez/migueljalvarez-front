@@ -12,8 +12,8 @@ test('la caché del contenido público no usa stale-while-revalidate (en serverl
 test('la home no usa swr de Nitro y el CDN tiene un tope de copia vencida', () => {
   const config = readFileSync('nuxt.config.ts', 'utf8')
   assert.doesNotMatch(config, /'\/':\s*\{\s*swr/)
-  const cdn = config.match(/'Netlify-CDN-Cache-Control':\s*'([^']+)'/)
-  assert.ok(cdn, 'falta Netlify-CDN-Cache-Control')
+  const cdn = config.match(/'Cache-Control':\s*'(public, max-age=0, s-maxage=\d+[^']*)'/)
+  assert.ok(cdn, 'falta la cabecera Cache-Control con s-maxage para la home')
   const swr = cdn[1].match(/stale-while-revalidate=(\d+)/)
   assert.ok(swr, 'stale-while-revalidate debe llevar un número de segundos')
   assert.ok(Number(swr[1]) <= 300, 'el tope de copia vencida debe ser de pocos minutos')

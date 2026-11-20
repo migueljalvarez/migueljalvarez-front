@@ -144,8 +144,7 @@ export default defineNuxtConfig({
       ? {
           '/': {
             headers: {
-              'Cache-Control': 'public, max-age=0, must-revalidate',
-              'Netlify-CDN-Cache-Control': 'public, s-maxage=60, stale-while-revalidate=60'
+              'Cache-Control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=60'
             }
           }
         }
