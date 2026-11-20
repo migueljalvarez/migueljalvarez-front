@@ -4,7 +4,7 @@ import { PRIVACY_CONTACT_EMAIL } from '~/data/privacy'
 import type { LegalSection } from '~/types/legal'
 import { cityWithCountry, legalHolderSentence, type LegalHolder } from '~/utils/legalHolder'
 
-export const TERMS_UPDATED_AT = '2026-11-18'
+export const TERMS_UPDATED_AT = '2026-11-20'
 
 export type TermsSection = LegalSection
 
@@ -76,7 +76,7 @@ export const getTermsSections = (holder: LegalHolder): TermsSection[] => {
       id: 'terceros',
       title: 'Enlaces y servicios de terceros',
       paragraphs: [
-        'El sitio puede enlazar a páginas o redes sociales de terceros (por ejemplo, mis perfiles profesionales o proyectos del portafolio). No controlo su contenido ni sus políticas, y su uso se rige por los términos de cada uno.'
+        'El sitio puede enlazar a páginas o redes sociales de terceros (por ejemplo, WhatsApp, mis perfiles profesionales o proyectos del portafolio). No controlo su contenido ni sus políticas, y su uso se rige por los términos de cada uno.'
       ]
     },
     {
