@@ -76,7 +76,10 @@ test('el correo escapa el HTML, trae texto plano y no lleva pixeles de seguimien
   assert.equal(email.html.includes('<b>Ana</b>'), false)
   assert.match(email.html, /&lt;b&gt;Ana&lt;\/b&gt;<br>gracias/)
   assert.match(email.html, /Tienda &quot;Sol&quot;/)
-  assert.equal(/<img/i.test(email.html), false)
+  // La única imagen es el logo del propio sitio: sin el token ni parámetros de seguimiento.
+  const images = [...email.html.matchAll(/<img[^>]*src="([^"]+)"/gi)].map(m => m[1])
+  assert.deepEqual(images, [`${BASE}/email-logo.png`])
+  assert.equal(email.html.includes(`${TOKEN}.png`), false)
   assert.ok(email.html.includes(`href="${link}"`))
   assert.ok(email.text.includes(link))
   assert.match(email.text, /Tienda "Sol"/)

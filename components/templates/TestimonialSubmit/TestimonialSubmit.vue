@@ -89,7 +89,7 @@
 
         <Card v-if="message" tone="soft" class="mt-6 p-5">
           <p class="text-xs font-semibold uppercase tracking-[0.14em] text-logo-blue">
-            Un mensaje mío
+            Unas palabras de Miguel
           </p>
           <blockquote class="mt-2 whitespace-pre-line text-base leading-7 text-brand-ink">
             {{ message }}
