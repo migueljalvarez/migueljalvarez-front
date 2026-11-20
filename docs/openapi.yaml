@@ -204,6 +204,54 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /api/track:
+    post:
+      tags: [Contacto]
+      summary: Conteo anónimo de clics en los botones de contacto
+      description: |
+        Lo llama la directiva `v-track` con `navigator.sendBeacon` (o `fetch` con `keepalive`). Es de mejor
+        esfuerzo y no bloquea nada: cuerpo máximo de 1 KB (413), validación estricta contra una lista
+        cerrada de botones (400 genérico, sin detalles; un campo extra invalida el cuerpo), límite de 30
+        eventos por minuto y por IP (429; la clave es un HMAC de la IP con una sal por proceso, la IP no se
+        guarda) y respuesta 204 en todo lo demás, incluso si la API no está configurada, falla o tarda más
+        de 2 s. Se ignoran sin registrar (204) los bots conocidos por user agent (que no se guarda). Las
+        visitas del autor se excluyen en el navegador (interruptor del panel, marca `mj_no_track`). Reenvía a la API (`POST /api/intake/events`, con la
+        clave compartida `NUXT_INTAKE_API_KEY`); la fecha la pone la API. No guarda IP, user agent, correo
+        ni datos de la persona.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [eventId, pagePath, device]
+              properties:
+                eventId:
+                  type: string
+                  enum: [wa_hero, wa_sobre_mi, wa_contacto, wa_contacto_compacto, wa_proyecto, wa_como_trabajo, nav_hablemos, cta_ver_como_trabajo, cta_ver_proyecto, form_submit_ok]
+                slug:
+                  type: string
+                  pattern: '^[a-z0-9-]{1,80}$'
+                  description: Obligatorio en `wa_proyecto` y `cta_ver_proyecto`; prohibido en los demás
+                pagePath: { type: string, maxLength: 200, pattern: '^/[^\s?#]*$' }
+                utmSource: { type: string, maxLength: 60 }
+                utmCampaign: { type: string, maxLength: 60 }
+                referrerHost: { type: string, maxLength: 120 }
+                device: { type: string, enum: [mobile, desktop] }
+      responses:
+        '204':
+          description: Registrado o ignorado
+        '400':
+          description: Solicitud no válida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '413':
+          description: Cuerpo mayor de 1 KB
+        '429':
+          description: Demasiados eventos desde esta IP
   /api/testimonial/{token}:
     get:
       tags: [Testimonios]

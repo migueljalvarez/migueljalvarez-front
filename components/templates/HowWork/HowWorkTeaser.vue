@@ -31,7 +31,14 @@
         />
         <CheckList :items="WORK_COMMITMENTS.slice(0, 3)" tone="dark" class="mt-5" />
         <div class="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-          <Button to="/como-trabajo" theme="primary" size="md" on-dark class="w-fit">
+          <Button
+            v-track="'cta_ver_como_trabajo'"
+            to="/como-trabajo"
+            theme="primary"
+            size="md"
+            :on-dark="true"
+            class="w-fit"
+          >
             {{ HOME_COPY.work.cta }}
           </Button>
         </div>

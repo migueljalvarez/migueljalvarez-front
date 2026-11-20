@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import AdminButton from '~/components/admin/AdminButton.vue'
+  import ClicksCard from '~/components/admin/analytics/ClicksCard.vue'
   import AdminNotice from '~/components/admin/AdminNotice.vue'
   import AdminPageHeader from '~/components/admin/AdminPageHeader.vue'
   import AdminSkeleton from '~/components/admin/AdminSkeleton.vue'
@@ -140,6 +141,8 @@
         </AdminNotice>
       </li>
     </ul>
+
+    <ClicksCard />
 
     <section class="mt-10" aria-labelledby="modules-heading">
       <h2 id="modules-heading" class="text-lg font-semibold text-brand-ink">Módulos</h2>
