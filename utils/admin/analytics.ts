@@ -25,7 +25,8 @@ export const CLICK_BUTTON_LABEL: Record<(typeof TRACK_BUTTON_IDS)[number], strin
   wa_como_trabajo: 'WhatsApp · Cómo trabajo',
   nav_hablemos: 'Menú · Hablemos',
   cta_ver_como_trabajo: 'Ver cómo trabajo',
-  cta_ver_proyecto: 'Ver proyecto (detalle o sitio)'
+  cta_ver_proyecto: 'Ver proyecto (detalle o sitio)',
+  cta_hero_card: 'Portada · Contarme tu caso (tarjeta)'
 }
 
 export const CLICKS_NOTE = 'Son clics en el botón, no conversaciones iniciadas en WhatsApp.'

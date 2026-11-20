@@ -229,7 +229,7 @@ paths:
               properties:
                 eventId:
                   type: string
-                  enum: [wa_hero, wa_sobre_mi, wa_contacto, wa_contacto_compacto, wa_proyecto, wa_como_trabajo, nav_hablemos, cta_ver_como_trabajo, cta_ver_proyecto, form_submit_ok]
+                  enum: [wa_hero, wa_sobre_mi, wa_contacto, wa_contacto_compacto, wa_proyecto, wa_como_trabajo, nav_hablemos, cta_ver_como_trabajo, cta_ver_proyecto, cta_hero_card, form_submit_ok]
                 slug:
                   type: string
                   pattern: '^[a-z0-9-]{1,80}$'

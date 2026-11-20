@@ -16,13 +16,13 @@ const base = { eventId: 'wa_hero', pagePath: '/', device: 'desktop' }
 const parse = body => parseTrackBody(JSON.stringify(body))
 
 test('acepta cada ID de la lista cerrada (con slug solo en los de proyecto)', () => {
-  assert.equal(TRACK_EVENT_IDS.length, 10)
+  assert.equal(TRACK_EVENT_IDS.length, 11)
   for (const eventId of TRACK_EVENT_IDS) {
     const withSlug = eventId === 'wa_proyecto' || eventId === 'cta_ver_proyecto'
     const value = parse({ ...base, eventId, ...(withSlug ? { slug: 'mi-comodoro' } : {}) })
     assert.equal(value?.eventId, eventId)
   }
-  assert.ok(TRACK_BUTTON_IDS.includes('wa_contacto_compacto'))
+  assert.ok(TRACK_BUTTON_IDS.includes('wa_contacto_compacto') && TRACK_BUTTON_IDS.includes('cta_hero_card'))
 })
 
 test('rechaza IDs desconocidos y slugs faltantes, sobrantes o mal formados', () => {
