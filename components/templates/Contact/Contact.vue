@@ -29,6 +29,7 @@
     website: '' // honeypot: oculto para personas
   })
   const { sendEmail } = useEmail()
+  const { track } = useTrack()
   const isSubmitting = ref(false)
   const disabledButton = computed(() => {
     return (
@@ -59,6 +60,7 @@
     try {
       await sendEmail(name, form.email, form.subject, form.message, form.consent, form.website)
       isSendedSuccessful.value = true
+      track('form_submit_ok')
       cleanForm()
     } catch (error) {
       console.error('Error sending email:', error)
@@ -98,13 +100,14 @@
               {{ HOME_COPY.contact.description }}
             </p>
             <Button
+              v-track="'wa_contacto'"
               as="a"
               :href="WHATSAPP_URL"
               target="_blank"
               rel="noopener noreferrer"
               icon="mdi:whatsapp"
               theme="whatsapp"
-              on-dark
+              :on-dark="true"
               class="w-fit whitespace-nowrap"
               icon-position="left"
               size="md"

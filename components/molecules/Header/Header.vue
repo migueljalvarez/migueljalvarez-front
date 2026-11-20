@@ -167,6 +167,7 @@
         <nuxt-link
           v-for="item in navLinks"
           :key="item.name"
+          v-track="isContactNavLink(item.name) ? 'nav_hablemos' : undefined"
           :to="item.link"
           :class="
             isContactNavLink(item.name) || isHeroTop
@@ -281,6 +282,7 @@
         <nuxt-link
           v-for="item in navLinks"
           :key="item.name"
+          v-track="isContactNavLink(item.name) ? 'nav_hablemos' : undefined"
           :to="item.link"
           :aria-current="isActive(item.link) ? 'page' : undefined"
           class="nav-link group flex min-h-11 w-fit flex-col items-start justify-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue"

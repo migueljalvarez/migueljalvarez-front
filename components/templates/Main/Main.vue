@@ -75,12 +75,13 @@
           class="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-4"
         >
           <Button
+            v-track="'wa_hero'"
             as="a"
             :href="WHATSAPP_URL"
             target="_blank"
             rel="noopener noreferrer"
             class="w-full whitespace-nowrap sm:w-auto"
-            on-dark
+            :on-dark="true"
             size="md"
             icon="mdi:whatsapp"
             icon-position="left"
@@ -90,9 +91,10 @@
           </Button>
 
           <Button
+            v-track="'cta_ver_como_trabajo'"
             to="/como-trabajo"
             class="w-full whitespace-nowrap sm:w-auto"
-            on-dark
+            :on-dark="true"
             size="md"
             theme="secondary"
           >
