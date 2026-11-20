@@ -8,7 +8,7 @@
 <template>
   <section
     aria-label="Información legal"
-    class="flex w-full flex-col items-center gap-2 text-center text-xs leading-5 text-brand-text-subtle md:w-auto md:items-end md:text-right"
+    class="flex w-full flex-col items-center gap-0 text-center text-xs leading-5 text-brand-text-subtle md:w-auto md:items-end md:text-right"
   >
     <nav aria-label="Enlaces legales">
       <ul class="flex flex-wrap justify-center gap-x-3 md:justify-end">
