@@ -6,8 +6,6 @@ export type SectionHeaderProps = {
   level?: 'h1' | 'h2' | 'h3'
   /** `dark` para bandas oscuras (hero, proceso, contacto). */
   tone?: 'light' | 'dark'
-  /** `lg` para el h1 de páginas interiores. */
-  size?: 'md' | 'lg'
   headingId?: string
 }
 

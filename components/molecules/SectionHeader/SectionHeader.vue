@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-  import { Eyebrow } from '~/components/atoms'
+  import { Eyebrow, Heading } from '~/components/atoms'
   import type { SectionHeaderProps } from '../molecule'
 
   withDefaults(defineProps<SectionHeaderProps>(), {
     level: 'h2',
-    tone: 'light',
-    size: 'md'
+    tone: 'light'
   })
 </script>
 
@@ -15,17 +14,9 @@
       {{ eyebrow }}
       <slot name="eyebrow-extra" />
     </Eyebrow>
-    <component
-      :is="level"
-      :id="headingId"
-      class="font-semibold leading-tight"
-      :class="[
-        size === 'lg' ? 'text-3xl md:text-4xl' : 'text-2xl md:text-3xl',
-        tone === 'dark' ? 'text-brand-text-strong' : 'text-brand-ink'
-      ]"
-    >
+    <Heading :id="headingId" :level="level" :tone="tone">
       {{ heading }}
-    </component>
+    </Heading>
     <p
       v-if="description || $slots.default"
       class="mt-3 text-sm leading-6 md:text-base md:leading-7"

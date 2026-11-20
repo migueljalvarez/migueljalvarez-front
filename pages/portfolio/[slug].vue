@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { Button, Card, Chip } from '~/components/atoms'
+  import { Button, Card, Chip, Heading } from '~/components/atoms'
   import { BackLink, CheckList, ImageWithFallback } from '~/components/molecules'
   import { WHATSAPP_URL } from '~/constants/common'
   import type { PortfolioType } from '~/types/common'
@@ -85,9 +85,7 @@
           <Chip pill uppercase class="mb-4 tracking-[0.12em] text-brand-accent-text">
             {{ project.portfolioType }}
           </Chip>
-          <h1 class="text-3xl font-semibold leading-tight text-brand-ink md:text-5xl">
-            {{ project.title }}
-          </h1>
+          <Heading level="h1">{{ project.title }}</Heading>
           <p class="mt-4 max-w-3xl text-lg leading-8 text-brand-muted">
             {{ project.description }}
           </p>
@@ -253,7 +251,7 @@
       v-else
       class="mx-auto max-w-2xl rounded-2xl border border-brand-border bg-brand-surface-card p-8 text-center"
     >
-      <h1 class="text-2xl font-semibold text-brand-ink">Proyecto no encontrado</h1>
+      <Heading level="h1" variant="section">Proyecto no encontrado</Heading>
       <p class="mt-3 text-brand-muted">No existe un detalle disponible para esta ruta.</p>
       <Button to="/portafolio" theme="secondary" class="mt-5 inline-flex">
         Volver al portafolio

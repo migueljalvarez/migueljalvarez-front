@@ -17,7 +17,6 @@
         heading="Acuerdos claros para construir con confianza"
         description="Una colaboración funciona mejor cuando sabemos qué esperar, cómo tomamos decisiones y qué pasa después de entregar."
         level="h1"
-        size="lg"
         class="max-w-3xl"
       />
     </div>

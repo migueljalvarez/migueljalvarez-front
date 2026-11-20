@@ -46,7 +46,6 @@
       <SectionHeader
         :eyebrow="content.eyebrow"
         :heading="content.heading"
-        size="lg"
         class="border-b border-brand-border pb-6 md:pb-8"
       />
 

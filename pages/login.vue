@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import AdminButton from '~/components/admin/AdminButton.vue'
   import AppLogo from '~/components/atoms/AppLogo/AppLogo.vue'
+  import Heading from '~/components/atoms/Heading/Heading.vue'
   import AdminInput from '~/components/admin/AdminInput.vue'
   import AdminNotice from '~/components/admin/AdminNotice.vue'
   import { toAdminApiError } from '~/utils/adminApiError'
@@ -122,9 +123,9 @@
   >
     <div class="mb-6 flex flex-col items-center border-b border-brand-border pb-6 text-center">
       <AppLogo :height="48" />
-      <h1 class="mt-6 text-2xl font-semibold leading-tight text-brand-ink">
+      <Heading level="h1" variant="section" class="mt-6">
         {{ step === 'password' ? 'Iniciar sesión' : 'Verifica que eres tú' }}
-      </h1>
+      </Heading>
       <p v-if="step === 'code'" class="mt-2 max-w-sm text-sm leading-6 text-brand-muted">
         {{
           isRecovery

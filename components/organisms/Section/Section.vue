@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { Title } from '~/components/atoms'
+  import { Heading } from '~/components/atoms'
   import type { SectionProps } from '../organism'
 
   const props = withDefaults(defineProps<SectionProps>(), {
@@ -35,7 +35,7 @@
     :style="backgroundStyle"
   >
     <div class="flex flex-col items-center w-full gap-6">
-      <Title v-if="title" :text="String(title)" variant="h2" />
+      <Heading v-if="title" level="h2">{{ title }}</Heading>
       <slot />
     </div>
   </section>
