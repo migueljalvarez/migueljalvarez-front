@@ -142,7 +142,7 @@
                 "
                 @submit="onSubmit"
               >
-                <div class="flex flex-col gap-2 lg:grid-cols-2 lg:grid">
+                <div class="flex flex-col gap-4 lg:grid-cols-2 lg:grid">
                   <Input
                     v-model="form.name"
                     type="text"
@@ -199,7 +199,7 @@
                   <NuxtLink
                     to="/privacidad"
                     target="_blank"
-                    class="inline-flex min-h-11 items-center rounded-lg underline underline-offset-4 hover:text-brand-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
+                    class="rounded-sm underline underline-offset-4 hover:text-brand-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-white"
                   >
                     {{ HOME_COPY.contact.privacyLink }}
                   </NuxtLink>
