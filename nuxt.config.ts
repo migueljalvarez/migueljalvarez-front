@@ -119,9 +119,11 @@ export default defineNuxtConfig({
     port: 3000
   },
   routeRules: {
-    // Cabeceras de seguridad para todo el sitio. El CSP completo (script-src, connect-src...) se
-    // activará más adelante; por ahora solo directivas que no
-    // pueden romper la hidratación de Nuxt.
+    // Cabeceras de seguridad para todo el sitio. CSP: todo solo desde el propio origen. `'unsafe-inline'` en scripts y
+    // estilos es necesario hoy: Nuxt incrusta su estado (`__NUXT__`) y los datos estructurados como scripts en línea y
+    // Vue/Tailwind escriben estilos en línea; quitarlo exige nonces o hashes por petición (fase siguiente). Las
+    // imágenes admiten `https:` porque las del panel salen del almacenamiento (R2) y las de proyectos pueden ser
+    // externas. `upgrade-insecure-requests` sube cualquier recurso http a https.
     '/**': {
       headers: {
         'X-Content-Type-Options': 'nosniff',
@@ -129,8 +131,19 @@ export default defineNuxtConfig({
         'Referrer-Policy': 'strict-origin-when-cross-origin',
         'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=()',
         'Strict-Transport-Security': 'max-age=31536000',
-        'Content-Security-Policy':
-          "frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+        'Content-Security-Policy': [
+          "default-src 'self'",
+          "script-src 'self' 'unsafe-inline'",
+          "style-src 'self' 'unsafe-inline'",
+          "img-src 'self' data: blob: https:",
+          "font-src 'self' data:",
+          "connect-src 'self'",
+          "frame-ancestors 'none'",
+          "base-uri 'self'",
+          "form-action 'self'",
+          "object-src 'none'",
+          'upgrade-insecure-requests'
+        ].join('; ')
       }
     },
     // Home: SIN caché del HTML ni en Nitro ni en el CDN de Netlify. Antes era `swr: 60` (caché de Nitro en memoria de
