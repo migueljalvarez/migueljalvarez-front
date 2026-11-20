@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import AdminBadge from '~/components/admin/AdminBadge.vue'
+  import AdminConfirmDialog from '~/components/admin/AdminConfirmDialog.vue'
   import AdminButton from '~/components/admin/AdminButton.vue'
   import AdminEmptyState from '~/components/admin/AdminEmptyState.vue'
   import AdminNotice from '~/components/admin/AdminNotice.vue'
@@ -89,6 +90,32 @@
         items: data.value.items.filter(item => item.id !== id),
         total: data.value.total - 1
       }
+    }
+  }
+
+  // --- Eliminar desde la lista (misma acción que en el detalle, sin tener que abrirlo)
+  const toDelete = ref<TestimonialRecord | null>(null)
+  const deleteBusy = ref(false)
+  const deleteError = ref('')
+
+  const askDelete = (item: TestimonialRecord) => {
+    deleteError.value = ''
+    toDelete.value = item
+  }
+
+  const confirmDelete = async () => {
+    const item = toDelete.value
+    if (!item) return
+    deleteBusy.value = true
+    deleteError.value = ''
+    try {
+      await testimonialsApi.remove(item.id)
+      toDelete.value = null
+      onDeleted(item.id)
+    } catch (error) {
+      deleteError.value = toAdminApiError(error).message
+    } finally {
+      deleteBusy.value = false
     }
   }
 
@@ -207,13 +234,23 @@
                 {{ expiryInfo(item)?.label ?? '—' }}
               </td>
               <td class="px-4 py-3 text-right">
-                <AdminButton
-                  variant="ghost"
-                  :aria-label="`Abrir la solicitud de ${item.clientName}`"
-                  @click="detailId = item.id"
-                >
-                  {{ item.status === 'respondida' ? 'Revisar' : 'Abrir' }}
-                </AdminButton>
+                <div class="flex items-center justify-end gap-1">
+                  <AdminButton
+                    variant="ghost"
+                    :aria-label="`Abrir la solicitud de ${item.clientName}`"
+                    @click="detailId = item.id"
+                  >
+                    {{ item.status === 'respondida' ? 'Revisar' : 'Abrir' }}
+                  </AdminButton>
+                  <AdminButton
+                    variant="danger"
+                    :aria-label="`Eliminar la solicitud de ${item.clientName}`"
+                    @click="askDelete(item)"
+                  >
+                    <Icon name="mdi:trash-can-outline" size="20" aria-hidden="true" />
+                    Eliminar
+                  </AdminButton>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -240,6 +277,23 @@
         </div>
       </nav>
     </template>
+
+    <AdminConfirmDialog
+      :open="!!toDelete"
+      title="Eliminar solicitud"
+      confirm-label="Eliminar solicitud"
+      loading-label="Eliminando…"
+      :busy="deleteBusy"
+      :error="deleteError"
+      @close="toDelete = null"
+      @confirm="confirmDelete"
+    >
+      Se eliminará la solicitud de «{{ toDelete?.clientName }}» y su enlace dejará de funcionar.
+      <template v-if="toDelete?.status === 'aprobada'">
+        Su testimonio está aprobado: también dejará de aparecer en la web.
+      </template>
+      Esta acción no se puede deshacer.
+    </AdminConfirmDialog>
 
     <TestimonialRequestDialog :open="createOpen" @close="createOpen = false" @created="onCreated" />
     <TestimonialDetailDialog

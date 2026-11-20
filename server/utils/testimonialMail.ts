@@ -3,7 +3,8 @@ import { TESTIMONIAL_TOKEN } from './testimonialPublic.ts'
 
 /**
  * Enlace y correo de la solicitud de testimonio. Puro (sin Nitro) para poder probarlo. El correo es
- * texto + HTML escapado, en primera persona, sin imágenes remotas ni pixeles de seguimiento.
+ * texto + HTML escapado, en primera persona y sin pixeles de seguimiento. La única imagen es el logo de la
+ * marca, servido desde el propio sitio (PNG: muchos clientes de correo no muestran SVG).
  */
 export const escapeHtml = (value: string) =>
   value
@@ -12,6 +13,9 @@ export const escapeHtml = (value: string) =>
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;')
+
+/** Logo del correo, en `public/` (PNG a 560 px, se muestra a 240). */
+export const EMAIL_LOGO_PATH = '/email-logo.png'
 
 /** Ruta pública del formulario (la URL en español es por SEO/claridad; el archivo está en inglés). */
 export const TESTIMONIAL_PUBLIC_PATH = '/testimonio'
@@ -86,11 +90,21 @@ export const buildTestimonialEmail = (input: TestimonialEmailInput): Testimonial
   ].join('\n')
 
   const p = 'margin:0 0 16px;font-size:16px;line-height:1.6;color:#121e30'
+  // El origen sale del propio enlace (que ya se armó con la URL pública configurada).
+  let logoUrl = ''
+  try {
+    logoUrl = `${new URL(input.link).origin}${EMAIL_LOGO_PATH}`
+  } catch {
+    logoUrl = ''
+  }
+  const logo = logoUrl
+    ? `<p style="margin:0 0 24px"><img src="${escapeHtml(logoUrl)}" width="240" height="40" alt="Miguel Álvarez, desarrollo de software" style="display:block;border:0;width:240px;height:auto"></p>`
+    : ''
   const html = `<!doctype html>
 <html lang="es">
   <body style="margin:0;padding:24px;background:#f5f7fa;font-family:Arial,Helvetica,sans-serif">
     <div style="max-width:560px;margin:0 auto;background:#ffffff;border:1px solid #d9e0ea;border-radius:16px;padding:32px">
-      <p style="${p}">Hola, ${escapeHtml(firstName)}:</p>
+      ${logo}<p style="${p}">Hola, ${escapeHtml(firstName)}:</p>
       <p style="${p}">${escapeHtml(intro)}</p>
       ${
         personal
