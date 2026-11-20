@@ -12,7 +12,7 @@
 <template>
   <div class="layout">
     <Header />
-    <main class="overflow-hidden pt-20">
+    <main class="overflow-hidden pt-24">
       <slot />
       <ContactCompact v-if="route.meta.contact === 'compact'" />
       <Contact v-else />
