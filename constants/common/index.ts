@@ -6,9 +6,24 @@ export const REGEX_COMMON = /^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?: [A-Za-zÁÉÍ
 export const REGEX_LARGE_TEXT = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9,.\-+¿¡?"'()!\s]+$/
 
 export const HOME_HERO_COPY = {
-  title: 'Antes de escribir código, entiendo tu problema.',
-  description:
-    'Ayudo a emprendedores y empresas a convertir ideas en software que puede crecer con su negocio. Cuéntame qué necesitas y lo vemos juntos.'
+  /** Titular por tramos: "code" va apagado y "problem" en ámbar (solo cambia el color, sin subrayado). */
+  title: {
+    before: 'Antes de escribir ',
+    code: 'código',
+    middle: ', entiendo tu ',
+    problem: 'problema',
+    after: '.'
+  },
+  lead: {
+    before: 'Ayudo a ',
+    strong: 'emprendedores y empresas',
+    after: ' a convertir ideas y problemas en software que puede crecer con su negocio.'
+  },
+  support: {
+    before: 'Cuéntame qué necesitas y lo vemos juntos. ',
+    strong: 'Primero lo entendemos;',
+    after: ' después decidimos cómo construirlo.'
+  }
 }
 export const HOME_COPY = {
   hero: {
