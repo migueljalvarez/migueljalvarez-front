@@ -13,7 +13,7 @@
   usePageSeo({
     title: 'Portafolio',
     description:
-      'Proyectos y soluciones digitales desarrollados para resolver problemas concretos.',
+      'Productos y plataformas digitales, propios y de clientes, construidos para resolver problemas concretos. Mira el contexto y la solución de cada proyecto.',
     path: '/portafolio'
   })
 </script>

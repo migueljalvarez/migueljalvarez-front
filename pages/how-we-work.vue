@@ -8,7 +8,7 @@
   usePageSeo({
     title: 'Cómo trabajo',
     description:
-      'Conoce mis compromisos, políticas de trabajo y respuestas a preguntas frecuentes.',
+      'Mis compromisos, lo que no hago y cómo trabajamos juntos: acuerdos claros, código y accesos tuyos, y respuestas a las preguntas frecuentes.',
     path: '/como-trabajo'
   })
 </script>
