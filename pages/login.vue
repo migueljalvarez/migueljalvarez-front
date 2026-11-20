@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import AdminButton from '~/components/admin/AdminButton.vue'
+  import AppLogo from '~/components/atoms/AppLogo/AppLogo.vue'
   import AdminInput from '~/components/admin/AdminInput.vue'
   import AdminNotice from '~/components/admin/AdminNotice.vue'
   import { toAdminApiError } from '~/utils/adminApiError'
@@ -117,16 +118,14 @@
 
 <template>
   <div
-    class="w-full max-w-md rounded-2xl border border-brand-border bg-brand-surface-card p-5 shadow-card md:p-6"
+    class="w-full max-w-md rounded-2xl border border-brand-border bg-brand-surface-card p-6 shadow-card-lg md:p-8"
   >
-    <div class="mb-6">
-      <p class="text-xs font-semibold uppercase tracking-[0.14em] text-logo-blue">
-        Panel privado · Paso {{ step === 'password' ? 1 : 2 }} de 2
-      </p>
-      <h1 class="mt-2 text-2xl font-semibold leading-tight text-brand-ink md:text-3xl">
+    <div class="mb-6 flex flex-col items-center border-b border-brand-border pb-6 text-center">
+      <AppLogo :height="48" />
+      <h1 class="mt-6 text-2xl font-semibold leading-tight text-brand-ink">
         {{ step === 'password' ? 'Iniciar sesión' : 'Verifica que eres tú' }}
       </h1>
-      <p v-if="step === 'code'" class="mt-2 text-sm leading-6 text-brand-muted">
+      <p v-if="step === 'code'" class="mt-2 max-w-sm text-sm leading-6 text-brand-muted">
         {{
           isRecovery
             ? 'Usa uno de los códigos de recuperación que guardaste. Cada uno sirve una sola vez.'
@@ -153,6 +152,7 @@
             v-model="password"
             type="password"
             label="Contraseña"
+            revealable
             required
             autocomplete="current-password"
             :error="fieldErrors.password"
