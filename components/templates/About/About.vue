@@ -152,6 +152,7 @@
         </p>
         <Button
           v-if="cta"
+          v-track="isWhatsapp ? 'wa_sobre_mi' : undefined"
           :to="isInternal ? cta.href : undefined"
           :href="isInternal ? undefined : cta.href"
           :as="isInternal ? undefined : 'a'"

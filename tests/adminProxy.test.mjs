@@ -277,3 +277,13 @@ test('eliminar una imagen por clave viaja en la query y sin cuerpo', async () =>
   assert.equal(received.at(-1).url, `/api/admin/media?key=${encodeURIComponent(key)}`)
   assert.equal(received.at(-1).headers['content-type'], undefined)
 })
+
+test('analítica: /api/admin/analytics/clicks pasa por el proxy con el rango como consulta', async () => {
+  const result = await proxyAdminRequest(
+    { baseUrl },
+    { ...base, method: 'GET', segments: ['analytics', 'clicks'], query: { range: '7d' } }
+  )
+  assert.equal(result.status, 200)
+  assert.equal(received.at(-1).url, '/api/admin/analytics/clicks?range=7d')
+  assert.equal(isSafeSegments(['analytics', 'clicks']), true)
+})

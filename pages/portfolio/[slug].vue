@@ -106,6 +106,7 @@
 
           <div v-if="project.url" class="mt-6">
             <Button
+              v-track="{ id: 'cta_ver_proyecto', slug: project.slug }"
               as="a"
               :href="project.url"
               target="_blank"
@@ -226,6 +227,7 @@
             </p>
             <div class="mt-5 flex flex-col gap-3 sm:flex-row">
               <Button
+                v-track="{ id: 'wa_proyecto', slug: project.slug }"
                 as="a"
                 :href="WHATSAPP_URL"
                 target="_blank"
@@ -233,7 +235,7 @@
                 theme="whatsapp"
                 icon="mdi:whatsapp"
                 icon-position="left"
-                on-dark
+                :on-dark="true"
                 class="sm:w-fit"
               >
                 Hablemos por WhatsApp

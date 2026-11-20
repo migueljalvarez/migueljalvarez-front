@@ -26,13 +26,14 @@
           {{ HOME_COPY.contact.compact.cta }}
         </Button>
         <Button
+          v-track="'wa_contacto_compacto'"
           as="a"
           :href="WHATSAPP_URL"
           target="_blank"
           rel="noopener noreferrer"
           theme="whatsapp"
           size="md"
-          on-dark
+          :on-dark="true"
           icon="mdi:whatsapp"
           icon-position="left"
           class="whitespace-nowrap"

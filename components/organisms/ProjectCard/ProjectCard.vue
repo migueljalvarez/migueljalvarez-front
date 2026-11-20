@@ -110,6 +110,7 @@
         >
           <NuxtLink
             v-if="project.href"
+            v-track="{ id: 'cta_ver_proyecto', slug: project.slug }"
             :to="project.href"
             :class="[
               ctaClass,
@@ -127,6 +128,7 @@
           </NuxtLink>
           <a
             v-if="externalUrl"
+            v-track="{ id: 'cta_ver_proyecto', slug: project.slug }"
             :href="externalUrl"
             target="_blank"
             rel="noopener noreferrer"
