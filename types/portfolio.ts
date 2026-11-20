@@ -8,6 +8,8 @@ export type PortfolioCardProject = {
   audience: string
   image: string
   href: string
+  /** Sitio o aplicación en línea (https), si el proyecto la tiene. */
+  url?: string
   primary?: boolean
   status?: 'published' | 'in-development'
   /** Dato de ejemplo (solo desarrollo). */

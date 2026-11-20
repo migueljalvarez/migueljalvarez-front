@@ -8,4 +8,17 @@ import Chip from './Chip/Chip.vue'
 import Card from './Card/Card.vue'
 import HexMarker from './HexMarker/HexMarker.vue'
 import ImagePlaceholder from './ImagePlaceholder/ImagePlaceholder.vue'
-export { Title, Button, Input, Select, Checkbox, Eyebrow, Chip, Card, HexMarker, ImagePlaceholder }
+import AppLogo from './AppLogo/AppLogo.vue'
+export {
+  Title,
+  Button,
+  Input,
+  Select,
+  Checkbox,
+  Eyebrow,
+  Chip,
+  Card,
+  HexMarker,
+  ImagePlaceholder,
+  AppLogo
+}

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+  import AppLogo from '~/components/atoms/AppLogo/AppLogo.vue'
   import Button from '~/components/atoms/Button/Button.vue'
   import { useSocialMedia } from '~/composables/useSocialMedia'
   import { PUBLIC_ROUTES } from '~/constants/routes'
@@ -133,28 +134,32 @@
   />
   <header
     :class="[
-      'fixed top-0 left-0 z-50 w-full backdrop-blur-md transition-all duration-200',
-      isHeroTop
-        ? 'header-top text-brand-white backdrop-blur-none'
-        : 'bg-brand-surface/95 text-brand-ink',
+      'fixed top-0 left-0 z-50 w-full transition-all duration-200',
+      isHeroTop ? 'header-top text-brand-white' : 'bg-brand-surface text-brand-ink',
       isScrolled ? 'shadow-header border-b border-brand-border/80' : 'border-b-0 shadow-none'
     ]"
   >
     <div
       class="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"
     >
-      <Transition name="logo-fade" mode="out-in">
-        <!-- SVG directo: ipx lo rasterizaba a webp y pesaba más que el vector. -->
-        <img
-          :key="isHeroTop ? 'contact-logo' : 'brand-logo'"
-          :src="isHeroTop ? '/brand_white_v2.svg' : '/brand.svg'"
-          width="250"
-          height="40"
-          alt="Miguel Álvarez"
-          decoding="async"
-          class="flex object-contain px-2"
+      <!-- Logo compacto: blanco sobre el hero (transparente) y a color con el header sólido. Dos imágenes con
+           fundido cruzado de 200 ms (igual que el fondo): sin fotograma con logo blanco sobre fondo claro. -->
+      <span class="relative block h-10 w-61.25 shrink-0">
+        <AppLogo
+          variant="compact"
+          surface="dark"
+          :decorative="!isHeroTop"
+          class="absolute inset-0 size-full px-2 transition-opacity duration-200 motion-reduce:transition-none"
+          :class="isHeroTop ? 'opacity-100' : 'opacity-0'"
         />
-      </Transition>
+        <AppLogo
+          variant="compact"
+          surface="light"
+          :decorative="isHeroTop"
+          class="absolute inset-0 size-full px-2 transition-opacity duration-200 motion-reduce:transition-none"
+          :class="isHeroTop ? 'opacity-0' : 'opacity-100'"
+        />
+      </span>
 
       <nav
         class="hidden w-auto shrink-0 items-center justify-end gap-4 font-bold uppercase md:gap-5 xl:flex"
@@ -174,17 +179,19 @@
           <span
             :class="
               isContactNavLink(item.name)
-                ? 'rounded-lg bg-brand-accent px-4 py-2 text-brand-white transition-colors hover:bg-brand-mid'
+                ? [
+                    'rounded-lg px-4 py-2 transition-colors',
+                    isHeroTop
+                      ? 'bg-brand-warm text-brand-navy hover:bg-brand-warm/85'
+                      : 'bg-brand-accent text-brand-white hover:bg-brand-mid'
+                  ]
                 : ''
             "
           >
             {{ item.name }}
           </span>
           <span
-            :class="[
-              'nav-indicator h-0.5 w-full origin-center rounded-full bg-brand-blue transition-transform duration-300 motion-reduce:transition-none',
-              isContactNavLink(item.name) ? 'invisible' : ''
-            ]"
+            class="nav-indicator h-0.5 w-full origin-center rounded-full bg-brand-blue transition-[transform,opacity] duration-300 motion-reduce:transition-none"
             aria-hidden="true"
           />
         </nuxt-link>
@@ -288,7 +295,7 @@
           <span
             v-if="!isContactNavLink(item.name)"
             :class="[
-              'nav-indicator h-0.5 w-full origin-left rounded-full bg-brand-blue transition-transform duration-300 motion-reduce:transition-none'
+              'nav-indicator h-0.5 w-full origin-left rounded-full bg-brand-blue transition-[transform,opacity] duration-300 motion-reduce:transition-none'
             ]"
             aria-hidden="true"
           />
@@ -318,13 +325,16 @@
 </template>
 
 <style scoped>
+  /* Inactivo: sin ancho y sin opacidad, para que no quede ni un punto de la animación. */
   .nav-indicator {
     transform: scaleX(0);
+    opacity: 0;
   }
 
   .nav-link:hover .nav-indicator,
   .nav-link[aria-current='page'] .nav-indicator {
     transform: scaleX(1);
+    opacity: 1;
   }
 
   .header-top {
@@ -333,16 +343,6 @@
       color-mix(in srgb, var(--color-brand-surface-contrast) 65%, transparent),
       transparent
     );
-  }
-
-  .logo-fade-enter-active,
-  .logo-fade-leave-active {
-    transition: opacity 180ms ease;
-  }
-
-  .logo-fade-enter-from,
-  .logo-fade-leave-to {
-    opacity: 0;
   }
 
   @media (prefers-reduced-motion: reduce) {

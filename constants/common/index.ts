@@ -63,7 +63,7 @@ export const HOME_COPY = {
       'He colaborado con equipos internacionales de habla hispana en proyectos de IoT, LegalTech, outsourcing y consultoría, e identidad digital. Pasar por sectores tan distintos me ha permitido conocer los errores que casi nadie nota hasta que ya duelen.',
     beyondWorkTitle: 'Fuera del trabajo',
     beyondWork:
-      'Soy una persona relajada y tranquila, apasionado de la tecnología y la cultura geek. Me gusta salir a caminar y olvidarme un poco de las cosas, los días de pizza, las salidas con amigos y compartir siempre un buen café. También relajarme viendo películas y series, y estar siempre buscando algo nuevo que aprender.',
+      'Soy relajado y tranquilo, apasionado de la tecnología y la cultura geek. Me gusta salir a caminar y olvidarme un poco de las cosas, los días de pizza, las salidas con amigos y compartir siempre un buen café. También relajarme viendo películas y series, y estar siempre buscando algo nuevo que aprender.',
     toolsTitle: 'Herramientas',
     imageAlt: 'Miguel Álvarez, ingeniero de sistemas, trabajando en remoto',
     highlights: [

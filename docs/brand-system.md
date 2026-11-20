@@ -202,3 +202,23 @@ Si quieres que la marca se sienta elegante y sólida, la mejor estrategia es est
 - estandarizar texto por nivel visual sin improvisar tamaños
 
 Con esto, el formulario y el resto del sitio hablan el mismo idioma visual.
+
+## 7) Tokens semánticos, botones y logos (referencia vigente)
+
+**Tokens por función** (en `assets/css/main.css`, alias de los `--color-brand-*`): `surface`, `surface-alt`, `surface-inverse`, `text`, `text-muted`, `brand` (#243b62), `accent` (ámbar), `accent-ink` (ocre), `logo-blue` (#3F6BAD), `tint` (#EEF3FA) y `wa`. El comentario del archivo lista los pares fondo → texto válidos con sus ratios WCAG AA.
+
+**Botones**
+
+- Principal sobre fondo claro: navy (`brand`) con texto blanco (11,2:1).
+- Principal sobre fondo oscuro (contacto, hero secundario, tarjetas oscuras): ámbar con texto navy (9,2:1). Estados: deshabilitado tenue con borde discontinuo, hover más suave con halo, foco con contorno blanco, enviando con indicador y `aria-busy`.
+- WhatsApp: siempre verde (`wa`).
+- Enlaces, etiquetas y foco de inputs sobre fondo claro: `logo-blue` (5,0:1 sobre surface, 4,8:1 sobre tint y surface-alt).
+- El ámbar nunca es texto sobre fondo claro (1,8:1): allí se usa `accent-ink`. Tampoco es fondo de áreas grandes.
+
+**Logos** (componente `AppLogo`)
+
+- `surface="light"` → logo a color; `surface="dark"` → logo blanco. Sobre foto o degradado: solo blanco y con capa oscura.
+- `variant="full"` (con tagline) o `"compact"` (hexágono + nombre). Header y pie usan `compact`.
+- Header: transparente con logo blanco solo sobre el hero; sólido (`surface`) con logo a color desde el primer píxel de scroll, con fundido cruzado de 200 ms.
+- Espacio libre mínimo alrededor del logo: la altura del hexágono. Favicon: solo el hexágono (`public/favicon.svg`).
+- Hexágonos numerados del proceso: ámbar sobre fondo oscuro; si la sección pasara a fondo claro, `logo-blue` con el número en blanco.

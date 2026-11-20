@@ -19,7 +19,7 @@ Todo bloque opcional se omite si está vacío. Para publicar hacen falta solo t�
 imágenes son opcionales (la API ya no las exige).
 
 Sin fotos (o si la ruta falla) la tarjeta de foto se mantiene con la **imagen de ejemplo de marca**
-(hexágonos sobre azul marino, 4:3, sin texto) solo si hay cargo o nombre; sin ninguno se omite y la
+(hexágonos sobre azul marino, 16:10, sin texto) solo si hay cargo o nombre; sin ninguno se omite y la
 tarjeta de texto ocupa todo el ancho. Así se puede publicar sin fotos y añadirlas después desde el panel.
 
 ## Imágenes
@@ -28,7 +28,7 @@ tarjeta de texto ocupa todo el ancho. Así se puede publicar sin fotos y añadir
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | Carpeta    | `public/about/`                                                                                                              |
 | Ruta       | `/about/<slug>.webp` (minúsculas, números y guiones; también jpg/png) **o** la URL https de una imagen subida desde el panel |
-| Proporción | 4:3 (se recorta para encuadrar la parte alta)                                                                                |
+| Proporción | 16:10 (se recorta para encuadrar la parte alta)                                                                              |
 | Formato    | webp, ≤ 150 KB y ≤ 1920 px de ancho (`tests/publicImages.test.mjs`)                                                          |
 | Cantidad   | de 1 a 4 (todas van al carrusel)                                                                                             |
 | Alt        | obligatorio (1–140 caracteres): describe lo que se ve                                                                        |

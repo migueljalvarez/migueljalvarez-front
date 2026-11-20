@@ -33,7 +33,8 @@ Antes de cerrar una tarea: `npm run lint`, `npm test` y `npm run build`. Si toca
 
 ## Ramas y publicación
 
-- **`main` es producción**: cada push a `main` despliega el sitio en Netlify. **`develop`** es la rama de integración y nace de `main`. Toda funcionalidad o corrección sale de `develop` en una rama `feat/*` o `fix/*`, se integra de vuelta en `develop` con merge local `--no-ff` y de `develop` pasa a `main` (merge sin forzar) solo cuando el autor lo pida.
+- **`main` es producción**: cada push a `main` despliega el sitio en Netlify. **`develop`** es la rama de integración y nace de `main`. Toda funcionalidad o corrección sale de `develop` en una rama `feat/*` o `fix/*`, se integra de vuelta en `develop` con merge local `--no-ff` y de `develop` pasa a `main` (merge sin forzar) solo cuando el autor lo pida. **Tras integrar una rama `feat/*` o `fix/*` en `develop`, se borra** (local y, si se subió, remota; `git branch -d`, que se niega si faltara algo).
+- **`main` está protegida en GitHub (también para el dueño)**: solo entra por pull request con el check `verify` del CI en verde y la rama al día; sin push directo ni forzado. Para publicar: PR de `develop` a `main` y merge con el CI verde. Para una urgencia: rama `fix/*` desde `main` y PR. Si hiciera falta saltarla, el dueño desactiva la protección a mano en Settings → Branches.
 - El push de `develop` y de las ramas `feat/*` / `fix/*` está permitido. No hacer push a `main`, push forzado, PR a `main` ni deploy sin petición explícita. Una urgencia en producción sale de `main` como `fix/*`, se integra en `main` y se trae de vuelta a `develop`.
 - Commits en español, cortos. Sin líneas de atribución de Claude (`Co-Authored-By`, "Generated with Claude Code").
 - El repositorio de GitHub es público: nada de datos personales (teléfono, correo, CV) ni secretos. El CV y documentos personales viven en `.private/` (ignorado) y no se sirven desde `public/`.
@@ -56,7 +57,9 @@ Antes de cerrar una tarea: `npm run lint`, `npm test` y `npm run build`. Si toca
 Detalle en `docs/brand-system.md`. Reglas que se rompen con facilidad:
 
 - Azul marino (`brand-navy`) protagonista; superficies claras `brand-surface`; alternancia de bandas oscuras (hero, proceso, contacto) y claras.
-- Ámbar `brand-warm` (#F5B544) solo sobre oscuro y `brand-warm-ink` (#8A4B00) sobre claro, como único acento cálido y puntual: nunca fondos grandes ni botones.
+- Ámbar `brand-warm` (#F5B544) solo sobre oscuro y `brand-warm-ink` (#8A4B00) sobre claro, como único acento cálido. Es acento (hexágonos, checks, subrayados) y el color del **botón principal sobre fondo oscuro** (texto `brand-navy`); nunca fondos de áreas grandes. Sobre fondo claro el botón principal es navy (`brand-accent`). WhatsApp siempre verde (`wa`).
+- Tokens semánticos por función en `assets/css/main.css` (`surface`, `surface-alt`, `surface-inverse`, `text`, `text-muted`, `brand`, `accent`, `accent-ink`, `logo-blue`, `tint`, `wa`): alias de los `brand-*`; el comentario del archivo lista los pares fondo/texto válidos. Enlaces, etiquetas y foco sobre fondo claro usan `logo-blue`. Nada de colores hex sueltos en componentes (lo hace cumplir `tests/colorTokens.test.mjs`).
+- **Logos**: siempre `AppLogo` (`components/atoms/AppLogo`), que elige la variante por fondo (`surface="light"` color, `"dark"` blanco) y por tipo (`full` con tagline, `compact` sin tagline; header y pie usan `compact`). Sobre foto o degradado, solo el blanco y con capa oscura. Espacio libre mínimo: la altura del hexágono. Los SVG compactos (`brand-compact*.svg`) salen de los originales quitando el tagline: no editarlos a mano.
 - Verde solo para estados y WhatsApp.
 - Sombras de tres niveles (plano por defecto): tokens `shadow-card`, `shadow-card-lg`, `shadow-dialog`, `shadow-header`. Ritmo vertical de bandas `py-12 md:py-16`.
 - Motivo gráfico: hexágonos. El logo del pie se conserva aunque se repita.

@@ -20,7 +20,7 @@
   --color-brand-accent: #243b62;
   --color-brand-accent-text: #243b62;
   /* azul real extraído del logo — reservado para acentos puntuales (iconos, estado activo, hover), no para fondos grandes ni texto de párrafo */
-  --color-brand-blue: #3f6bad;
+  --color-brand-blue: var(--color-logo-blue);
   --color-brand-ink: #030507;
   --color-brand-muted: #4d5868;
   --color-brand-helper: #667182;
@@ -63,11 +63,36 @@
   --color-brand-error-text: #7a1f2a;
   --color-brand-error-border: #fda4af;
 
+  /* ── Tokens semánticos (por función). Alias de los valores de arriba: cambiar un valor base los mueve todos.
+     Pares fondo → texto válidos (WCAG AA, texto normal ≥ 4,5:1):
+       surface        #f5f7fa → text 19,0 · text-muted 6,7 · logo-blue 5,0 · accent-ink 6,3
+       surface-alt    #eef2f7 → text 18,2 · text-muted 6,4 · logo-blue 4,8
+       tint           #eef3fa → text 18,3 · text-muted 6,5 · logo-blue 4,8   (blanco #fff: text 20,4 · logo-blue 5,4)
+       brand          #243b62 → blanco 11,2   (botón principal sobre fondo claro)
+       surface-inverse #0f1727 → accent 9,9 (ámbar, texto/acento) · brand-text-subtle 11,6 · blanco 17,9
+       accent         #f5b544 → brand-navy 9,2   (botón principal sobre fondo oscuro: texto oscuro)
+       wa             #008069 → blanco 4,9        (WhatsApp, siempre verde)
+     Reglas: el ámbar (accent) solo es texto/acento sobre fondo oscuro; sobre fondo claro se usa accent-ink.
+     El ámbar no se usa como fondo de áreas grandes. logo-blue es el color de enlaces, etiquetas y foco sobre fondo claro. */
+  --color-logo-blue: #3f6bad; /* azul del logo */
+  --color-tint: #eef3fa; /* superficie azul muy tenue */
+  --color-surface: var(--color-brand-surface);
+  --color-surface-alt: var(--color-brand-surface-soft);
+  --color-surface-inverse: var(--color-brand-surface-contrast);
+  --color-text: var(--color-brand-ink);
+  --color-text-muted: var(--color-brand-muted);
+  --color-brand: var(--color-brand-accent);
+  --color-accent: var(--color-brand-warm);
+  --color-accent-ink: var(--color-brand-warm-ink);
+  --color-wa: var(--color-brand-whatsapp);
+
   /* sombras de marca en 3 niveles: 0 = plano (por defecto); 1 = shadow-card (tarjetas destacadas/clicables); 2 = shadow-card-lg/shadow-dialog/shadow-header (lo que flota) */
   --shadow-card: 0 4px 16px #0f172721; /* ~13 % de alfa */
   --shadow-card-lg: 0 18px 40px var(--color-brand-shadow-card);
   --shadow-dialog: 0 20px 60px var(--color-brand-shadow-card);
   --shadow-header: 0 10px 30px var(--color-brand-shadow-card);
+  /* sobre superficies oscuras (la sombra de marca, navy translúcido, no se ve sobre navy) */
+  --shadow-inverse: 0 18px 40px rgb(0 0 0 / 0.45);
 
   --font-sans: 'Inter', sans-serif;
   --font-display: 'Poppins', sans-serif;

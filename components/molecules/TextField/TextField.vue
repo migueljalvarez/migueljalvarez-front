@@ -58,7 +58,7 @@
       :aria-invalid="error ? 'true' : undefined"
       :aria-describedby="describedBy"
       :type="tag === 'input' ? 'text' : undefined"
-      class="min-h-11 w-full rounded-lg border bg-brand-surface-card px-3 py-2.5 text-base text-brand-ink transition placeholder:text-brand-helper focus:border-brand-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue motion-reduce:transition-none"
+      class="min-h-11 w-full rounded-lg border bg-brand-surface-card px-3 py-2.5 text-base text-brand-ink transition placeholder:text-brand-helper focus:border-logo-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-blue motion-reduce:transition-none"
       :class="[
         error ? 'border-brand-error-text' : 'border-brand-helper',
         { 'leading-7': tag === 'textarea' }
