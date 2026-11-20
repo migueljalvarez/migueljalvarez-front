@@ -53,7 +53,6 @@ export type InfoCardProps = {
   title: string
   level?: 'h2' | 'h3' | 'h4'
   /** Color del punto junto al título. */
-  dot?: 'warm' | 'blue'
 }
 
 export type ImageCarouselProps = {

@@ -94,7 +94,7 @@ Esto comunica tecnología, solidez y confianza. Lo que falta es equilibrarla con
 #### Acento cálido: ámbar (único, solo puntual)
 
 - `brand-warm` #F5B544: **solo sobre fondos oscuros** (9,88:1 sobre navy #0F1727; 8,61:1 sobre panel #1A2433). Nunca sobre blanco (1,81:1).
-- `brand-warm-ink` #8A4B00: ámbar para fondos claros (6,80:1 sobre blanco; 6,34:1 sobre #F5F7FA). Texto navy sobre ámbar: ≈ 9,4:1.
+- Sobre fondo claro no hay ámbar de texto: rótulos, viñetas y enlaces en `logo-blue` (#3F6BAD, 5,4:1 sobre blanco) y cifras o títulos secundarios en `brand` (#243B62, 11,2:1). Única excepción: la cita «Principio clave» (fondo `brand-warm` al 10 % y borde al 50 %). Texto navy sobre ámbar: ≈ 9,4:1.
 - Uso permitido: eyebrows sobre fondo oscuro, marcador hexagonal activo del proceso (`HexMarker tone="dark"`), checks sobre oscuro (`CheckList tone="dark"`) y el contorno tenue de los hexágonos del hero.
 - Prohibido: fondos grandes, botones, párrafos o más de un énfasis ámbar por bloque. El azul sigue siendo protagonista y el verde queda solo para estados y WhatsApp.
 
@@ -205,7 +205,7 @@ Con esto, el formulario y el resto del sitio hablan el mismo idioma visual.
 
 ## 7) Tokens semánticos, botones y logos (referencia vigente)
 
-**Tokens por función** (en `assets/css/main.css`, alias de los `--color-brand-*`): `surface`, `surface-alt`, `surface-inverse`, `text`, `text-muted`, `brand` (#243b62), `accent` (ámbar), `accent-ink` (ocre), `logo-blue` (#3F6BAD), `tint` (#EEF3FA) y `wa`. El comentario del archivo lista los pares fondo → texto válidos con sus ratios WCAG AA.
+**Tokens por función** (en `assets/css/main.css`, alias de los `--color-brand-*`): `surface`, `surface-alt`, `surface-inverse`, `text`, `text-muted`, `brand` (#243b62), `accent` (ámbar), `logo-blue` (#3F6BAD), `tint` (#EEF3FA) y `wa`. El comentario del archivo lista los pares fondo → texto válidos con sus ratios WCAG AA.
 
 **Botones**
 
@@ -213,7 +213,7 @@ Con esto, el formulario y el resto del sitio hablan el mismo idioma visual.
 - Principal sobre fondo oscuro (contacto, hero secundario, tarjetas oscuras): ámbar con texto navy (9,2:1). Estados: deshabilitado tenue con borde discontinuo, hover más suave con halo, foco con contorno blanco, enviando con indicador y `aria-busy`.
 - WhatsApp: siempre verde (`wa`).
 - Enlaces, etiquetas y foco de inputs sobre fondo claro: `logo-blue` (5,0:1 sobre surface, 4,8:1 sobre tint y surface-alt).
-- El ámbar nunca es texto sobre fondo claro (1,8:1): allí se usa `accent-ink`. Tampoco es fondo de áreas grandes.
+- El ámbar nunca es texto sobre fondo claro (1,8:1): allí se usa `logo-blue` (etiquetas, viñetas, enlaces) o `brand` (cifras). Tampoco es fondo de áreas grandes.
 
 **Logos** (componente `AppLogo`)
 

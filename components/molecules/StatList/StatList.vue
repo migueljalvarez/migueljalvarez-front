@@ -32,7 +32,7 @@
     >
       <dt class="text-xs leading-4 text-brand-muted first-letter:uppercase">{{ item.label }}</dt>
       <dd
-        class="font-display text-xl leading-tight font-bold break-words text-brand-warm-ink @lg:text-3xl"
+        class="font-display text-xl leading-tight font-bold break-words text-brand-accent-text @lg:text-3xl"
       >
         {{ item.value }}
       </dd>

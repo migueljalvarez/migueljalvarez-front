@@ -25,9 +25,8 @@
   --color-brand-muted: #4d5868;
   --color-brand-helper: #667182;
 
-  /* ámbar: único acento cálido, solo énfasis puntual. warm = sobre fondos oscuros (9,88:1 sobre navy, 8,61:1 sobre panel); warm-ink = sobre claros (6,80:1 sobre blanco, 6,34:1 sobre surface). NO usar warm sobre blanco (1,81:1) */
+  /* ámbar: único acento cálido, solo énfasis puntual. warm = solo sobre fondos oscuros (9,88:1 sobre navy, 8,61:1 sobre panel) y en botones; sobre fondo claro solo la cita «Principio clave» (como fondo/borde tenue). NO usar warm como texto sobre blanco (1,81:1). Sobre claro los acentos son logo-blue (rótulos, viñetas, enlaces) y brand-accent (cifras) */
   --color-brand-warm: #f5b544;
-  --color-brand-warm-ink: #8a4b00;
 
   /* surfaces: fondo principal y contenedores claros */
   --color-brand-surface: #f5f7fa;
@@ -69,14 +68,14 @@
 
   /* ── Tokens semánticos (por función). Alias de los valores de arriba: cambiar un valor base los mueve todos.
      Pares fondo → texto válidos (WCAG AA, texto normal ≥ 4,5:1):
-       surface        #f5f7fa → text 19,0 · text-muted 6,7 · logo-blue 5,0 · accent-ink 6,3
+       surface        #f5f7fa → text 19,0 · text-muted 6,7 · logo-blue 5,0 · brand 11,2
        surface-alt    #eef2f7 → text 18,2 · text-muted 6,4 · logo-blue 4,8
        tint           #eef3fa → text 18,3 · text-muted 6,5 · logo-blue 4,8   (blanco #fff: text 20,4 · logo-blue 5,4)
        brand          #243b62 → blanco 11,2   (botón principal sobre fondo claro)
        surface-inverse #0f1727 → accent 9,9 (ámbar, texto/acento) · brand-text-subtle 11,6 · blanco 17,9
        accent         #f5b544 → brand-navy 9,2   (botón principal sobre fondo oscuro: texto oscuro)
        wa             #008069 → blanco 4,9        (WhatsApp, siempre verde)
-     Reglas: el ámbar (accent) solo es texto/acento sobre fondo oscuro; sobre fondo claro se usa accent-ink.
+     Reglas: el ámbar (accent) solo es texto/acento sobre fondo oscuro; sobre fondo claro se usan logo-blue (rótulos, viñetas y enlaces) y brand (cifras y títulos secundarios).
      El ámbar no se usa como fondo de áreas grandes. logo-blue es el color de enlaces, etiquetas y foco sobre fondo claro. */
   --color-logo-blue: #3f6bad; /* azul del logo */
   --color-tint: #eef3fa; /* superficie azul muy tenue */
@@ -87,7 +86,6 @@
   --color-text-muted: var(--color-brand-muted);
   --color-brand: var(--color-brand-accent);
   --color-accent: var(--color-brand-warm);
-  --color-accent-ink: var(--color-brand-warm-ink);
   --color-wa: var(--color-brand-whatsapp);
 
   /* sombras de marca en 3 niveles: 0 = plano (por defecto); 1 = shadow-card (tarjetas destacadas/clicables); 2 = shadow-card-lg/shadow-dialog/shadow-header (lo que flota) */

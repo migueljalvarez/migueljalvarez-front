@@ -33,7 +33,7 @@ test('los tokens semánticos y el azul del logo están definidos', () => {
     'surface-alt:',
     'surface-inverse:',
     'text-muted:',
-    'accent-ink:',
+    'brand:',
     'wa:'
   ]) {
     assert.ok(css.includes(`--color-${token}`), `falta --color-${token}`)
