@@ -21,9 +21,9 @@
   },
   "dependencies": {
     "@nuxt/fonts": "^1.2.0",
-    "@nuxt/icon": "^2.6.2",
+    "@nuxt/icon": "^2.6.3",
     "@nuxt/image": "^2.2.1",
-    "@nuxt/ui": "^4.12.2",
+    "@nuxt/ui": "^4.13.0",
     "estree-walker": "^2.0.2",
     "nuxt": "^4.6.4",
     "resend": "^4.5.2",
