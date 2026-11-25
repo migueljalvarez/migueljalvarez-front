@@ -69,6 +69,11 @@ export default defineNuxtConfig({
     apiAccessClientSecret: '',
     // Clave compartida con la API para guardar los leads del formulario de contacto (INTAKE_API_KEY de la API).
     intakeApiKey: '',
+    // Comentarios de Mi Despensa en el panel (solo lectura): dirección de su API y llave de administración (la misma que
+    // ADMIN_API_KEY de su servidor). Se proveen en ejecución con NUXT_MI_DESPENSA_API_URL / NUXT_MI_DESPENSA_ADMIN_KEY
+    // (o MI_DESPENSA_API_URL / MI_DESPENSA_ADMIN_KEY). Vacío = la sección muestra «falta configurar».
+    miDespensaApiUrl: '',
+    miDespensaAdminKey: '',
     public: {
       // Los datos del titular (NUXT_PUBLIC_LEGAL_*) NO van aquí: la configuración pública se serializa en el HTML
       // de TODAS las páginas. Se leen en el servidor y solo llegan a Términos y Privacidad (GET /api/legal).
