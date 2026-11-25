@@ -67,7 +67,8 @@ export const mapApiPortfolioEntry = (entry: ApiPortfolioEntry): PortfolioType =>
   url: entry.url,
   gallery: entry.gallery.length > 0 ? entry.gallery : undefined,
   tags: entry.tags,
-  audience: entry.audience
+  audience: entry.audience,
+  featured: entry.featured
 })
 
 export const mapApiSocialLink = (link: ApiSocialLink): SocialMediaType => ({
@@ -112,6 +113,7 @@ export const toPortfolioCardProject = (
     href: item.status === 'in-development' ? '' : `/portafolio/${slug}`,
     url: item.url && /^https:\/\//.test(item.url) ? item.url : undefined,
     primary: options.primary,
+    featured: item.featured,
     status: item.status,
     sample: item.sample
   }
