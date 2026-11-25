@@ -18,8 +18,8 @@ export const SERVICE_OFFERINGS: ServiceOffering[] = [
   {
     id: 'construir-una-idea',
     situation: 'Tengo una idea o necesito construir algo',
-    title: 'Una idea convertida en un producto que puedas operar.',
-    tags: ['MVP', 'Landing', 'SaaS', 'Software a la medida'],
+    title: 'De la idea a un producto que puedas usar y hacer crecer.',
+    tags: ['Primera versión (MVP)', 'Página web', 'Plataforma (SaaS)', 'Software a la medida'],
     audience:
       'Para emprendedores y equipos que necesitan validar una idea o construir una herramienta digital desde cero.',
     approach:
@@ -31,8 +31,8 @@ export const SERVICE_OFFERINGS: ServiceOffering[] = [
   {
     id: 'mejorar-un-producto',
     situation: 'Ya tengo algo y necesito que funcione mejor',
-    title: 'Mejoras claras sobre lo que ya tienes, sin perder de vista el negocio.',
-    tags: ['Code review', 'Refactorización'],
+    title: 'Un sistema más ordenado y confiable, sin detener tu operación.',
+    tags: ['Revisión de código', 'Ordenar lo que ya existe'],
     audience:
       'Para empresas y equipos con un sistema en marcha que necesitan resolver problemas que frenan su operación o añadir capacidades.',
     approach:

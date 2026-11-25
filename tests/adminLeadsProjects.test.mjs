@@ -146,7 +146,7 @@ test('filterLeads filtra por etapa y busca sin distinguir tildes ni mayúsculas'
     ['1']
   )
   assert.deepEqual(
-    filterLeads(leads, 'all', 'SOPORTE').map(item => item.id),
+    filterLeads(leads, 'all', 'MEJORAR ALGO').map(item => item.id),
     ['2']
   )
   assert.deepEqual(filterLeads(leads, 'nuevo', 'laura'), [])

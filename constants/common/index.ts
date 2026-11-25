@@ -15,14 +15,14 @@ export const HOME_HERO_COPY = {
     after: '.'
   },
   lead: {
-    before: 'Ayudo a ',
-    strong: 'emprendedores y empresas',
-    after: ' a convertir ideas y problemas en software que puede crecer con su negocio.'
+    before: 'Soy Miguel, ingeniero de sistemas. Te ayudo a ',
+    strong: 'decidir qué construir, cómo y en qué orden',
+    after: ' para que tu software resuelva un problema real y pueda crecer contigo.'
   },
   support: {
-    before: 'Cuéntame qué necesitas y lo vemos juntos. ',
-    strong: 'Primero lo entendemos;',
-    after: ' después decidimos cómo construirlo.'
+    before: 'Cuéntame qué necesitas. ',
+    strong: 'La primera conversación es sin costo ni compromiso.',
+    after: ''
   }
 }
 export const HOME_COPY = {
@@ -47,8 +47,9 @@ export const HOME_COPY = {
   },
   process: {
     eyebrow: 'Proceso',
-    heading: 'Un proceso completo, en cada etapa',
-    description: 'Según lo que necesites, entro en una o varias de estas etapas.'
+    heading: 'Cómo avanzamos, etapa por etapa',
+    description:
+      'Según lo que necesites, entro en una o varias de estas etapas. Si el proyecto lo pide, sumo colaboradores de confianza; yo sigo siendo tu único interlocutor.'
   },
   portfolio: {
     heading: 'Soluciones que generan impacto',
@@ -70,12 +71,12 @@ export const HOME_COPY = {
     location: 'Medellín, Colombia',
     remote: 'Trabajo en remoto',
     intro:
-      'Hola, soy Miguel, ingeniero de sistemas. Me dedico al desarrollo de software, partiendo de la necesidad inicial y preparando el camino para crecer en el futuro. Trabajo con pasión por lo que hago.',
+      'Hola, soy Miguel, ingeniero de sistemas. Hago software que parte de una necesidad concreta y se construye pensando en cómo va a crecer. Prefiero entender bien el problema antes de proponer una solución.',
     quote:
-      'No dimensionar ni proyectar a futuro un proyecto lleva a mala planificación, reprocesos y módulos que nadie entiende por separado.',
+      'Un proyecto que no se piensa a futuro termina en reprocesos y en módulos que nadie entiende por separado. Por eso dimensiono antes de construir.',
     howIWorkTitle: 'Cómo pienso mi trabajo',
     howIWork:
-      'He colaborado con equipos internacionales de habla hispana en proyectos de IoT, LegalTech, outsourcing y consultoría, e identidad digital. Pasar por sectores tan distintos me ha permitido conocer los errores que casi nadie nota hasta que ya duelen.',
+      'He trabajado con equipos internacionales de habla hispana en IoT, LegalTech, consultoría e identidad digital. Cambiar de sector tantas veces me enseñó a reconocer los errores que casi nadie nota hasta que ya duelen.',
     beyondWorkTitle: 'Fuera del trabajo',
     beyondWork:
       'Soy relajado y tranquilo, apasionado de la tecnología y la cultura geek. Me gusta salir a caminar y olvidarme un poco de las cosas, los días de pizza, las salidas con amigos y compartir siempre un buen café. También relajarme viendo películas y series, y estar siempre buscando algo nuevo que aprender.',
@@ -83,8 +84,8 @@ export const HOME_COPY = {
     imageAlt: 'Miguel Álvarez, ingeniero de sistemas, trabajando en remoto',
     highlights: [
       { value: '10+', label: 'años haciendo software' },
-      { value: '4', label: 'sectores distintos' },
-      { value: 'LATAM', label: 'equipos de habla hispana' }
+      { value: '4', label: 'sectores, de IoT a LegalTech' },
+      { value: '2', label: 'productos propios en beta' }
     ]
   },
   contact: {
@@ -112,10 +113,9 @@ export const HOME_COPY = {
       submit: 'Enviar',
       subjectPlaceholder: 'Selecciona un asunto',
       subjects: [
-        { value: 'desarrollo', label: 'Desarrollo' },
-        { value: 'oferta', label: 'Oferta' },
-        { value: 'consulta', label: 'Consulta' },
-        { value: 'soporte', label: 'Soporte' },
+        { value: 'desarrollo', label: 'Quiero construir algo' },
+        { value: 'soporte', label: 'Quiero mejorar algo que ya tengo' },
+        { value: 'consulta', label: 'Necesito decidir antes de invertir' },
         { value: 'otro', label: 'Otro' }
       ]
     }

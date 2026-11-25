@@ -11,10 +11,10 @@ export const LEAD_SUBJECTS = ['desarrollo', 'oferta', 'consulta', 'soporte', 'ot
 export const LEAD_ORIGINS = ['formulario', 'whatsapp', 'linkedin', 'referido', 'otro'] as const
 
 export const LEAD_SUBJECT_LABEL: Record<LeadSubject, string> = {
-  desarrollo: 'Desarrollo',
+  desarrollo: 'Construir algo',
   oferta: 'Oferta',
-  consulta: 'Consulta',
-  soporte: 'Soporte',
+  consulta: 'Decidir antes de invertir',
+  soporte: 'Mejorar algo existente',
   otro: 'Otro'
 }
 
