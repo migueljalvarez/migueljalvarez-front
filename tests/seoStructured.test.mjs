@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import test from 'node:test'
 import {
+  absoluteUrl,
   buildBreadcrumbList,
   buildProjectSchema,
   sitemapDate,
@@ -41,6 +42,16 @@ test('la ficha como obra del autor solo lleva lo que existe', () => {
   assert.deepEqual(full.sameAs, ['https://www.micomodoro.com/'])
   const bare = buildProjectSchema(SITE, { id: 'x', title: 'X' })
   assert.equal('image' in bare || 'sameAs' in bare || 'description' in bare, false)
+})
+
+test('una imagen alojada fuera del sitio (R2) conserva su URL; una ruta del sitio se completa', () => {
+  const r2 = 'https://pub-ejemplo.r2.dev/projects/ejemplo.webp'
+  assert.equal(absoluteUrl(SITE, r2), r2)
+  assert.equal(absoluteUrl(SITE, '/og-image.jpg'), 'https://www.migueljalvarez.com/og-image.jpg')
+  const schema = buildProjectSchema(SITE, { id: 'x', slug: 'x', title: 'X', ogImage: r2 })
+  assert.equal(schema.image, r2)
+  const page = readFileSync('pages/portfolio/[slug].vue', 'utf8')
+  assert.match(page, /absoluteUrl\(siteUrl,/) // la ficha no concatena el dominio a ciegas
 })
 
 test('el sitemap solo pone lastmod con una fecha real', () => {
