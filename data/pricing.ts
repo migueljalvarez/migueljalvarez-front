@@ -24,12 +24,12 @@ export const PRICING_TERMS: PricingTerm[] = [
     text: 'Es un punto de partida: el valor final depende del tamaño y la complejidad de lo que necesites, y te lo confirmo por escrito antes de empezar.'
   },
   {
-    title: 'En dólares',
-    text: 'Los precios están en USD. Si trabajas desde Colombia, puedes pagar en pesos al cambio del día.'
+    title: 'El dólar es la referencia',
+    text: 'Los precios están en USD. Puedes pagar en pesos colombianos, convertidos a la TRM oficial del día en que pagas.'
   },
   {
     title: 'Anticipo',
-    text: 'En los servicios para empezar pido el 50 % antes de comenzar y el resto al entregar.'
+    text: 'En los servicios para empezar pido el 50 % del valor en dólares antes de comenzar y el resto al entregar. Si pagas en pesos, cada pago se convierte a la TRM de ese día.'
   },
   {
     title: 'Proyectos de desarrollo',
