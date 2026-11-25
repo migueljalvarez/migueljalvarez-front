@@ -1,12 +1,15 @@
 import { PORTFOLIO_PROJECTS } from '~/constants/portfolio'
 import { ABOUT_FALLBACK, MY_SOCIAL_MEDIA } from '~/constants/common'
+import { PRICING_FALLBACK_OFFERS } from '~/data/pricing'
 import { WORK_POLICY_BLOCKS } from '~/data/work'
 import type { AboutContent } from '~/types/about'
 import type { PortfolioType, SocialMediaType } from '~/types/common'
+import type { ServiceOfferView } from '~/types/pricing'
 import {
   mapApiAbout,
   mapApiPolicy,
   mapApiPortfolioEntry,
+  mapApiServiceOffers,
   mapApiSocialLink,
   type ApiPolicy,
   type ApiPortfolioEntry,
@@ -51,6 +54,16 @@ export const getPolicyBlocks = async (): Promise<PolicyBlock[]> => {
   return WORK_POLICY_BLOCKS.map((block, index) =>
     mapApiPolicy({ title: block.title, body: block.text }, index)
   )
+}
+
+/**
+ * Ofertas de `/como-cobro`. Los precios solo salen de la API (panel); el respaldo del código trae las mismas
+ * ofertas sin precio para no publicar un monto que ya no sea el vigente.
+ */
+export const getServiceOffers = async (): Promise<ServiceOfferView[]> => {
+  const offers = mapApiServiceOffers(await apiClient().get<unknown>('/api/service-offers'))
+  if (offers.length > 0) return offers
+  return PRICING_FALLBACK_OFFERS.map(offer => ({ ...offer, includes: [...offer.includes] }))
 }
 
 /** "Sobre mí": el publicado en la API (404 = sin publicar) o, si no hay o es inválido, el respaldo. */

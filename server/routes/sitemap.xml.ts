@@ -20,6 +20,7 @@ export default defineEventHandler(async event => {
   const entries: { path: string; lastmod?: string }[] = [
     { path: '/' },
     { path: '/como-trabajo' },
+    { path: '/como-cobro' },
     { path: '/portafolio' },
     { path: '/privacidad', lastmod: PRIVACY_UPDATED_AT },
     { path: '/terminos-y-condiciones', lastmod: TERMS_UPDATED_AT },
