@@ -3,7 +3,7 @@
   import { BackLink, CheckList, ImageWithFallback } from '~/components/molecules'
   import { WHATSAPP_URL } from '~/constants/common'
   import type { PortfolioType } from '~/types/common'
-  import { buildBreadcrumbList, buildProjectSchema } from '~/utils/seo'
+  import { absoluteUrl, buildBreadcrumbList, buildProjectSchema } from '~/utils/seo'
 
   definePageMeta({
     path: '/portafolio/:slug()',
@@ -31,7 +31,7 @@
   )
 
   const siteUrl = useSiteUrl()
-  const seoImage = computed(() => `${siteUrl}${project.value?.ogImage ?? '/og-image.jpg'}`)
+  const seoImage = computed(() => absoluteUrl(siteUrl, project.value?.ogImage ?? '/og-image.jpg'))
   const seoTitle = computed(() => project.value?.title ?? 'Proyecto no encontrado')
   const seoDescription = computed(
     () => project.value?.description ?? 'Proyecto del portafolio de Miguel Álvarez.'
