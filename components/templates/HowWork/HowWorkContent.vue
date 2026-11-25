@@ -72,6 +72,24 @@
     </div>
 
     <div class="mx-auto w-full max-w-7xl">
+      <Card as="aside" aria-labelledby="work-pricing-title" class="p-5 md:p-6">
+        <h2 id="work-pricing-title" class="text-xl font-semibold text-brand-ink">
+          ¿Cuánto cuesta trabajar conmigo?
+        </h2>
+        <p class="mt-3 max-w-3xl text-base leading-7 text-brand-muted">
+          Los servicios para empezar tienen un precio «desde» y sé cuánto cuesta cada paso antes de
+          empezar.
+        </p>
+        <NuxtLink
+          to="/como-cobro"
+          class="mt-2 inline-flex min-h-11 items-center text-base font-medium text-logo-blue underline underline-offset-4 hover:text-brand-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue"
+        >
+          Ver cómo cobro
+        </NuxtLink>
+      </Card>
+    </div>
+
+    <div class="mx-auto w-full max-w-7xl">
       <Card as="aside" aria-labelledby="work-guide-title" class="p-5 md:p-6">
         <h2 id="work-guide-title" class="text-xl font-semibold text-brand-ink">
           ¿Decidiendo entre mejorar o rehacer tu software?

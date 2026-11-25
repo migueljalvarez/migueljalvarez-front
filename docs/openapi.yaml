@@ -152,6 +152,25 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PolicyBlock'
+  /api/service-offers:
+    get:
+      tags: [Público]
+      summary: Ofertas de servicio con precio «desde» (/como-cobro)
+      description: |
+        API de contenido (`GET /api/service-offers`, solo las publicadas) con respaldo en `data/pricing.ts`:
+        las mismas ofertas SIN precio, para no mostrar un monto que ya no sea el vigente. El precio de
+        lanzamiento (`launchPriceFromUsd`, `launchNote`) solo llega mientras esté activo en el panel y se
+        descarta si no es menor que el normal. Montos en USD. Caché corta (60 s).
+      operationId: listServiceOffers
+      responses:
+        '200':
+          description: Ofertas ordenadas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceOffer'
   /api/contact:
     post:
       tags: [Contacto]
@@ -788,6 +807,33 @@ components:
         title:
           type: string
         body:
+          type: string
+    ServiceOffer:
+      type: object
+      required: [id, slug, title, summary, includes]
+      properties:
+        id:
+          type: string
+          description: Igual que `slug`
+        slug:
+          type: string
+        title:
+          type: string
+        summary:
+          type: string
+        includes:
+          type: array
+          items:
+            type: string
+        duration:
+          type: string
+        priceFromUsd:
+          type: integer
+          description: Precio «desde» en USD. Ausente en el respaldo del código (se cotiza según el alcance).
+        launchPriceFromUsd:
+          type: integer
+          description: Solo con el interruptor de lanzamiento activo; siempre menor que `priceFromUsd`.
+        launchNote:
           type: string
     PortfolioProject:
       type: object

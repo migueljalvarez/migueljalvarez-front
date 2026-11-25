@@ -74,6 +74,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
     planned: []
   },
   {
+    label: 'Ofertas',
+    to: '/admin/offers',
+    icon: 'mdi:tag-text-outline',
+    group: 'content',
+    summary: 'Tus servicios con precio «desde» en USD y el precio de lanzamiento, para Cómo cobro.',
+    planned: []
+  },
+  {
     label: 'Testimonios',
     to: '/admin/testimonials',
     icon: 'mdi:message-star-outline',

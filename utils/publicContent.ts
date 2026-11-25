@@ -1,6 +1,7 @@
 import type { AboutContent, AboutImage } from '~/types/about'
 import type { PortfolioType, SocialMediaType } from '~/types/common'
 import type { PortfolioCardProject } from '~/types/portfolio'
+import type { ServiceOfferView } from '~/types/pricing'
 import { isImageSource } from './imageSource.ts'
 
 /**
@@ -91,6 +92,62 @@ export const mapApiPolicy = (policy: ApiPolicy, index: number): PolicyBlock => (
   title: policy.title,
   body: policy.body
 })
+
+// --- Ofertas de servicio (/como-cobro) ----------------------------------------------------------
+
+/** Forma de `GET /api/service-offers` de la API (precio de lanzamiento y nota solo si está activo). */
+export type ApiServiceOffer = {
+  slug: string
+  title: string
+  summary: string
+  includes: string[]
+  duration?: string
+  priceFromUsd: number
+  launchPriceFromUsd?: number
+  launchNote?: string
+}
+
+const isPositiveInt = (value: unknown): value is number =>
+  typeof value === 'number' && Number.isInteger(value) && value > 0
+
+/**
+ * Convierte la respuesta de la API en ofertas del sitio. Descarta lo inválido en lugar de romper la página, y
+ * ignora un precio de lanzamiento que no sea menor que el normal (no se muestra un «descuento» incoherente).
+ */
+export const mapApiServiceOffers = (raw: unknown): ServiceOfferView[] => {
+  if (!Array.isArray(raw)) return []
+  return raw.flatMap((item): ServiceOfferView[] => {
+    const offer = item as Partial<ApiServiceOffer> | null
+    if (
+      !offer ||
+      typeof offer.slug !== 'string' ||
+      typeof offer.title !== 'string' ||
+      typeof offer.summary !== 'string' ||
+      !isPositiveInt(offer.priceFromUsd)
+    ) {
+      return []
+    }
+    const launch =
+      isPositiveInt(offer.launchPriceFromUsd) && offer.launchPriceFromUsd < offer.priceFromUsd
+        ? offer.launchPriceFromUsd
+        : undefined
+    return [
+      {
+        id: offer.slug,
+        slug: offer.slug,
+        title: offer.title,
+        summary: offer.summary,
+        includes: Array.isArray(offer.includes)
+          ? offer.includes.filter((line): line is string => typeof line === 'string')
+          : [],
+        duration: offer.duration || undefined,
+        priceFromUsd: offer.priceFromUsd,
+        launchPriceFromUsd: launch,
+        launchNote: launch !== undefined && offer.launchNote ? offer.launchNote : undefined
+      }
+    ]
+  })
+}
 
 /**
  * Tarjeta del portafolio (home y /portafolio). Las etiquetas y el público objetivo vienen de la ficha;

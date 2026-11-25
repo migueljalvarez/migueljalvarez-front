@@ -9,7 +9,9 @@ import ServiceCard from './ServiceCard/ServiceCard.vue'
 import ContactDetails from './ContactDetails/ContactDetails.vue'
 import LegalFooter from './LegalFooter/LegalFooter.vue'
 import HeroBriefCard from './HeroBriefCard/HeroBriefCard.vue'
+import ServiceOfferCard from './ServiceOfferCard/ServiceOfferCard.vue'
 export {
+  ServiceOfferCard,
   HeroBriefCard,
   ContactDetails,
   LegalFooter,
