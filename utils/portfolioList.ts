@@ -8,12 +8,6 @@ import type { PortfolioCardProject, PortfolioFilter } from '~/types/portfolio'
 /** Con menos proyectos publicados que esto, el grid termina con la tarjeta «Siguiente proyecto». */
 export const FILLER_MIN_PUBLISHED = 3
 
-/** Los chips de filtro solo aparecen cuando hay al menos un proyecto de cada tipo. */
-export const hasBothProjectTypes = (projects: Pick<PortfolioCardProject, 'type'>[]): boolean => {
-  const types = new Set(projects.map(project => project.type))
-  return types.has('client') && types.has('product')
-}
-
 export const filterPortfolioCards = <T extends Pick<PortfolioCardProject, 'type'>>(
   projects: T[],
   filter: PortfolioFilter
