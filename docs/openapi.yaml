@@ -440,6 +440,134 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /api/admin/despensa/ping:
+    get:
+      tags: [Admin]
+      summary: Probar la conexión con la API de administración de Mi Despensa
+      description: |
+        Archivo específico (prioridad sobre el proxy `/api/admin/{...path}`). Exige sesión de administrador
+        (se comprueba en la API con la cookie `admin_session`; sin sesión, 401). Llama a `GET /admin/ping` de Mi Despensa
+        desde el servidor con la llave `x-admin-key` (`MI_DESPENSA_ADMIN_KEY`, nunca llega al navegador) y la dirección
+        `MI_DESPENSA_API_URL`. En desarrollo, sin esas variables (o con `MI_DESPENSA_MOCK=true`), responde con datos
+        simulados y `simulated: true`; esa rama no existe en producción. Errores de Mi Despensa: llave rechazada o API
+        apagada → 502 (nunca 401, que el panel tomaría por sesión vencida), más de 30 consultas por minuto → 429,
+        sin configurar o sin conexión → 503. `data.code`: `config`, `key`, `off`, `rate`, `bad` o `down`.
+        Respuesta `Cache-Control: no-store`.
+      responses:
+        '200':
+          description: Conexión y llave correctas
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ok, hora, simulated]
+                properties:
+                  ok: { type: boolean, const: true }
+                  hora: { type: string, description: Hora del servidor de Mi Despensa (ISO) }
+                  simulated: { type: boolean }
+        '401':
+          description: Sin sesión de administrador
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Demasiadas consultas a Mi Despensa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '502':
+          description: Mi Despensa rechazó la llave o su API está apagada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Sin configurar o sin conexión
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/admin/despensa/feedback:
+    get:
+      tags: [Admin]
+      summary: Comentarios de los usuarios de Mi Despensa (solo lectura)
+      description: |
+        Archivo específico (prioridad sobre el proxy). Mismas reglas de sesión, llave y errores que
+        `/api/admin/despensa/ping`. Valida el filtro y la paginación antes de llamar (400 si no son válidos) y la
+        respuesta de Mi Despensa antes de devolverla. Los más recientes primero; `total` cumple el filtro y `porTipo`
+        cuenta todos los comentarios, sin filtro. `userRef` son los 8 primeros caracteres del id del usuario (puede ser
+        `null`); la API de Mi Despensa no expone correos ni otros datos personales. Respuesta `Cache-Control: no-store`.
+      parameters:
+        - in: query
+          name: kind
+          schema: { type: string, enum: [idea, problema, otro] }
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+        - in: query
+          name: offset
+          schema: { type: integer, minimum: 0, default: 0 }
+      responses:
+        '200':
+          description: Página de comentarios
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items, total, porTipo, limit, offset, simulated]
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      required: [id, kind, message, createdAt]
+                      properties:
+                        id: { type: string }
+                        kind: { type: string, enum: [idea, problema, otro] }
+                        message: { type: string }
+                        appVersion: { type: [string, 'null'] }
+                        platform: { type: [string, 'null'] }
+                        userRef: { type: [string, 'null'] }
+                        createdAt: { type: string, format: date-time }
+                  total: { type: integer, minimum: 0 }
+                  porTipo:
+                    type: object
+                    additionalProperties: { type: integer, minimum: 0 }
+                  limit: { type: integer }
+                  offset: { type: integer }
+                  simulated: { type: boolean }
+        '400':
+          description: Filtro o paginación no válidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Sin sesión de administrador
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Demasiadas consultas a Mi Despensa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '502':
+          description: Mi Despensa rechazó la llave o su API está apagada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Sin configurar o sin conexión
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /api/admin/{...path}:
     x-proxy: true
     get:
