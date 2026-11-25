@@ -3,6 +3,8 @@ import Contact from './Contact/Contact.vue'
 import ContactCompact from './ContactCompact/ContactCompact.vue'
 import About from './About/About.vue'
 import PortfolioSection from './Portfolio/PortfolioSection.vue'
+import PortfolioList from './PortfolioList/PortfolioList.vue'
+import ProjectDetail from './ProjectDetail/ProjectDetail.vue'
 import Services from './Services/Services.vue'
 import ProcessSection from './Services/ProcessSection.vue'
 import HowWorkTeaser from './HowWork/HowWorkTeaser.vue'
@@ -20,6 +22,8 @@ export {
   ContactCompact,
   PortfolioSection,
   PortfolioSection as Portfolio,
+  PortfolioList,
+  ProjectDetail,
   Services,
   ProcessSection,
   HowWorkTeaser,
