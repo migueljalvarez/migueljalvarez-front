@@ -49,6 +49,15 @@ export const ADMIN_NAV: AdminNavItem[] = [
     planned: []
   },
   {
+    label: 'Comentarios',
+    to: '/admin/feedback',
+    icon: 'mdi:message-text-outline',
+    group: 'management',
+    summary:
+      'Lo que escriben los usuarios de la app Mi Despensa: ideas, problemas y otros comentarios.',
+    planned: []
+  },
+  {
     label: 'Redes sociales',
     to: '/admin/social-links',
     icon: 'mdi:share-variant-outline',
