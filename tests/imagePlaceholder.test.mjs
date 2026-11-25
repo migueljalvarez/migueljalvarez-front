@@ -8,7 +8,6 @@ const read = path => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8'
 // marca: si vuelve un NuxtImg suelto, una ruta vacía o rota se vería como imagen rota.
 const WRAPPED = [
   'components/molecules/ImageCarousel/ImageCarousel.vue',
-  'components/organisms/ProjectCard/ProjectCard.vue',
   'components/organisms/ProjectListCard/ProjectListCard.vue',
   'components/organisms/ProjectGallery/ProjectGallery.vue',
   'components/templates/ProjectDetail/ProjectDetail.vue'

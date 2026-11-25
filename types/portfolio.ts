@@ -19,5 +19,3 @@ export type PortfolioCardProject = {
 }
 
 export type PortfolioFilter = 'all' | 'client' | 'product'
-export type PortfolioCardVariant = 'horizontal' | 'featured' | 'default'
-export type PortfolioLayoutMode = 'empty' | 'horizontal' | 'two' | 'three' | 'bento'
