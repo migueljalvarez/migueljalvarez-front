@@ -9,7 +9,9 @@ const read = path => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8'
 const WRAPPED = [
   'components/molecules/ImageCarousel/ImageCarousel.vue',
   'components/organisms/ProjectCard/ProjectCard.vue',
-  'pages/portfolio/[slug].vue'
+  'components/organisms/ProjectListCard/ProjectListCard.vue',
+  'components/organisms/ProjectGallery/ProjectGallery.vue',
+  'components/templates/ProjectDetail/ProjectDetail.vue'
 ]
 
 for (const file of WRAPPED) {

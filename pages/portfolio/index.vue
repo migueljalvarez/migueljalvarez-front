@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { BackLink } from '~/components/molecules'
-  import PortfolioSection from '~/components/templates/Portfolio/PortfolioSection.vue'
+  import PortfolioList from '~/components/templates/PortfolioList/PortfolioList.vue'
 
   const { allCards } = await usePortfolio()
 
@@ -23,17 +23,7 @@
   <div class="bg-brand-surface px-4 py-12 md:py-16">
     <div class="mx-auto w-full max-w-7xl">
       <BackLink to="/" class="mb-6">Volver al inicio</BackLink>
-
-      <PortfolioSection
-        title="Portafolio"
-        heading="Soluciones que generan impacto"
-        description="Una selección de productos, plataformas y sistemas construidos para resolver problemas concretos."
-        heading-level="h1"
-        section-id="portfolio-page"
-        :projects="allCards"
-        :show-view-all="false"
-        :reveal="false"
-      />
+      <PortfolioList :projects="allCards" />
     </div>
   </div>
 </template>

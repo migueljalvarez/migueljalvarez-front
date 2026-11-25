@@ -11,6 +11,8 @@ export type PortfolioCardProject = {
   /** Sitio o aplicación en línea (https), si el proyecto la tiene. */
   url?: string
   primary?: boolean
+  /** Destacado en el panel: primero y en grande en /portafolio. */
+  featured?: boolean
   status?: 'published' | 'in-development'
   /** Dato de ejemplo (solo desarrollo). */
   sample?: boolean

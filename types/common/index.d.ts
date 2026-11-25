@@ -54,6 +54,8 @@ export type PortfolioType = {
   /** Etiquetas de la tarjeta (máx. 4) y a quién va dirigido el proyecto. */
   tags?: string[]
   audience?: string
+  /** Proyecto destacado: va primero y en grande en el listado. */
+  featured?: boolean
   /** Dato de ejemplo (solo desarrollo): la interfaz lo marca como tal. */
   sample?: boolean
 }
