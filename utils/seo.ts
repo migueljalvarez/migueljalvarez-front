@@ -4,7 +4,10 @@
 export type BreadcrumbItem = { name: string; path: string }
 
 const absolute = (siteUrl: string, path: string) =>
-  `${siteUrl.replace(/\/+$/, '')}${path === '/' ? '' : path}`
+  /^https?:\/\//.test(path) ? path : `${siteUrl.replace(/\/+$/, '')}${path === '/' ? '' : path}`
+
+/** URL absoluta: una ruta del sitio se completa con el dominio; una URL https (p. ej. R2) se deja tal cual. */
+export const absoluteUrl = absolute
 
 /** Migas de pan: la primera es siempre «Inicio». `path` es la ruta pública de cada nivel. */
 export const buildBreadcrumbList = (siteUrl: string, items: BreadcrumbItem[]) => ({
