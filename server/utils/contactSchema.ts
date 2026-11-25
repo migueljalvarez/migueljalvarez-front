@@ -1,10 +1,10 @@
 import { z } from 'zod'
 
 export const SUBJECT_LABELS = {
-  desarrollo: 'Desarrollo',
+  desarrollo: 'Quiero construir algo',
   oferta: 'Oferta',
-  consulta: 'Consulta',
-  soporte: 'Soporte',
+  consulta: 'Necesito decidir antes de invertir',
+  soporte: 'Quiero mejorar algo que ya tengo',
   otro: 'Otro'
 } as const
 

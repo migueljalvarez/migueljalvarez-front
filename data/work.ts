@@ -18,9 +18,10 @@ export type WorkNonNegotiable = {
 export const WORK_COMMITMENTS = [
   'El código y los accesos son tuyos.',
   'Te digo cuándo algo no te conviene, aunque eso signifique construir menos.',
-  'Uso IA con transparencia y respondo por el resultado.',
+  'Uso IA con transparencia, y reviso y valido lo que produce.',
   'Explico las decisiones técnicas importantes.',
-  'Acuerdo el alcance antes de implementar.'
+  'Acuerdo el alcance antes de implementar.',
+  'Trabajo directamente contigo; si el proyecto lo requiere, sumo colaboradores de confianza y respondo yo por el resultado.'
 ]
 
 export const WORK_NON_NEGOTIABLES: WorkNonNegotiable[] = [
