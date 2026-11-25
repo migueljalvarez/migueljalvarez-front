@@ -1,5 +1,4 @@
 import Section from './Section/Section.vue'
-import ProjectCard from './ProjectCard/ProjectCard.vue'
 import ProjectListCard from './ProjectListCard/ProjectListCard.vue'
 import ProjectFillerCard from './ProjectFillerCard/ProjectFillerCard.vue'
 import ProjectStory from './ProjectStory/ProjectStory.vue'
@@ -15,7 +14,6 @@ export {
   ContactDetails,
   LegalFooter,
   Section,
-  ProjectCard,
   ProjectListCard,
   ProjectFillerCard,
   ProjectStory,

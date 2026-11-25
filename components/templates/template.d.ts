@@ -5,6 +5,18 @@ import type { PortfolioCardProject } from '~/types/portfolio'
 
 export type PortfolioListProps = {
   projects: PortfolioCardProject[]
+  eyebrow?: string
+  heading?: string
+  description?: string
+  /** h1 en la página; h2 en la home (las tarjetas bajan un nivel). */
+  headingLevel?: 'h1' | 'h2'
+  sectionId?: string
+  /** Chips de filtro por tipo (solo aparecen si hay proyectos de ambos tipos). La home los omite. */
+  showFilters?: boolean
+  /** Enlace «Ver todos los proyectos» (home). */
+  showViewAll?: boolean
+  /** Animación de entrada al hacerse visible. */
+  reveal?: boolean
 }
 
 export type ProjectDetailProps = {
@@ -24,9 +36,4 @@ export type LegalDocumentProps = {
   sections: LegalSection[]
 }
 
-export type {
-  PortfolioCardProject,
-  PortfolioCardVariant,
-  PortfolioFilter,
-  PortfolioLayoutMode
-} from '~/types/portfolio'
+export type { PortfolioCardProject, PortfolioFilter } from '~/types/portfolio'

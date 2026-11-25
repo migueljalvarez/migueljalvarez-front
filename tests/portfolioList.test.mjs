@@ -5,10 +5,10 @@ import {
   columnsFor,
   filterPortfolioCards,
   galleryColumns,
-  hasBothProjectTypes,
   showFillerCard,
   splitFeatured
 } from '../utils/portfolioList.ts'
+import { getAvailablePortfolioFilters } from '../utils/portfolioFilters.ts'
 import { mapApiPortfolioEntry, toPortfolioCardProject } from '../utils/publicContent.ts'
 
 const card = (slug, extra = {}) => ({ id: slug, slug, type: 'product', status: 'published', ...extra })
@@ -37,12 +37,12 @@ test('la tarjeta de relleno aparece con menos de 3 proyectos publicados y desapa
   assert.equal(showFillerCard([published('a'), published('b'), dev('c')]), true)
 })
 
-test('los filtros solo existen si hay al menos un proyecto de cada tipo', () => {
-  assert.equal(hasBothProjectTypes([card('a'), card('b')]), false)
-  assert.equal(hasBothProjectTypes([card('a'), card('b', { type: 'client' })]), true)
+test('el filtro por tipo reparte los proyectos y los chips solo salen con ambos tipos', () => {
   const all = [card('a'), card('b', { type: 'client' }), card('c')]
   assert.deepEqual(filterPortfolioCards(all, 'client').map(item => item.slug), ['b'])
   assert.equal(filterPortfolioCards(all, 'all').length, 3)
+  assert.equal(getAvailablePortfolioFilters([card('a'), card('b')]).length > 2, false)
+  assert.equal(getAvailablePortfolioFilters(all).length > 2, true)
 })
 
 test('columnas de la ficha: se reparten según lo que existe', () => {
@@ -69,11 +69,12 @@ test('el campo destacado de la API llega a la tarjeta (no se descarta al mapear)
   assert.equal(toPortfolioCardProject(mapApiPortfolioEntry({ ...entry, featured: false })).featured, false)
 })
 
-test('el listado y la ficha usan los componentes nuevos y la home conserva el suyo', () => {
+test('el listado, la home y la ficha usan los mismos componentes nuevos', () => {
   assert.match(readFileSync('pages/portfolio/index.vue', 'utf8'), /PortfolioList/)
   assert.match(readFileSync('pages/portfolio/[slug].vue', 'utf8'), /ProjectDetail/)
-  // La home sigue con PortfolioSection y ProjectCard (el rediseño es solo de /portafolio y la ficha).
-  assert.match(readFileSync('pages/index.vue', 'utf8'), /Portfolio/)
+  // La home conserva PortfolioSection (nombre de chunk del hook de prefetch) pero con las mismas tarjetas.
+  assert.match(readFileSync('pages/index.vue', 'utf8'), /PortfolioSection/)
+  assert.match(readFileSync('components/templates/Portfolio/PortfolioSection.vue', 'utf8'), /PortfolioList/)
   const detail = readFileSync('components/templates/ProjectDetail/ProjectDetail.vue', 'utf8')
   for (const part of ['ProjectStory', 'ProjectHighlights', 'ProjectScope', 'ProjectGallery'])
     assert.match(detail, new RegExp(part))
