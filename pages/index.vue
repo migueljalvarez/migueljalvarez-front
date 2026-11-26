@@ -9,6 +9,9 @@
   const ProcessSection = lazySection(
     () => import('~/components/templates/Services/ProcessSection.vue')
   )
+  const ExperienceSection = lazySection(
+    () => import('~/components/templates/Experience/ExperienceSection.vue')
+  )
   const PortfolioSection = lazySection(
     () => import('~/components/templates/Portfolio/PortfolioSection.vue')
   )
@@ -68,6 +71,7 @@
 
     <Services />
     <ProcessSection />
+    <ExperienceSection />
     <Section id="portfolio-background" class="gap-4 bg-brand-surface px-4 py-12 md:py-16">
       <div class="mx-auto w-full max-w-7xl">
         <PortfolioSection title="Portafolio" :projects="portfolioProjects" />
