@@ -48,6 +48,7 @@ export type PortfolioType = {
   urlImage: string
   /** Imagen para redes (Open Graph): 1200×630, jpg. Si falta se usa la del sitio. */
   ogImage?: string
+  updatedAt?: string
   gallery?: ProjectImage[]
   /** Enlace público del proyecto, si existe. */
   url?: string

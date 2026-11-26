@@ -224,7 +224,7 @@
               counter
               :maxlength="ABOUT_LIMITS.role"
               autocomplete="off"
-              placeholder="Ingeniero de sistemas"
+              placeholder="Desarrollador de software"
               hint="Va sobre la frase destacada."
               :error="errors.role"
             />

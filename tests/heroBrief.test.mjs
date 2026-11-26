@@ -31,9 +31,10 @@ test('el hero tiene un único h1 con el titular completo y sin hexágonos', () =
   const main = read('components/templates/Main/Main.vue')
   assert.equal([...main.matchAll(/<h1\b/g)].length, 1)
   assert.ok(!/hexagon/i.test(main))
-  assert.ok(!main.includes('Antes de escribir')) // el texto vive en HOME_HERO_COPY
+  assert.ok(!main.includes('a la medida')) // el texto vive en HOME_HERO_COPY
   const copy = read('constants/common/index.ts')
-  assert.ok(copy.includes("code: 'código'") && copy.includes("problem: 'problema'"))
+  assert.ok(copy.includes("muted: 'soluciones'") && /accent: 'tu.+negocio'/.test(copy))
+  assert.ok(copy.includes('Desarrollador de software'))
 })
 
 test('el enlace de WhatsApp del hero no cambia y la tarjeta lleva su ID de conteo', () => {

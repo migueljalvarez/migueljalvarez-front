@@ -66,6 +66,18 @@ export const buildProjectSchema = (siteUrl: string, project: ProjectLike) => ({
 export const sitemapDate = (value: string | undefined | null): string | null =>
   value && /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(value)) ? value : null
 
+/** Día (AAAA-MM-DD) de una fecha ISO de la API. */
+export const sitemapDay = (value: string | undefined | null): string | null =>
+  sitemapDate(value?.slice(0, 10))
+
+/** El día más reciente de una lista de fechas ISO; sin ninguna válida, no hay `lastmod`. */
+export const latestSitemapDay = (values: (string | undefined | null)[]): string | null =>
+  values
+    .map(sitemapDay)
+    .filter((day): day is string => day !== null)
+    .sort()
+    .at(-1) ?? null
+
 /** Una entrada `<url>`; `lastmod` solo si hay una fecha real (una inventada empeora la señal). */
 export const sitemapUrlEntry = (loc: string, lastmod?: string | null) => {
   const date = sitemapDate(lastmod)
