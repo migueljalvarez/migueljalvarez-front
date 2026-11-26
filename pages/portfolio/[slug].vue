@@ -2,7 +2,13 @@
   import { Button, Heading } from '~/components/atoms'
   import ProjectDetail from '~/components/templates/ProjectDetail/ProjectDetail.vue'
   import type { PortfolioType } from '~/types/common'
-  import { absoluteUrl, buildBreadcrumbList, buildProjectSchema } from '~/utils/seo'
+  import {
+    absoluteUrl,
+    buildBreadcrumbList,
+    buildProjectSchema,
+    projectSeoTitle,
+    toMetaDescription
+  } from '~/utils/seo'
 
   definePageMeta({
     path: '/portafolio/:slug()',
@@ -31,9 +37,11 @@
 
   const siteUrl = useSiteUrl()
   const seoImage = computed(() => absoluteUrl(siteUrl, project.value?.ogImage ?? '/og-image.jpg'))
-  const seoTitle = computed(() => project.value?.title ?? 'Proyecto no encontrado')
-  const seoDescription = computed(
-    () => project.value?.description ?? 'Proyecto del portafolio de Miguel Álvarez.'
+  const seoTitle = computed(() =>
+    project.value ? projectSeoTitle(project.value) : 'Proyecto no encontrado'
+  )
+  const seoDescription = computed(() =>
+    toMetaDescription(project.value?.description ?? 'Proyecto del portafolio de Miguel Álvarez.')
   )
   useSeoMeta({
     title: seoTitle,

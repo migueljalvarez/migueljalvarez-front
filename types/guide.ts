@@ -12,7 +12,7 @@ export type Guide = {
   eyebrow: string
   /** Título visible (h1). */
   title: string
-  /** Título corto para la pestaña; el sitio le añade « | Desarrollo de Software». */
+  /** Título corto para la pestaña; el sitio le añade « | Miguel Álvarez». */
   seoTitle: string
   /** Descripción para buscadores y redes (120 a 160 caracteres). */
   description: string

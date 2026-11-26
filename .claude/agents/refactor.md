@@ -16,7 +16,7 @@ Centrarse SOLO en:
 
 - Violaciones de capas Atomic Design y lógica en el lugar equivocado.
 - Marcado duplicado que deba componentizarse.
-- Archivos o identificadores con nombre en español (deuda registrada en `AGENTS.md` y en el backlog de Notion).
+- Archivos o identificadores con nombre en español (deuda registrada en el backlog de Notion).
 
 ## Instrucciones
 

@@ -11,9 +11,9 @@
   })
 
   usePageSeo({
-    title: 'Portafolio',
+    title: 'Portafolio: productos propios en beta',
     description:
-      'Productos y plataformas digitales, propios y de clientes, construidos para resolver problemas concretos. Mira el contexto y la solución de cada proyecto.',
+      'Productos propios en beta construidos para resolver problemas concretos. Mira el problema, mis decisiones y dónde está cada uno hoy.',
     path: '/portafolio'
   })
   useBreadcrumbJsonLd([{ name: 'Portafolio', path: '/portafolio' }])

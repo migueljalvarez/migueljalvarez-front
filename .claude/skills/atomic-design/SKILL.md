@@ -33,7 +33,7 @@ composables/    acceso a datos y lógica reutilizable (useAdminApi, useEmail, us
 - Ningún archivo, carpeta, componente, composable, tipo, constante ni ruta de API en español. El español queda solo para el copy visible y la documentación.
 - Componentes en PascalCase, composables `useX`, utilidades en camelCase.
 - Las **URL públicas** pueden seguir en español por SEO (`/portafolio`, `/como-trabajo`, `/privacidad`) usando `definePageMeta({ path })` o `routeRules`, con el archivo en inglés.
-- Deuda conocida por renombrar: ver `AGENTS.md` (páginas en español). Lo nuevo no suma deuda.
+- La deuda de nombres pendiente se anota en el backlog de Notion. Lo nuevo no suma deuda.
 
 ## Pixel perfect: proceso
 

@@ -46,7 +46,7 @@
     >
       <ImageWithFallback
         :src="project.image"
-        alt=""
+        :alt="`Portada del proyecto ${project.title}`"
         :sizes="featured ? '100vw lg:50vw' : '100vw md:50vw'"
         :quality="90"
         image-class="object-cover object-left-top"

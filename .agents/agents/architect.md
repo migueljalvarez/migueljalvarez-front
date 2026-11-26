@@ -29,7 +29,7 @@ Revisar SOLO:
 - Importar componentes de `components/admin/` desde páginas públicas (o al revés).
 - Secretos: valores privados en `runtimeConfig.public` o leídos de `process.env` en `nuxt.config.ts` (deben resolverse en ejecución con `getServerSecret()`).
 - SEO: página pública sin `usePageSeo()`; página privada sin `noindex`.
-- Archivos, carpetas, componentes, composables, tipos, constantes o rutas de API con nombre en español (deuda ya conocida: ver `AGENTS.md`; lo nuevo no debe sumarla).
+- Archivos, carpetas, componentes, composables, tipos, constantes o rutas de API con nombre en español (la deuda pendiente está en Notion; lo nuevo no debe sumarla).
 - Datos de ejemplo (mocks) que puedan llegar a producción.
 
 ## Instrucciones

@@ -22,3 +22,10 @@ export const contactSchema = z.object({
 })
 
 export type ContactInput = z.infer<typeof contactSchema>
+
+/**
+ * Constancia de la autorización para el correo del contacto: si la API falla y el lead no se guarda, el correo
+ * es la única prueba. La versión de la política y la fecha las pone el servidor, no el navegador.
+ */
+export const consentRecord = (policyVersion: string, sentAt: Date) =>
+  `Autorizó el tratamiento de sus datos (Ley 1581). Política vigente: ${policyVersion}. Enviado: ${sentAt.toISOString()}.`

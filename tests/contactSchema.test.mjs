@@ -1,6 +1,13 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { contactSchema } from '../server/utils/contactSchema.ts'
+import { consentRecord, contactSchema } from '../server/utils/contactSchema.ts'
+
+test('la constancia de autorización lleva la versión de la política y la fecha del envío', () => {
+  const record = consentRecord('2026-01-15', new Date('2026-02-01T10:30:00Z'))
+  assert.match(record, /Ley 1581/)
+  assert.ok(record.includes('Política vigente: 2026-01-15.'))
+  assert.ok(record.includes('Enviado: 2026-02-01T10:30:00.000Z.'))
+})
 
 const valid = {
   name: 'Ana Prueba',

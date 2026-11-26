@@ -17,16 +17,12 @@
   definePageMeta({ layout: 'default', keepalive: true })
 
   usePageSeo({
-    title: META.TITLE,
+    title: META.HOME_TITLE,
     description: META.DESCRIPTION,
     path: '/',
     imageAlt: 'Miguel Álvarez, desarrollo de software y soluciones digitales'
   })
   useHead({
-    titleTemplate: titleChunk =>
-      titleChunk
-        ? `${titleChunk} | Desarrollo de software a la medida`
-        : 'Desarrollo de software a la medida',
     script: [
       {
         type: 'application/ld+json',
