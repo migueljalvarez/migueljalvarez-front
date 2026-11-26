@@ -2,6 +2,7 @@ import type { PortfolioType } from '~/types/common'
 import type { Guide } from '~/types/guide'
 import type { LegalSection } from '~/types/legal'
 import type { PortfolioCardProject } from '~/types/portfolio'
+import type { PricingTerm, ServiceOfferView } from '~/types/pricing'
 
 export type PortfolioListProps = {
   projects: PortfolioCardProject[]
@@ -21,6 +22,11 @@ export type PortfolioListProps = {
 
 export type ProjectDetailProps = {
   project: PortfolioType
+}
+
+export type PricingContentProps = {
+  offers: ServiceOfferView[]
+  terms: PricingTerm[]
 }
 
 export type GuideArticleProps = {

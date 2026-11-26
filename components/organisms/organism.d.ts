@@ -1,5 +1,6 @@
 import type { ServiceOffering } from '~/data/services'
 import type { PortfolioCardProject } from '~/types/portfolio'
+import type { ServiceOfferView } from '~/types/pricing'
 
 export type SectionProps = {
   id: string
@@ -40,4 +41,10 @@ export type ProjectScopeProps = {
 
 export type ProjectGalleryProps = {
   images: { src: string; alt: string; caption?: string }[]
+}
+
+export type ServiceOfferCardProps = {
+  offer: ServiceOfferView
+  /** Texto cuando la oferta no tiene precio (respaldo del código). */
+  unpricedLabel: string
 }
