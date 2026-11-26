@@ -34,4 +34,4 @@ Los nombres están en [.env.example](.env.example). Los secretos se leen en ejec
 
 Netlify, con `netlify.toml` (preset `netlify` de Nitro, Node 22.22.3). Definir las variables de `.env.example` en Netlify antes del primer deploy; `NUXT_PUBLIC_BASE_URL` se lee al compilar. Reemplazar la rama `main` dispara el deploy de producción.
 
-Convenciones, flujo de ramas y reglas para agentes: [AGENTS.md](AGENTS.md). Contrato de la API del sitio: [docs/openapi.yaml](docs/openapi.yaml). Sistema de marca: [docs/brand-system.md](docs/brand-system.md).
+Convenciones, flujo de ramas y reglas para agentes: [AGENTS.md](AGENTS.md). Arquitectura: [docs/architecture.md](docs/architecture.md). Contrato de la API del sitio: [docs/openapi.yaml](docs/openapi.yaml). Sistema de marca: [docs/brand-system.md](docs/brand-system.md).

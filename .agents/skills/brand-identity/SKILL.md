@@ -19,8 +19,8 @@ Sitio personal de Miguel Alvarez que **capta clientes**: transmite "antes de esc
 - **Protagonista:** azul marino profundo — `brand-navy` `#121e30`, `brand-mid` `#1c2f4c`, `brand-accent` `#243b62` (CTA principal y foco).
 - **Superficies:** casi blancas para lectura — `brand-surface` `#f5f7fa`, `brand-surface-soft`, `brand-border`; tarjetas `brand-surface-card` (blanco).
 - **Texto:** `brand-ink` (principal), `brand-muted` (secundario), `brand-helper` (auxiliar/placeholder).
-- **`brand-blue` `#3f6bad`** (azul del logo): solo acentos puntuales (iconos, estado activo, hover). No para fondos grandes ni párrafos.
-- **Ámbar `brand-warm` `#F5B544`** (solo sobre fondos oscuros y en botones; sobre claros los acentos son `logo-blue` y `brand`, y el marrón se eliminó de la paleta; excepción: la cita «Principio clave»): único acento cálido, puntual (eyebrows oscuros, marcador activo del proceso, checks oscuros). Nunca fondos grandes ni botones.
+- **`logo-blue` `#3f6bad`** (alias `brand-blue`): enlaces, etiquetas, viñetas, foco, iconos y estado activo sobre fondo claro. No para fondos grandes ni párrafos.
+- **Ámbar `brand-warm` `#F5B544`** (solo sobre fondos oscuros y en botones; sobre claros los acentos son `logo-blue` y `brand`, y el marrón se eliminó de la paleta; excepción: la cita «Principio clave»): único acento cálido, puntual (eyebrows oscuros, marcador activo del proceso, checks oscuros) y **botón principal sobre fondo oscuro** con texto navy. Nunca fondos grandes ni botones sobre claro.
 - **Verde:** solo estados y WhatsApp. Estados `success|warning|danger|error` con sus variantes `-bg/-text/-border`.
 - Nunca colores hardcodeados ni paleta cruda de Tailwind si existe un token. Usa clases canónicas de Tailwind v4.
 
@@ -35,8 +35,8 @@ Sitio personal de Miguel Alvarez que **capta clientes**: transmite "antes de esc
 
 - **Hexágonos**: logo, fondo del hero, marcadores numerados 01–06 y placeholders de proyecto.
 - **Bandas alternas:** oscuras (hero, proceso, contacto) y claras (servicios, portafolio, sobre mí).
-- **Tarjetas** blancas con esquinas muy redondeadas y sombra suave (`brand-shadow-card`) sobre fondo claro; **paneles oscuros** con borde sutil (`brand-border-soft/strong`).
-- **Botones:** primario (azul oscuro) y secundario (contorno). **Chips** pequeños para etiquetas. **Checks** para beneficios.
+- **Tarjetas** blancas con esquinas muy redondeadas y sombra suave (`shadow-card`) sobre fondo claro; **paneles oscuros** con borde sutil (`brand-border-soft/strong`).
+- **Botones:** primario navy sobre claro y ámbar con texto navy sobre oscuro; secundario de contorno; WhatsApp verde. **Chips** pequeños para etiquetas. **Checks** para beneficios.
 - **Contacto:** panel oscuro con formulario **solapado sobre el footer a propósito**. No "corregirlo".
 
 ## Fidelidad (pixel perfect)

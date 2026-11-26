@@ -4,7 +4,6 @@ description: Verifica que la UI respete la identidad visual del proyecto (tokens
 skills:
   - brand-identity
   - ui-ux-principles
-  - nuxt-ui
 color: purple
 ---
 
@@ -24,14 +23,14 @@ Revisar SOLO:
 
 ## Comprobaciones
 
-- Colores solo vía tokens de `assets/css/main.css` (`brand-navy`, `brand-mid`, `brand-accent`, `brand-surface`…). `brand-blue` solo en acentos puntuales; verde solo para estados y WhatsApp.
+- Colores solo vía tokens de `assets/css/main.css` (`brand-navy`, `brand-mid`, `brand-accent`, `brand-surface`…). `logo-blue` para enlaces, etiquetas y foco sobre claro; ámbar solo sobre oscuro (incluido el botón principal); verde solo para estados y WhatsApp.
 - Alternancia de bandas oscuras (hero, proceso, contacto) y claras (servicios, portafolio, sobre mí).
 - La sección de Contacto es un panel oscuro con formulario solapado sobre el footer **a propósito**: no reportarlo como error.
 - Clases Tailwind canónicas v4; sin valores arbitrarios si existe un token o una clase equivalente.
 - Objetivos táctiles `min-h-11`, `focus-visible` visible, `aria-hidden` en iconos decorativos, contraste según `docs/brand-system.md`.
 - Estados completos: hover, focus, disabled, loading, vacío y error.
 - Responsive en los puntos del tema (360, 375, 411, 1366, 1920): sin desbordes ni saltos de layout.
-- Imágenes con `NuxtImg`, medidas y peso según `docs/portfolio-guide.md`.
+- Imágenes con `NuxtImg` (contenido editable: `ImageWithFallback`), medidas y peso según `docs/portfolio-guide.md`.
 - Copy en español, tuteo y primera persona, sin jerga técnica ni tono de búsqueda de empleo.
 - Datos de ejemplo siempre con la etiqueta "Datos de ejemplo".
 

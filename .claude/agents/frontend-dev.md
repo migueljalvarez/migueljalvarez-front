@@ -5,7 +5,6 @@ skills:
   - atomic-design
   - brand-identity
   - ui-ux-principles
-  - nuxt-ui
 color: green
 ---
 
@@ -34,7 +33,7 @@ Centrarse SOLO en:
 
 - **Nombres en inglés**: archivos, carpetas, componentes, composables, tipos y constantes. El español es solo el copy visible. Las URL públicas pueden ser en español por SEO, con el archivo en inglés.
 - Accesibilidad: `min-h-11` en objetivos táctiles, `focus-visible`, `aria-hidden` en iconos decorativos.
-- Imágenes con `NuxtImg` y las medidas de `docs/portfolio-guide.md`.
+- Imágenes con `NuxtImg` (contenido editable: `ImageWithFallback`) y las medidas de `docs/portfolio-guide.md`.
 - Estados siempre cubiertos: cargando, error y vacío.
 - Los mocks solo en desarrollo (`import.meta.dev`) y con la etiqueta "Datos de ejemplo".
 - No mover ni "corregir" el solape deliberado de la sección de Contacto.

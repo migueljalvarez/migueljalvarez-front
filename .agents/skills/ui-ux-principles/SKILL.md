@@ -64,7 +64,7 @@ Jerarquía por **tamaño + peso + color**, no por mayúsculas sueltas. Nunca men
 
 - Solo tokens `brand-*`. El color computado debe coincidir con el token.
 - **Texto normal ≥ 4,5:1; texto grande (≥ 18 px, o ≥ 14 px en negrita) y componentes de interfaz ≥ 3:1.** Calcúlalo (luminancia relativa) y deja la cifra en el reporte.
-- `brand-muted` (#4d5868, ≈ 7:1 sobre blanco) para texto secundario. **`brand-helper` (#7e8897, ≈ 3,6:1) NO cumple AA para texto pequeño**: solo para placeholders y decoración; las ayudas y errores `text-xs` van en `brand-muted`/token de error.
+- `brand-muted` (#4d5868, ≈ 7:1 sobre blanco) para texto secundario. `brand-helper` (#667182, ≈ 4,9:1 sobre blanco) es para placeholders y metadatos; las ayudas y errores `text-xs` van en `brand-muted`/token de error.
 - **El color nunca es el único portador de significado**: estado = texto + color (+ icono). Publicado / Borrador / Oculto / En desarrollo se leen sin ver el color.
 - Semántica fija: éxito `brand-success-*`, aviso `brand-warning-*`, error `brand-danger-*`/`brand-error-*`. Un solo color de acento activo por pantalla (`brand-accent` primario).
 
@@ -116,7 +116,4 @@ En el navegador, por cada pantalla: (1) alturas de controles = 44 px y alineados
 
 ## 12. Lo que no se hace
 
-- Decoración, animaciones o componentes sin tarea de usuario.
-- Cambiar la identidad (paleta, tipografía, hexágonos, solape deliberado del Contacto).
-- Duplicar marcado: lo repetido se **componentiza** (Atomic Design, ver `atomic-design`).
-- Nombres en español en archivos, componentes o rutas de API.
+Decoración, animaciones o componentes sin tarea de usuario. Cambiar la identidad (paleta, tipografía, hexágonos, solape deliberado del Contacto). Duplicar marcado: lo repetido se **componentiza** (ver `atomic-design`). Nombres en español en archivos, componentes o rutas de API.

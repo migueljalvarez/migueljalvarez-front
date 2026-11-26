@@ -95,8 +95,8 @@ Esto comunica tecnología, solidez y confianza. Lo que falta es equilibrarla con
 
 - `brand-warm` #F5B544: **solo sobre fondos oscuros** (9,88:1 sobre navy #0F1727; 8,61:1 sobre panel #1A2433). Nunca sobre blanco (1,81:1).
 - Sobre fondo claro no hay ámbar de texto: rótulos, viñetas y enlaces en `logo-blue` (#3F6BAD, 5,4:1 sobre blanco) y cifras o títulos secundarios en `brand` (#243B62, 11,2:1). Única excepción: la cita «Principio clave» (fondo `brand-warm` al 10 % y borde al 50 %). Texto navy sobre ámbar: ≈ 9,4:1.
-- Uso permitido: eyebrows sobre fondo oscuro, marcador hexagonal activo del proceso (`HexMarker tone="dark"`), checks sobre oscuro (`CheckList tone="dark"`) y el contorno tenue de los hexágonos del hero.
-- Prohibido: fondos grandes, botones, párrafos o más de un énfasis ámbar por bloque. El azul sigue siendo protagonista y el verde queda solo para estados y WhatsApp.
+- Uso permitido: eyebrows sobre fondo oscuro, marcador hexagonal activo del proceso (`HexMarker tone="dark"`), checks sobre oscuro (`CheckList tone="dark"`) y el contorno tenue de los hexágonos del hero y botón principal sobre fondo oscuro (ver sección 7).
+- Prohibido: fondos grandes, botones sobre fondo claro, párrafos o más de un énfasis ámbar por bloque. El azul sigue siendo protagonista y el verde queda solo para estados y WhatsApp.
 
 #### Espaciado y sombras (estándar)
 
@@ -222,3 +222,15 @@ Con esto, el formulario y el resto del sitio hablan el mismo idioma visual.
 - Header: transparente con logo blanco solo sobre el hero; sólido (`surface`) con logo a color desde el primer píxel de scroll, con fundido cruzado de 200 ms.
 - Espacio libre mínimo alrededor del logo: la altura del hexágono. Favicon: solo el hexágono (`public/favicon.svg`).
 - Hexágonos numerados del proceso: ámbar sobre fondo oscuro; si la sección pasara a fondo claro, `logo-blue` con el número en blanco.
+
+## 8) Reglas de identidad que se rompen con facilidad
+
+Reglas que se rompen con facilidad:
+
+- Azul marino (`brand-navy`) protagonista; superficies claras `brand-surface`; alternancia de bandas oscuras (hero, proceso, contacto) y claras.
+- Ámbar `brand-warm` (#F5B544) solo sobre oscuro y en botones, como único acento cálido (única excepción sobre claro: la cita «Principio clave», con fondo y borde tenues). Sobre claro los rótulos, viñetas y enlaces van en `logo-blue` y las cifras en `brand`; el marrón se eliminó de la paleta. Es acento (hexágonos, checks, subrayados) y el color del **botón principal sobre fondo oscuro** (texto `brand-navy`); nunca fondos de áreas grandes. Sobre fondo claro el botón principal es navy (`brand-accent`). WhatsApp siempre verde (`wa`).
+- Tokens semánticos por función en `assets/css/main.css` (`surface`, `surface-alt`, `surface-inverse`, `text`, `text-muted`, `brand`, `accent`, `logo-blue`, `tint`, `wa`): alias de los `brand-*`; el comentario del archivo lista los pares fondo/texto válidos. Enlaces, etiquetas y foco sobre fondo claro usan `logo-blue`. Nada de colores hex sueltos en componentes (lo hace cumplir `tests/colorTokens.test.mjs`).
+- **Logos**: siempre `AppLogo` (`components/atoms/AppLogo`), que elige la variante por fondo (`surface="light"` color, `"dark"` blanco) y siempre el original con su tagline (no se recorta ni se reescribe). Sobre foto o degradado, solo el blanco y con capa oscura. Espacio libre mínimo: la altura del hexágono. No editar los SVG de marca a mano.
+- Verde solo para estados y WhatsApp.
+- Sombras de tres niveles (plano por defecto): tokens `shadow-card`, `shadow-card-lg`, `shadow-dialog`, `shadow-header`. Ritmo vertical de bandas `py-12 md:py-16`.
+- Motivo gráfico: hexágonos. El logo del pie se conserva aunque se repita.
