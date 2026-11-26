@@ -1,7 +1,7 @@
 import { GUIDES } from '~/data/guides'
 import { PRIVACY_UPDATED_AT } from '~/data/privacy'
 import { TERMS_UPDATED_AT } from '~/data/terms'
-import { sitemapUrlEntry } from '~/utils/seo'
+import { latestSitemapDay, sitemapDay, sitemapUrlEntry } from '~/utils/seo'
 
 const escapeXml = (value: string) =>
   value
@@ -16,18 +16,22 @@ export default defineEventHandler(async event => {
 
   // Rutas públicas fijas + proyectos con ficha de detalle (los "en desarrollo" no la tienen).
   const projects = await getPortfolioItems()
-  // `lastmod` solo donde hay una fecha real (las páginas legales tienen la suya); una inventada no ayuda.
-  const entries: { path: string; lastmod?: string }[] = [
+  // `lastmod` solo donde hay una fecha real: páginas legales, guías y proyectos. La home, «Cómo trabajo» y
+  // «Cómo cobro» mezclan código y contenido del panel, así que van sin fecha; una inventada no ayuda.
+  const entries: { path: string; lastmod?: string | null }[] = [
     { path: '/' },
     { path: '/como-trabajo' },
     { path: '/como-cobro' },
-    { path: '/portafolio' },
+    { path: '/portafolio', lastmod: latestSitemapDay(projects.map(project => project.updatedAt)) },
     { path: '/privacidad', lastmod: PRIVACY_UPDATED_AT },
     { path: '/terminos-y-condiciones', lastmod: TERMS_UPDATED_AT },
     ...GUIDES.map(guide => ({ path: guide.path, lastmod: guide.updatedAt })),
     ...projects
       .filter(project => project.status !== 'in-development')
-      .map(project => ({ path: `/portafolio/${project.slug || project.id}` }))
+      .map(project => ({
+        path: `/portafolio/${project.slug || project.id}`,
+        lastmod: sitemapDay(project.updatedAt)
+      }))
   ]
 
   const urls = entries
