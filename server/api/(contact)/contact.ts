@@ -1,7 +1,7 @@
 import { Resend } from 'resend'
 import { PRIVACY_UPDATED_AT } from '~/data/privacy'
 import { processContact } from '../../utils/contactFlow'
-import { contactSchema, SUBJECT_LABELS } from '../../utils/contactSchema'
+import { consentRecord, contactSchema, SUBJECT_LABELS } from '../../utils/contactSchema'
 import { saveLead } from '../../utils/leadIntake'
 import { createPublicApiClient } from '../../utils/publicApiClient'
 
@@ -82,6 +82,8 @@ export default defineEventHandler(async event => {
     const safeEmail = escapeHtml(email)
     const safeMessage = escapeHtml(message).replace(/\r?\n/g, '<br>')
 
+    const consent = consentRecord(PRIVACY_UPDATED_AT, new Date())
+
     const resend = new Resend(resendApiKey)
     const { error } = await resend.emails.send({
       from: mailFrom,
@@ -98,9 +100,10 @@ export default defineEventHandler(async event => {
           <blockquote style="background: #f5f5f5; padding: 1em; border-left: 3px solid #ccc;">
             ${safeMessage}
           </blockquote>
+          <p style="font-size: 0.85em; color: #555">${consent}</p>
         </div>
       `,
-      text: `Nombre: ${name}\nEmail: ${email}\nAsunto: ${subjectLabel}\n\n${message}`
+      text: `Nombre: ${name}\nEmail: ${email}\nAsunto: ${subjectLabel}\n\n${message}\n\n${consent}`
     })
 
     if (error) {

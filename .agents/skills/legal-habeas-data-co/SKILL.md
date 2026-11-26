@@ -31,7 +31,9 @@ Guía de revisión, no asesoría legal: lo dudoso lo confirma un abogado, y ante
 ## Propiedad intelectual del código
 
 - Marco: Ley 23 de 1982 (el software se protege como obra) y sus reformas.
-- La cesión de derechos patrimoniales debe constar por escrito; los derechos morales no se ceden.
+- La cesión de derechos patrimoniales debe constar por escrito (art. 183); los derechos morales no se ceden.
+- Art. 183: sin plazo pactado, la cesión se limita a 5 años; sin territorio, al país donde se hace. Escribir ambos.
+- Art. 20: en contratos de prestación de servicios hay presunción de cesión al encargante. Pactar la condición (p. ej. pago total) y las exclusiones.
 - Cada contrato define qué se cede, cuándo (por ejemplo, al pago total) y qué queda fuera (herramientas previas y software open source).
 - `data/work.ts`, `data/terms.ts` y los precios deben decir lo mismo.
 
