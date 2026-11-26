@@ -6,7 +6,7 @@
   definePageMeta({ path: '/como-trabajo' })
 
   usePageSeo({
-    title: 'Cómo trabajo',
+    title: 'Cómo trabajo: código y accesos tuyos',
     description:
       'Mis compromisos, lo que no hago y cómo trabajamos juntos: acuerdos claros, código y accesos tuyos, y respuestas a las preguntas frecuentes.',
     path: '/como-trabajo'

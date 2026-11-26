@@ -7,7 +7,7 @@
   definePageMeta({ path: '/como-cobro' })
 
   usePageSeo({
-    title: 'Cómo cobro',
+    title: 'Cómo cobro: precios de mis servicios',
     description:
       'Servicios acotados con precio «desde» en USD: consultoría, diagnóstico, revisión de código y descubrimiento. Sabes cuánto cuesta cada paso antes de empezar.',
     path: '/como-cobro'

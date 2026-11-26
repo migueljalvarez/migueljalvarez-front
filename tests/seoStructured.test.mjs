@@ -1,12 +1,15 @@
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
+import {
+  readFileSync } from 'node:fs'
 import test from 'node:test'
 import {
   absoluteUrl,
   buildBreadcrumbList,
   buildProjectSchema,
   sitemapDate,
-  sitemapUrlEntry
+  sitemapUrlEntry,
+  projectSeoTitle,
+  toMetaDescription
 } from '../utils/seo.ts'
 
 const SITE = 'https://www.migueljalvarez.com/'
@@ -64,10 +67,13 @@ test('el sitemap solo pone lastmod con una fecha real', () => {
 })
 
 test('título de la home ≤ 60 caracteres y descripción de Términos ≤ 160', () => {
-  const home = readFileSync('pages/index.vue', 'utf8')
-  assert.ok(home.includes('Desarrollo de software a la medida'))
-  const title = 'Miguel Álvarez | Desarrollo de software a la medida'
-  assert.ok(title.length <= 60, String(title.length))
+  const constants = readFileSync('constants/common/index.ts', 'utf8')
+  const homeTitle = /HOME_TITLE: '([^']+)'/.exec(constants)[1]
+  assert.match(homeTitle, /software a la medida en Medellín/i)
+  assert.ok((homeTitle + ' | Miguel Álvarez').length <= 60, homeTitle)
+  assert.ok(readFileSync('pages/index.vue', 'utf8').includes('title: META.HOME_TITLE'))
+  const homeDescription = /DESCRIPTION:\s*'([^']+)'/.exec(constants)[1]
+  assert.ok(homeDescription.length <= 160, String(homeDescription.length))
   const terms = readFileSync('pages/terms.vue', 'utf8')
   const description = /description:\s*'([^']+)'/.exec(terms)[1]
   assert.ok(description.length >= 120 && description.length <= 160, String(description.length))
@@ -93,7 +99,7 @@ test('la guía cumple los límites de SEO y no deja marcas de borrador ni promes
   const source = readFileSync('data/guides.ts', 'utf8')
   const title = /seoTitle: '([^']+)'/.exec(source)[1]
   const description = /description:\s*'([^']+)'/.exec(source)[1]
-  assert.ok(title.length + ' | Desarrollo de Software'.length <= 60, String(title.length))
+  assert.ok(title.length + ' | Miguel Álvarez'.length <= 60, String(title.length))
   assert.ok(description.length >= 120 && description.length <= 160, String(description.length))
   assert.equal(/\[(PONER|CONFIRMAR)/.test(source), false)
   assert.equal(/24 horas|sin costo/i.test(source), false)
@@ -110,4 +116,32 @@ test('la guía tiene enlaces internos: desde el detalle del servicio «decidir»
   assert.ok(readFileSync('data/services.ts', 'utf8').includes('GUIDE_REWRITE_OR_IMPROVE.path'))
   assert.ok(readFileSync('components/organisms/ServiceCard/ServiceCard.vue', 'utf8').includes('offering.guide'))
   assert.ok(readFileSync('components/templates/HowWork/HowWorkContent.vue', 'utf8').includes('guide.path'))
+})
+
+test('el título de una ficha usa la primera etiqueta y nunca pasa de 60 con el sufijo', () => {
+  assert.equal(projectSeoTitle({ title: 'Mi App', tags: ['Aplicación móvil'] }), 'Mi App: aplicación móvil')
+  assert.equal(projectSeoTitle({ title: 'Mi App' }), 'Mi App')
+  assert.equal(projectSeoTitle({ title: 'Mi App', tags: ['x'.repeat(60)] }), 'Mi App')
+  const title = projectSeoTitle({ title: 'Mi Comodoro', tags: ['Aplicación financiera'] })
+  assert.ok((title + ' | Miguel Álvarez').length <= 60, title)
+})
+
+test('la meta descripción se recorta en una palabra y no supera 160', () => {
+  assert.equal(toMetaDescription('  Texto   corto  '), 'Texto corto')
+  const long = toMetaDescription('palabra '.repeat(40))
+  assert.ok(long.length <= 160, String(long.length))
+  assert.match(long, /palabra…$/)
+})
+
+test('títulos y descripciones de las páginas caben en los límites y terminan en la marca', () => {
+  const config = readFileSync('nuxt.config.ts', 'utf8')
+  assert.ok(config.includes("titleTemplate: '%s | Miguel Álvarez'"))
+  for (const file of ['how-we-work.vue', 'pricing.vue', 'portfolio/index.vue']) {
+    const page = readFileSync(`pages/${file}`, 'utf8')
+    const title = /title: '([^']+)',\s*description/.exec(page)[1]
+    const description = /description:\s*'([^']+)'/.exec(page)[1]
+    assert.ok((title + ' | Miguel Álvarez').length <= 60, `${file}: ${title}`)
+    assert.ok(description.length <= 160, `${file}: ${description.length}`)
+    assert.ok(!/y de clientes/.test(description), file)
+  }
 })
