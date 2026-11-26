@@ -6,7 +6,7 @@ import {
   absoluteUrl,
   buildBreadcrumbList,
   buildProjectSchema,
-  sitemapDate,
+  latestSitemapDay, sitemapDate, sitemapDay,
   sitemapUrlEntry,
   projectSeoTitle,
   toMetaDescription
@@ -55,6 +55,13 @@ test('una imagen alojada fuera del sitio (R2) conserva su URL; una ruta del siti
   assert.equal(schema.image, r2)
   const page = readFileSync('pages/portfolio/[slug].vue', 'utf8')
   assert.match(page, /absoluteUrl\(siteUrl,/) // la ficha no concatena el dominio a ciegas
+})
+
+test('lastmod de proyectos: día de la fecha ISO y el más reciente; sin fecha no se inventa', () => {
+  assert.equal(sitemapDay('2026-01-15T23:10:00.000Z'), '2026-01-15')
+  assert.equal(sitemapDay(undefined), null)
+  assert.equal(latestSitemapDay(['2026-01-15T10:00:00Z', undefined, '2026-03-02T10:00:00Z']), '2026-03-02')
+  assert.equal(latestSitemapDay([undefined, 'ayer']), null)
 })
 
 test('el sitemap solo pone lastmod con una fecha real', () => {

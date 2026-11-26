@@ -889,6 +889,10 @@ components:
         ogImage:
           type: string
           description: Imagen para redes 1200x630 JPG <=100 KB
+        updatedAt:
+          type: string
+          format: date-time
+          description: Último cambio del proyecto (lastmod del sitemap)
         gallery:
           type: array
           items:

@@ -31,6 +31,8 @@ export type ApiPortfolioEntry = {
   audience?: string
   tags: string[]
   gallery: { src: string; alt: string; caption?: string }[]
+  /** Último cambio de la ficha o su galería (ISO 8601); falta si la API aún no lo entrega. */
+  updatedAt?: string
 }
 
 export type ApiSocialLink = { name: string; url: string; icon: string }
@@ -69,7 +71,8 @@ export const mapApiPortfolioEntry = (entry: ApiPortfolioEntry): PortfolioType =>
   gallery: entry.gallery.length > 0 ? entry.gallery : undefined,
   tags: entry.tags,
   audience: entry.audience,
-  featured: entry.featured
+  featured: entry.featured,
+  updatedAt: entry.updatedAt
 })
 
 export const mapApiSocialLink = (link: ApiSocialLink): SocialMediaType => ({
