@@ -172,8 +172,10 @@ export const DEVELOPMENT_PHASES = [
 
 export const META = {
   TITLE: 'Miguel Álvarez',
+  /** Título de la portada (el sitio le añade « | Miguel Álvarez»). */
+  HOME_TITLE: 'Software a la medida en Medellín',
   DESCRIPTION:
-    'Desarrollo de software a la medida para emprendedores y empresas. Primero entiendo tu problema; después construyo una solución que crece con tu negocio.'
+    'Desarrollo de software a la medida desde Medellín. Te ayudo a decidir qué construir, cómo y en qué orden. Primera conversación sin costo.'
 }
 
 /**

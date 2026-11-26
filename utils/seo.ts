@@ -9,6 +9,26 @@ const absolute = (siteUrl: string, path: string) =>
 /** URL absoluta: una ruta del sitio se completa con el dominio; una URL https (p. ej. R2) se deja tal cual. */
 export const absoluteUrl = absolute
 
+/** Largo máximo del título de una ficha antes del sufijo « | Miguel Álvarez» (60 en total). */
+const PROJECT_TITLE_MAX = 43
+
+/** «Mi App: aplicación móvil» a partir de la primera etiqueta; solo el nombre si no cabe o no hay etiqueta. */
+export const projectSeoTitle = (project: { title: string; tags?: string[] }) => {
+  const tag = project.tags?.[0]?.trim()
+  if (!tag) return project.title
+  const full = `${project.title}: ${tag.toLocaleLowerCase('es-CO')}`
+  return full.length <= PROJECT_TITLE_MAX ? full : project.title
+}
+
+/** Meta descripción de hasta `max` caracteres, cortada en una palabra y con «…» si se recorta. */
+export const toMetaDescription = (text: string, max = 160) => {
+  const clean = text.replace(/\s+/g, ' ').trim()
+  if (clean.length <= max) return clean
+  const cut = clean.slice(0, max - 1)
+  const space = cut.lastIndexOf(' ')
+  return `${(space > 0 ? cut.slice(0, space) : cut).replace(/[\s,;:.]+$/, '')}…`
+}
+
 /** Migas de pan: la primera es siempre «Inicio». `path` es la ruta pública de cada nivel. */
 export const buildBreadcrumbList = (siteUrl: string, items: BreadcrumbItem[]) => ({
   '@context': 'https://schema.org',

@@ -41,7 +41,7 @@ export default defineNuxtConfig({
     },
     head: {
       title: 'Miguel Alvarez',
-      titleTemplate: '%s | Desarrollo de Software',
+      titleTemplate: '%s | Miguel Álvarez',
       meta: [
         {
           name: 'description',
