@@ -13,7 +13,7 @@
   // menos de 3 proyectos publicados, la tarjeta «Siguiente proyecto». Los datos y su orden vienen de la API.
   const props = withDefaults(defineProps<PortfolioListProps>(), {
     eyebrow: 'Portafolio',
-    heading: 'Soluciones que generan impacto',
+    heading: 'Lo que he construido y por qué',
     description:
       'Una selección de productos, plataformas y sistemas construidos para resolver problemas concretos.',
     headingLevel: 'h1',
