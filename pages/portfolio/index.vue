@@ -11,7 +11,7 @@
   })
 
   usePageSeo({
-    title: 'Portafolio: productos propios en beta',
+    title: 'Portafolio: aplicaciones que he construido',
     description:
       'Productos propios en beta construidos para resolver problemas concretos. Mira el problema, mis decisiones y dónde está cada uno hoy.',
     path: '/portafolio'
