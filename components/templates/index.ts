@@ -7,6 +7,7 @@ import PortfolioList from './PortfolioList/PortfolioList.vue'
 import ProjectDetail from './ProjectDetail/ProjectDetail.vue'
 import Services from './Services/Services.vue'
 import ProcessSection from './Services/ProcessSection.vue'
+import ExperienceSection from './Experience/ExperienceSection.vue'
 import HowWorkTeaser from './HowWork/HowWorkTeaser.vue'
 import HowWorkContent from './HowWork/HowWorkContent.vue'
 import PricingContent from './Pricing/PricingContent.vue'
@@ -28,6 +29,7 @@ export {
   ProjectDetail,
   Services,
   ProcessSection,
+  ExperienceSection,
   HowWorkTeaser,
   HowWorkContent
 }
