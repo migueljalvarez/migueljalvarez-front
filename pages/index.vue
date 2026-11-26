@@ -33,7 +33,7 @@
               '@type': 'Person',
               '@id': `${useSiteUrl()}/#person`,
               name: 'Miguel Álvarez',
-              jobTitle: 'Ingeniero de sistemas',
+              jobTitle: 'Desarrollador de software',
               url: useSiteUrl(),
               image: `${useSiteUrl()}/og-image.jpg`,
               address: {

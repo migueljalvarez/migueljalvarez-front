@@ -46,24 +46,27 @@
         {{ HOME_COPY.hero.availability }}
       </p>
 
-      <!-- El titular está en el HTML del servidor desde el primer instante: solo cambia el color de dos palabras. -->
-      <h1
-        class="max-w-full text-[clamp(2.5rem,5vw,4.5rem)] font-bold leading-[1.05] tracking-[-0.05em] text-brand-text-strong lg:col-start-1"
-      >
-        <!-- prettier-ignore -->
-        <span class="block break-words">{{ HOME_HERO_COPY.title.before }}<span class="hero-code">{{ HOME_HERO_COPY.title.code }}</span>{{ HOME_HERO_COPY.title.middle }}<span class="hero-problem">{{ HOME_HERO_COPY.title.problem }}</span>{{ HOME_HERO_COPY.title.after }}</span>
-      </h1>
+      <div class="lg:col-start-1">
+        <p class="mb-3 text-xs font-semibold uppercase tracking-[0.08em] text-brand-text-soft sm:tracking-[0.14em]">
+          {{ HOME_HERO_COPY.eyebrow }}
+        </p>
+        <!-- El titular está en el HTML del servidor desde el primer instante: solo cambia el color del acento. -->
+        <h1
+          class="max-w-full text-[clamp(2.5rem,4.4vw,4rem)] font-bold leading-[1.05] tracking-[-0.05em] text-brand-text-strong"
+        >
+          <!-- prettier-ignore -->
+          <span class="block break-words">{{ HOME_HERO_COPY.title.before }}<span class="hero-muted">{{ HOME_HERO_COPY.title.muted }}</span>{{ HOME_HERO_COPY.title.middle }}<span class="hero-accent">{{ HOME_HERO_COPY.title.accent }}</span>{{ HOME_HERO_COPY.title.after }}</span>
+        </h1>
+      </div>
 
       <div class="hero-rise max-w-[34rem] lg:col-start-1" style="--hero-delay: 450ms">
         <p class="text-lg leading-7 text-brand-text-strong md:text-xl md:leading-8">
           {{ HOME_HERO_COPY.lead.before }}
-          <strong class="font-semibold">{{ HOME_HERO_COPY.lead.strong }}</strong>
-          {{ HOME_HERO_COPY.lead.after }}
+          <!-- prettier-ignore -->
+          <strong class="font-semibold">{{ HOME_HERO_COPY.lead.strong }}</strong>{{ HOME_HERO_COPY.lead.after }}
         </p>
-        <p class="mt-3 text-base leading-7 text-brand-text-subtle">
-          {{ HOME_HERO_COPY.support.before }}
-          <span class="text-brand-text-soft">{{ HOME_HERO_COPY.support.strong }}</span>
-          {{ HOME_HERO_COPY.support.after }}
+        <p v-if="proofLine" class="mt-3 text-sm leading-6 text-brand-text-soft">
+          {{ proofLine }}
         </p>
       </div>
 
@@ -101,7 +104,7 @@
 
       <!-- Tarjeta: debajo de los botones en móvil; a la derecha, centrada en vertical, desde lg. -->
       <div
-        class="hero-rise relative mt-4 w-full max-w-[32rem] lg:col-start-2 lg:row-span-6 lg:row-start-1 lg:mt-0 lg:max-w-none"
+        class="hero-rise relative mt-4 w-full max-w-[32rem] lg:col-start-2 lg:row-span-5 lg:row-start-1 lg:mt-0 lg:max-w-none"
         style="--hero-delay: 500ms"
       >
         <HeroBriefCard />
@@ -109,29 +112,6 @@
 
       <div class="hero-rise mt-1 lg:col-start-1" style="--hero-delay: 750ms">
         <CheckList :items="HOME_COPY.contact.benefits" tone="dark" inline />
-      </div>
-
-      <div
-        class="hero-rise flex w-full max-w-[34rem] items-center gap-4 border-t border-brand-text-soft/30 pt-4 sm:pt-5 lg:col-start-1"
-        style="--hero-delay: 900ms"
-      >
-        <NuxtImg
-          src="ma.webp"
-          alt="Miguel Álvarez"
-          width="56"
-          height="56"
-          format="webp"
-          loading="lazy"
-          class="size-14 shrink-0 rounded-full border border-brand-text-soft/40 object-cover object-center"
-        />
-        <div class="min-w-0">
-          <p class="text-sm font-semibold leading-6 text-brand-text-strong">
-            Miguel Álvarez, ingeniero de sistemas
-          </p>
-          <p v-if="proofLine" class="text-sm leading-6 text-brand-text-soft">
-            {{ proofLine }}
-          </p>
-        </div>
       </div>
     </div>
   </section>
@@ -172,12 +152,12 @@
     animation: hero-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) var(--hero-delay, 0ms) both;
   }
 
-  .hero-code {
-    animation: hero-code 0.8s ease 0.95s both;
+  .hero-muted {
+    animation: hero-muted 0.8s ease 0.95s both;
   }
 
-  .hero-problem {
-    animation: hero-problem 0.6s ease 1.05s both;
+  .hero-accent {
+    animation: hero-accent 0.6s ease 1.05s both;
   }
 
   .hero-dot::after {
@@ -196,7 +176,7 @@
     }
   }
 
-  @keyframes hero-code {
+  @keyframes hero-muted {
     from {
       color: var(--color-brand-text-strong);
     }
@@ -205,7 +185,7 @@
     }
   }
 
-  @keyframes hero-problem {
+  @keyframes hero-accent {
     from {
       color: var(--color-brand-text-strong);
     }
@@ -226,18 +206,18 @@
   }
 
   /* Sin la animación el color final ya es el definitivo. */
-  .hero-code {
+  .hero-muted {
     color: var(--color-brand-text-dim);
   }
 
-  .hero-problem {
+  .hero-accent {
     color: var(--color-brand-warm);
   }
 
   @media (prefers-reduced-motion: reduce) {
     .hero-rise,
-    .hero-code,
-    .hero-problem,
+    .hero-muted,
+    .hero-accent,
     .hero-dot::after {
       animation: none;
     }

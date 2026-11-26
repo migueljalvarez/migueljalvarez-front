@@ -12,7 +12,7 @@ export type AboutContent = {
   eyebrow: string
   heading: string
   intro: string
-  /** Cargo que se muestra sobre la presentación (p. ej. Ingeniero de sistemas). */
+  /** Cargo que se muestra sobre la presentación (p. ej. Desarrollador de software). */
   role?: string
   /** Frase de presentación destacada; la presentación (`intro`) va debajo como subtítulo. */
   tagline?: string

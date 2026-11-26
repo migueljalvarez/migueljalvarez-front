@@ -6,23 +6,21 @@ export const REGEX_COMMON = /^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?: [A-Za-zÁÉÍ
 export const REGEX_LARGE_TEXT = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9,.\-+¿¡?"'()!\s]+$/
 
 export const HOME_HERO_COPY = {
-  /** Titular por tramos: "code" va apagado y "problem" en ámbar (solo cambia el color, sin subrayado). */
+  /** Quién soy. */
+  eyebrow: 'Miguel Álvarez · Desarrollador de software',
+  /** Qué hago. "muted" va apagado y "accent" en ámbar (solo cambia el color, sin subrayado). */
   title: {
-    before: 'Antes de escribir ',
-    code: 'código',
-    middle: ', entiendo tu ',
-    problem: 'problema',
+    before: 'Desarrollo ',
+    muted: 'soluciones',
+    middle: ' a\u00a0la medida para ',
+    accent: 'tu\u00a0negocio',
     after: '.'
   },
+  /** Cómo ayudo. */
   lead: {
-    before: 'Soy Miguel, ingeniero de sistemas. Te ayudo a ',
+    before: 'Antes de escribir código entiendo tu problema. Te ayudo a ',
     strong: 'decidir qué construir, cómo y en qué orden',
-    after: ' para que tu software resuelva un problema real y pueda crecer contigo.'
-  },
-  support: {
-    before: 'Cuéntame qué necesitas. ',
-    strong: 'La primera conversación es sin costo ni compromiso.',
-    after: ''
+    after: '.'
   }
 }
 export const HOME_COPY = {
@@ -63,7 +61,7 @@ export const HOME_COPY = {
   about: {
     eyebrow: 'Sobre mí',
     heading: 'Un poco más sobre mí',
-    role: 'Ingeniero de sistemas',
+    role: 'Desarrollador de software',
     tagline: 'Desarrollo de software que parte de tu necesidad y está listo para crecer.',
     name: 'Miguel Álvarez',
     interests: ['Cultura geek', 'Café & charlas', 'Aprendizaje continuo'],
@@ -71,7 +69,7 @@ export const HOME_COPY = {
     location: 'Medellín, Colombia',
     remote: 'Trabajo en remoto',
     intro:
-      'Hola, soy Miguel, ingeniero de sistemas. Hago software que parte de una necesidad concreta y se construye pensando en cómo va a crecer. Prefiero entender bien el problema antes de proponer una solución.',
+      'Hola, soy Miguel, desarrollador de software. Parto de una necesidad concreta y construyo pensando en cómo va a crecer. Prefiero entender bien el problema antes de proponer una solución.',
     quote:
       'Un proyecto que no se piensa a futuro termina en reprocesos y en módulos que nadie entiende por separado. Por eso dimensiono antes de construir.',
     howIWorkTitle: 'Cómo pienso mi trabajo',
@@ -81,7 +79,7 @@ export const HOME_COPY = {
     beyondWork:
       'Soy relajado y tranquilo, apasionado de la tecnología y la cultura geek. Me gusta salir a caminar y olvidarme un poco de las cosas, los días de pizza, las salidas con amigos y compartir siempre un buen café. También relajarme viendo películas y series, y estar siempre buscando algo nuevo que aprender.',
     toolsTitle: 'Herramientas',
-    imageAlt: 'Miguel Álvarez, ingeniero de sistemas, trabajando en remoto',
+    imageAlt: 'Miguel Álvarez, desarrollador de software, trabajando en remoto',
     highlights: [
       { value: '10+', label: 'años haciendo software' },
       { value: '4', label: 'sectores, de IoT a LegalTech' },
