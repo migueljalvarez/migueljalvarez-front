@@ -69,7 +69,7 @@ export const HOME_COPY = {
     location: 'Medellín, Colombia',
     remote: 'Trabajo en remoto',
     intro:
-      'Hola, soy Miguel, desarrollador de software. Parto de una necesidad concreta y construyo pensando en cómo va a crecer. Prefiero entender bien el problema antes de proponer una solución.',
+      'Soy Miguel y llevo más de 10 años haciendo software. Hoy ayudo a emprendedores y negocios a convertir una necesidad en una herramienta que de verdad usen. Te explico cada decisión en palabras claras y te digo cuando algo no te conviene.',
     quote:
       'Un proyecto que no se piensa a futuro termina en reprocesos y en módulos que nadie entiende por separado. Por eso dimensiono antes de construir.',
     howIWorkTitle: 'Cómo pienso mi trabajo',
