@@ -4,7 +4,7 @@ import { PRIVACY_CONTACT_EMAIL } from '~/data/privacy'
 import type { LegalSection } from '~/types/legal'
 import { cityWithCountry, legalHolderSentence, type LegalHolder } from '~/utils/legalHolder'
 
-export const TERMS_UPDATED_AT = '2026-11-20'
+export const TERMS_UPDATED_AT = '2026-11-25'
 
 export type TermsSection = LegalSection
 
@@ -50,7 +50,7 @@ export const getTermsSections = (holder: LegalHolder): TermsSection[] => {
       paragraphs: [
         'Los textos, el diseño, el logo, las imágenes y el código propio de este sitio son míos o se usan con autorización, y están protegidos por las normas de propiedad intelectual. Puedes consultarlos y compartir el enlace, pero no copiarlos ni reutilizarlos con fines comerciales sin mi permiso previo y por escrito.',
         'Las marcas y los proyectos de terceros que aparecen en el portafolio pertenecen a sus dueños y se muestran como referencia de trabajo realizado, con su conocimiento.',
-        'La propiedad del trabajo que desarrolle para ti se define en el acuerdo individual de cada proyecto.'
+        'La propiedad del trabajo que desarrolle para ti queda por escrito en el acuerdo de cada proyecto. Por regla general, al completar el pago, los derechos patrimoniales del código desarrollado para ti pasan a ser tuyos. Mis librerías y herramientas previas, y el software de código abierto, conservan su licencia original.'
       ]
     },
     {
