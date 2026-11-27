@@ -115,7 +115,7 @@
               {{ WHATSAPP_CTA_LABEL }}
             </Button>
 
-            <CheckList :items="HOME_COPY.contact.benefits" tone="dark" />
+            <CheckList :items="HOME_COPY.contact.benefits" tone="dark" class="py-4" />
 
             <div class="flex gap-3">
               <SocialMedia
