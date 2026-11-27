@@ -115,7 +115,7 @@
               {{ WHATSAPP_CTA_LABEL }}
             </Button>
 
-            <CheckList :items="HOME_COPY.contact.benefits" tone="dark" class="p-4" />
+            <CheckList :items="HOME_COPY.contact.benefits" tone="dark" class="py-4" />
 
             <div class="flex gap-3">
               <SocialMedia
@@ -128,7 +128,7 @@
               />
             </div>
             <p class="-mt-1 flex items-center gap-1.5 text-sm text-brand-text-subtle">
-              <Icon name="mdi:map-marker-outline" class="size-4 shrink-0" aria-hidden="true" />
+              <Icon name="mdi:map-marker" class="shrink-0" aria-hidden="true" size="32" />
               {{ HOME_COPY.contact.location }}
             </p>
           </div>
@@ -192,7 +192,7 @@
                   tabindex="-1"
                   autocomplete="off"
                   aria-hidden="true"
-                  class="absolute -left-[9999px] size-px opacity-0"
+                  class="absolute left-[-9999px] size-px opacity-0"
                 />
                 <Checkbox v-model="form.consent" name="consent" required>
                   {{ HOME_COPY.contact.consent }}
